@@ -10,3 +10,23 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 URL: https://github.com/giovannitinervia9/linkfunctions7
 BugReports: https://github.com/giovannitinervia9/linkfunctions7/issues
+Collate: 
+    'bounded_link.R'
+    'cauchit_link.R'
+    'cloglog_link.R'
+    'link_class.R'
+    'generics.R'
+    'identity_link.R'
+    'inverse_link.R'
+    'inverse_sq_link.R'
+    'log_link.R'
+    'logit_link.R'
+    'loglog_link.R'
+    'methods.R'
+    'power_link.R'
+    'probit_link.R'
+    'rhobit_link.R'
+    'softplus_link.R'
+    'sqrt_link.R'
+Imports: 
+    S7
