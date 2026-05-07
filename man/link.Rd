@@ -4,21 +4,7 @@
 \alias{link}
 \title{S7 Class for Statistical Link Functions}
 \usage{
-link(
-  link_name = character(0),
-  link_bounds = integer(0),
-  link_params = NULL,
-  linkfun = function() NULL,
-  linkinv = function() NULL,
-  dlinkfun = function() NULL,
-  d2linkfun = function() NULL,
-  d3linkfun = function() NULL,
-  d4linkfun = function() NULL,
-  dlinkinv = function() NULL,
-  d2linkinv = function() NULL,
-  d3linkinv = function() NULL,
-  d4linkinv = function() NULL
-)
+link(link_name = character(0), link_bounds = integer(0), link_params = NULL)
 }
 \arguments{
 \item{link_name}{A character string identifying the link (e.g., "logit").}
@@ -26,32 +12,12 @@ link(
 \item{link_bounds}{A numeric vector of length 2 \code{c(lower, upper)} defining the valid domain for \eqn{\theta}.}
 
 \item{link_params}{A list or vector of additional parameters required to define the link, or \code{NULL}.}
-
-\item{linkfun}{Function \eqn{g(\theta) \rightarrow \eta}.}
-
-\item{linkinv}{Function \eqn{g^{-1}(\eta) \rightarrow \theta}.}
-
-\item{dlinkfun}{First derivative of the link function.}
-
-\item{d2linkfun}{Second derivative of the link function.}
-
-\item{d3linkfun}{Third derivative of the link function.}
-
-\item{d4linkfun}{Fourth derivative of the link function.}
-
-\item{dlinkinv}{First derivative of the inverse link function.}
-
-\item{d2linkinv}{Second derivative of the inverse link function.}
-
-\item{d3linkinv}{Third derivative of the inverse link function.}
-
-\item{d4linkinv}{Fourth derivative of the inverse link function.}
 }
 \description{
-A strictly typed S7 object that encapsulates all mathematical properties
-of a link function. It contains the transformation function, the inverse
-transformation, and the exact analytical derivatives up to the fourth order
-for both directions.
+A strictly typed S7 object that encapsulates the metadata of a statistical
+link function. The mathematical transformations, including the forward and
+inverse functions and their exact analytical derivatives up to the fourth
+order, are implemented and registered as S7 generic methods.
 }
 \details{
 Objects of class \code{link} are instantiated using the S7 object system.

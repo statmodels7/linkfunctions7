@@ -11,7 +11,7 @@ softplus_link(a = 1)
 Must be strictly positive. Defaults to 1.}
 }
 \value{
-An S7 object of class \code{link} containing the transformation functions,
+An S7 object of class \code{SoftplusLink} (inheriting from \code{link}) containing the transformation functions,
 their exact analytical derivatives up to the fourth order, and the parameter \code{a}.
 }
 \description{

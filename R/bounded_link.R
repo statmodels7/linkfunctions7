@@ -1,5 +1,113 @@
+DoublyBoundedLink <- S7::new_class(
+  name = "DoublyBoundedLink",
+  parent = link,
+  properties = list(
+    lwr = S7::class_numeric,
+    upr = S7::class_numeric
+  ),
+  validator = function(self) {
+    if (self@lwr >= self@upr) {
+      "Lower bound 'lwr' must be strictly less than upper bound 'upr'."
+    }
+  }
+)
+
+LowerBoundedLink <- S7::new_class(
+  name = "LowerBoundedLink",
+  parent = link,
+  properties = list(
+    lwr = S7::class_numeric
+  )
+)
+
+UpperBoundedLink <- S7::new_class(
+  name = "UpperBoundedLink",
+  parent = link,
+  properties = list(
+    upr = S7::class_numeric
+  )
+)
+
+# --- Methods for DoublyBoundedLink ---
+
+S7::method(linkfun, DoublyBoundedLink) <- function(x, theta) {
+  W <- x@upr - x@lwr
+  p <- (theta - x@lwr) / W
+  stats::qlogis(p)
+}
+S7::method(linkinv, DoublyBoundedLink) <- function(x, eta) {
+  W <- x@upr - x@lwr
+  x@lwr + W * stats::plogis(eta)
+}
+S7::method(dlinkfun, DoublyBoundedLink) <- function(x, theta) {
+  W <- x@upr - x@lwr
+  p <- (theta - x@lwr) / W
+  1 / (W * p * (1 - p))
+}
+S7::method(d2linkfun, DoublyBoundedLink) <- function(x, theta) {
+  W <- x@upr - x@lwr
+  p <- (theta - x@lwr) / W
+  (2 * p - 1) / ((W^2) * (p^2) * ((1 - p)^2))
+}
+S7::method(d3linkfun, DoublyBoundedLink) <- function(x, theta) {
+  W <- x@upr - x@lwr
+  p <- (theta - x@lwr) / W
+  (2 / (p^3) + 2 / ((1 - p)^3)) / (W^3)
+}
+S7::method(d4linkfun, DoublyBoundedLink) <- function(x, theta) {
+  W <- x@upr - x@lwr
+  p <- (theta - x@lwr) / W
+  (-6 / (p^4) + 6 / ((1 - p)^4)) / (W^4)
+}
+S7::method(dlinkinv, DoublyBoundedLink) <- function(x, eta) {
+  p <- stats::plogis(eta)
+  (x@upr - x@lwr) * p * (1 - p)
+}
+S7::method(d2linkinv, DoublyBoundedLink) <- function(x, eta) {
+  p <- stats::plogis(eta)
+  (x@upr - x@lwr) * p * (1 - p) * (1 - 2 * p)
+}
+S7::method(d3linkinv, DoublyBoundedLink) <- function(x, eta) {
+  p <- stats::plogis(eta)
+  (x@upr - x@lwr) * p * (1 - p) * (1 - 6 * p + 6 * (p^2))
+}
+S7::method(d4linkinv, DoublyBoundedLink) <- function(x, eta) {
+  p <- stats::plogis(eta)
+  (x@upr - x@lwr) * p * (1 - p) * (1 - 14 * p + 36 * (p^2) - 24 * (p^3))
+}
+
+# --- Methods for LowerBoundedLink ---
+
+S7::method(linkfun, LowerBoundedLink) <- function(x, theta) log(theta - x@lwr)
+S7::method(linkinv, LowerBoundedLink) <- function(x, eta) x@lwr + pmax(exp(eta), .Machine$double.eps)
+S7::method(dlinkfun, LowerBoundedLink) <- function(x, theta) 1 / (theta - x@lwr)
+S7::method(d2linkfun, LowerBoundedLink) <- function(x, theta) -1 / ((theta - x@lwr)^2)
+S7::method(d3linkfun, LowerBoundedLink) <- function(x, theta) 2 / ((theta - x@lwr)^3)
+S7::method(d4linkfun, LowerBoundedLink) <- function(x, theta) -6 / ((theta - x@lwr)^4)
+S7::method(dlinkinv, LowerBoundedLink) <- function(x, eta) pmax(exp(eta), .Machine$double.eps)
+S7::method(d2linkinv, LowerBoundedLink) <- function(x, eta) pmax(exp(eta), .Machine$double.eps)
+S7::method(d3linkinv, LowerBoundedLink) <- function(x, eta) pmax(exp(eta), .Machine$double.eps)
+S7::method(d4linkinv, LowerBoundedLink) <- function(x, eta) pmax(exp(eta), .Machine$double.eps)
+
+# --- Methods for UpperBoundedLink ---
+
+S7::method(linkfun, UpperBoundedLink) <- function(x, theta) log(x@upr - theta)
+S7::method(linkinv, UpperBoundedLink) <- function(x, eta) x@upr - pmax(exp(eta), .Machine$double.eps)
+S7::method(dlinkfun, UpperBoundedLink) <- function(x, theta) -1 / (x@upr - theta)
+S7::method(d2linkfun, UpperBoundedLink) <- function(x, theta) -1 / ((x@upr - theta)^2)
+S7::method(d3linkfun, UpperBoundedLink) <- function(x, theta) -2 / ((x@upr - theta)^3)
+S7::method(d4linkfun, UpperBoundedLink) <- function(x, theta) -6 / ((x@upr - theta)^4)
+S7::method(dlinkinv, UpperBoundedLink) <- function(x, eta) -pmax(exp(eta), .Machine$double.eps)
+S7::method(d2linkinv, UpperBoundedLink) <- function(x, eta) -pmax(exp(eta), .Machine$double.eps)
+S7::method(d3linkinv, UpperBoundedLink) <- function(x, eta) -pmax(exp(eta), .Machine$double.eps)
+S7::method(d4linkinv, UpperBoundedLink) <- function(x, eta) -pmax(exp(eta), .Machine$double.eps)
+
+# --- The General Bounded Link Function Factory ---
+
 #' @title The General Bounded Link Function
 #'
+#' @include generics.R
+#' @include link_class.R
 #' @description
 #' Creates an S7 object of class \code{link} that maps a constrained interval to the 
 #' whole real line. By specifying \code{lwr} and \code{upr}, this function dynamically 
@@ -36,102 +144,34 @@ bounded_link <- function(lwr = NULL, upr = NULL) {
     return(identity_link())
   }
   
-  safe_exp <- function(eta) {
-    pmax(exp(eta), .Machine$double.eps)
-  }
-  
   # Case 1: Doubly Bounded
   if (!is.null(lwr) && !is.null(upr)) {
-    if (lwr >= upr) stop("Lower bound 'lwr' must be strictly less than upper bound 'upr'.")
-    
-    W <- upr - lwr
-    
-    return(link(
+    return(DoublyBoundedLink(
       link_name = paste0("bounded(lwr=", lwr, ", upr=", upr, ")"),
       link_bounds = c(lwr, upr),
       link_params = list(lwr = lwr, upr = upr),
-      
-      linkfun = function(theta) {
-        p <- (theta - lwr) / W
-        stats::qlogis(p)
-      },
-      linkinv = function(eta) {
-        lwr + W * stats::plogis(eta)
-      },
-      
-      dlinkfun  = function(theta) {
-        p <- (theta - lwr) / W
-        1 / (W * p * (1 - p))
-      },
-      d2linkfun = function(theta) {
-        p <- (theta - lwr) / W
-        (2 * p - 1) / ((W^2) * (p^2) * ((1 - p)^2))
-      },
-      d3linkfun = function(theta) {
-        p <- (theta - lwr) / W
-        (2 / (p^3) + 2 / ((1 - p)^3)) / (W^3)
-      },
-      d4linkfun = function(theta) {
-        p <- (theta - lwr) / W
-        (-6 / (p^4) + 6 / ((1 - p)^4)) / (W^4)
-      },
-      
-      dlinkinv  = function(eta) { p <- stats::plogis(eta); W * p * (1 - p) },
-      d2linkinv = function(eta) { p <- stats::plogis(eta); W * p * (1 - p) * (1 - 2 * p) },
-      d3linkinv = function(eta) { p <- stats::plogis(eta); W * p * (1 - p) * (1 - 6 * p + 6 * (p^2)) },
-      d4linkinv = function(eta) { p <- stats::plogis(eta); W * p * (1 - p) * (1 - 14 * p + 36 * (p^2) - 24 * (p^3)) }
+      lwr = lwr,
+      upr = upr
     ))
   }
   
   # Case 2: Lower Bounded
   if (!is.null(lwr) && is.null(upr)) {
-    return(link(
+    return(LowerBoundedLink(
       link_name = paste0("lower_bounded(lwr=", lwr, ")"),
       link_bounds = c(lwr, Inf),
       link_params = list(lwr = lwr),
-      
-      linkfun = function(theta) log(theta - lwr),
-      linkinv = function(eta) lwr + safe_exp(eta),
-      
-      dlinkfun  = function(theta)  1 / (theta - lwr),
-      d2linkfun = function(theta) -1 / ((theta - lwr)^2),
-      d3linkfun = function(theta)  2 / ((theta - lwr)^3),
-      d4linkfun = function(theta) -6 / ((theta - lwr)^4),
-      
-      dlinkinv  = safe_exp,
-      d2linkinv = safe_exp,
-      d3linkinv = safe_exp,
-      d4linkinv = safe_exp
+      lwr = lwr
     ))
   }
   
   # Case 3: Upper Bounded
   if (is.null(lwr) && !is.null(upr)) {
-    return(link(
+    return(UpperBoundedLink(
       link_name = paste0("upper_bounded(upr=", upr, ")"),
       link_bounds = c(-Inf, upr),
       link_params = list(upr = upr),
-      
-      linkfun = function(theta) log(upr - theta),
-      linkinv = function(eta) upr - safe_exp(eta),
-      
-      dlinkfun  = function(theta) {
-        -1 / (upr - theta)
-      },
-      d2linkfun = function(theta) {
-        -1 / ((upr - theta)^2)
-      },
-      d3linkfun = function(theta) {
-        -2 / ((upr - theta)^3)
-      },
-      d4linkfun = function(theta) {
-        -6 / ((upr - theta)^4)
-      },
-      
-      dlinkinv  = function(eta) -safe_exp(eta),
-      d2linkinv = function(eta) -safe_exp(eta),
-      d3linkinv = function(eta) -safe_exp(eta),
-      d4linkinv = function(eta) -safe_exp(eta)
+      upr = upr
     ))
   }
 }

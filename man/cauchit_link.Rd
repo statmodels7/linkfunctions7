@@ -7,7 +7,7 @@
 cauchit_link()
 }
 \value{
-An S7 object of class \code{link} containing the transformation functions
+An S7 object of class \code{CauchitLink} (inheriting from \code{link}) containing the transformation functions
 and their exact analytical derivatives up to the fourth order.
 }
 \description{

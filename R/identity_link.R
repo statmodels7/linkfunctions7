@@ -1,5 +1,30 @@
+IdentityLink <- S7::new_class(
+  name = "IdentityLink",
+  parent = link
+)
+
+# --- Methods for IdentityLink ---
+
+# Forward and inverse link functions
+S7::method(linkfun, IdentityLink) <- function(x, theta) theta
+S7::method(linkinv, IdentityLink) <- function(x, eta) eta
+
+# Exact analytical derivatives of the link function (wrt theta)
+S7::method(dlinkfun, IdentityLink) <- function(x, theta) rep(1, length(theta))
+S7::method(d2linkfun, IdentityLink) <- function(x, theta) rep(0, length(theta))
+S7::method(d3linkfun, IdentityLink) <- function(x, theta) rep(0, length(theta))
+S7::method(d4linkfun, IdentityLink) <- function(x, theta) rep(0, length(theta))
+
+# Exact analytical derivatives of the inverse link function (wrt eta)
+S7::method(dlinkinv, IdentityLink) <- function(x, eta) rep(1, length(eta))
+S7::method(d2linkinv, IdentityLink) <- function(x, eta) rep(0, length(eta))
+S7::method(d3linkinv, IdentityLink) <- function(x, eta) rep(0, length(eta))
+S7::method(d4linkinv, IdentityLink) <- function(x, eta) rep(0, length(eta))
+
 #' @title The Identity Link Function
 #'
+#' @include generics.R
+#' @include link_class.R
 #' @description
 #' Creates an S7 object of class \code{link} implementing the Identity transformation.
 #' This is the canonical link function for the mean parameter of the Normal (Gaussian) 
@@ -14,34 +39,17 @@
 #'
 #' The domain of \eqn{\theta} is unbounded, meaning the valid domain is \code{c(-Inf, Inf)}.
 #'
-#' @return An S7 object of class \code{link} containing the transformation functions
+#' @return An S7 object of class \code{IdentityLink} (inheriting from \code{link}) containing the transformation functions
 #' and their exact analytical derivatives up to the fourth order.
 #'
 #' @seealso \code{\link{link}}
-#'
 #' @export
 identity_link <- function() {
-  link(
+  IdentityLink(
     link_name = "identity",
     link_bounds = c(-Inf, Inf),
     
     # The identity link requires no additional mathematical parameters
-    link_params = NULL,
-    
-    # Forward and inverse link functions
-    linkfun = function(theta) theta,
-    linkinv = function(eta) eta,
-    
-    # Exact analytical derivatives of the link function (wrt theta)
-    dlinkfun  = function(theta) rep(1, length(theta)),
-    d2linkfun = function(theta) rep(0, length(theta)),
-    d3linkfun = function(theta) rep(0, length(theta)),
-    d4linkfun = function(theta) rep(0, length(theta)),
-    
-    # Exact analytical derivatives of the inverse link function (wrt eta)
-    dlinkinv  = function(eta) rep(1, length(eta)),
-    d2linkinv = function(eta) rep(0, length(eta)),
-    d3linkinv = function(eta) rep(0, length(eta)),
-    d4linkinv = function(eta) rep(0, length(eta))
+    link_params = NULL
   )
 }

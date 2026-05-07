@@ -1,5 +1,6 @@
 #' @title Print Method for S7 Link Objects
 #'
+#' @include generics.R
 #' @include link_class.R
 #' @description
 #' A standard S7 print method for objects of class \code{link}.
@@ -78,7 +79,7 @@ S7::method(plot, link) <- function(x, ...) {
     theta_seq <- seq(-5, 5, length.out = 1001)
   }
   
-  eta_vals <- x@linkfun(theta_seq)
+  eta_vals <- linkfun(x, theta_seq)
   
   graphics::plot(
     theta_seq, eta_vals,
@@ -95,13 +96,13 @@ S7::method(plot, link) <- function(x, ...) {
   # Use a standard, fixed range for eta to allow for consistent comparison
   # across different link functions. This is the key to a robust plot.
   eta_seq <- seq(-6, 6, length.out = 1001)
-  theta_vals <- x@linkinv(eta_seq)
+  theta_vals <- linkinv(x, eta_seq)
   
   graphics::plot(
     eta_seq, theta_vals,
     type = "l", lwd = 2, las = 1,
     xlab = expression(eta),
-    ylab = expression(theta == g^{-1}(eta)),
+    ylab = expression(theta == g^{-1} * (eta)),
     main = "Inverse Link Function"
   )
   graphics::grid()
