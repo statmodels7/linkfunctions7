@@ -72,9 +72,9 @@ S7::method(plot, link) <- function(x, ...) {
   if (is.finite(lb) && is.finite(ub)) {
     theta_seq <- seq(lb + eps, ub - eps, length.out = 1001)
   } else if (is.finite(lb) && !is.finite(ub)) {
-    theta_seq <- seq(lb + eps, lb + 10, length.out = 1001)
+    theta_seq <- seq(lb + eps, lb + 5, length.out = 1001)
   } else if (!is.finite(lb) && is.finite(ub)) {
-    theta_seq <- seq(ub - 10, ub - eps, length.out = 1001)
+    theta_seq <- seq(ub - 5, ub - eps, length.out = 1001)
   } else { # Both infinite
     theta_seq <- seq(-5, 5, length.out = 1001)
   }
@@ -93,10 +93,38 @@ S7::method(plot, link) <- function(x, ...) {
   
   # --- Plot 2: Inverse link function (theta vs. eta) ---
   
-  # Use a standard, fixed range for eta to allow for consistent comparison
-  # across different link functions. This is the key to a robust plot.
-  eta_seq <- seq(-6, 6, length.out = 1001)
-  theta_vals <- linkinv(x, eta_seq)
+  # Determine a sensible range for eta based on the link function's output
+  # to avoid NaNs for links with restricted eta domains (e.g., inverse_sq_link)
+  valid_eta <- eta_vals[is.finite(eta_vals)]
+  if (length(valid_eta) > 0) {
+    eta_min <- min(valid_eta)
+    eta_max <- max(valid_eta)
+    
+    # Try to constrain within a standard [-6, 6] range for visual consistency,
+    # but respect the actual valid domain of eta
+    eta_start <- max(eta_min, -6)
+    eta_end <- min(eta_max, 6)
+    
+    # If the natural range does not overlap with [-6, 6], use the natural range
+    if (eta_start >= eta_end) {
+      eta_start <- eta_min
+      eta_end <- eta_max
+    }
+    
+    # Fallback for constant eta (highly unlikely for a valid link function)
+    if (abs(eta_end - eta_start) < 1e-6) {
+      eta_start <- eta_start - 1
+      eta_end <- eta_end + 1
+    }
+  } else {
+    eta_start <- -5
+    eta_end <- 5
+  }
+  
+  eta_seq <- seq(eta_start, eta_end, length.out = 1001)
+  
+  # Suppress warnings gracefully in case evaluation hits undefined boundary areas
+  theta_vals <- suppressWarnings(linkinv(x, eta_seq))
   
   graphics::plot(
     eta_seq, theta_vals,
