@@ -28,5 +28,6 @@ Collate:
     'rhobit_link.R'
     'softplus_link.R'
     'sqrt_link.R'
+    'zzz.R'
 Imports: 
     S7
