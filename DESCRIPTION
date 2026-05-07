@@ -11,11 +11,11 @@ RoxygenNote: 7.3.3
 URL: https://github.com/giovannitinervia9/linkfunctions7
 BugReports: https://github.com/giovannitinervia9/linkfunctions7/issues
 Collate: 
+    'link_class.R'
+    'generics.R'
     'bounded_link.R'
     'cauchit_link.R'
     'cloglog_link.R'
-    'link_class.R'
-    'generics.R'
     'identity_link.R'
     'inverse_link.R'
     'inverse_sq_link.R'

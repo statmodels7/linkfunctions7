@@ -7,7 +7,7 @@
 inverse_link()
 }
 \value{
-An S7 object of class \code{link} containing the transformation functions
+An S7 object of class \code{InverseLink} (inheriting from \code{link}) containing the transformation functions
 and their exact analytical derivatives up to the fourth order.
 }
 \description{

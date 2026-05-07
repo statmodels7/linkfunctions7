@@ -10,9 +10,8 @@ power_link(lambda = 1)
 \item{lambda}{A numeric value defining the power of the transformation. Defaults to 1.}
 }
 \value{
-An S7 object of class \code{link} containing the transformation functions,
-their exact analytical derivatives up to the fourth order, and the \code{link_params}
-property storing the value of \code{lambda}.
+An S7 object of class \code{PowerLink} (inheriting from \code{link}),
+or an object of class \code{LogLink} if \code{lambda = 0}.
 }
 \description{
 Creates an S7 object of class \code{link} implementing the Power transformation family.

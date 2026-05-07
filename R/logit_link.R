@@ -1,5 +1,43 @@
+LogitLink <- S7::new_class(
+  name = "LogitLink",
+  parent = link
+)
+
+# --- Methods for LogitLink ---
+
+# Forward and inverse link functions using native R C-level functions
+S7::method(linkfun, LogitLink) <- function(x, theta) stats::qlogis(theta)
+S7::method(linkinv, LogitLink) <- function(x, eta) stats::plogis(eta)
+
+# Exact analytical derivatives of the link function (wrt theta)
+S7::method(dlinkfun, LogitLink) <- function(x, theta) 1 / (theta * (1 - theta))
+S7::method(d2linkfun, LogitLink) <- function(x, theta) (2 * theta - 1) / ((theta * (1 - theta))^2)
+S7::method(d3linkfun, LogitLink) <- function(x, theta) 2 / (theta^3) + 2 / ((1 - theta)^3)
+S7::method(d4linkfun, LogitLink) <- function(x, theta) -6 / (theta^4) + 6 / ((1 - theta)^4)
+
+# Exact analytical derivatives of the inverse link function (wrt eta)
+# Expressed elegantly as polynomials of the probability p to maximize performance
+S7::method(dlinkinv, LogitLink) <- function(x, eta) {
+  p <- stats::plogis(eta)
+  p * (1 - p)
+}
+S7::method(d2linkinv, LogitLink) <- function(x, eta) {
+  p <- stats::plogis(eta)
+  p * (1 - p) * (1 - 2 * p)
+}
+S7::method(d3linkinv, LogitLink) <- function(x, eta) {
+  p <- stats::plogis(eta)
+  p * (1 - p) * (1 - 6 * p + 6 * p^2)
+}
+S7::method(d4linkinv, LogitLink) <- function(x, eta) {
+  p <- stats::plogis(eta)
+  p * (1 - p) * (1 - 14 * p + 36 * p^2 - 24 * p^3)
+}
+
 #' @title The Logit Link Function
 #'
+#' @include generics.R
+#' @include link_class.R
 #' @description
 #' Creates an S7 object of class \code{link} implementing the Logit (log-odds) transformation.
 #' This is the canonical link function for the success probability parameter of the Bernoulli 
@@ -21,47 +59,18 @@
 #' and precision, especially when evaluating probabilities exceedingly close to the 
 #' boundaries of 0 and 1.
 #'
-#' @return An S7 object of class \code{link} containing the transformation functions
+#' @return An S7 object of class \code{LogitLink} (inheriting from \code{link}) containing the transformation functions
 #' and their exact analytical derivatives up to the fourth order.
 #'
 #' @seealso \code{\link{link}}, \code{\link{probit_link}}, \code{\link{cloglog_link}}
 #' @importFrom stats qlogis plogis
 #' @export
 logit_link <- function() {
-  link(
+  LogitLink(
     link_name = "logit",
     link_bounds = c(0, 1),
     
     # The logit link requires no additional mathematical parameters
-    link_params = NULL,
-    
-    # Forward and inverse link functions using native R C-level functions
-    linkfun = function(theta) stats::qlogis(theta),
-    linkinv = function(eta) stats::plogis(eta),
-    
-    # Exact analytical derivatives of the link function (wrt theta)
-    dlinkfun  = function(theta) 1 / (theta * (1 - theta)),
-    d2linkfun = function(theta) (2 * theta - 1) / ((theta * (1 - theta))^2),
-    d3linkfun = function(theta) 2 / (theta^3) + 2 / ((1 - theta)^3),
-    d4linkfun = function(theta) -6 / (theta^4) + 6 / ((1 - theta)^4),
-    
-    # Exact analytical derivatives of the inverse link function (wrt eta)
-    # Expressed elegantly as polynomials of the probability p to maximize performance
-    dlinkinv  = function(eta) {
-      p <- stats::plogis(eta)
-      p * (1 - p)
-    },
-    d2linkinv = function(eta) {
-      p <- stats::plogis(eta)
-      p * (1 - p) * (1 - 2 * p)
-    },
-    d3linkinv = function(eta) {
-      p <- stats::plogis(eta)
-      p * (1 - p) * (1 - 6 * p + 6 * p^2)
-    },
-    d4linkinv = function(eta) {
-      p <- stats::plogis(eta)
-      p * (1 - p) * (1 - 14 * p + 36 * p^2 - 24 * p^3)
-    }
+    link_params = NULL
   )
 }

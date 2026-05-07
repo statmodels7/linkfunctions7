@@ -1,5 +1,30 @@
+PowerLink <- S7::new_class(
+  name = "PowerLink",
+  parent = link,
+  properties = list(
+    lambda = S7::class_numeric
+  )
+)
+
+# --- Methods for PowerLink ---
+
+S7::method(linkfun, PowerLink) <- function(x, theta) theta^x@lambda
+S7::method(linkinv, PowerLink) <- function(x, eta) eta^(1 / x@lambda)
+
+S7::method(dlinkfun, PowerLink) <- function(x, theta) x@lambda * (theta^(x@lambda - 1))
+S7::method(d2linkfun, PowerLink) <- function(x, theta) x@lambda * (x@lambda - 1) * (theta^(x@lambda - 2))
+S7::method(d3linkfun, PowerLink) <- function(x, theta) x@lambda * (x@lambda - 1) * (x@lambda - 2) * (theta^(x@lambda - 3))
+S7::method(d4linkfun, PowerLink) <- function(x, theta) x@lambda * (x@lambda - 1) * (x@lambda - 2) * (x@lambda - 3) * (theta^(x@lambda - 4))
+
+S7::method(dlinkinv, PowerLink) <- function(x, eta) { k <- 1 / x@lambda; k * (eta^(k - 1)) }
+S7::method(d2linkinv, PowerLink) <- function(x, eta) { k <- 1 / x@lambda; k * (k - 1) * (eta^(k - 2)) }
+S7::method(d3linkinv, PowerLink) <- function(x, eta) { k <- 1 / x@lambda; k * (k - 1) * (k - 2) * (eta^(k - 3)) }
+S7::method(d4linkinv, PowerLink) <- function(x, eta) { k <- 1 / x@lambda; k * (k - 1) * (k - 2) * (k - 3) * (eta^(k - 4)) }
+
 #' @title The Power Link Function
 #'
+#' @include generics.R
+#' @include link_class.R
 #' @description
 #' Creates an S7 object of class \code{link} implementing the Power transformation family.
 #' This function generates a specific link function based on the provided power parameter \code{lambda}.
@@ -28,12 +53,10 @@
 #' of \code{lambda}, extreme care must be taken during numerical optimization to guarantee 
 #' that \eqn{\eta} remains strictly positive to avoid \code{NaN}s from fractional exponents.
 #'
-#' @return An S7 object of class \code{link} containing the transformation functions, 
-#' their exact analytical derivatives up to the fourth order, and the \code{link_params} 
-#' property storing the value of \code{lambda}.
+#' @return An S7 object of class \code{PowerLink} (inheriting from \code{link}), 
+#' or an object of class \code{LogLink} if \code{lambda = 0}.
 #'
 #' @seealso \code{\link{link}}, \code{\link{log_link}}, \code{\link{identity_link}}
-#'
 #' @export
 power_link <- function(lambda = 1) {
   # Handle Box-Cox continuity limit utilizing the existing log_link
@@ -44,24 +67,10 @@ power_link <- function(lambda = 1) {
     return(o)
   }
 
-  k <- 1 / lambda
-
-  link(
+  PowerLink(
     link_name = paste0("power(lambda=", round(lambda, 5), ")"),
     link_bounds = c(0, Inf),
     link_params = list(lambda = lambda),
-    
-    linkfun = function(theta) theta^lambda,
-    linkinv = function(eta) eta^k,
-    
-    dlinkfun  = function(theta) lambda * (theta^(lambda - 1)),
-    d2linkfun = function(theta) lambda * (lambda - 1) * (theta^(lambda - 2)),
-    d3linkfun = function(theta) lambda * (lambda - 1) * (lambda - 2) * (theta^(lambda - 3)),
-    d4linkfun = function(theta) lambda * (lambda - 1) * (lambda - 2) * (lambda - 3) * (theta^(lambda - 4)),
-    
-    dlinkinv  = function(eta) k * (eta^(k - 1)),
-    d2linkinv = function(eta) k * (k - 1) * (eta^(k - 2)),
-    d3linkinv = function(eta) k * (k - 1) * (k - 2) * (eta^(k - 3)),
-    d4linkinv = function(eta) k * (k - 1) * (k - 2) * (k - 3) * (eta^(k - 4))
+    lambda = lambda
   )
 }

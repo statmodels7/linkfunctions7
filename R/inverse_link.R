@@ -1,5 +1,32 @@
+InverseLink <- S7::new_class(
+  name = "InverseLink",
+  parent = link
+)
+
+# --- Methods for InverseLink ---
+
+# Forward and inverse link functions
+S7::method(linkfun, InverseLink) <- function(x, theta) 1 / theta
+S7::method(linkinv, InverseLink) <- function(x, eta) 1 / eta
+
+# Exact analytical derivatives of the link function (wrt theta)
+S7::method(dlinkfun, InverseLink) <- function(x, theta) -1 / (theta^2)
+S7::method(d2linkfun, InverseLink) <- function(x, theta)  2 / (theta^3)
+S7::method(d3linkfun, InverseLink) <- function(x, theta) -6 / (theta^4)
+S7::method(d4linkfun, InverseLink) <- function(x, theta) 24 / (theta^5)
+
+# Exact analytical derivatives of the inverse link function (wrt eta)
+# Due to the symmetric nature of f(x) = 1/x, these are structurally identical
+# to the link function derivatives, but evaluated at eta.
+S7::method(dlinkinv, InverseLink) <- function(x, eta) -1 / (eta^2)
+S7::method(d2linkinv, InverseLink) <- function(x, eta)  2 / (eta^3)
+S7::method(d3linkinv, InverseLink) <- function(x, eta) -6 / (eta^4)
+S7::method(d4linkinv, InverseLink) <- function(x, eta) 24 / (eta^5)
+
 #' @title The Inverse (Reciprocal) Link Function
 #'
+#' @include generics.R
+#' @include link_class.R
 #' @description
 #' Creates an S7 object of class \code{link} implementing the reciprocal transformation.
 #'
@@ -15,36 +42,17 @@
 #' negative) during optimization to avoid division by zero or mapping to invalid 
 #' negative parameter values.
 #'
-#' @return An S7 object of class \code{link} containing the transformation functions
+#' @return An S7 object of class \code{InverseLink} (inheriting from \code{link}) containing the transformation functions
 #' and their exact analytical derivatives up to the fourth order.
 #'
 #' @seealso \code{\link{link}}, \code{\link{identity_link}}
-#'
 #' @export
 inverse_link <- function() {
-  link(
+  InverseLink(
     link_name = "inverse",
     link_bounds = c(0, Inf),
     
     # The inverse link requires no additional mathematical parameters
-    link_params = NULL,
-    
-    # Forward and inverse link functions
-    linkfun = function(theta) 1 / theta,
-    linkinv = function(eta) 1 / eta,
-    
-    # Exact analytical derivatives of the link function (wrt theta)
-    dlinkfun  = function(theta) -1 / (theta^2),
-    d2linkfun = function(theta)  2 / (theta^3),
-    d3linkfun = function(theta) -6 / (theta^4),
-    d4linkfun = function(theta) 24 / (theta^5),
-    
-    # Exact analytical derivatives of the inverse link function (wrt eta)
-    # Due to the symmetric nature of f(x) = 1/x, these are structurally identical
-    # to the link function derivatives, but evaluated at eta.
-    dlinkinv  = function(eta) -1 / (eta^2),
-    d2linkinv = function(eta)  2 / (eta^3),
-    d3linkinv = function(eta) -6 / (eta^4),
-    d4linkinv = function(eta) 24 / (eta^5)
+    link_params = NULL
   )
 }
