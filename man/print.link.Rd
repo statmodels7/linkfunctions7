@@ -3,6 +3,9 @@
 \name{print.link}
 \alias{print.link}
 \title{Print Method for S7 Link Objects}
+\usage{
+\method{print}{link}(x, ...)
+}
 \arguments{
 \item{x}{An object of class \code{link}.}
 
