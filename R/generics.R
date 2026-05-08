@@ -75,9 +75,9 @@ linkderiv <- S7::new_generic("linkderiv", "x", fun = function(x, theta, order = 
 #' @export
 linkinvderiv <- S7::new_generic("linkinvderiv", "x", fun = function(x, eta, order = 1) S7::S7_dispatch())
 
-#' @title Diagnostic Test Method
-#' @param x An object.
+#' @title Validate and Check a Link Object
+#' @param x An object of class \code{link}.
 #' @param tolerance Numeric tolerance for floating-point comparisons.
 #' @param ... Additional arguments passed to methods.
 #' @export
-test <- S7::new_generic("test", "x", fun = function(x, tolerance = 1e-5, ...) S7::S7_dispatch())
+check_link <- S7::new_generic("check_link", "x", fun = function(x, tolerance = 1e-5, ...) S7::S7_dispatch())

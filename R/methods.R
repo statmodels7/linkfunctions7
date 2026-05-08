@@ -162,7 +162,8 @@ S7::method(plot, link) <- plot.link
 #' @param theta A numeric vector.
 #' @param order An integer (0 to 4).
 #' @rdname linkderiv
-S7::method(linkderiv, link) <- function(x, theta, order = 1) {
+#' @export
+linkderiv.link <- function(x, theta, order = 1) {
   switch(as.character(order),
          "0" = linkfun(x, theta),
          "1" = dlinkfun(x, theta),
@@ -172,6 +173,7 @@ S7::method(linkderiv, link) <- function(x, theta, order = 1) {
          stop("Forward derivative order not supported.")
   )
 }
+S7::method(linkderiv, link) <- linkderiv.link
 
 #' @title Inverse Link Derivative Wrapper
 #' @description Routes to the correct inverse derivative generic based on order.
@@ -179,7 +181,8 @@ S7::method(linkderiv, link) <- function(x, theta, order = 1) {
 #' @param eta A numeric vector.
 #' @param order An integer (0 to 4).
 #' @rdname linkinvderiv
-S7::method(linkinvderiv, link) <- function(x, eta, order = 1) {
+#' @export
+linkinvderiv.link <- function(x, eta, order = 1) {
   switch(as.character(order),
          "0" = linkinv(x, eta),
          "1" = dlinkinv(x, eta),
@@ -189,8 +192,9 @@ S7::method(linkinvderiv, link) <- function(x, eta, order = 1) {
          stop("Inverse derivative order not supported.")
   )
 }
+S7::method(linkinvderiv, link) <- linkinvderiv.link
 
-#' @title Test Method for S7 Link Objects
+#' @title Validate and Check a Link Object
 #'
 #' @description
 #' A diagnostic S7 method to mathematically validate a \code{link} object.
@@ -203,18 +207,26 @@ S7::method(linkinvderiv, link) <- function(x, eta, order = 1) {
 #'
 #' @details
 #' The function assumes the existence of S7 generics \code{linkfun}, \code{linkinv},
-#' \code{linkderiv}, and \code{linkinvderiv} (the latter two parameterized by \code{order}).
-#' The derivative testing avoids compounding numerical errors by applying
-#' first-order numerical differentiation to the exact lower-order analytical derivatives.
-#' Both forward and inverse derivatives up to the 4th order are verified.
+#' \code{linkderiv}, and \code{linkinvderiv}. The method performs the following six diagnostic checks:
+#' \enumerate{
+#'   \item \strong{Invertibility (\eqn{\theta} space):} Verifies \eqn{g^{-1}(g(\theta)) = \theta}. Ensures that mapping from the parameter space to the linear predictor and back is lossless.
+#'   \item \strong{Invertibility (\eqn{\eta} space):} Verifies \eqn{g(g^{-1}(\eta)) = \eta}. Ensures that mapping from the linear predictor to the parameter space and back is lossless. Note that this test may fail intentionally and correctly for links that map to a restricted \eqn{\eta} domain (e.g., the square root link).
+#'   \item \strong{Strict Monotonicity:} Checks if the first derivative \eqn{g'(\theta)} is strictly positive or strictly negative across the domain, guaranteeing a one-to-one mapping.
+#'   \item \strong{Inverse Function Theorem:} Verifies the mathematical identity \eqn{g'(\theta) \cdot (g^{-1})'(\eta) = 1}, confirming the theoretical relationship between the link derivative and the inverse link derivative.
+#'   \item \strong{Link Derivatives:} Validates the exact analytical forward derivatives of \eqn{g(\theta)} up to the 4th order by comparing them against numerical gradients.
+#'   \item \strong{Inverse Link Derivatives:} Validates the exact analytical inverse derivatives of \eqn{g^{-1}(\eta)} up to the 4th order by comparing them against numerical gradients.
+#' }
+#' Both forward and inverse derivative testing avoids compounding numerical errors by applying
+#' first-order numerical differentiation iteratively to the exact lower-order analytical derivatives.
 #'
 #' @importFrom numDeriv grad
-#' @return A logical value returning \code{TRUE} if all available tests pass.
+#' @return A logical list returning the success status of all available checks.
 #'
-#' @rdname test
-S7::method(test, link) <- function(x, tolerance = 1e-5, ...) {
+#' @rdname check_link
+#' @export
+check_link.link <- function(x, tolerance = 1e-5, ...) {
   
-  cat("Testing S7 Link Object:", x@link_name, "\n")
+  cat("Checking S7 Link Object:", x@link_name, "\n")
   
   # 1. Generate evaluation points strictly inside valid bounds for theta
   lb <- x@link_bounds[1]
@@ -231,17 +243,27 @@ S7::method(test, link) <- function(x, tolerance = 1e-5, ...) {
     theta_seq <- seq(-3, 3, length.out = 15)
   }
   
-  # 2. Test Algebraic Invertibility
-  cat("  [1] Testing invertibility...\n")
+  # 2. Test Algebraic Invertibility (Theta -> Eta -> Theta)
   eta_vals <- linkfun(x, theta_seq)
   theta_hat <- linkinv(x, eta_vals)
   
   inv_error <- max(abs(theta_seq - theta_hat))
-  if (is.na(inv_error) || inv_error > tolerance) {
-    cat("      [FAILED] Invertibility g^-1(g(theta)) != theta. Max error:", inv_error, "\n")
-    return(FALSE)
-  }
-  cat("      [PASSED] Invertibility verified. Max error:", inv_error, "\n")
+  invertibility_pass <- !is.na(inv_error) && inv_error <= tolerance
+  
+  # 3. Test Algebraic Invertibility (Eta -> Theta -> Eta)
+  eta_seq_test <- seq(-4, 4, length.out = 15)
+  eta_hat <- linkfun(x, linkinv(x, eta_seq_test))
+  inv_eta_error <- max(abs(eta_seq_test - eta_hat))
+  invertibility_eta_pass <- !is.na(inv_eta_error) && inv_eta_error <= tolerance
+  
+  # 4. Test Strict Monotonicity
+  d1_theta <- linkderiv(x, theta_seq, order = 1)
+  monotonicity_pass <- all(d1_theta > 0) || all(d1_theta < 0)
+  
+  # 5. Test Inverse Function Theorem (Derivative Reciprocal Identity)
+  d1_eta <- linkinvderiv(x, eta_vals, order = 1)
+  inv_thm_error <- max(abs(d1_eta * d1_theta - 1))
+  inv_thm_pass <- !is.na(inv_thm_error) && inv_thm_error <= tolerance
   
   # Helper function to compute numerical gradient robustly utilizing the native R pipe
   compute_num_grad <- function(eval_fn, val_seq) {
@@ -251,9 +273,15 @@ S7::method(test, link) <- function(x, tolerance = 1e-5, ...) {
   
   # Generic function to test a chain of derivatives
   test_derivative_chain <- function(base_name, eval_seq, deriv_fn, max_order = 4) {
+    results <- rep(NA, max_order)
+    names(results) <- paste0("order_", 1:max_order)
     pass_prev <- TRUE
+    
     for (o in 1:max_order) {
-      if (!pass_prev) break
+      if (!pass_prev) {
+        results[o:max_order] <- FALSE
+        break
+      }
       
       fn_prev <- function(v) deriv_fn(x, v, order = o - 1)
       fn_curr <- function(v) deriv_fn(x, v, order = o)
@@ -261,31 +289,45 @@ S7::method(test, link) <- function(x, tolerance = 1e-5, ...) {
       # Check if the derivative is implemented and evaluates without error
       curr_val <- tryCatch(fn_curr(eval_seq), error = function(e) NULL)
       if (is.null(curr_val)) {
-        cat("      [-] Order", o, "not implemented or failed to evaluate.\n")
         break
       }
       
       num_deriv <- compute_num_grad(fn_prev, eval_seq)
       exact_deriv <- curr_val
       
-      deriv_error <- max(abs(num_deriv - exact_deriv), na.rm = TRUE)
+      # Scale error relatively for large derivatives to avoid boundary inflation
+      deriv_error <- max(abs(num_deriv - exact_deriv) / pmax(1, abs(exact_deriv)), na.rm = TRUE)
       if (is.na(deriv_error) || deriv_error > tolerance) {
-        cat("      [FAILED] ", base_name, " derivative order ", o, " incorrect. Max error: ", deriv_error, "\n", sep = "")
+        results[o] <- FALSE
         pass_prev <- FALSE
       } else {
-        cat("      [PASSED] ", base_name, " derivative order ", o, " verified. Max error: ", deriv_error, "\n", sep = "")
+        results[o] <- TRUE
       }
     }
-    return(pass_prev)
+    return(results)
   }
   
-  # 3. Test Forward Derivatives (Chained)
-  cat("  [2] Testing exact forward derivatives (chained)...\n")
-  pass_fwd <- test_derivative_chain("Forward", theta_seq, linkderiv, max_order = 4)
+  # 6. Test Link Derivatives (Chained)
+  link_deriv_pass <- test_derivative_chain("link", theta_seq, linkderiv, max_order = 4)
   
-  # 4. Test Inverse Derivatives (Chained)
-  cat("  [3] Testing exact inverse derivatives (chained)...\n")
-  pass_inv <- test_derivative_chain("Inverse", eta_vals, linkinvderiv, max_order = 4)
+  # 7. Test Inverse Link Derivatives (Chained)
+  inv_deriv_pass <- test_derivative_chain("inverse link", eta_vals, linkinvderiv, max_order = 4)
   
-  invisible(pass_fwd && pass_inv)
+  # Concise console summary
+  cat("  [1] Invertibility (Theta space):", if (invertibility_pass) "[PASSED]" else "[FAILED]", "\n")
+  cat("  [2] Invertibility (Eta space):  ", if (invertibility_eta_pass) "[PASSED]" else "[FAILED]", "\n")
+  cat("  [3] Strict Monotonicity:        ", if (monotonicity_pass) "[PASSED]" else "[FAILED]", "\n")
+  cat("  [4] Inverse Function Theorem:   ", if (inv_thm_pass) "[PASSED]" else "[FAILED]", "\n")
+  cat("  [5] Link Derivatives:           ", if (all(link_deriv_pass, na.rm = TRUE)) "[PASSED]" else "[FAILED]", "\n")
+  cat("  [6] Inverse Link Derivatives:   ", if (all(inv_deriv_pass, na.rm = TRUE)) "[PASSED]" else "[FAILED]", "\n")
+  
+  invisible(list(
+    invertibility_theta = invertibility_pass,
+    invertibility_eta = invertibility_eta_pass,
+    monotonicity = monotonicity_pass,
+    inverse_theorem = inv_thm_pass,
+    link_derivatives = link_deriv_pass,
+    inverse_link_derivatives = inv_deriv_pass
+  ))
 }
+S7::method(check_link, link) <- check_link.link

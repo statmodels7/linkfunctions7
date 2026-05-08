@@ -2,13 +2,12 @@
 % Please edit documentation in R/generics.R, R/methods.R
 \name{linkinvderiv}
 \alias{linkinvderiv}
-\alias{linkinvderiv,linkfunctions7::link-method}
+\alias{linkinvderiv.link}
 \title{Evaluate Derivative of Inverse Link Function by Order}
 \usage{
 linkinvderiv(x, eta, order = 1)
 
-## S7 method for class <linkfunctions7::link>
-linkinvderiv(x, eta, order = 1)
+linkinvderiv.link(x, eta, order = 1)
 }
 \arguments{
 \item{x}{An object of class \code{link}.}
