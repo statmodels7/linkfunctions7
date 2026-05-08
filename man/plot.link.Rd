@@ -3,6 +3,9 @@
 \name{plot.link}
 \alias{plot.link}
 \title{Visualize Link Functions}
+\usage{
+\method{plot}{link}(x, ...)
+}
 \arguments{
 \item{x}{An object of class \code{link}.}
 

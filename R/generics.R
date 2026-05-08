@@ -60,3 +60,24 @@ d3linkinv <- S7::new_generic("d3linkinv", "x", fun = function(x, eta) S7::S7_dis
 #' @param eta A numeric vector.
 #' @export
 d4linkinv <- S7::new_generic("d4linkinv", "x", fun = function(x, eta) S7::S7_dispatch())
+
+#' @title Evaluate Derivative of Link Function by Order
+#' @param x An object of class \code{link}.
+#' @param theta A numeric vector.
+#' @param order An integer specifying the derivative order (0 to 4).
+#' @export
+linkderiv <- S7::new_generic("linkderiv", "x", fun = function(x, theta, order = 1) S7::S7_dispatch())
+
+#' @title Evaluate Derivative of Inverse Link Function by Order
+#' @param x An object of class \code{link}.
+#' @param eta A numeric vector.
+#' @param order An integer specifying the derivative order (0 to 4).
+#' @export
+linkinvderiv <- S7::new_generic("linkinvderiv", "x", fun = function(x, eta, order = 1) S7::S7_dispatch())
+
+#' @title Diagnostic Test Method
+#' @param x An object.
+#' @param tolerance Numeric tolerance for floating-point comparisons.
+#' @param ... Additional arguments passed to methods.
+#' @export
+test <- S7::new_generic("test", "x", fun = function(x, tolerance = 1e-5, ...) S7::S7_dispatch())

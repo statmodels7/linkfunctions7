@@ -12,8 +12,11 @@
 #'
 #' @return The function returns \code{x} invisibly.
 #'
-#' @name print.link
-S7::method(print, link) <- function(x, ...) {
+#' @rdname print.link
+#' @usage \method{print}{link}(x, ...)
+#' @aliases print.link
+#' @export
+print.link <- function(x, ...) {
   cat(
     "S7 Link Object: ", x@link_name, "\n",
     "  - Parameter domain (theta): (", x@link_bounds[1], ", ", x@link_bounds[2], ")\n",
@@ -28,6 +31,8 @@ S7::method(print, link) <- function(x, ...) {
   
   invisible(x)
 }
+
+S7::method(print, link) <- print.link
 
 #' @title Visualize Link Functions
 #'
@@ -51,8 +56,11 @@ S7::method(print, link) <- function(x, ...) {
 #'
 #' @return No return value, called for side effects (plotting).
 #'
-#' @name plot.link
-S7::method(plot, link) <- function(x, ...) {
+#' @rdname plot.link
+#' @usage \method{plot}{link}(x, ...)
+#' @aliases plot.link
+#' @export
+plot.link <- function(x, ...) {
   old_par <- graphics::par(no.readonly = TRUE)
   on.exit(graphics::par(old_par))
   
@@ -144,4 +152,140 @@ S7::method(plot, link) <- function(x, ...) {
     cex = 1.3,
     font = 2
   )
+}
+
+S7::method(plot, link) <- plot.link
+
+#' @title Link Derivative Wrapper
+#' @description Routes to the correct forward derivative generic based on order.
+#' @param x An object of class \code{link}.
+#' @param theta A numeric vector.
+#' @param order An integer (0 to 4).
+#' @rdname linkderiv
+S7::method(linkderiv, link) <- function(x, theta, order = 1) {
+  switch(as.character(order),
+         "0" = linkfun(x, theta),
+         "1" = dlinkfun(x, theta),
+         "2" = d2linkfun(x, theta),
+         "3" = d3linkfun(x, theta),
+         "4" = d4linkfun(x, theta),
+         stop("Forward derivative order not supported.")
+  )
+}
+
+#' @title Inverse Link Derivative Wrapper
+#' @description Routes to the correct inverse derivative generic based on order.
+#' @param x An object of class \code{link}.
+#' @param eta A numeric vector.
+#' @param order An integer (0 to 4).
+#' @rdname linkinvderiv
+S7::method(linkinvderiv, link) <- function(x, eta, order = 1) {
+  switch(as.character(order),
+         "0" = linkinv(x, eta),
+         "1" = dlinkinv(x, eta),
+         "2" = d2linkinv(x, eta),
+         "3" = d3linkinv(x, eta),
+         "4" = d4linkinv(x, eta),
+         stop("Inverse derivative order not supported.")
+  )
+}
+
+#' @title Test Method for S7 Link Objects
+#'
+#' @description
+#' A diagnostic S7 method to mathematically validate a \code{link} object.
+#' It sequentially verifies the algebraic invertibility and the correctness
+#' of the analytical derivatives using numerical gradients in a chained sequence.
+#'
+#' @param x An object of class \code{link}.
+#' @param tolerance Numeric tolerance for floating-point comparisons.
+#' @param ... Additional arguments passed to methods.
+#'
+#' @details
+#' The function assumes the existence of S7 generics \code{linkfun}, \code{linkinv},
+#' \code{linkderiv}, and \code{linkinvderiv} (the latter two parameterized by \code{order}).
+#' The derivative testing avoids compounding numerical errors by applying
+#' first-order numerical differentiation to the exact lower-order analytical derivatives.
+#' Both forward and inverse derivatives up to the 4th order are verified.
+#'
+#' @importFrom numDeriv grad
+#' @return A logical value returning \code{TRUE} if all available tests pass.
+#'
+#' @rdname test
+S7::method(test, link) <- function(x, tolerance = 1e-5, ...) {
+  
+  cat("Testing S7 Link Object:", x@link_name, "\n")
+  
+  # 1. Generate evaluation points strictly inside valid bounds for theta
+  lb <- x@link_bounds[1]
+  ub <- x@link_bounds[2]
+  eps <- 1e-3
+  
+  if (is.finite(lb) && is.finite(ub)) {
+    theta_seq <- seq(lb + eps, ub - eps, length.out = 15)
+  } else if (is.finite(lb) && !is.finite(ub)) {
+    theta_seq <- seq(lb + eps, lb + 5, length.out = 15)
+  } else if (!is.finite(lb) && is.finite(ub)) {
+    theta_seq <- seq(ub - 5, ub - eps, length.out = 15)
+  } else {
+    theta_seq <- seq(-3, 3, length.out = 15)
+  }
+  
+  # 2. Test Algebraic Invertibility
+  cat("  [1] Testing invertibility...\n")
+  eta_vals <- linkfun(x, theta_seq)
+  theta_hat <- linkinv(x, eta_vals)
+  
+  inv_error <- max(abs(theta_seq - theta_hat))
+  if (is.na(inv_error) || inv_error > tolerance) {
+    cat("      [FAILED] Invertibility g^-1(g(theta)) != theta. Max error:", inv_error, "\n")
+    return(FALSE)
+  }
+  cat("      [PASSED] Invertibility verified. Max error:", inv_error, "\n")
+  
+  # Helper function to compute numerical gradient robustly utilizing the native R pipe
+  compute_num_grad <- function(eval_fn, val_seq) {
+    val_seq |>
+      vapply(function(val) numDeriv::grad(func = eval_fn, x = val), numeric(1))
+  }
+  
+  # Generic function to test a chain of derivatives
+  test_derivative_chain <- function(base_name, eval_seq, deriv_fn, max_order = 4) {
+    pass_prev <- TRUE
+    for (o in 1:max_order) {
+      if (!pass_prev) break
+      
+      fn_prev <- function(v) deriv_fn(x, v, order = o - 1)
+      fn_curr <- function(v) deriv_fn(x, v, order = o)
+      
+      # Check if the derivative is implemented and evaluates without error
+      curr_val <- tryCatch(fn_curr(eval_seq), error = function(e) NULL)
+      if (is.null(curr_val)) {
+        cat("      [-] Order", o, "not implemented or failed to evaluate.\n")
+        break
+      }
+      
+      num_deriv <- compute_num_grad(fn_prev, eval_seq)
+      exact_deriv <- curr_val
+      
+      deriv_error <- max(abs(num_deriv - exact_deriv), na.rm = TRUE)
+      if (is.na(deriv_error) || deriv_error > tolerance) {
+        cat("      [FAILED] ", base_name, " derivative order ", o, " incorrect. Max error: ", deriv_error, "\n", sep = "")
+        pass_prev <- FALSE
+      } else {
+        cat("      [PASSED] ", base_name, " derivative order ", o, " verified. Max error: ", deriv_error, "\n", sep = "")
+      }
+    }
+    return(pass_prev)
+  }
+  
+  # 3. Test Forward Derivatives (Chained)
+  cat("  [2] Testing exact forward derivatives (chained)...\n")
+  pass_fwd <- test_derivative_chain("Forward", theta_seq, linkderiv, max_order = 4)
+  
+  # 4. Test Inverse Derivatives (Chained)
+  cat("  [3] Testing exact inverse derivatives (chained)...\n")
+  pass_inv <- test_derivative_chain("Inverse", eta_vals, linkinvderiv, max_order = 4)
+  
+  invisible(pass_fwd && pass_inv)
 }
