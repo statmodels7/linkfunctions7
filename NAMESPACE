@@ -2,6 +2,8 @@
 
 S3method(plot,link)
 S3method(print,link)
+export(as_make_link)
+export(as_make_link.link)
 export(bounded_link)
 export(cauchit_link)
 export(check_link)

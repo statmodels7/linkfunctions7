@@ -81,3 +81,9 @@ linkinvderiv <- S7::new_generic("linkinvderiv", "x", fun = function(x, eta, orde
 #' @param ... Additional arguments passed to methods.
 #' @export
 check_link <- S7::new_generic("check_link", "x", fun = function(x, tolerance = 1e-5, ...) S7::S7_dispatch())
+
+#' @title Convert S7 Link to Standard R make.link Format
+#' @param x An object of class \code{link}.
+#' @return A list compatible with \code{\link[stats]{make.link}} for use in GLMs.
+#' @export
+as_make_link <- S7::new_generic("as_make_link", "x", fun = function(x) S7::S7_dispatch())
