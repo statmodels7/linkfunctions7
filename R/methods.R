@@ -331,3 +331,31 @@ check_link.link <- function(x, tolerance = 1e-5, ...) {
   ))
 }
 S7::method(check_link, link) <- check_link.link
+
+#' @title Interoperability with Standard R Models
+#' @description
+#' Converts the S7 \code{link} object into a standard list structure expected by
+#' \code{\link[stats]{glm}} and other modeling frameworks.
+#'
+#' @param x An object of class \code{link}.
+#' @return A list containing \code{linkfun}, \code{linkinv}, \code{mu.eta}, 
+#' \code{valideta}, and \code{name}.
+#' @export
+as_make_link.link <- function(x) {
+  list(
+    linkfun = function(mu) linkfun(x, mu),
+    linkinv = function(eta) linkinv(x, eta),
+    
+    # The derivative of the inverse link with respect to eta is precisely 
+    # what GLMs call `mu.eta`
+    mu.eta = function(eta) dlinkinv(x, eta),
+    
+    valideta = function(eta) {
+      # Assuming true by default, though bounded links might refine this
+      rep(TRUE, length(eta))
+    },
+    
+    name = x@link_name
+  )
+}
+S7::method(as_make_link, link) <- as_make_link.link
