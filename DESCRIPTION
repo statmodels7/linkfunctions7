@@ -3,7 +3,7 @@ Title: An S7 Framework for Link Functions
 Version: 0.0.0.9000
 Authors@R: 
     person("Giovanni", "Tinervia", , "giovannitinervia9@gmail.com", role = c("aut", "cre"))
-Description: Implements mathematical link functions using the S7 object-oriented system. Includes forward and inverse transformations with exact analytical derivatives up to the fourth order, along with diagnostic tools to verify basic mathematical properties like invertibility and monotonicity.
+Description: Implements link functions using the S7 object-oriented system. Includes forward and inverse transformations with exact analytical derivatives up to the fourth order, along with diagnostic tools to verify basic mathematical properties like invertibility and monotonicity.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
