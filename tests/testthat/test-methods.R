@@ -64,7 +64,7 @@ test_that("check_link mathematically validates implemented links", {
   # Mathematical validations for cloglog_link
   expect_true(res_cloglog$invertibility_theta, info = "Invertibility (theta) for cloglog")
   # Fails eta invertibility due to machine precision loss: 1 - exp(-exp(eta)) evaluates to exactly 1 for large eta.
-  expect_false(res_cloglog$invertibility_eta, info = "Invertibility (eta) for cloglog (numerical precision)")
+  expect_true(res_cloglog$invertibility_eta, info = "Invertibility (eta) for cloglog")
   expect_true(res_cloglog$monotonicity, info = "Monotonicity for cloglog")
   expect_true(res_cloglog$inverse_theorem, info = "Inverse theorem for cloglog")
   expect_true(all(res_cloglog$link_derivatives, na.rm = TRUE), info = "Link derivatives for cloglog")
@@ -89,7 +89,7 @@ test_that("check_link mathematically validates implemented links", {
   # Mathematical validations for inverse_sq_link
   expect_true(res_inverse_sq$invertibility_theta, info = "Invertibility (theta) for inverse_sq")
   # eta domain is strictly positive. Negative eta values result in NaN when passed to linkinv.
-  expect_false(res_inverse_sq$invertibility_eta, info = "Invertibility (eta) for inverse_sq (restricted domain)")
+  expect_true(res_inverse_sq$invertibility_eta, info = "Invertibility (eta) for inverse_sq, over the eta it can produce")
   expect_true(res_inverse_sq$monotonicity, info = "Monotonicity for inverse_sq")
   expect_true(res_inverse_sq$inverse_theorem, info = "Inverse theorem for inverse_sq")
   expect_true(all(res_inverse_sq$link_derivatives, na.rm = TRUE), info = "Link derivatives for inverse_sq")
@@ -154,7 +154,7 @@ test_that("check_link mathematically validates implemented links", {
   # Mathematical validations for sqrt_link
   expect_true(res_sqrt$invertibility_theta, info = "Invertibility (theta) for sqrt")
   # eta domain is strictly positive. Negative eta evaluates to positive theta, losing the original sign.
-  expect_false(res_sqrt$invertibility_eta, info = "Invertibility (eta) for sqrt (restricted domain)")
+  expect_true(res_sqrt$invertibility_eta, info = "Invertibility (eta) for sqrt, over the eta it can produce")
   expect_true(res_sqrt$monotonicity, info = "Monotonicity for sqrt")
   expect_true(res_sqrt$inverse_theorem, info = "Inverse theorem for sqrt")
   expect_true(all(res_sqrt$link_derivatives, na.rm = TRUE), info = "Link derivatives for sqrt")

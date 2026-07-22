@@ -26,9 +26,9 @@ S7::method(d4linkfun, SqrtLink) <- function(x, theta) {
 # Exact analytical derivatives of the inverse link function (wrt eta)
 # 3rd and 4th derivatives uniquely vanish to exactly 0 for this quadratic form.
 S7::method(dlinkinv, SqrtLink) <- function(x, eta) 2 * eta
-S7::method(d2linkinv, SqrtLink) <- function(x, eta) rep(2, length(eta))
-S7::method(d3linkinv, SqrtLink) <- function(x, eta) rep(0, length(eta))
-S7::method(d4linkinv, SqrtLink) <- function(x, eta) rep(0, length(eta))
+S7::method(d2linkinv, SqrtLink) <- function(x, eta) const_like(eta, 2)
+S7::method(d3linkinv, SqrtLink) <- function(x, eta) const_like(eta, 0)
+S7::method(d4linkinv, SqrtLink) <- function(x, eta) const_like(eta, 0)
 
 #' @title The Square Root Link Function
 #'

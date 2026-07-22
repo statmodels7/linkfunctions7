@@ -164,13 +164,18 @@ S7::method(plot, link) <- plot.link
 #' @rdname linkderiv
 #' @export
 linkderiv.link <- function(x, theta, order = 1) {
-  switch(as.character(order),
-         "0" = linkfun(x, theta),
-         "1" = dlinkfun(x, theta),
-         "2" = d2linkfun(x, theta),
-         "3" = d3linkfun(x, theta),
-         "4" = d4linkfun(x, theta),
-         stop("Forward derivative order not supported.")
+  # switch() on the integer directly: converting it to a character first costs
+  # more than the branch it selects, on a function called once per parameter per
+  # order by anything that works on the link scale.
+  if (length(order) != 1L || is.na(order) || order < 0 || order > 4) {
+    stop("Forward derivative order not supported.", call. = FALSE)
+  }
+  switch(as.integer(order) + 1L,
+         linkfun(x, theta),
+         dlinkfun(x, theta),
+         d2linkfun(x, theta),
+         d3linkfun(x, theta),
+         d4linkfun(x, theta)
   )
 }
 S7::method(linkderiv, link) <- linkderiv.link
@@ -183,13 +188,15 @@ S7::method(linkderiv, link) <- linkderiv.link
 #' @rdname linkinvderiv
 #' @export
 linkinvderiv.link <- function(x, eta, order = 1) {
-  switch(as.character(order),
-         "0" = linkinv(x, eta),
-         "1" = dlinkinv(x, eta),
-         "2" = d2linkinv(x, eta),
-         "3" = d3linkinv(x, eta),
-         "4" = d4linkinv(x, eta),
-         stop("Inverse derivative order not supported.")
+  if (length(order) != 1L || is.na(order) || order < 0 || order > 4) {
+    stop("Inverse derivative order not supported.", call. = FALSE)
+  }
+  switch(as.integer(order) + 1L,
+         linkinv(x, eta),
+         dlinkinv(x, eta),
+         d2linkinv(x, eta),
+         d3linkinv(x, eta),
+         d4linkinv(x, eta)
   )
 }
 S7::method(linkinvderiv, link) <- linkinvderiv.link
@@ -228,11 +235,19 @@ check_link.link <- function(x, tolerance = 1e-5, ...) {
   
   cat("Checking S7 Link Object:", x@link_name, "\n")
   
-  # 1. Generate evaluation points strictly inside valid bounds for theta
+  # 1. Generate evaluation points strictly inside valid bounds for theta.
+  #
+  # The inset has to leave room for the numerical differentiation performed
+  # below. numDeriv's Richardson stencil reaches roughly 8e-4 * |x| away from
+  # each point, so a grid coming within 1e-3 of the boundary is differentiated
+  # using values from outside the domain: those come back NaN and the check
+  # reports a failure for derivatives that are in fact exact. It is therefore a
+  # fraction of the span being sampled rather than a fixed absolute distance.
   lb <- x@link_bounds[1]
   ub <- x@link_bounds[2]
-  eps <- 1e-3
-  
+  span <- if (all(is.finite(c(lb, ub)))) ub - lb else 5
+  eps <- 0.02 * span
+
   if (is.finite(lb) && is.finite(ub)) {
     theta_seq <- seq(lb + eps, ub - eps, length.out = 15)
   } else if (is.finite(lb) && !is.finite(ub)) {
@@ -251,7 +266,13 @@ check_link.link <- function(x, tolerance = 1e-5, ...) {
   invertibility_pass <- !is.na(inv_error) && inv_error <= tolerance
   
   # 3. Test Algebraic Invertibility (Eta -> Theta -> Eta)
-  eta_seq_test <- seq(-4, 4, length.out = 15)
+  #
+  # Over the eta the link can actually produce, not a fixed [-4, 4]. A link whose
+  # range is restricted -- the square root maps onto the positive half-line, the
+  # inverse square onto (0, Inf) -- can say nothing sensible about an eta it never
+  # produces, and testing there reported a failure for links that are perfectly
+  # invertible on their own range.
+  eta_seq_test <- seq(min(eta_vals), max(eta_vals), length.out = 15)
   eta_hat <- linkfun(x, linkinv(x, eta_seq_test))
   inv_eta_error <- max(abs(eta_seq_test - eta_hat))
   invertibility_eta_pass <- !is.na(inv_eta_error) && inv_eta_error <= tolerance

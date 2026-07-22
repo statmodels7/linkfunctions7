@@ -11,15 +11,15 @@ PowerLink <- S7::new_class(
 S7::method(linkfun, PowerLink) <- function(x, theta) theta^x@lambda
 S7::method(linkinv, PowerLink) <- function(x, eta) eta^(1 / x@lambda)
 
-S7::method(dlinkfun, PowerLink) <- function(x, theta) x@lambda * (theta^(x@lambda - 1))
-S7::method(d2linkfun, PowerLink) <- function(x, theta) x@lambda * (x@lambda - 1) * (theta^(x@lambda - 2))
-S7::method(d3linkfun, PowerLink) <- function(x, theta) x@lambda * (x@lambda - 1) * (x@lambda - 2) * (theta^(x@lambda - 3))
-S7::method(d4linkfun, PowerLink) <- function(x, theta) x@lambda * (x@lambda - 1) * (x@lambda - 2) * (x@lambda - 3) * (theta^(x@lambda - 4))
+S7::method(dlinkfun, PowerLink) <- function(x, theta) na_from(x@lambda * (theta^(x@lambda - 1)), theta)
+S7::method(d2linkfun, PowerLink) <- function(x, theta) na_from(x@lambda * (x@lambda - 1) * (theta^(x@lambda - 2)), theta)
+S7::method(d3linkfun, PowerLink) <- function(x, theta) na_from(x@lambda * (x@lambda - 1) * (x@lambda - 2) * (theta^(x@lambda - 3)), theta)
+S7::method(d4linkfun, PowerLink) <- function(x, theta) na_from(x@lambda * (x@lambda - 1) * (x@lambda - 2) * (x@lambda - 3) * (theta^(x@lambda - 4)), theta)
 
-S7::method(dlinkinv, PowerLink) <- function(x, eta) { k <- 1 / x@lambda; k * (eta^(k - 1)) }
-S7::method(d2linkinv, PowerLink) <- function(x, eta) { k <- 1 / x@lambda; k * (k - 1) * (eta^(k - 2)) }
-S7::method(d3linkinv, PowerLink) <- function(x, eta) { k <- 1 / x@lambda; k * (k - 1) * (k - 2) * (eta^(k - 3)) }
-S7::method(d4linkinv, PowerLink) <- function(x, eta) { k <- 1 / x@lambda; k * (k - 1) * (k - 2) * (k - 3) * (eta^(k - 4)) }
+S7::method(dlinkinv, PowerLink) <- function(x, eta) { k <- 1 / x@lambda; na_from(k * (eta^(k - 1)), eta) }
+S7::method(d2linkinv, PowerLink) <- function(x, eta) { k <- 1 / x@lambda; na_from(k * (k - 1) * (eta^(k - 2)), eta) }
+S7::method(d3linkinv, PowerLink) <- function(x, eta) { k <- 1 / x@lambda; na_from(k * (k - 1) * (k - 2) * (eta^(k - 3)), eta) }
+S7::method(d4linkinv, PowerLink) <- function(x, eta) { k <- 1 / x@lambda; na_from(k * (k - 1) * (k - 2) * (k - 3) * (eta^(k - 4)), eta) }
 
 #' @title The Power Link Function
 #'
