@@ -43,3 +43,24 @@ link <- S7::new_class(
     }
   }
 )
+
+
+# A constant of the same length as `v`, missing wherever `v` is missing.
+#
+# A derivative that reduces to a constant must still report that it does not know
+# the answer for an input it was not given. R makes this easy to get wrong:
+# `NA^0` is 1, so `theta^(lambda - 2)` silently turns a missing parameter into a
+# number as soon as `lambda` is 2.
+const_like <- function(v, value) {
+  out <- rep(value, length(v))
+  out[is.na(v)] <- NA_real_
+  out
+}
+
+# Carry missingness from the input over to a computed result, for the same reason
+# as const_like(): an expression whose exponent happens to vanish stops depending
+# on its argument, and loses the missingness along with it.
+na_from <- function(r, v) {
+  r[is.na(v)] <- NA_real_
+  r
+}

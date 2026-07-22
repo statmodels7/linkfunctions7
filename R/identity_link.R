@@ -10,16 +10,16 @@ S7::method(linkfun, IdentityLink) <- function(x, theta) theta
 S7::method(linkinv, IdentityLink) <- function(x, eta) eta
 
 # Exact analytical derivatives of the link function (wrt theta)
-S7::method(dlinkfun, IdentityLink) <- function(x, theta) rep(1, length(theta))
-S7::method(d2linkfun, IdentityLink) <- function(x, theta) rep(0, length(theta))
-S7::method(d3linkfun, IdentityLink) <- function(x, theta) rep(0, length(theta))
-S7::method(d4linkfun, IdentityLink) <- function(x, theta) rep(0, length(theta))
+S7::method(dlinkfun, IdentityLink) <- function(x, theta) const_like(theta, 1)
+S7::method(d2linkfun, IdentityLink) <- function(x, theta) const_like(theta, 0)
+S7::method(d3linkfun, IdentityLink) <- function(x, theta) const_like(theta, 0)
+S7::method(d4linkfun, IdentityLink) <- function(x, theta) const_like(theta, 0)
 
 # Exact analytical derivatives of the inverse link function (wrt eta)
-S7::method(dlinkinv, IdentityLink) <- function(x, eta) rep(1, length(eta))
-S7::method(d2linkinv, IdentityLink) <- function(x, eta) rep(0, length(eta))
-S7::method(d3linkinv, IdentityLink) <- function(x, eta) rep(0, length(eta))
-S7::method(d4linkinv, IdentityLink) <- function(x, eta) rep(0, length(eta))
+S7::method(dlinkinv, IdentityLink) <- function(x, eta) const_like(eta, 1)
+S7::method(d2linkinv, IdentityLink) <- function(x, eta) const_like(eta, 0)
+S7::method(d3linkinv, IdentityLink) <- function(x, eta) const_like(eta, 0)
+S7::method(d4linkinv, IdentityLink) <- function(x, eta) const_like(eta, 0)
 
 #' @title The Identity Link Function
 #'
