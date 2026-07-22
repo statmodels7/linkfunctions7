@@ -7,8 +7,8 @@ Description: Implements link functions using the S7 object-oriented system. Incl
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-URL: https://github.com/models7/linkfunctions7
-BugReports: https://github.com/models7/linkfunctions7/issues
+URL: https://github.com/statmodels7/linkfunctions7
+BugReports: https://github.com/statmodels7/linkfunctions7/issues
 Collate: 
     'link_class.R'
     'generics.R'
