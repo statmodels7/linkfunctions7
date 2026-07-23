@@ -1,0 +1,81 @@
+url: https://statmodels7.github.io/linkfunctions7
+
+template:
+  bootstrap: 5
+  bslib:
+    primary: "#0F2A3F"
+    base_font: {google: "Inter"}
+    heading_font: {google: "Inter"}
+    code_font: {google: "JetBrains Mono"}
+
+home:
+  title: Link functions with exact derivatives
+  description: >
+    An S7 framework for statistical link functions, carrying exact analytical
+    derivatives up to fourth order in both directions, with a diagnostic that
+    verifies them.
+
+navbar:
+  structure:
+    left:  [intro, reference, articles]
+    right: [search, statmodels7, github]
+  components:
+    statmodels7:
+      text: statmodels7
+      href: https://statmodels7.github.io
+
+reference:
+- title: The link class
+  desc: >
+    The S7 class every link inherits from, and the diagnostic that checks one.
+  contents:
+  - link
+  - check_link
+
+- title: Link functions
+  desc: >
+    Each constructor returns a link object. Those taking arguments cover a
+    family: a power, a softplus scale, a bounded interval.
+  contents:
+  - identity_link
+  - log_link
+  - logit_link
+  - probit_link
+  - cloglog_link
+  - loglog_link
+  - cauchit_link
+  - rhobit_link
+  - sqrt_link
+  - inverse_link
+  - inverse_sq_link
+  - power_link
+  - softplus_link
+  - bounded_link
+
+- title: Evaluating a link
+  desc: The two directions, and any derivative order of either.
+  contents:
+  - linkfun
+  - linkinv
+  - linkderiv
+  - linkinvderiv
+
+- title: Derivatives by order
+  desc: >
+    The order-specific generics. `linkderiv()` and `linkinvderiv()` route to
+    these; call them directly where the extra dispatch matters.
+  contents:
+  - dlinkfun
+  - d2linkfun
+  - d3linkfun
+  - d4linkfun
+  - dlinkinv
+  - d2linkinv
+  - d3linkinv
+  - d4linkinv
+
+- title: Methods
+  contents:
+  - has_keyword("internal")
+  - starts_with("print.")
+  - starts_with("plot.")
