@@ -11,7 +11,7 @@ output: github_document
 
 
 
-# linkfunctions7
+# linkfunctions7 <img src="man/figures/logo.png" align="right" height="139" alt="" />
 
 The goal of `{linkfunctions7}` is to provide a collection of mathematical link functions using the S7 object-oriented programming system in R, providing exact analytical derivatives up to the fourth order for both the forward and inverse link functions.
 
