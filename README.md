@@ -1,39 +1,42 @@
----
-output: github_document
----
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- README.md is generated from README.Rmd. Please edit that file, then
+     regenerate with devtools::build_readme(). Do not use knitr::knit(): it
+     processes the code but leaves this YAML header in the output as literal
+     text, which GitHub and pkgdown both render verbatim. -->
+
 <!-- badges: start -->
+
 [![R-CMD-check](https://github.com/statmodels7/linkfunctions7/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/statmodels7/linkfunctions7/actions/workflows/R-CMD-check.yaml)
-[![Codecov test coverage](https://codecov.io/gh/statmodels7/linkfunctions7/graph/badge.svg)](https://app.codecov.io/gh/statmodels7/linkfunctions7)
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![Codecov test
+coverage](https://codecov.io/gh/statmodels7/linkfunctions7/graph/badge.svg)](https://app.codecov.io/gh/statmodels7/linkfunctions7)
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
-
-
 
 # linkfunctions7 <img src="man/figures/logo.png" align="right" height="139" alt="" />
 
-In most R modelling packages a link function has no standing of its own. It is a
-string you pass to a fitting routine, unpacked internally into a couple of
-closures that nothing outside can reach: you cannot hand one to another package,
-ask it for its second derivative, or add your own without editing somebody
-else's source.
+In most R modelling packages a link function has no standing of its own.
+It is a string you pass to a fitting routine, unpacked internally into a
+couple of closures that nothing outside can reach: you cannot hand one
+to another package, ask it for its second derivative, or add your own
+without editing somebody else’s source.
 
-`{linkfunctions7}` makes a link an object. Fourteen of them, each carrying
-**exact analytical derivatives up to fourth order in both directions** — forward
-and inverse — and a diagnostic that verifies those derivatives against numerical
-ones. Written once, usable by anything.
+`{linkfunctions7}` makes a link an object. Fourteen of them, each
+carrying **exact analytical derivatives up to fourth order in both
+directions** — forward and inverse — and a diagnostic that verifies
+those derivatives against numerical ones. Written once, usable by
+anything.
 
-It is part of [statmodels7](https://statmodels7.github.io), an S7 stack for
-statistical modelling, and is what
-[distributions7](https://statmodels7.github.io/distributions7) uses to move
-between a constrained parameter and the unconstrained scale a fitting routine
-works on.
+It is part of [statmodels7](https://statmodels7.github.io), an S7 stack
+for statistical modelling, and is what
+[distributions7](https://statmodels7.github.io/distributions7) uses to
+move between a constrained parameter and the unconstrained scale a
+fitting routine works on.
 
 ## Installation
 
-You can install the development version of `{linkfunctions7}` from GitHub with:
-
+You can install the development version of `{linkfunctions7}` from
+GitHub with:
 
 ``` r
 # install.packages("pak")
@@ -41,10 +44,20 @@ pak::pak("statmodels7/linkfunctions7")
 ```
 
 ## Overview and Examples
-The package revolves around a core `link` class. It includes specialized link functions and generic methods to evaluate the forward link $\eta = g(\theta)$, the inverse link $\theta = g^{-1}(\eta)$, and their analytical derivatives.
+
+The package revolves around a core `link` class. It includes specialized
+link functions and generic methods to evaluate the forward link
+$\eta = g(\theta)$, the inverse link $\theta = g^{-1}(\eta)$, and their
+analytical derivatives.
 
 ### The Softplus Link
-The `softplus_link()` is designed to model strictly positive parameters, enforcing the domain constraint $\theta > 0$. It serves as a robust alternative to the standard `log_link()`. While a log link implies a global exponential relationship, the Softplus transformation smoothly transitions to a linear asymptote for large positive values of the linear predictor $\eta$.
+
+The `softplus_link()` is designed to model strictly positive parameters,
+enforcing the domain constraint $\theta > 0$. It serves as a robust
+alternative to the standard `log_link()`. While a log link implies a
+global exponential relationship, the Softplus transformation smoothly
+transitions to a linear asymptote for large positive values of the
+linear predictor $\eta$.
 
 ``` r
 softplus_link(a = 1)
@@ -53,23 +66,27 @@ softplus_link(a = 1)
 #>   - Link parameters: a = 1
 ```
 
-You can visualize the behavior of any link object over its valid domain using the provided `plot()` method:
-
+You can visualize the behavior of any link object over its valid domain
+using the provided `plot()` method:
 
 ``` r
 plot(softplus_link(a = 1))
 ```
 
-<div class="figure">
-<img src="man/figures/README-unnamed-chunk-4-1.png" alt="plot of chunk unnamed-chunk-4" width="100%" />
-<p class="caption">plot of chunk unnamed-chunk-4</p>
-</div>
-
+<img src="man/figures/README-unnamed-chunk-4-1.png" alt="" width="100%" />
 
 ### Bounded Links and Derivatives
-The `bounded_link()` function generates a link object that restricts $\theta$ to a specified interval. When both lower and upper bounds are provided (a doubly bounded link), the function maps the interval $[\text{lwr}, \text{upr}]$ to the whole real line.
 
-The package exposes generic functions to evaluate the exact analytical derivatives for these transformations. The following example demonstrates how to evaluate the inverse link, followed by the first, second, and fourth order derivatives of the forward link function $g(\theta)$.
+The `bounded_link()` function generates a link object that restricts
+$\theta$ to a specified interval. When both lower and upper bounds are
+provided (a doubly bounded link), the function maps the interval
+$[\text{lwr}, \text{upr}]$ to the whole real line.
+
+The package exposes generic functions to evaluate the exact analytical
+derivatives for these transformations. The following example
+demonstrates how to evaluate the inverse link, followed by the first,
+second, and fourth order derivatives of the forward link function
+$g(\theta)$.
 
 ``` r
 link <- bounded_link(lwr = -3, upr = 2)
@@ -85,8 +102,14 @@ d4linkfun(link, theta)
 ```
 
 ## Diagnostic Validation
-To maintain mathematical rigor, `{linkfunctions7}` includes a comprehensive diagnostic method called `check_link()`. This function empirically verifies the algebraic invertibility of the transformations (confirming that $g^{-1}(g(\theta)) = \theta$). Furthermore, it tests strict monotonicity, the inverse function theorem, and validates all implemented analytical derivatives against numerical gradients to ensure accuracy.
 
+To maintain mathematical rigor, `{linkfunctions7}` includes a
+comprehensive diagnostic method called `check_link()`. This function
+empirically verifies the algebraic invertibility of the transformations
+(confirming that $g^{-1}(g(\theta)) = \theta$). Furthermore, it tests
+strict monotonicity, the inverse function theorem, and validates all
+implemented analytical derivatives against numerical gradients to ensure
+accuracy.
 
 ``` r
 check_link(log_link())
@@ -98,4 +121,3 @@ check_link(log_link())
 #>   [5] Link Derivatives:            [PASSED] 
 #>   [6] Inverse Link Derivatives:    [PASSED]
 ```
-
