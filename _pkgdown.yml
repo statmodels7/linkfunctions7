@@ -9,11 +9,12 @@ template:
     code_font: {google: "JetBrains Mono"}
 
 home:
-  title: Link functions with exact derivatives
+  title: Link functions as reusable objects
   description: >
-    An S7 framework for statistical link functions, carrying exact analytical
-    derivatives up to fourth order in both directions, with a diagnostic that
-    verifies them.
+    Link functions written once, as objects any package can use, each carrying
+    exact derivatives to fourth order in both directions and a diagnostic that
+    proves them right — instead of being buried as helper functions inside the
+    package that happens to need them.
 
 navbar:
   structure:
