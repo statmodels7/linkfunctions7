@@ -66,10 +66,7 @@ using the provided
 plot(softplus_link(a = 1))
 ```
 
-![plot of chunk
-unnamed-chunk-4](reference/figures/README-unnamed-chunk-4-1.png)
-
-plot of chunk unnamed-chunk-4
+![](reference/figures/README-unnamed-chunk-4-1.png)
 
 ### Bounded Links and Derivatives
 
