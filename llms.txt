@@ -1,11 +1,22 @@
 # linkfunctions7
 
-The goal of
-[linkfunctions7](https://statmodels7.github.io/linkfunctions7) is to
-provide a collection of mathematical link functions using the S7
-object-oriented programming system in R, providing exact analytical
-derivatives up to the fourth order for both the forward and inverse link
-functions.
+In most R modelling packages a link function has no standing of its own.
+It is a string you pass to a fitting routine, unpacked internally into a
+couple of closures that nothing outside can reach: you cannot hand one
+to another package, ask it for its second derivative, or add your own
+without editing somebody else’s source.
+
+[linkfunctions7](https://statmodels7.github.io/linkfunctions7) makes a
+link an object. Fourteen of them, each carrying **exact analytical
+derivatives up to fourth order in both directions** — forward and
+inverse — and a diagnostic that verifies those derivatives against
+numerical ones. Written once, usable by anything.
+
+It is part of [statmodels7](https://statmodels7.github.io), an S7 stack
+for statistical modelling, and is what
+[distributions7](https://statmodels7.github.io/distributions7) uses to
+move between a constrained parameter and the unconstrained scale a
+fitting routine works on.
 
 ## Installation
 
