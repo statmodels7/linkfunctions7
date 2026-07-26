@@ -19,8 +19,11 @@ home:
 navbar:
   structure:
     left:  [intro, reference, articles]
-    right: [search, statmodels7, github]
+    right: [search, book, statmodels7, github]
   components:
+    book:
+      text: book
+      href: https://statmodels7.github.io/book/
     statmodels7:
       text: statmodels7
       href: https://statmodels7.github.io
