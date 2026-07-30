@@ -26,10 +26,29 @@ respect to \eqn{\eta} are equal to \eqn{\exp(\eta)}.
 The valid mathematical domain of \eqn{\theta} is \code{c(0, Inf)}.
 
 \strong{Numerical Stability:}
-During the evaluation of the inverse link and its derivatives, the result is bounded
-from below by \code{.Machine$double.eps}. This prevents numerical underflow to
-exactly zero when \eqn{\eta} is a large negative number, which would otherwise
-produce \code{Inf} when subsequently calculating \eqn{1/\theta}.
+The inverse link and its derivatives are bounded below by \code{exp_floor},
+which is \code{.Machine$double.xmin^0.25}, about \code{1.2e-77}. This prevents
+underflow to exactly zero for large negative \eqn{\eta}, which would produce
+\code{Inf} when the forward derivatives divide by \eqn{\theta}; the fourth of
+them divides by \eqn{\theta^4}, and that is what sets the value. The floor is
+low enough that \eqn{\theta} is exact down to \eqn{\eta \approx -177}.
+}
+\examples{
+lk <- log_link()
+lk
+
+theta <- c(0.5, 1, 10)
+eta <- linkfun(lk, theta)
+eta
+linkinv(lk, eta)
+
+# the exponential is its own derivative, so every inverse derivative agrees
+dlinkinv(lk, eta)
+d4linkinv(lk, eta)
+
+# forward derivatives to fourth order
+linkderiv(lk, theta, order = 4)
+
 }
 \seealso{
 \code{\link{link}}, \code{\link{inverse_link}}

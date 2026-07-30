@@ -8,7 +8,8 @@ cloglog_link()
 }
 \value{
 An S7 object of class \code{ClogLogLink} (inheriting from \code{link})
-and their exact analytical derivatives up to the fourth order.
+containing the transformation functions and their exact analytical derivatives
+up to the fourth order.
 }
 \description{
 Creates an S7 object of class \code{link} implementing the Complementary Log-Log
@@ -26,6 +27,22 @@ frequently utilized in discrete-time survival analysis (proportional hazards mod
 as well as for modeling rare events.
 
 The strictly valid mathematical domain for \eqn{\theta} is \code{c(0, 1)}.
+}
+\examples{
+lk <- cloglog_link()
+lk
+
+p <- c(0.1, 0.5, 0.9)
+eta <- linkfun(lk, p)
+eta
+linkinv(lk, eta)
+
+# asymmetric: it reaches 1 slowly and 0 sharply, the mirror of loglog
+linkinv(cloglog_link(), c(-2, 2))
+linkinv(loglog_link(),  c(-2, 2))
+
+d2linkinv(lk, 0)
+
 }
 \seealso{
 \code{\link{link}}, \code{\link{logit_link}}, \code{\link{loglog_link}}
