@@ -16,6 +16,28 @@ linkderiv.link(x, theta, order = 1)
 
 \item{order}{An integer (0 to 4).}
 }
+\value{
+A numeric vector of the same length as \code{theta}: the requested
+derivative of \eqn{g} evaluated there.
+
+A numeric vector of the same length as \code{theta}.
+}
 \description{
+A convenience router over \code{\link{linkfun}} and the four
+\code{d*linkfun} generics.
+
 Routes to the correct forward derivative generic based on order.
 }
+\details{
+This dispatches twice, once on itself and once on the order-specific generic.
+Where that matters, call \code{\link{dlinkfun}} and its siblings directly.
+}
+\examples{
+lk <- logit_link()
+linkderiv(lk, 0.5, order = 0)   # the link itself
+linkderiv(lk, 0.5, order = 1)
+
+# every order at once
+vapply(0:4, function(k) linkderiv(lk, 0.25, order = k), numeric(1))
+}
+\keyword{internal}

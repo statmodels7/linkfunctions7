@@ -27,3 +27,8 @@ The function automatically determines sensible plotting ranges based on whether 
 link bounds are finite or infinite. It temporarily modifies the graphical parameters
 (\code{par}) to create a side-by-side layout and restores the original settings upon exit.
 }
+\examples{
+plot(logit_link())
+plot(softplus_link(2))
+
+}

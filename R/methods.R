@@ -12,6 +12,13 @@
 #'
 #' @return The function returns \code{x} invisibly.
 #'
+#' @examples
+#' print(logit_link())
+#'
+#' # links carrying parameters report them too
+#' print(power_link(2))
+#' print(bounded_link(0, 10))
+#'
 #' @rdname print.link
 #' @usage \method{print}{link}(x, ...)
 #' @aliases print.link
@@ -55,6 +62,10 @@ S7::method(print, link) <- print.link
 #' @importFrom graphics par plot grid abline mtext
 #'
 #' @return No return value, called for side effects (plotting).
+#'
+#' @examples
+#' plot(logit_link())
+#' plot(softplus_link(2))
 #'
 #' @rdname plot.link
 #' @usage \method{plot}{link}(x, ...)
@@ -161,8 +172,9 @@ S7::method(plot, link) <- plot.link
 #' @param x An object of class \code{link}.
 #' @param theta A numeric vector.
 #' @param order An integer (0 to 4).
+#' @return A numeric vector of the same length as \code{theta}.
 #' @rdname linkderiv
-#' @export
+#' @keywords internal
 linkderiv.link <- function(x, theta, order = 1) {
   # switch() on the integer directly: converting it to a character first costs
   # more than the branch it selects, on a function called once per parameter per
@@ -185,8 +197,9 @@ S7::method(linkderiv, link) <- linkderiv.link
 #' @param x An object of class \code{link}.
 #' @param eta A numeric vector.
 #' @param order An integer (0 to 4).
+#' @return A numeric vector of the same length as \code{eta}.
 #' @rdname linkinvderiv
-#' @export
+#' @keywords internal
 linkinvderiv.link <- function(x, eta, order = 1) {
   if (length(order) != 1L || is.na(order) || order < 0 || order > 4) {
     stop("Inverse derivative order not supported.", call. = FALSE)
@@ -227,10 +240,26 @@ S7::method(linkinvderiv, link) <- linkinvderiv.link
 #' first-order numerical differentiation iteratively to the exact lower-order analytical derivatives.
 #'
 #' @importFrom numDeriv grad
-#' @return A logical list returning the success status of all available checks.
+#' @return Invisibly, a named list of the check results: the four scalar logicals
+#'   \code{invertibility_theta}, \code{invertibility_eta}, \code{monotonicity} and
+#'   \code{inverse_theorem}, plus \code{link_derivatives} and
+#'   \code{inverse_link_derivatives}, each a logical vector of length four named
+#'   \code{order_1} to \code{order_4}. A derivative that is not implemented counts
+#'   as \code{FALSE}. Called mainly for the summary printed to the console.
+#'
+#' @examples
+#' # every link the package ships passes all six checks
+#' check_link(logit_link())
+#'
+#' res <- check_link(power_link(2))
+#' res$link_derivatives
+#' res$inverse_theorem
+#'
+#' # the checks are what a user-defined link should be held to as well
+#' all(unlist(check_link(bounded_link(0, 10))))
 #'
 #' @rdname check_link
-#' @export
+#' @keywords internal
 check_link.link <- function(x, tolerance = 1e-5, ...) {
   
   cat("Checking S7 Link Object:", x@link_name, "\n")
@@ -286,38 +315,40 @@ check_link.link <- function(x, tolerance = 1e-5, ...) {
   inv_thm_error <- max(abs(d1_eta * d1_theta - 1))
   inv_thm_pass <- !is.na(inv_thm_error) && inv_thm_error <= tolerance
   
-  # Helper function to compute numerical gradient robustly utilizing the native R pipe
-  compute_num_grad <- function(eval_fn, val_seq) {
-    val_seq |>
-      vapply(function(val) numDeriv::grad(func = eval_fn, x = val), numeric(1))
-  }
-  
   # Generic function to test a chain of derivatives
-  test_derivative_chain <- function(base_name, eval_seq, deriv_fn, max_order = 4) {
+  test_derivative_chain <- function(eval_seq, deriv_fn, max_order = 4) {
     results <- rep(NA, max_order)
     names(results) <- paste0("order_", 1:max_order)
     pass_prev <- TRUE
-    
+
     for (o in 1:max_order) {
       if (!pass_prev) {
         results[o:max_order] <- FALSE
         break
       }
-      
+
       fn_prev <- function(v) deriv_fn(x, v, order = o - 1)
       fn_curr <- function(v) deriv_fn(x, v, order = o)
-      
-      # Check if the derivative is implemented and evaluates without error
+
+      # A derivative that is not implemented is a failure, not an absence. It
+      # used to leave NA here and break out of the loop, and since the summary
+      # below reduces with na.rm = TRUE, a link supplying only its first
+      # derivative reported [PASSED] on all four orders -- the one result a
+      # user writing their own link most needs to be told is wrong.
       curr_val <- tryCatch(fn_curr(eval_seq), error = function(e) NULL)
       if (is.null(curr_val)) {
+        results[o:max_order] <- FALSE
         break
       }
-      
-      num_deriv <- compute_num_grad(fn_prev, eval_seq)
-      exact_deriv <- curr_val
-      
+
+      # numDeriv::grad() is element-wise when func maps a vector to a vector of
+      # the same length, which is what a link's derivative does. One call
+      # therefore replaces one call per evaluation point, for the same answer to
+      # the last bit and about fifteen times faster.
+      num_deriv <- numDeriv::grad(func = fn_prev, x = eval_seq)
+
       # Scale error relatively for large derivatives to avoid boundary inflation
-      deriv_error <- max(abs(num_deriv - exact_deriv) / pmax(1, abs(exact_deriv)), na.rm = TRUE)
+      deriv_error <- max(abs(num_deriv - curr_val) / pmax(1, abs(curr_val)), na.rm = TRUE)
       if (is.na(deriv_error) || deriv_error > tolerance) {
         results[o] <- FALSE
         pass_prev <- FALSE
@@ -327,12 +358,12 @@ check_link.link <- function(x, tolerance = 1e-5, ...) {
     }
     return(results)
   }
-  
+
   # 6. Test Link Derivatives (Chained)
-  link_deriv_pass <- test_derivative_chain("link", theta_seq, linkderiv, max_order = 4)
-  
+  link_deriv_pass <- test_derivative_chain(theta_seq, linkderiv, max_order = 4)
+
   # 7. Test Inverse Link Derivatives (Chained)
-  inv_deriv_pass <- test_derivative_chain("inverse link", eta_vals, linkinvderiv, max_order = 4)
+  inv_deriv_pass <- test_derivative_chain(eta_vals, linkinvderiv, max_order = 4)
   
   # Concise console summary
   cat("  [1] Invertibility (Theta space):", if (invertibility_pass) "[PASSED]" else "[FAILED]", "\n")

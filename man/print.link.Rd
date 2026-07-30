@@ -19,3 +19,11 @@ A standard S7 print method for objects of class \code{link}.
 It displays the name of the link function, its valid parameter domain, and any
 additional parameters it may have (e.g., lambda for a power link).
 }
+\examples{
+print(logit_link())
+
+# links carrying parameters report them too
+print(power_link(2))
+print(bounded_link(0, 10))
+
+}

@@ -17,7 +17,16 @@ check_link.link(x, tolerance = 1e-05, ...)
 \item{...}{Additional arguments passed to methods.}
 }
 \value{
-A logical list returning the success status of all available checks.
+Invisibly, a named list of check results; see
+\code{\link{check_link.link}} for its shape. Called mainly for the summary
+printed to the console.
+
+Invisibly, a named list of the check results: the four scalar logicals
+\code{invertibility_theta}, \code{invertibility_eta}, \code{monotonicity} and
+\code{inverse_theorem}, plus \code{link_derivatives} and
+\code{inverse_link_derivatives}, each a logical vector of length four named
+\code{order_1} to \code{order_4}. A derivative that is not implemented counts
+as \code{FALSE}. Called mainly for the summary printed to the console.
 }
 \description{
 A diagnostic S7 method to mathematically validate a \code{link} object.
@@ -38,3 +47,17 @@ The function assumes the existence of S7 generics \code{linkfun}, \code{linkinv}
 Both forward and inverse derivative testing avoids compounding numerical errors by applying
 first-order numerical differentiation iteratively to the exact lower-order analytical derivatives.
 }
+\examples{
+check_link(sqrt_link())
+# every link the package ships passes all six checks
+check_link(logit_link())
+
+res <- check_link(power_link(2))
+res$link_derivatives
+res$inverse_theorem
+
+# the checks are what a user-defined link should be held to as well
+all(unlist(check_link(bounded_link(0, 10))))
+
+}
+\keyword{internal}

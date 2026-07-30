@@ -16,6 +16,27 @@ linkinvderiv.link(x, eta, order = 1)
 
 \item{order}{An integer (0 to 4).}
 }
+\value{
+A numeric vector of the same length as \code{eta}: the requested
+derivative of \eqn{g^{-1}} evaluated there.
+
+A numeric vector of the same length as \code{eta}.
+}
 \description{
+A convenience router over \code{\link{linkinv}} and the four
+\code{d*linkinv} generics.
+
 Routes to the correct inverse derivative generic based on order.
 }
+\details{
+This dispatches twice, once on itself and once on the order-specific generic.
+Where that matters, call \code{\link{dlinkinv}} and its siblings directly.
+}
+\examples{
+lk <- logit_link()
+linkinvderiv(lk, 0, order = 0)  # the inverse link itself
+linkinvderiv(lk, 0, order = 1)
+
+vapply(0:4, function(k) linkinvderiv(lk, 0.5, order = k), numeric(1))
+}
+\keyword{internal}
