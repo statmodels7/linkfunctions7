@@ -7,7 +7,7 @@ Description: Implements link functions using the S7 object-oriented system. Incl
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-URL: https://statmodels7.github.io/linkfunctions7,
+URL: https://statmodels7.github.io/linkfunctions7/,
     https://github.com/statmodels7/linkfunctions7
 BugReports: https://github.com/statmodels7/linkfunctions7/issues
 Depends:
@@ -31,9 +31,11 @@ Collate:
     'softplus_link.R'
     'sqrt_link.R'
     'zzz.R'
-Imports: 
+Imports:
+    graphics,
     numDeriv,
-    S7
+    S7,
+    stats
 Config/roxygen2/version: 8.0.0
 RoxygenNote: 7.3.3
 Suggests:
