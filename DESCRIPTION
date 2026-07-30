@@ -25,6 +25,7 @@ Collate:
     'logit_link.R'
     'loglog_link.R'
     'methods.R'
+    'numerical_fallbacks.R'
     'power_link.R'
     'probit_link.R'
     'rhobit_link.R'

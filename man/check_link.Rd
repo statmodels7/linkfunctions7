@@ -25,8 +25,14 @@ Invisibly, a named list of the check results: the four scalar logicals
 \code{invertibility_theta}, \code{invertibility_eta}, \code{monotonicity} and
 \code{inverse_theorem}, plus \code{link_derivatives} and
 \code{inverse_link_derivatives}, each a logical vector of length four named
-\code{order_1} to \code{order_4}. A derivative that is not implemented counts
-as \code{FALSE}. Called mainly for the summary printed to the console.
+\code{order_1} to \code{order_4}. In those two, \code{TRUE} and \code{FALSE}
+mean what they say and \code{NA} means \strong{not checked}: the order is
+supplied by a numerical fallback, so the value and the reference would be
+the same arithmetic and would agree whatever the link did. The number of
+orders actually implemented is carried on the result as the attribute
+\code{"analytic_orders"}; see \code{\link{link_fallback_orders}}. A
+derivative that raises an error still counts as \code{FALSE}. Called mainly
+for the summary printed to the console.
 }
 \description{
 A diagnostic S7 method to mathematically validate a \code{link} object.

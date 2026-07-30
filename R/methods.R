@@ -244,8 +244,14 @@ S7::method(linkinvderiv, link) <- linkinvderiv.link
 #'   \code{invertibility_theta}, \code{invertibility_eta}, \code{monotonicity} and
 #'   \code{inverse_theorem}, plus \code{link_derivatives} and
 #'   \code{inverse_link_derivatives}, each a logical vector of length four named
-#'   \code{order_1} to \code{order_4}. A derivative that is not implemented counts
-#'   as \code{FALSE}. Called mainly for the summary printed to the console.
+#'   \code{order_1} to \code{order_4}. In those two, \code{TRUE} and \code{FALSE}
+#'   mean what they say and \code{NA} means \strong{not checked}: the order is
+#'   supplied by a numerical fallback, so the value and the reference would be
+#'   the same arithmetic and would agree whatever the link did. The number of
+#'   orders actually implemented is carried on the result as the attribute
+#'   \code{"analytic_orders"}; see \code{\link{link_fallback_orders}}. A
+#'   derivative that raises an error still counts as \code{FALSE}. Called mainly
+#'   for the summary printed to the console.
 #'
 #' @examples
 #' # every link the package ships passes all six checks
@@ -316,7 +322,8 @@ check_link.link <- function(x, tolerance = 1e-5, ...) {
   inv_thm_pass <- !is.na(inv_thm_error) && inv_thm_error <= tolerance
   
   # Generic function to test a chain of derivatives
-  test_derivative_chain <- function(eval_seq, deriv_fn, max_order = 4) {
+  test_derivative_chain <- function(eval_seq, deriv_fn, max_order = 4,
+                                    n_exact = max_order) {
     results <- rep(NA, max_order)
     names(results) <- paste0("order_", 1:max_order)
     pass_prev <- TRUE
@@ -327,14 +334,25 @@ check_link.link <- function(x, tolerance = 1e-5, ...) {
         break
       }
 
+      # Beyond the orders the link implements itself there is nothing left to
+      # check. The value would come from the numerical fallback, and the
+      # reference is a numerical differentiation of the order below, so the two
+      # are the same arithmetic and would agree however wrong the link is. That
+      # is a vacuous pass, and a vacuous pass reported as [PASSED] is worse than
+      # no check at all, so these orders are reported as numerical instead.
+      if (o > n_exact) {
+        results[o:max_order] <- NA
+        break
+      }
+
       fn_prev <- function(v) deriv_fn(x, v, order = o - 1)
       fn_curr <- function(v) deriv_fn(x, v, order = o)
 
-      # A derivative that is not implemented is a failure, not an absence. It
-      # used to leave NA here and break out of the loop, and since the summary
-      # below reduces with na.rm = TRUE, a link supplying only its first
-      # derivative reported [PASSED] on all four orders -- the one result a
-      # user writing their own link most needs to be told is wrong.
+      # A derivative that errors is a failure, not an absence. It used to leave
+      # NA here and break out of the loop, and since the summary below reduces
+      # with na.rm = TRUE, a link supplying only its first derivative reported
+      # [PASSED] on all four orders -- the one result a user writing their own
+      # link most needs to be told is wrong.
       curr_val <- tryCatch(fn_curr(eval_seq), error = function(e) NULL)
       if (is.null(curr_val)) {
         results[o:max_order] <- FALSE
@@ -360,26 +378,45 @@ check_link.link <- function(x, tolerance = 1e-5, ...) {
   }
 
   # 6. Test Link Derivatives (Chained)
-  link_deriv_pass <- test_derivative_chain(theta_seq, linkderiv, max_order = 4)
+  exact <- link_fallback_orders(x)
+  link_deriv_pass <- test_derivative_chain(theta_seq, linkderiv, max_order = 4,
+                                           n_exact = exact$forward)
 
   # 7. Test Inverse Link Derivatives (Chained)
-  inv_deriv_pass <- test_derivative_chain(eta_vals, linkinvderiv, max_order = 4)
+  inv_deriv_pass <- test_derivative_chain(eta_vals, linkinvderiv, max_order = 4,
+                                          n_exact = exact$inverse)
+
+  # A verdict for a family of orders: FAILED if any checked order failed,
+  # PASSED if all checked orders passed, and neither if none was checked.
+  deriv_verdict <- function(res, n_exact) {
+    if (any(res %in% FALSE)) return("[FAILED]")
+    if (n_exact == 0L) return("[numerical]")
+    if (n_exact < length(res)) {
+      return(sprintf("[PASSED to order %d, %d numerical]",
+                     n_exact, length(res) - n_exact))
+    }
+    "[PASSED]"
+  }
   
   # Concise console summary
   cat("  [1] Invertibility (Theta space):", if (invertibility_pass) "[PASSED]" else "[FAILED]", "\n")
   cat("  [2] Invertibility (Eta space):  ", if (invertibility_eta_pass) "[PASSED]" else "[FAILED]", "\n")
   cat("  [3] Strict Monotonicity:        ", if (monotonicity_pass) "[PASSED]" else "[FAILED]", "\n")
   cat("  [4] Inverse Function Theorem:   ", if (inv_thm_pass) "[PASSED]" else "[FAILED]", "\n")
-  cat("  [5] Link Derivatives:           ", if (all(link_deriv_pass, na.rm = TRUE)) "[PASSED]" else "[FAILED]", "\n")
-  cat("  [6] Inverse Link Derivatives:   ", if (all(inv_deriv_pass, na.rm = TRUE)) "[PASSED]" else "[FAILED]", "\n")
+  cat("  [5] Link Derivatives:           ", deriv_verdict(link_deriv_pass, exact$forward), "\n")
+  cat("  [6] Inverse Link Derivatives:   ", deriv_verdict(inv_deriv_pass, exact$inverse), "\n")
   
-  invisible(list(
+  out <- list(
     invertibility_theta = invertibility_pass,
     invertibility_eta = invertibility_eta_pass,
     monotonicity = monotonicity_pass,
     inverse_theorem = inv_thm_pass,
     link_derivatives = link_deriv_pass,
     inverse_link_derivatives = inv_deriv_pass
-  ))
+  )
+  # Carried as an attribute rather than a seventh element, so that every element
+  # of the result stays a logical vector and callers can reduce over it.
+  attr(out, "analytic_orders") <- exact
+  invisible(out)
 }
 S7::method(check_link, link) <- check_link.link

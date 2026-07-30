@@ -31,10 +31,12 @@ navbar:
 reference:
 - title: The link class
   desc: >
-    The S7 class every link inherits from, and the diagnostic that checks one.
+    The S7 class every link inherits from, the diagnostic that checks one, and
+    the report of which derivative orders it computes exactly.
   contents:
   - link
   - check_link
+  - link_fallback_orders
 
 - title: Link functions
   desc: >
