@@ -33,6 +33,20 @@ NULL
 #' own. Comparing method objects with \code{identical()} does not work for this,
 #' because S7 wraps them.
 #'
+#' Comparing the recorded \emph{class} with \code{identical()} does not work
+#' either, and the reason is worth recording because the failure is silent and
+#' spectacular. \code{identical()} on two S7 class objects is object identity, so
+#' it returns \code{FALSE} for a class re-created from the same definition — and
+#' that is exactly what happens whenever the package's code is re-evaluated
+#' rather than loaded, as under test coverage instrumentation. The base
+#' fallback is then mistaken for the link's own method, this function returns 4
+#' for a link that implements nothing, and \code{\link{fallback_deriv}} walks
+#' down through \code{\link{linkderiv}} into precisely the chain of nested first
+#' differences the design exists to avoid. It is not a small error: the fourth
+#' derivative of the log link came back wrong by a factor of 900. Classes are
+#' therefore compared by name and package, with identity kept only as a fast
+#' path.
+#'
 #' The search stops at the first missing order rather than continuing, since a
 #' link that implements the first and the third but not the second is not a case
 #' worth optimising for, and stopping keeps the answer meaning "everything up to
@@ -57,10 +71,22 @@ analytic_order <- function(x, inverse = FALSE) {
     m <- tryCatch(S7::method(gens[[k]], cls), error = function(e) NULL)
     if (is.null(m)) break
     reg <- tryCatch(attr(m, "signature")[[1]], error = function(e) NULL)
-    if (is.null(reg) || identical(reg, link)) break
+    if (is.null(reg) || is_base_link_class(reg)) break
     n <- k
   }
   n
+}
+
+
+# Is this S7 class the package's own base `link` class? Identity first, because
+# it is the usual case and costs nothing; name and package after, because
+# identity is not preserved when the package's code is re-evaluated rather than
+# loaded. See the details of analytic_order() for what that costs when missed.
+is_base_link_class <- function(cls) {
+  if (identical(cls, link)) return(TRUE)
+  nm <- attr(cls, "name")
+  pk <- attr(cls, "package")
+  identical(nm, attr(link, "name")) && identical(pk, attr(link, "package"))
 }
 
 
