@@ -37,11 +37,31 @@ For large positive \eqn{\eta}, \eqn{\theta \approx \eta} (linear behavior), wher
 a Log link would imply \eqn{\theta = \exp(\eta)} (exponential behavior).
 
 \strong{Numerical Stability:}
-The inverse link implementation intelligently utilizes conditional algebraic logic
-to ensure robust numerical stability for large positive values of \eqn{\eta},
-entirely avoiding precision overflow.
+Both directions are written so that no intermediate quantity grows with
+\eqn{a\theta} or \eqn{a\eta}. The inverse link uses the log-sum-exp form, and
+the forward link and its derivatives are expressed in
+\eqn{u = 1 - e^{-a\theta}} rather than in \eqn{e^{a\theta} - 1}, which
+overflows once \eqn{a\theta} passes about 709 — and, because the derivatives
+divide by its fourth power, well before that at the higher orders.
 
 The mathematical domain of \eqn{\theta} is \code{c(0, Inf)}.
+}
+\examples{
+lk <- softplus_link(a = 2)
+lk
+
+theta <- c(0.5, 1, 5)
+eta <- linkfun(lk, theta)
+eta
+linkinv(lk, eta)          # back to theta
+
+# derivatives of either direction, to fourth order
+dlinkfun(lk, theta)
+d4linkinv(lk, eta)
+
+# unlike the log link, softplus is asymptotically linear in eta
+linkinv(softplus_link(), c(1, 10, 100))
+
 }
 \seealso{
 \code{\link{link}}, \code{\link{log_link}}, \code{\link{identity_link}}
