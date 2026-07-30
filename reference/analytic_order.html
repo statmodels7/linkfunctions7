@@ -75,6 +75,19 @@ was registered on in its <code>signature</code> attribute: a method inherited fr
 the base <code><a href="link.html">link</a></code> class is a fallback, anything else is the link's
 own. Comparing method objects with <code><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical()</a></code> does not work for this,
 because S7 wraps them.</p>
+<p>Comparing the recorded <em>class</em> with <code><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical()</a></code> does not work
+either, and the reason is worth recording because the failure is silent and
+spectacular. <code><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical()</a></code> on two S7 class objects is object identity, so
+it returns <code>FALSE</code> for a class re-created from the same definition — and
+that is exactly what happens whenever the package's code is re-evaluated
+rather than loaded, as under test coverage instrumentation. The base
+fallback is then mistaken for the link's own method, this function returns 4
+for a link that implements nothing, and <code><a href="fallback_deriv.html">fallback_deriv</a></code> walks
+down through <code><a href="linkderiv.html">linkderiv</a></code> into precisely the chain of nested first
+differences the design exists to avoid. It is not a small error: the fourth
+derivative of the log link came back wrong by a factor of 900. Classes are
+therefore compared by name and package, with identity kept only as a fast
+path.</p>
 <p>The search stops at the first missing order rather than continuing, since a
 link that implements the first and the third but not the second is not a case
 worth optimising for, and stopping keeps the answer meaning "everything up to
