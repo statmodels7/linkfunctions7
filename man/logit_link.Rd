@@ -31,6 +31,26 @@ This function internally delegates to R's highly optimized native functions
 and precision, especially when evaluating probabilities exceedingly close to the
 boundaries of 0 and 1.
 }
+\examples{
+lk <- logit_link()
+lk
+
+p <- c(0.1, 0.5, 0.9)
+eta <- linkfun(lk, p)      # log-odds
+eta
+linkinv(lk, eta)
+
+# the inverse derivatives are polynomials in p: the first is the variance
+# of a Bernoulli, p(1 - p)
+dlinkinv(lk, 0)
+
+# all four orders at once
+vapply(1:4, function(k) linkinvderiv(lk, 0, order = k), numeric(1))
+
+# every mathematical property is checkable
+check_link(lk)
+
+}
 \seealso{
 \code{\link{link}}, \code{\link{probit_link}}, \code{\link{cloglog_link}}
 }

@@ -13,7 +13,10 @@ bounded_link(lwr = NULL, upr = NULL)
 }
 \value{
 An S7 object of class \code{link} containing the transformation functions
-and their exact analytical derivatives up to the fourth order.
+and their exact analytical derivatives up to the fourth order. Which class
+exactly depends on the endpoints given: \code{\link{DoublyBoundedLink}},
+\code{\link{LowerBoundedLink}}, \code{\link{UpperBoundedLink}}, or an
+\code{\link{IdentityLink}} when neither endpoint is supplied.
 }
 \description{
 Creates an S7 object of class \code{link} that maps a constrained interval to the
@@ -34,6 +37,23 @@ Defined as \eqn{\eta = \log(\text{upr} - \theta)}, with inverse \eqn{\theta = \t
 
 \strong{Unbounded (\code{lwr = NULL}, \code{upr = NULL}):}
 Returns the standard \code{\link{identity_link}}.
+}
+\examples{
+# a parameter known to lie in (0, 10)
+lk <- bounded_link(lwr = 0, upr = 10)
+lk
+linkinv(lk, c(-2, 0, 2))     # always inside the interval
+linkfun(lk, c(1, 5, 9))
+
+# one-sided: a variance component bounded below by zero
+bounded_link(lwr = 0)
+
+# no endpoints at all is the identity
+bounded_link()
+
+# derivatives, as for any other link
+dlinkinv(lk, 0)
+
 }
 \seealso{
 \code{\link{link}}, \code{\link{logit_link}}, \code{\link{log_link}}

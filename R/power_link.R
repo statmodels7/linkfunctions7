@@ -1,3 +1,17 @@
+#' @title S7 Class for the Power Link
+#'
+#' @description
+#' The class \code{\link{power_link}} instantiates for a non-zero exponent.
+#' At \code{lambda = 0} the power link is the log link by continuity, and
+#' \code{\link{power_link}} returns a \code{\link{LogLink}} instead.
+#'
+#' @param lambda The exponent of the transformation.
+#'
+#' @return An S7 object of class \code{PowerLink}, inheriting from
+#'   \code{\link{link}}.
+#'
+#' @seealso \code{\link{power_link}}, the constructor users call.
+#' @keywords internal
 PowerLink <- S7::new_class(
   name = "PowerLink",
   parent = link,
@@ -56,9 +70,33 @@ S7::method(d4linkinv, PowerLink) <- function(x, eta) { k <- 1 / x@lambda; na_fro
 #' @return An S7 object of class \code{PowerLink} (inheriting from \code{link}), 
 #' or an object of class \code{LogLink} if \code{lambda = 0}.
 #'
+#' @examples
+#' lk <- power_link(2)
+#' lk
+#'
+#' theta <- c(1, 2, 3)
+#' eta <- linkfun(lk, theta)
+#' eta
+#' linkinv(lk, eta)
+#'
+#' # special cases of the family
+#' linkfun(power_link(1),    5)   # identity
+#' linkfun(power_link(0.5),  4)   # square root
+#' linkfun(power_link(-1),   4)   # inverse
+#'
+#' # lambda = 0 is the log link by continuity, and is returned as one
+#' power_link(0)
+#' linkfun(power_link(0), exp(1))
+#'
 #' @seealso \code{\link{link}}, \code{\link{log_link}}, \code{\link{identity_link}}
 #' @export
 power_link <- function(lambda = 1) {
+  # Without this the `if` below is what fails, on a missing or vector lambda,
+  # with a message about the condition rather than about the argument.
+  if (length(lambda) != 1L || !is.numeric(lambda) || !is.finite(lambda)) {
+    stop("'lambda' must be a single finite number.", call. = FALSE)
+  }
+
   # Handle Box-Cox continuity limit utilizing the existing log_link
   if (lambda == 0) {
     o <- log_link()

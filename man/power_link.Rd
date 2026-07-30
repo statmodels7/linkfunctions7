@@ -39,6 +39,25 @@ The mathematical domain of \eqn{\theta} is \code{c(0, Inf)}. Depending on the va
 of \code{lambda}, extreme care must be taken during numerical optimization to guarantee
 that \eqn{\eta} remains strictly positive to avoid \code{NaN}s from fractional exponents.
 }
+\examples{
+lk <- power_link(2)
+lk
+
+theta <- c(1, 2, 3)
+eta <- linkfun(lk, theta)
+eta
+linkinv(lk, eta)
+
+# special cases of the family
+linkfun(power_link(1),    5)   # identity
+linkfun(power_link(0.5),  4)   # square root
+linkfun(power_link(-1),   4)   # inverse
+
+# lambda = 0 is the log link by continuity, and is returned as one
+power_link(0)
+linkfun(power_link(0), exp(1))
+
+}
 \seealso{
 \code{\link{link}}, \code{\link{log_link}}, \code{\link{identity_link}}
 }
