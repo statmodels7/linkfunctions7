@@ -11,6 +11,17 @@ d3linkinv(x, eta)
 
 \item{eta}{A numeric vector.}
 }
+\value{
+A numeric vector of the same length as \code{eta}, missing wherever
+\code{eta} is.
+}
 \description{
-3rd Derivative of Inverse Link Function
+The third derivative of \eqn{g^{-1}(\eta)} with respect to \eqn{\eta}.
+}
+\examples{
+d3linkinv(logit_link(), 0)
+d3linkinv(probit_link(), 1)
+}
+\seealso{
+\code{\link{linkinvderiv}}, which routes to this generic by order.
 }

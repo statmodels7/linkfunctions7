@@ -1,3 +1,13 @@
+#' @title S7 Class for the LogLog Link
+#'
+#' @description
+#' The class \code{\link{loglog_link}} instantiates.
+#'
+#' @return An S7 object of class \code{LogLogLink}, inheriting from
+#'   \code{\link{link}}.
+#'
+#' @seealso \code{\link{loglog_link}}, the constructor users call.
+#' @keywords internal
 LogLogLink <- S7::new_class(
   name = "LogLogLink",
   parent = link
@@ -56,6 +66,21 @@ S7::method(d4linkinv, LogLogLink) <- function(x, eta) { z <- exp(-eta); exp(-z) 
 #'
 #' @return An S7 object of class \code{LogLogLink} (inheriting from \code{link}) containing the transformation functions
 #' and their exact analytical derivatives up to the fourth order.
+#'
+#' @examples
+#' lk <- loglog_link()
+#' lk
+#'
+#' p <- c(0.1, 0.5, 0.9)
+#' eta <- linkfun(lk, p)
+#' eta
+#' linkinv(lk, eta)
+#'
+#' # the mirror image of the cloglog link
+#' linkinv(loglog_link(), 1)
+#' 1 - linkinv(cloglog_link(), -1)
+#'
+#' linkderiv(lk, 0.5, order = 3)
 #'
 #' @seealso \code{\link{link}}, \code{\link{cloglog_link}}, \code{\link{logit_link}}
 #' @export

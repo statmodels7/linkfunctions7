@@ -24,6 +24,21 @@ up to the fourth order are exactly zero.
 
 The domain of \eqn{\theta} is unbounded, meaning the valid domain is \code{c(-Inf, Inf)}.
 }
+\examples{
+lk <- identity_link()
+lk
+
+linkfun(lk, c(-1, 0, 1))
+linkinv(lk, c(-1, 0, 1))
+
+# the first derivative is 1 and every higher one is 0 ...
+dlinkfun(lk, c(-1, 0, 1))
+d2linkfun(lk, c(-1, 0, 1))
+
+# ... but missingness is still propagated, not swallowed by the constant
+dlinkfun(lk, c(1, NA))
+
+}
 \seealso{
 \code{\link{link}}
 }

@@ -26,6 +26,22 @@ The inverse link is the hyperbolic tangent function:
 
 The valid mathematical domain of \eqn{\theta} is exactly \code{c(-1, 1)}.
 }
+\examples{
+lk <- rhobit_link()
+lk
+
+# built for parameters constrained to (-1, 1), such as a correlation
+rho <- c(-0.9, 0, 0.9)
+eta <- linkfun(lk, rho)    # Fisher's z
+eta
+linkinv(lk, eta)
+
+# the inverse is tanh, so its first derivative is the squared sech
+dlinkinv(lk, 0)
+
+check_link(lk)
+
+}
 \seealso{
 \code{\link{link}}, \code{\link{logit_link}}
 }

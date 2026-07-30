@@ -1,3 +1,13 @@
+#' @title S7 Class for the Inverse Link
+#'
+#' @description
+#' The class \code{\link{inverse_link}} instantiates.
+#'
+#' @return An S7 object of class \code{InverseLink}, inheriting from
+#'   \code{\link{link}}.
+#'
+#' @seealso \code{\link{inverse_link}}, the constructor users call.
+#' @keywords internal
 InverseLink <- S7::new_class(
   name = "InverseLink",
   parent = link
@@ -44,6 +54,20 @@ S7::method(d4linkinv, InverseLink) <- function(x, eta) 24 / (eta^5)
 #'
 #' @return An S7 object of class \code{InverseLink} (inheriting from \code{link}) containing the transformation functions
 #' and their exact analytical derivatives up to the fourth order.
+#'
+#' @examples
+#' lk <- inverse_link()
+#' lk
+#'
+#' theta <- c(0.5, 1, 2)
+#' eta <- linkfun(lk, theta)
+#' eta
+#' linkinv(lk, eta)           # the map is its own inverse
+#'
+#' dlinkfun(lk, theta)
+#'
+#' # the canonical link for a Gamma mean; note eta must keep one sign
+#' linkinv(lk, c(0.5, 2))
 #'
 #' @seealso \code{\link{link}}, \code{\link{identity_link}}
 #' @export

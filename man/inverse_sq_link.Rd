@@ -30,6 +30,19 @@ taken to ensure the linear predictor \eqn{\eta > 0}. Evaluating the inverse link
 its derivatives at non-positive values of \eqn{\eta} will inevitably result in \code{NaN}s
 due to fractional powers and square root operations.
 }
+\examples{
+lk <- inverse_sq_link()
+lk
+
+theta <- c(0.5, 1, 2)
+eta <- linkfun(lk, theta)  # 1 / theta^2
+eta
+linkinv(lk, eta)
+
+# the canonical link of the inverse Gaussian; eta must stay positive
+dlinkinv(lk, c(0.5, 1, 4))
+
+}
 \seealso{
 \code{\link{link}}, \code{\link{inverse_link}}
 }

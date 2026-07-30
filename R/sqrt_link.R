@@ -1,3 +1,13 @@
+#' @title S7 Class for the Sqrt Link
+#'
+#' @description
+#' The class \code{\link{sqrt_link}} instantiates.
+#'
+#' @return An S7 object of class \code{SqrtLink}, inheriting from
+#'   \code{\link{link}}.
+#'
+#' @seealso \code{\link{sqrt_link}}, the constructor users call.
+#' @keywords internal
 SqrtLink <- S7::new_class(
   name = "SqrtLink",
   parent = link
@@ -54,6 +64,22 @@ S7::method(d4linkinv, SqrtLink) <- function(x, eta) const_like(eta, 0)
 #'
 #' @return An S7 object of class \code{SqrtLink} (inheriting from \code{link}) containing the transformation functions
 #' and their exact analytical derivatives up to the fourth order.
+#'
+#' @examples
+#' lk <- sqrt_link()
+#' lk
+#'
+#' theta <- c(0.25, 1, 4)
+#' eta <- linkfun(lk, theta)
+#' eta
+#' linkinv(lk, eta)
+#'
+#' # the inverse is a quadratic, so the third and fourth derivatives vanish
+#' d2linkinv(lk, c(1, 2))
+#' d3linkinv(lk, c(1, 2))
+#'
+#' # the same link as the power family at lambda = 1/2
+#' linkfun(power_link(0.5), 4)
 #'
 #' @seealso \code{\link{link}}, \code{\link{power_link}}, \code{\link{log_link}}
 #' @export

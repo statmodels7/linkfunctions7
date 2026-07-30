@@ -27,6 +27,22 @@ the mathematical reverse of the \code{cloglog} link.
 
 The strict mathematical domain for \eqn{\theta} is \code{c(0, 1)}.
 }
+\examples{
+lk <- loglog_link()
+lk
+
+p <- c(0.1, 0.5, 0.9)
+eta <- linkfun(lk, p)
+eta
+linkinv(lk, eta)
+
+# the mirror image of the cloglog link
+linkinv(loglog_link(), 1)
+1 - linkinv(cloglog_link(), -1)
+
+linkderiv(lk, 0.5, order = 3)
+
+}
 \seealso{
 \code{\link{link}}, \code{\link{cloglog_link}}, \code{\link{logit_link}}
 }

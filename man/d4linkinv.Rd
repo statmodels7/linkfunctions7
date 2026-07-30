@@ -11,6 +11,17 @@ d4linkinv(x, eta)
 
 \item{eta}{A numeric vector.}
 }
+\value{
+A numeric vector of the same length as \code{eta}, missing wherever
+\code{eta} is.
+}
 \description{
-4th Derivative of Inverse Link Function
+The fourth derivative of \eqn{g^{-1}(\eta)} with respect to \eqn{\eta}.
+}
+\examples{
+d4linkinv(logit_link(), 0)
+d4linkinv(probit_link(), 1)
+}
+\seealso{
+\code{\link{linkinvderiv}}, which routes to this generic by order.
 }

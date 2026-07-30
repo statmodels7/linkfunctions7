@@ -1,3 +1,13 @@
+#' @title S7 Class for the Cauchit Link
+#'
+#' @description
+#' The class \code{\link{cauchit_link}} instantiates.
+#'
+#' @return An S7 object of class \code{CauchitLink}, inheriting from
+#'   \code{\link{link}}.
+#'
+#' @seealso \code{\link{cauchit_link}}, the constructor users call.
+#' @keywords internal
 CauchitLink <- S7::new_class(
   name = "CauchitLink",
   parent = link
@@ -69,6 +79,21 @@ S7::method(d4linkinv, CauchitLink) <- function(x, eta) {
 #'
 #' @return An S7 object of class \code{CauchitLink} (inheriting from \code{link}) containing the transformation functions
 #' and their exact analytical derivatives up to the fourth order.
+#'
+#' @examples
+#' lk <- cauchit_link()
+#' lk
+#'
+#' p <- c(0.1, 0.5, 0.9)
+#' eta <- linkfun(lk, p)
+#' eta
+#' linkinv(lk, eta)
+#'
+#' # heavy tails: the same eta is far less extreme than under a logit
+#' linkinv(cauchit_link(), 5)
+#' linkinv(logit_link(), 5)
+#'
+#' dlinkinv(lk, 0)            # 1 / pi
 #'
 #' @seealso \code{\link{link}}, \code{\link{logit_link}}, \code{\link{probit_link}}
 #' @importFrom stats qcauchy pcauchy

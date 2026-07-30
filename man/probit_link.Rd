@@ -27,6 +27,24 @@ and 1 faster than the Logistic distribution.
 
 The strictly mathematical domain of \eqn{\theta} is \code{c(0, 1)}.
 }
+\examples{
+lk <- probit_link()
+lk
+
+p <- c(0.1, 0.5, 0.9)
+eta <- linkfun(lk, p)      # standard normal quantiles
+eta
+linkinv(lk, eta)
+
+# the first inverse derivative is the standard normal density
+dlinkinv(lk, 0)
+dnorm(0)
+
+# probit tails approach 0 and 1 faster than logit ones
+linkinv(probit_link(), 3)
+linkinv(logit_link(), 3)
+
+}
 \seealso{
 \code{\link{link}}, \code{\link{logit_link}}, \code{\link{cauchit_link}}
 }

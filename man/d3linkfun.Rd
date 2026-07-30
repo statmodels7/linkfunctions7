@@ -11,6 +11,17 @@ d3linkfun(x, theta)
 
 \item{theta}{A numeric vector.}
 }
+\value{
+A numeric vector of the same length as \code{theta}, missing wherever
+\code{theta} is.
+}
 \description{
-3rd Derivative of Link Function
+The third derivative of \eqn{g(\theta)} with respect to \eqn{\theta}.
+}
+\examples{
+d3linkfun(logit_link(), 0.5)
+d3linkfun(log_link(), c(1, 2))
+}
+\seealso{
+\code{\link{linkderiv}}, which routes to this generic by order.
 }

@@ -28,6 +28,23 @@ preserves a strictly one-to-one mapping with \eqn{\theta}.
 
 The strict mathematical domain for \eqn{\theta} is \code{c(0, Inf)}.
 }
+\examples{
+lk <- sqrt_link()
+lk
+
+theta <- c(0.25, 1, 4)
+eta <- linkfun(lk, theta)
+eta
+linkinv(lk, eta)
+
+# the inverse is a quadratic, so the third and fourth derivatives vanish
+d2linkinv(lk, c(1, 2))
+d3linkinv(lk, c(1, 2))
+
+# the same link as the power family at lambda = 1/2
+linkfun(power_link(0.5), 4)
+
+}
 \seealso{
 \code{\link{link}}, \code{\link{power_link}}, \code{\link{log_link}}
 }

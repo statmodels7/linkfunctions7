@@ -1,3 +1,14 @@
+#' @title S7 Class for the Identity Link
+#'
+#' @description
+#' The class \code{\link{identity_link}} instantiates. Also what
+#' \code{\link{bounded_link}} returns when neither endpoint is given.
+#'
+#' @return An S7 object of class \code{IdentityLink}, inheriting from
+#'   \code{\link{link}}.
+#'
+#' @seealso \code{\link{identity_link}}, the constructor users call.
+#' @keywords internal
 IdentityLink <- S7::new_class(
   name = "IdentityLink",
   parent = link
@@ -41,6 +52,20 @@ S7::method(d4linkinv, IdentityLink) <- function(x, eta) const_like(eta, 0)
 #'
 #' @return An S7 object of class \code{IdentityLink} (inheriting from \code{link}) containing the transformation functions
 #' and their exact analytical derivatives up to the fourth order.
+#'
+#' @examples
+#' lk <- identity_link()
+#' lk
+#'
+#' linkfun(lk, c(-1, 0, 1))
+#' linkinv(lk, c(-1, 0, 1))
+#'
+#' # the first derivative is 1 and every higher one is 0 ...
+#' dlinkfun(lk, c(-1, 0, 1))
+#' d2linkfun(lk, c(-1, 0, 1))
+#'
+#' # ... but missingness is still propagated, not swallowed by the constant
+#' dlinkfun(lk, c(1, NA))
 #'
 #' @seealso \code{\link{link}}
 #' @export

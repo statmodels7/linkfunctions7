@@ -11,6 +11,17 @@ d2linkinv(x, eta)
 
 \item{eta}{A numeric vector.}
 }
+\value{
+A numeric vector of the same length as \code{eta}, missing wherever
+\code{eta} is.
+}
 \description{
-2nd Derivative of Inverse Link Function
+The second derivative of \eqn{g^{-1}(\eta)} with respect to \eqn{\eta}.
+}
+\examples{
+d2linkinv(logit_link(), 0)     # zero, by symmetry about eta = 0
+d2linkinv(probit_link(), 1)
+}
+\seealso{
+\code{\link{linkinvderiv}}, which routes to this generic by order.
 }

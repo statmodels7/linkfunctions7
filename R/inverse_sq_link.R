@@ -1,3 +1,13 @@
+#' @title S7 Class for the InverseSq Link
+#'
+#' @description
+#' The class \code{\link{inverse_sq_link}} instantiates.
+#'
+#' @return An S7 object of class \code{InverseSqLink}, inheriting from
+#'   \code{\link{link}}.
+#'
+#' @seealso \code{\link{inverse_sq_link}}, the constructor users call.
+#' @keywords internal
 InverseSqLink <- S7::new_class(
   name = "InverseSqLink",
   parent = link
@@ -48,6 +58,18 @@ S7::method(d4linkinv, InverseSqLink) <- function(x, eta) 105 / (16 * eta^4.5)
 #'
 #' @return An S7 object of class \code{InverseSqLink} (inheriting from \code{link}) containing the transformation functions
 #' and their exact analytical derivatives up to the fourth order.
+#'
+#' @examples
+#' lk <- inverse_sq_link()
+#' lk
+#'
+#' theta <- c(0.5, 1, 2)
+#' eta <- linkfun(lk, theta)  # 1 / theta^2
+#' eta
+#' linkinv(lk, eta)
+#'
+#' # the canonical link of the inverse Gaussian; eta must stay positive
+#' dlinkinv(lk, c(0.5, 1, 4))
 #'
 #' @seealso \code{\link{link}}, \code{\link{inverse_link}}
 #' @export

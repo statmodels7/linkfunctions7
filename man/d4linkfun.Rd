@@ -11,6 +11,17 @@ d4linkfun(x, theta)
 
 \item{theta}{A numeric vector.}
 }
+\value{
+A numeric vector of the same length as \code{theta}, missing wherever
+\code{theta} is.
+}
 \description{
-4th Derivative of Link Function
+The fourth derivative of \eqn{g(\theta)} with respect to \eqn{\theta}.
+}
+\examples{
+d4linkfun(logit_link(), 0.5)
+d4linkfun(log_link(), c(1, 2))
+}
+\seealso{
+\code{\link{linkderiv}}, which routes to this generic by order.
 }

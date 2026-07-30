@@ -17,3 +17,7 @@ A numeric vector of probabilities/means.
 \description{
 Evaluate Inverse Link Function
 }
+\examples{
+linkinv(logit_link(), c(-1, 0, 1))
+linkinv(log_link(), c(0, 1))
+}

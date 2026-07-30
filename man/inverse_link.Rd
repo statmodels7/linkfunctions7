@@ -25,6 +25,21 @@ to ensure the linear predictor \eqn{\eta} remains strictly positive (or strictly
 negative) during optimization to avoid division by zero or mapping to invalid
 negative parameter values.
 }
+\examples{
+lk <- inverse_link()
+lk
+
+theta <- c(0.5, 1, 2)
+eta <- linkfun(lk, theta)
+eta
+linkinv(lk, eta)           # the map is its own inverse
+
+dlinkfun(lk, theta)
+
+# the canonical link for a Gamma mean; note eta must keep one sign
+linkinv(lk, c(0.5, 2))
+
+}
 \seealso{
 \code{\link{link}}, \code{\link{identity_link}}
 }

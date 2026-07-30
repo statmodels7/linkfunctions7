@@ -17,3 +17,7 @@ A numeric vector of the linear predictor.
 \description{
 Evaluate Forward Link Function
 }
+\examples{
+linkfun(logit_link(), c(0.25, 0.5, 0.75))
+linkfun(log_link(), c(1, exp(1)))
+}
