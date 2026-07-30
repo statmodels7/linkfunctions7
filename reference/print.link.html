@@ -70,6 +70,24 @@ additional parameters it may have (e.g., lambda for a power link).</p>
     <p>The function returns <code>x</code> invisibly.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="logit_link.html">logit_link</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> S7 Link Object: logit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   - Parameter domain (theta): (0, 1)</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># links carrying parameters report them too</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="power_link.html">power_link</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> S7 Link Object: power(lambda=2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   - Parameter domain (theta): (0, Inf)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   - Link parameters: lambda = 2</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="bounded_link.html">bounded_link</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> S7 Link Object: bounded(lwr=0, upr=10)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   - Parameter domain (theta): (0, 10)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   - Link parameters: lwr = 0, upr = 10</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

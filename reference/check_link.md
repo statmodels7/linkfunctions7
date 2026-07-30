@@ -29,7 +29,15 @@ check_link.link(x, tolerance = 1e-05, ...)
 
 ## Value
 
-A logical list returning the success status of all available checks.
+Invisibly, a named list of check results; see `check_link.link` for its
+shape. Called mainly for the summary printed to the console.
+
+Invisibly, a named list of the check results: the four scalar logicals
+`invertibility_theta`, `invertibility_eta`, `monotonicity` and
+`inverse_theorem`, plus `link_derivatives` and
+`inverse_link_derivatives`, each a logical vector of length four named
+`order_1` to `order_4`. A derivative that is not implemented counts as
+`FALSE`. Called mainly for the summary printed to the console.
 
 ## Details
 
@@ -67,3 +75,50 @@ diagnostic checks:
 Both forward and inverse derivative testing avoids compounding numerical
 errors by applying first-order numerical differentiation iteratively to
 the exact lower-order analytical derivatives.
+
+## Examples
+
+``` r
+check_link(sqrt_link())
+#> Checking S7 Link Object: sqrt 
+#>   [1] Invertibility (Theta space): [PASSED] 
+#>   [2] Invertibility (Eta space):   [PASSED] 
+#>   [3] Strict Monotonicity:         [PASSED] 
+#>   [4] Inverse Function Theorem:    [PASSED] 
+#>   [5] Link Derivatives:            [PASSED] 
+#>   [6] Inverse Link Derivatives:    [PASSED] 
+# every link the package ships passes all six checks
+check_link(logit_link())
+#> Checking S7 Link Object: logit 
+#>   [1] Invertibility (Theta space): [PASSED] 
+#>   [2] Invertibility (Eta space):   [PASSED] 
+#>   [3] Strict Monotonicity:         [PASSED] 
+#>   [4] Inverse Function Theorem:    [PASSED] 
+#>   [5] Link Derivatives:            [PASSED] 
+#>   [6] Inverse Link Derivatives:    [PASSED] 
+
+res <- check_link(power_link(2))
+#> Checking S7 Link Object: power(lambda=2) 
+#>   [1] Invertibility (Theta space): [PASSED] 
+#>   [2] Invertibility (Eta space):   [PASSED] 
+#>   [3] Strict Monotonicity:         [PASSED] 
+#>   [4] Inverse Function Theorem:    [PASSED] 
+#>   [5] Link Derivatives:            [PASSED] 
+#>   [6] Inverse Link Derivatives:    [PASSED] 
+res$link_derivatives
+#> order_1 order_2 order_3 order_4 
+#>    TRUE    TRUE    TRUE    TRUE 
+res$inverse_theorem
+#> [1] TRUE
+
+# the checks are what a user-defined link should be held to as well
+all(unlist(check_link(bounded_link(0, 10))))
+#> Checking S7 Link Object: bounded(lwr=0, upr=10) 
+#>   [1] Invertibility (Theta space): [PASSED] 
+#>   [2] Invertibility (Eta space):   [PASSED] 
+#>   [3] Strict Monotonicity:         [PASSED] 
+#>   [4] Inverse Function Theorem:    [PASSED] 
+#>   [5] Link Derivatives:            [PASSED] 
+#>   [6] Inverse Link Derivatives:    [PASSED] 
+#> [1] TRUE
+```

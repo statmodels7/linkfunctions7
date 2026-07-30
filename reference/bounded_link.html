@@ -70,7 +70,10 @@ or unbounded (identity) link function.</p>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>An S7 object of class <code>link</code> containing the transformation functions
-and their exact analytical derivatives up to the fourth order.</p>
+and their exact analytical derivatives up to the fourth order. Which class
+exactly depends on the endpoints given: <code><a href="DoublyBoundedLink.html">DoublyBoundedLink</a></code>,
+<code><a href="LowerBoundedLink.html">LowerBoundedLink</a></code>, <code><a href="UpperBoundedLink.html">UpperBoundedLink</a></code>, or an
+<code><a href="IdentityLink.html">IdentityLink</a></code> when neither endpoint is supplied.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -89,6 +92,36 @@ Returns the standard <code><a href="identity_link.html">identity_link</a></code>
     <div class="dont-index"><p><code><a href="link.html">link</a></code>, <code><a href="logit_link.html">logit_link</a></code>, <code><a href="log_link.html">log_link</a></code></p></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># a parameter known to lie in (0, 10)</span></span></span>
+<span class="r-in"><span><span class="va">lk</span> <span class="op">&lt;-</span> <span class="fu">bounded_link</span><span class="op">(</span>lwr <span class="op">=</span> <span class="fl">0</span>, upr <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lk</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> S7 Link Object: bounded(lwr=0, upr=10)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   - Parameter domain (theta): (0, 10)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   - Link parameters: lwr = 0, upr = 10</span>
+<span class="r-in"><span><span class="fu"><a href="linkinv.html">linkinv</a></span><span class="op">(</span><span class="va">lk</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>     <span class="co"># always inside the interval</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.192029 5.000000 8.807971</span>
+<span class="r-in"><span><span class="fu"><a href="linkfun.html">linkfun</a></span><span class="op">(</span><span class="va">lk</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">9</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -2.197225  0.000000  2.197225</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># one-sided: a variance component bounded below by zero</span></span></span>
+<span class="r-in"><span><span class="fu">bounded_link</span><span class="op">(</span>lwr <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> S7 Link Object: lower_bounded(lwr=0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   - Parameter domain (theta): (0, Inf)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   - Link parameters: lwr = 0</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># no endpoints at all is the identity</span></span></span>
+<span class="r-in"><span><span class="fu">bounded_link</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> S7 Link Object: identity</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   - Parameter domain (theta): (-Inf, Inf)</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># derivatives, as for any other link</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="dlinkinv.html">dlinkinv</a></span><span class="op">(</span><span class="va">lk</span>, <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.5</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

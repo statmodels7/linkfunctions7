@@ -76,6 +76,36 @@ and their exact analytical derivatives up to the fourth order.</p>
     <div class="dont-index"><p><code><a href="link.html">link</a></code>, <code><a href="logit_link.html">logit_link</a></code></p></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">lk</span> <span class="op">&lt;-</span> <span class="fu">rhobit_link</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lk</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> S7 Link Object: rhobit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   - Parameter domain (theta): (-1, 1)</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># built for parameters constrained to (-1, 1), such as a correlation</span></span></span>
+<span class="r-in"><span><span class="va">rho</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.9</span>, <span class="fl">0</span>, <span class="fl">0.9</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">eta</span> <span class="op">&lt;-</span> <span class="fu"><a href="linkfun.html">linkfun</a></span><span class="op">(</span><span class="va">lk</span>, <span class="va">rho</span><span class="op">)</span>    <span class="co"># Fisher's z</span></span></span>
+<span class="r-in"><span><span class="va">eta</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -1.472219  0.000000  1.472219</span>
+<span class="r-in"><span><span class="fu"><a href="linkinv.html">linkinv</a></span><span class="op">(</span><span class="va">lk</span>, <span class="va">eta</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.9  0.0  0.9</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># the inverse is tanh, so its first derivative is the squared sech</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="dlinkinv.html">dlinkinv</a></span><span class="op">(</span><span class="va">lk</span>, <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="check_link.html">check_link</a></span><span class="op">(</span><span class="va">lk</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Checking S7 Link Object: rhobit </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] Invertibility (Theta space): [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [2] Invertibility (Eta space):   [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [3] Strict Monotonicity:         [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [4] Inverse Function Theorem:    [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [5] Link Derivatives:            [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [6] Inverse Link Derivatives:    [PASSED] </span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

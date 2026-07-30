@@ -21,3 +21,12 @@ linkinv(x, eta)
 ## Value
 
 A numeric vector of probabilities/means.
+
+## Examples
+
+``` r
+linkinv(logit_link(), c(-1, 0, 1))
+#> [1] 0.2689414 0.5000000 0.7310586
+linkinv(log_link(), c(0, 1))
+#> [1] 1.000000 2.718282
+```

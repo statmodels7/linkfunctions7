@@ -36,3 +36,12 @@ The function automatically determines sensible plotting ranges based on
 whether the link bounds are finite or infinite. It temporarily modifies
 the graphical parameters (`par`) to create a side-by-side layout and
 restores the original settings upon exit.
+
+## Examples
+
+``` r
+plot(logit_link())
+
+plot(softplus_link(2))
+
+```

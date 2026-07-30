@@ -57,3 +57,36 @@ avoid `NaN`s from fractional exponents.
 [`link`](https://statmodels7.github.io/linkfunctions7/reference/link.md),
 [`log_link`](https://statmodels7.github.io/linkfunctions7/reference/log_link.md),
 [`identity_link`](https://statmodels7.github.io/linkfunctions7/reference/identity_link.md)
+
+## Examples
+
+``` r
+lk <- power_link(2)
+lk
+#> S7 Link Object: power(lambda=2)
+#>   - Parameter domain (theta): (0, Inf)
+#>   - Link parameters: lambda = 2
+
+theta <- c(1, 2, 3)
+eta <- linkfun(lk, theta)
+eta
+#> [1] 1 4 9
+linkinv(lk, eta)
+#> [1] 1 2 3
+
+# special cases of the family
+linkfun(power_link(1),    5)   # identity
+#> [1] 5
+linkfun(power_link(0.5),  4)   # square root
+#> [1] 2
+linkfun(power_link(-1),   4)   # inverse
+#> [1] 0.25
+
+# lambda = 0 is the log link by continuity, and is returned as one
+power_link(0)
+#> S7 Link Object: power(lambda=0)
+#>   - Parameter domain (theta): (0, Inf)
+#>   - Link parameters: lambda = 0
+linkfun(power_link(0), exp(1))
+#> [1] 1
+```

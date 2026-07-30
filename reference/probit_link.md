@@ -36,3 +36,31 @@ The strictly mathematical domain of \\\theta\\ is `c(0, 1)`.
 [`link`](https://statmodels7.github.io/linkfunctions7/reference/link.md),
 [`logit_link`](https://statmodels7.github.io/linkfunctions7/reference/logit_link.md),
 [`cauchit_link`](https://statmodels7.github.io/linkfunctions7/reference/cauchit_link.md)
+
+## Examples
+
+``` r
+lk <- probit_link()
+lk
+#> S7 Link Object: probit
+#>   - Parameter domain (theta): (0, 1)
+
+p <- c(0.1, 0.5, 0.9)
+eta <- linkfun(lk, p)      # standard normal quantiles
+eta
+#> [1] -1.281552  0.000000  1.281552
+linkinv(lk, eta)
+#> [1] 0.1 0.5 0.9
+
+# the first inverse derivative is the standard normal density
+dlinkinv(lk, 0)
+#> [1] 0.3989423
+dnorm(0)
+#> [1] 0.3989423
+
+# probit tails approach 0 and 1 faster than logit ones
+linkinv(probit_link(), 3)
+#> [1] 0.9986501
+linkinv(logit_link(), 3)
+#> [1] 0.9525741
+```

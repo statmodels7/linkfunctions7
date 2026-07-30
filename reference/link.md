@@ -28,6 +28,15 @@ link(link_name = character(0), link_bounds = integer(0), link_params = NULL)
   A list or vector of additional parameters required to define the link,
   or `NULL`.
 
+## Value
+
+An S7 object of class `link`. In practice this class is not instantiated
+directly: each link is a subclass created by one of the constructors
+([`logit_link`](https://statmodels7.github.io/linkfunctions7/reference/logit_link.md),
+[`power_link`](https://statmodels7.github.io/linkfunctions7/reference/power_link.md),
+...), and `link` is what they all inherit from and what methods dispatch
+on.
+
 ## Details
 
 Objects of class `link` are instantiated using the S7 object system.
@@ -41,3 +50,20 @@ The object assumes the following mathematical notation:
 
 The relationship is defined as \\\eta = g(\theta)\\ (link function) and
 \\\theta = g^{-1}(\eta)\\ (inverse link function).
+
+## Examples
+
+``` r
+# every constructor returns an object inheriting from `link`
+lk <- logit_link()
+lk
+#> S7 Link Object: logit
+#>   - Parameter domain (theta): (0, 1)
+S7::S7_inherits(lk, link)
+#> [1] TRUE
+
+lk@link_name
+#> [1] "logit"
+lk@link_bounds
+#> [1] 0 1
+```

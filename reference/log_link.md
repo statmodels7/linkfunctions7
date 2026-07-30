@@ -29,13 +29,41 @@ all its derivatives with respect to \\\eta\\ are equal to
 
 The valid mathematical domain of \\\theta\\ is `c(0, Inf)`.
 
-**Numerical Stability:** During the evaluation of the inverse link and
-its derivatives, the result is bounded from below by
-`.Machine$double.eps`. This prevents numerical underflow to exactly zero
-when \\\eta\\ is a large negative number, which would otherwise produce
-`Inf` when subsequently calculating \\1/\theta\\.
+**Numerical Stability:** The inverse link and its derivatives are
+bounded below by `exp_floor`, which is `.Machine$double.xmin^0.25`,
+about `1.2e-77`. This prevents underflow to exactly zero for large
+negative \\\eta\\, which would produce `Inf` when the forward
+derivatives divide by \\\theta\\; the fourth of them divides by
+\\\theta^4\\, and that is what sets the value. The floor is low enough
+that \\\theta\\ is exact down to \\\eta \approx -177\\.
 
 ## See also
 
 [`link`](https://statmodels7.github.io/linkfunctions7/reference/link.md),
 [`inverse_link`](https://statmodels7.github.io/linkfunctions7/reference/inverse_link.md)
+
+## Examples
+
+``` r
+lk <- log_link()
+lk
+#> S7 Link Object: log
+#>   - Parameter domain (theta): (0, Inf)
+
+theta <- c(0.5, 1, 10)
+eta <- linkfun(lk, theta)
+eta
+#> [1] -0.6931472  0.0000000  2.3025851
+linkinv(lk, eta)
+#> [1]  0.5  1.0 10.0
+
+# the exponential is its own derivative, so every inverse derivative agrees
+dlinkinv(lk, eta)
+#> [1]  0.5  1.0 10.0
+d4linkinv(lk, eta)
+#> [1]  0.5  1.0 10.0
+
+# forward derivatives to fourth order
+linkderiv(lk, theta, order = 4)
+#> [1] -96.0000  -6.0000  -0.0006
+```

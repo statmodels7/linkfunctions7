@@ -6,7 +6,7 @@ couple of closures that nothing outside can reach: you cannot hand one
 to another package, ask it for its second derivative, or add your own
 without editing somebody else’s source.
 
-[linkfunctions7](https://statmodels7.github.io/linkfunctions7) makes a
+[linkfunctions7](https://statmodels7.github.io/linkfunctions7/) makes a
 link an object. Fourteen of them, each carrying **exact analytical
 derivatives up to fourth order in both directions** — forward and
 inverse — and a diagnostic that verifies those derivatives against

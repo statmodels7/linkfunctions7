@@ -35,3 +35,28 @@ The strict mathematical domain for \\\theta\\ is `c(0, 1)`.
 [`link`](https://statmodels7.github.io/linkfunctions7/reference/link.md),
 [`cloglog_link`](https://statmodels7.github.io/linkfunctions7/reference/cloglog_link.md),
 [`logit_link`](https://statmodels7.github.io/linkfunctions7/reference/logit_link.md)
+
+## Examples
+
+``` r
+lk <- loglog_link()
+lk
+#> S7 Link Object: loglog
+#>   - Parameter domain (theta): (0, 1)
+
+p <- c(0.1, 0.5, 0.9)
+eta <- linkfun(lk, p)
+eta
+#> [1] -0.8340324  0.3665129  2.2503673
+linkinv(lk, eta)
+#> [1] 0.1 0.5 0.9
+
+# the mirror image of the cloglog link
+linkinv(loglog_link(), 1)
+#> [1] 0.6922006
+1 - linkinv(cloglog_link(), -1)
+#> [1] 0.6922006
+
+linkderiv(lk, 0.5, order = 3)
+#> [1] 21.17476
+```

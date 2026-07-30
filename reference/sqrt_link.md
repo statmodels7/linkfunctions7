@@ -37,3 +37,29 @@ The strict mathematical domain for \\\theta\\ is `c(0, Inf)`.
 [`link`](https://statmodels7.github.io/linkfunctions7/reference/link.md),
 [`power_link`](https://statmodels7.github.io/linkfunctions7/reference/power_link.md),
 [`log_link`](https://statmodels7.github.io/linkfunctions7/reference/log_link.md)
+
+## Examples
+
+``` r
+lk <- sqrt_link()
+lk
+#> S7 Link Object: sqrt
+#>   - Parameter domain (theta): (0, Inf)
+
+theta <- c(0.25, 1, 4)
+eta <- linkfun(lk, theta)
+eta
+#> [1] 0.5 1.0 2.0
+linkinv(lk, eta)
+#> [1] 0.25 1.00 4.00
+
+# the inverse is a quadratic, so the third and fourth derivatives vanish
+d2linkinv(lk, c(1, 2))
+#> [1] 2 2
+d3linkinv(lk, c(1, 2))
+#> [1] 0 0
+
+# the same link as the power family at lambda = 1/2
+linkfun(power_link(0.5), 4)
+#> [1] 2
+```

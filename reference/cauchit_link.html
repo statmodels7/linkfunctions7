@@ -75,6 +75,31 @@ light-tailed link functions.</p>
     <div class="dont-index"><p><code><a href="link.html">link</a></code>, <code><a href="logit_link.html">logit_link</a></code>, <code><a href="probit_link.html">probit_link</a></code></p></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">lk</span> <span class="op">&lt;-</span> <span class="fu">cauchit_link</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lk</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> S7 Link Object: cauchit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   - Parameter domain (theta): (0, 1)</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.9</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">eta</span> <span class="op">&lt;-</span> <span class="fu"><a href="linkfun.html">linkfun</a></span><span class="op">(</span><span class="va">lk</span>, <span class="va">p</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">eta</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -3.077684  0.000000  3.077684</span>
+<span class="r-in"><span><span class="fu"><a href="linkinv.html">linkinv</a></span><span class="op">(</span><span class="va">lk</span>, <span class="va">eta</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1 0.5 0.9</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># heavy tails: the same eta is far less extreme than under a logit</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="linkinv.html">linkinv</a></span><span class="op">(</span><span class="fu">cauchit_link</span><span class="op">(</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.937167</span>
+<span class="r-in"><span><span class="fu"><a href="linkinv.html">linkinv</a></span><span class="op">(</span><span class="fu"><a href="logit_link.html">logit_link</a></span><span class="op">(</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.9933071</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="dlinkinv.html">dlinkinv</a></span><span class="op">(</span><span class="va">lk</span>, <span class="fl">0</span><span class="op">)</span>            <span class="co"># 1 / pi</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.3183099</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

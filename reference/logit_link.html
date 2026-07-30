@@ -76,6 +76,41 @@ boundaries of 0 and 1.</p>
     <div class="dont-index"><p><code><a href="link.html">link</a></code>, <code><a href="probit_link.html">probit_link</a></code>, <code><a href="cloglog_link.html">cloglog_link</a></code></p></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">lk</span> <span class="op">&lt;-</span> <span class="fu">logit_link</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lk</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> S7 Link Object: logit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   - Parameter domain (theta): (0, 1)</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.9</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">eta</span> <span class="op">&lt;-</span> <span class="fu"><a href="linkfun.html">linkfun</a></span><span class="op">(</span><span class="va">lk</span>, <span class="va">p</span><span class="op">)</span>      <span class="co"># log-odds</span></span></span>
+<span class="r-in"><span><span class="va">eta</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -2.197225  0.000000  2.197225</span>
+<span class="r-in"><span><span class="fu"><a href="linkinv.html">linkinv</a></span><span class="op">(</span><span class="va">lk</span>, <span class="va">eta</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1 0.5 0.9</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># the inverse derivatives are polynomials in p: the first is the variance</span></span></span>
+<span class="r-in"><span><span class="co"># of a Bernoulli, p(1 - p)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="dlinkinv.html">dlinkinv</a></span><span class="op">(</span><span class="va">lk</span>, <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.25</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># all four orders at once</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">vapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="kw">function</span><span class="op">(</span><span class="va">k</span><span class="op">)</span> <span class="fu"><a href="linkinvderiv.html">linkinvderiv</a></span><span class="op">(</span><span class="va">lk</span>, <span class="fl">0</span>, order <span class="op">=</span> <span class="va">k</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  0.250  0.000 -0.125  0.000</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># every mathematical property is checkable</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="check_link.html">check_link</a></span><span class="op">(</span><span class="va">lk</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Checking S7 Link Object: logit </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] Invertibility (Theta space): [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [2] Invertibility (Eta space):   [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [3] Strict Monotonicity:         [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [4] Inverse Function Theorem:    [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [5] Link Derivatives:            [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [6] Inverse Link Derivatives:    [PASSED] </span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

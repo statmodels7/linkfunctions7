@@ -43,10 +43,13 @@ large positive \\\eta\\, \\\theta \approx \eta\\ (linear behavior),
 whereas a Log link would imply \\\theta = \exp(\eta)\\ (exponential
 behavior).
 
-**Numerical Stability:** The inverse link implementation intelligently
-utilizes conditional algebraic logic to ensure robust numerical
-stability for large positive values of \\\eta\\, entirely avoiding
-precision overflow.
+**Numerical Stability:** Both directions are written so that no
+intermediate quantity grows with \\a\theta\\ or \\a\eta\\. The inverse
+link uses the log-sum-exp form, and the forward link and its derivatives
+are expressed in \\u = 1 - e^{-a\theta}\\ rather than in \\e^{a\theta} -
+1\\, which overflows once \\a\theta\\ passes about 709 — and, because
+the derivatives divide by its fourth power, well before that at the
+higher orders.
 
 The mathematical domain of \\\theta\\ is `c(0, Inf)`.
 
@@ -55,3 +58,30 @@ The mathematical domain of \\\theta\\ is `c(0, Inf)`.
 [`link`](https://statmodels7.github.io/linkfunctions7/reference/link.md),
 [`log_link`](https://statmodels7.github.io/linkfunctions7/reference/log_link.md),
 [`identity_link`](https://statmodels7.github.io/linkfunctions7/reference/identity_link.md)
+
+## Examples
+
+``` r
+lk <- softplus_link(a = 2)
+lk
+#> S7 Link Object: softplus(a=2)
+#>   - Parameter domain (theta): (0, Inf)
+#>   - Link parameters: a = 2
+
+theta <- c(0.5, 1, 5)
+eta <- linkfun(lk, theta)
+eta
+#> [1] 0.2706624 0.9272933 4.9999773
+linkinv(lk, eta)          # back to theta
+#> [1] 0.5 1.0 5.0
+
+# derivatives of either direction, to fourth order
+dlinkfun(lk, theta)
+#> [1] 1.581977 1.156518 1.000045
+d4linkinv(lk, eta)
+#> [1] -0.735332435  0.278864491  0.000363084
+
+# unlike the log link, softplus is asymptotically linear in eta
+linkinv(softplus_link(), c(1, 10, 100))
+#> [1]   1.313262  10.000045 100.000000
+```

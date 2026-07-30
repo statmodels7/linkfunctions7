@@ -33,3 +33,26 @@ mapping to invalid negative parameter values.
 
 [`link`](https://statmodels7.github.io/linkfunctions7/reference/link.md),
 [`identity_link`](https://statmodels7.github.io/linkfunctions7/reference/identity_link.md)
+
+## Examples
+
+``` r
+lk <- inverse_link()
+lk
+#> S7 Link Object: inverse
+#>   - Parameter domain (theta): (0, Inf)
+
+theta <- c(0.5, 1, 2)
+eta <- linkfun(lk, theta)
+eta
+#> [1] 2.0 1.0 0.5
+linkinv(lk, eta)           # the map is its own inverse
+#> [1] 0.5 1.0 2.0
+
+dlinkfun(lk, theta)
+#> [1] -4.00 -1.00 -0.25
+
+# the canonical link for a Gamma mean; note eta must keep one sign
+linkinv(lk, c(0.5, 2))
+#> [1] 2.0 0.5
+```

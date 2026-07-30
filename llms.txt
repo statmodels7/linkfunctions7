@@ -6,7 +6,7 @@ couple of closures that nothing outside can reach: you cannot hand one
 to another package, ask it for its second derivative, or add your own
 without editing somebody else’s source.
 
-[linkfunctions7](https://statmodels7.github.io/linkfunctions7) makes a
+[linkfunctions7](https://statmodels7.github.io/linkfunctions7/) makes a
 link an object. Fourteen of them, each carrying **exact analytical
 derivatives up to fourth order in both directions** — forward and
 inverse — and a diagnostic that verifies those derivatives against
@@ -187,6 +187,57 @@ route to these; call them directly where the extra dispatch matters.
 
 ## Methods
 
+- [`CauchitLink()`](https://statmodels7.github.io/linkfunctions7/reference/CauchitLink.md)
+  : S7 Class for the Cauchit Link
+- [`ClogLogLink()`](https://statmodels7.github.io/linkfunctions7/reference/ClogLogLink.md)
+  : S7 Class for the Complementary Log-Log Link
+- [`DoublyBoundedLink()`](https://statmodels7.github.io/linkfunctions7/reference/DoublyBoundedLink.md)
+  : S7 Class for a Doubly Bounded Link
+- [`IdentityLink()`](https://statmodels7.github.io/linkfunctions7/reference/IdentityLink.md)
+  : S7 Class for the Identity Link
+- [`InverseLink()`](https://statmodels7.github.io/linkfunctions7/reference/InverseLink.md)
+  : S7 Class for the Inverse Link
+- [`InverseSqLink()`](https://statmodels7.github.io/linkfunctions7/reference/InverseSqLink.md)
+  : S7 Class for the InverseSq Link
+- [`LogLink()`](https://statmodels7.github.io/linkfunctions7/reference/LogLink.md)
+  : S7 Class for the Logarithmic Link
+- [`LogLogLink()`](https://statmodels7.github.io/linkfunctions7/reference/LogLogLink.md)
+  : S7 Class for the LogLog Link
+- [`LogitLink()`](https://statmodels7.github.io/linkfunctions7/reference/LogitLink.md)
+  : S7 Class for the Logit Link
+- [`LowerBoundedLink()`](https://statmodels7.github.io/linkfunctions7/reference/LowerBoundedLink.md)
+  : S7 Class for a Lower Bounded Link
+- [`PowerLink()`](https://statmodels7.github.io/linkfunctions7/reference/PowerLink.md)
+  : S7 Class for the Power Link
+- [`ProbitLink()`](https://statmodels7.github.io/linkfunctions7/reference/ProbitLink.md)
+  : S7 Class for the Probit Link
+- [`RhobitLink()`](https://statmodels7.github.io/linkfunctions7/reference/RhobitLink.md)
+  : S7 Class for the Rhobit Link
+- [`SoftplusLink()`](https://statmodels7.github.io/linkfunctions7/reference/SoftplusLink.md)
+  : S7 Class for the Softplus Link
+- [`SqrtLink()`](https://statmodels7.github.io/linkfunctions7/reference/SqrtLink.md)
+  : S7 Class for the Sqrt Link
+- [`UpperBoundedLink()`](https://statmodels7.github.io/linkfunctions7/reference/UpperBoundedLink.md)
+  : S7 Class for an Upper Bounded Link
+- [`check_link()`](https://statmodels7.github.io/linkfunctions7/reference/check_link.md)
+  [`check_link.link()`](https://statmodels7.github.io/linkfunctions7/reference/check_link.md)
+  : Validate and Check a Link Object
+- [`const_like()`](https://statmodels7.github.io/linkfunctions7/reference/const_like.md)
+  : A Constant Vector That Preserves Missingness
+- [`exp_floor`](https://statmodels7.github.io/linkfunctions7/reference/exp_floor.md)
+  : The Smallest Parameter Value the Exponential Links Will Report
+- [`exp_floored()`](https://statmodels7.github.io/linkfunctions7/reference/exp_floored.md)
+  : A Floored Exponential
+- [`linkderiv()`](https://statmodels7.github.io/linkfunctions7/reference/linkderiv.md)
+  [`linkderiv.link()`](https://statmodels7.github.io/linkfunctions7/reference/linkderiv.md)
+  : Evaluate Derivative of Link Function by Order
+- [`linkinvderiv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinvderiv.md)
+  [`linkinvderiv.link()`](https://statmodels7.github.io/linkfunctions7/reference/linkinvderiv.md)
+  : Evaluate Derivative of Inverse Link Function by Order
+- [`logistic_deriv()`](https://statmodels7.github.io/linkfunctions7/reference/logistic_deriv.md)
+  : Derivatives of the Standard Logistic Function
+- [`na_from()`](https://statmodels7.github.io/linkfunctions7/reference/na_from.md)
+  : Carry Missingness From an Input Over to a Result
 - [`print(`*`<link>`*`)`](https://statmodels7.github.io/linkfunctions7/reference/print.link.md)
   : Print Method for S7 Link Objects
 - [`plot(`*`<link>`*`)`](https://statmodels7.github.io/linkfunctions7/reference/plot.link.md)

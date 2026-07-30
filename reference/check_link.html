@@ -72,7 +72,15 @@ of the analytical derivatives using numerical gradients in a chained sequence.</
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A logical list returning the success status of all available checks.</p>
+    <p>Invisibly, a named list of check results; see
+<code>check_link.link</code> for its shape. Called mainly for the summary
+printed to the console.</p>
+<p>Invisibly, a named list of the check results: the four scalar logicals
+<code>invertibility_theta</code>, <code>invertibility_eta</code>, <code>monotonicity</code> and
+<code>inverse_theorem</code>, plus <code>link_derivatives</code> and
+<code>inverse_link_derivatives</code>, each a logical vector of length four named
+<code>order_1</code> to <code>order_4</code>. A derivative that is not implemented counts
+as <code>FALSE</code>. Called mainly for the summary printed to the console.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -87,6 +95,53 @@ of the analytical derivatives using numerical gradients in a chained sequence.</
 first-order numerical differentiation iteratively to the exact lower-order analytical derivatives.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">check_link</span><span class="op">(</span><span class="fu"><a href="sqrt_link.html">sqrt_link</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Checking S7 Link Object: sqrt </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] Invertibility (Theta space): [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [2] Invertibility (Eta space):   [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [3] Strict Monotonicity:         [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [4] Inverse Function Theorem:    [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [5] Link Derivatives:            [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [6] Inverse Link Derivatives:    [PASSED] </span>
+<span class="r-in"><span><span class="co"># every link the package ships passes all six checks</span></span></span>
+<span class="r-in"><span><span class="fu">check_link</span><span class="op">(</span><span class="fu"><a href="logit_link.html">logit_link</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Checking S7 Link Object: logit </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] Invertibility (Theta space): [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [2] Invertibility (Eta space):   [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [3] Strict Monotonicity:         [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [4] Inverse Function Theorem:    [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [5] Link Derivatives:            [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [6] Inverse Link Derivatives:    [PASSED] </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">check_link</span><span class="op">(</span><span class="fu"><a href="power_link.html">power_link</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Checking S7 Link Object: power(lambda=2) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] Invertibility (Theta space): [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [2] Invertibility (Eta space):   [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [3] Strict Monotonicity:         [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [4] Inverse Function Theorem:    [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [5] Link Derivatives:            [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [6] Inverse Link Derivatives:    [PASSED] </span>
+<span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">link_derivatives</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> order_1 order_2 order_3 order_4 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    TRUE    TRUE    TRUE    TRUE </span>
+<span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">inverse_theorem</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># the checks are what a user-defined link should be held to as well</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="fu">check_link</span><span class="op">(</span><span class="fu"><a href="bounded_link.html">bounded_link</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Checking S7 Link Object: bounded(lwr=0, upr=10) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] Invertibility (Theta space): [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [2] Invertibility (Eta space):   [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [3] Strict Monotonicity:         [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [4] Inverse Function Theorem:    [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [5] Link Derivatives:            [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [6] Inverse Link Derivatives:    [PASSED] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

@@ -30,3 +30,27 @@ The domain of \\\theta\\ is unbounded, meaning the valid domain is
 ## See also
 
 [`link`](https://statmodels7.github.io/linkfunctions7/reference/link.md)
+
+## Examples
+
+``` r
+lk <- identity_link()
+lk
+#> S7 Link Object: identity
+#>   - Parameter domain (theta): (-Inf, Inf)
+
+linkfun(lk, c(-1, 0, 1))
+#> [1] -1  0  1
+linkinv(lk, c(-1, 0, 1))
+#> [1] -1  0  1
+
+# the first derivative is 1 and every higher one is 0 ...
+dlinkfun(lk, c(-1, 0, 1))
+#> [1] 1 1 1
+d2linkfun(lk, c(-1, 0, 1))
+#> [1] 0 0 0
+
+# ... but missingness is still propagated, not swallowed by the constant
+dlinkfun(lk, c(1, NA))
+#> [1]  1 NA
+```

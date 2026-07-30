@@ -40,3 +40,23 @@ operations.
 
 [`link`](https://statmodels7.github.io/linkfunctions7/reference/link.md),
 [`inverse_link`](https://statmodels7.github.io/linkfunctions7/reference/inverse_link.md)
+
+## Examples
+
+``` r
+lk <- inverse_sq_link()
+lk
+#> S7 Link Object: inverse_sq
+#>   - Parameter domain (theta): (0, Inf)
+
+theta <- c(0.5, 1, 2)
+eta <- linkfun(lk, theta)  # 1 / theta^2
+eta
+#> [1] 4.00 1.00 0.25
+linkinv(lk, eta)
+#> [1] 0.5 1.0 2.0
+
+# the canonical link of the inverse Gaussian; eta must stay positive
+dlinkinv(lk, c(0.5, 1, 4))
+#> [1] -1.414214 -0.500000 -0.062500
+```
