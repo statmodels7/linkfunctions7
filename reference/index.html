@@ -38,7 +38,7 @@
     <div class="section level2">
       <h2 id="the-link-class">The link class<a class="anchor" aria-label="anchor" href="#the-link-class"></a></h2>
 
-      <div class="section-desc"><p>The S7 class every link inherits from, and the diagnostic that checks one.</p></div>
+      <div class="section-desc"><p>The S7 class every link inherits from, the diagnostic that checks one, and the report of which derivative orders it computes exactly.</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -58,6 +58,13 @@
 
         </dt>
         <dd>Validate and Check a Link Object</dd>
+
+        <dt>
+
+          <code><a href="link_fallback_orders.html">link_fallback_orders()</a></code>
+
+        </dt>
+        <dd>Which Derivative Orders a Link Computes Exactly</dd>
       </dl></div><div class="section level2">
       <h2 id="link-functions">Link functions<a class="anchor" aria-label="anchor" href="#link-functions"></a></h2>
 
@@ -391,6 +398,13 @@
 
         <dt>
 
+          <code><a href="analytic_order.html">analytic_order()</a></code>
+
+        </dt>
+        <dd>Highest Analytically Implemented Derivative Order</dd>
+
+        <dt>
+
           <code><a href="check_link.html">check_link()</a></code> <code><a href="check_link.html">check_link.link()</a></code>
 
         </dt>
@@ -419,6 +433,20 @@
 
         <dt>
 
+          <code><a href="fallback_deriv.html">fallback_deriv()</a></code>
+
+        </dt>
+        <dd>The Body Shared by Every Numerical Fallback</dd>
+
+        <dt>
+
+          <code><a href="fd_step.html">fd_step()</a></code>
+
+        </dt>
+        <dd>A Finite-Difference Step for a Given Order</dd>
+
+        <dt>
+
           <code><a href="linkderiv.html">linkderiv()</a></code> <code><a href="linkderiv.html">linkderiv.link()</a></code>
 
         </dt>
@@ -444,6 +472,13 @@
 
         </dt>
         <dd>Carry Missingness From an Input Over to a Result</dd>
+
+        <dt>
+
+          <code><a href="stencil_deriv.html">stencil_deriv()</a></code>
+
+        </dt>
+        <dd>One Central Stencil, Never Nested</dd>
 
         <dt>
 

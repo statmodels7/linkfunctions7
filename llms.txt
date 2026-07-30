@@ -102,14 +102,16 @@ check_link(log_link())
 
 ## The link class
 
-The S7 class every link inherits from, and the diagnostic that checks
-one.
+The S7 class every link inherits from, the diagnostic that checks one,
+and the report of which derivative orders it computes exactly.
 
 - [`link()`](https://statmodels7.github.io/linkfunctions7/reference/link.md)
   : S7 Class for Statistical Link Functions
 - [`check_link()`](https://statmodels7.github.io/linkfunctions7/reference/check_link.md)
   [`check_link.link()`](https://statmodels7.github.io/linkfunctions7/reference/check_link.md)
   : Validate and Check a Link Object
+- [`link_fallback_orders()`](https://statmodels7.github.io/linkfunctions7/reference/link_fallback_orders.md)
+  : Which Derivative Orders a Link Computes Exactly
 
 ## Link functions
 
@@ -219,6 +221,8 @@ route to these; call them directly where the extra dispatch matters.
   : S7 Class for the Sqrt Link
 - [`UpperBoundedLink()`](https://statmodels7.github.io/linkfunctions7/reference/UpperBoundedLink.md)
   : S7 Class for an Upper Bounded Link
+- [`analytic_order()`](https://statmodels7.github.io/linkfunctions7/reference/analytic_order.md)
+  : Highest Analytically Implemented Derivative Order
 - [`check_link()`](https://statmodels7.github.io/linkfunctions7/reference/check_link.md)
   [`check_link.link()`](https://statmodels7.github.io/linkfunctions7/reference/check_link.md)
   : Validate and Check a Link Object
@@ -228,6 +232,10 @@ route to these; call them directly where the extra dispatch matters.
   : The Smallest Parameter Value the Exponential Links Will Report
 - [`exp_floored()`](https://statmodels7.github.io/linkfunctions7/reference/exp_floored.md)
   : A Floored Exponential
+- [`fallback_deriv()`](https://statmodels7.github.io/linkfunctions7/reference/fallback_deriv.md)
+  : The Body Shared by Every Numerical Fallback
+- [`fd_step()`](https://statmodels7.github.io/linkfunctions7/reference/fd_step.md)
+  : A Finite-Difference Step for a Given Order
 - [`linkderiv()`](https://statmodels7.github.io/linkfunctions7/reference/linkderiv.md)
   [`linkderiv.link()`](https://statmodels7.github.io/linkfunctions7/reference/linkderiv.md)
   : Evaluate Derivative of Link Function by Order
@@ -238,6 +246,8 @@ route to these; call them directly where the extra dispatch matters.
   : Derivatives of the Standard Logistic Function
 - [`na_from()`](https://statmodels7.github.io/linkfunctions7/reference/na_from.md)
   : Carry Missingness From an Input Over to a Result
+- [`stencil_deriv()`](https://statmodels7.github.io/linkfunctions7/reference/stencil_deriv.md)
+  : One Central Stencil, Never Nested
 - [`print(`*`<link>`*`)`](https://statmodels7.github.io/linkfunctions7/reference/print.link.md)
   : Print Method for S7 Link Objects
 - [`plot(`*`<link>`*`)`](https://statmodels7.github.io/linkfunctions7/reference/plot.link.md)

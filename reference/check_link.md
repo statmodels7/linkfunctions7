@@ -36,8 +36,15 @@ Invisibly, a named list of the check results: the four scalar logicals
 `invertibility_theta`, `invertibility_eta`, `monotonicity` and
 `inverse_theorem`, plus `link_derivatives` and
 `inverse_link_derivatives`, each a logical vector of length four named
-`order_1` to `order_4`. A derivative that is not implemented counts as
-`FALSE`. Called mainly for the summary printed to the console.
+`order_1` to `order_4`. In those two, `TRUE` and `FALSE` mean what they
+say and `NA` means **not checked**: the order is supplied by a numerical
+fallback, so the value and the reference would be the same arithmetic
+and would agree whatever the link did. The number of orders actually
+implemented is carried on the result as the attribute
+`"analytic_orders"`; see
+[`link_fallback_orders`](https://statmodels7.github.io/linkfunctions7/reference/link_fallback_orders.md).
+A derivative that raises an error still counts as `FALSE`. Called mainly
+for the summary printed to the console.
 
 ## Details
 

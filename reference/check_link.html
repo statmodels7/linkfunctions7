@@ -79,8 +79,14 @@ printed to the console.</p>
 <code>invertibility_theta</code>, <code>invertibility_eta</code>, <code>monotonicity</code> and
 <code>inverse_theorem</code>, plus <code>link_derivatives</code> and
 <code>inverse_link_derivatives</code>, each a logical vector of length four named
-<code>order_1</code> to <code>order_4</code>. A derivative that is not implemented counts
-as <code>FALSE</code>. Called mainly for the summary printed to the console.</p>
+<code>order_1</code> to <code>order_4</code>. In those two, <code>TRUE</code> and <code>FALSE</code>
+mean what they say and <code>NA</code> means <strong>not checked</strong>: the order is
+supplied by a numerical fallback, so the value and the reference would be
+the same arithmetic and would agree whatever the link did. The number of
+orders actually implemented is carried on the result as the attribute
+<code>"analytic_orders"</code>; see <code><a href="link_fallback_orders.html">link_fallback_orders</a></code>. A
+derivative that raises an error still counts as <code>FALSE</code>. Called mainly
+for the summary printed to the console.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
