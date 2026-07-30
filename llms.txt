@@ -12,8 +12,8 @@ derivatives up to fourth order in both directions** — forward and
 inverse — and a diagnostic that verifies those derivatives against
 numerical ones. Written once, usable by anything.
 
-It is part of [statmodels7](https://statmodels7.github.io), an S7 stack
-for statistical modelling, and is what
+It is part of [statmodels7](https://statmodels7.github.io), an S7
+toolkit for statistical modelling, and is what
 [distributions7](https://statmodels7.github.io/distributions7) uses to
 move between a constrained parameter and the unconstrained scale a
 fitting routine works on. The mathematics behind every formula —
