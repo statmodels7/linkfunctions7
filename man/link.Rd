@@ -13,6 +13,12 @@ link(link_name = character(0), link_bounds = integer(0), link_params = NULL)
 
 \item{link_params}{A list or vector of additional parameters required to define the link, or \code{NULL}.}
 }
+\value{
+An S7 object of class \code{link}. In practice this class is not
+instantiated directly: each link is a subclass created by one of the
+constructors (\code{\link{logit_link}}, \code{\link{power_link}}, ...), and
+\code{link} is what they all inherit from and what methods dispatch on.
+}
 \description{
 A strictly typed S7 object that encapsulates the metadata of a statistical
 link function. The mathematical transformations, including the forward and
@@ -29,4 +35,14 @@ The object assumes the following mathematical notation:
 }
 The relationship is defined as \eqn{\eta = g(\theta)} (link function) and
 \eqn{\theta = g^{-1}(\eta)} (inverse link function).
+}
+\examples{
+# every constructor returns an object inheriting from `link`
+lk <- logit_link()
+lk
+S7::S7_inherits(lk, link)
+
+lk@link_name
+lk@link_bounds
+
 }
