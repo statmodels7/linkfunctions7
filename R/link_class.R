@@ -178,6 +178,10 @@ logistic_deriv <- function(p, k) {
 #' before.
 #'
 #' @format A length-one numeric vector.
+#' @return A length-one numeric vector, about \code{1.9e-77}. This is a constant
+#'   and not a function, but a documented topic needs a return section either
+#'   way: it is one of the two things a first CRAN submission is most often sent
+#'   back for.
 #' @seealso \code{\link{exp_floored}}
 #' @keywords internal
 exp_floor <- (24 / .Machine$double.xmax)^0.25

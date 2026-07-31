@@ -10,6 +10,12 @@ A length-one numeric vector.
 \usage{
 exp_floor
 }
+\value{
+A length-one numeric vector, about \code{1.9e-77}. This is a constant
+and not a function, but a documented topic needs a return section either
+way: it is one of the two things a first CRAN submission is most often sent
+back for.
+}
 \description{
 The floor applied to \code{exp(eta)} by every link whose inverse is an
 exponential (\code{\link{log_link}}, \code{\link{cloglog_link}}, and the

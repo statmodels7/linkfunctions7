@@ -59,12 +59,17 @@ reference:
   - bounded_link
 
 - title: Evaluating a link
-  desc: The two directions, and any derivative order of either.
+  desc: >
+    The two directions, and any derivative order of either. `linkinv()`
+    guarantees a result strictly inside the parameter's domain, which is what
+    lets its output be handed straight back to `linkfun()` or to a density that
+    validates against open intervals.
   contents:
   - linkfun
   - linkinv
   - linkderiv
   - linkinvderiv
+  - link_bounds_clamp
 
 - title: Derivatives by order
   desc: >
