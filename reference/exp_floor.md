@@ -16,6 +16,13 @@ exp_floor
 
 A length-one numeric vector.
 
+## Value
+
+A length-one numeric vector, about `1.9e-77`. This is a constant and not
+a function, but a documented topic needs a return section either way: it
+is one of the two things a first CRAN submission is most often sent back
+for.
+
 ## Details
 
 The floor exists so that a parameter reported as \\\theta\\ can be

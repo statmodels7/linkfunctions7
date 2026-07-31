@@ -50,6 +50,11 @@ family: a power, a softplus scale, a bounded interval.
 ## Evaluating a link
 
 The two directions, and any derivative order of either.
+[`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md)
+guarantees a result strictly inside the parameter’s domain, which is
+what lets its output be handed straight back to
+[`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md)
+or to a density that validates against open intervals.
 
 - [`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md)
   : Evaluate Forward Link Function
@@ -61,6 +66,8 @@ The two directions, and any derivative order of either.
 - [`linkinvderiv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinvderiv.md)
   [`linkinvderiv.link()`](https://statmodels7.github.io/linkfunctions7/reference/linkinvderiv.md)
   : Evaluate Derivative of Inverse Link Function by Order
+- [`link_bounds_clamp()`](https://statmodels7.github.io/linkfunctions7/reference/link_bounds_clamp.md)
+  : Clamp a Parameter Strictly Inside Its Domain
 
 ## Derivatives by order
 
