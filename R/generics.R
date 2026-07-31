@@ -10,14 +10,57 @@
 linkfun <- S7::new_generic("linkfun", "x", fun = function(x, theta) S7::S7_dispatch())
 
 #' @title Evaluate Inverse Link Function
+#'
+#' @description
+#' Maps a linear predictor back onto the parameter's domain.
+#'
+#' @details
+#' \strong{The result is always strictly inside \code{link_bounds}}, and that is
+#' enforced here rather than left to each method. A link is a bijection onto an
+#' \emph{open} interval, which is exactly what makes it useful — a value it
+#' returns can be handed to \code{\link{linkfun}} and come back, or to a density
+#' that validates its parameters against open intervals. In double precision the
+#' bijection is not quite onto: \code{plogis} is exactly 1 above about
+#' \eqn{\eta = 37}, \code{lwr + exp(eta)} rounds to \code{lwr} once the
+#' exponential falls below half an ulp of a non-zero \code{lwr}, and both
+#' overflow to infinity far out. Nine of the links shipped here reach a bound
+#' somewhere in \eqn{\lvert \eta \rvert \le 800}.
+#'
+#' So the generic clamps: a result at or beyond a finite bound becomes the
+#' nearest double strictly inside it, and a non-finite result becomes the
+#' largest finite double of that sign. Both are derived rather than chosen —
+#' they are the extremes of what "strictly inside, and a usable number" permits,
+#' and no tolerance is invented. The clamp costs one comparison per bound and
+#' fires only in the tails.
+#'
+#' Doing it in the generic body means every link inherits it, including one you
+#' write yourself, and that a method can be written as the plain mathematical
+#' formula without a guard of its own.
+#'
 #' @param x An object of class \code{link}.
 #' @param eta A numeric vector of linear predictors.
-#' @return A numeric vector of probabilities/means.
+#'
+#' @return A numeric vector, strictly inside \code{x@link_bounds}.
+#'
 #' @examples
 #' linkinv(logit_link(), c(-1, 0, 1))
 #' linkinv(log_link(), c(0, 1))
+#'
+#' # far out, where the arithmetic saturates: strictly inside (0, 1) rather
+#' # than exactly 1, so the round trip still returns a number
+#' linkinv(logit_link(), 40) < 1
+#' linkfun(logit_link(), linkinv(logit_link(), 40))
+#'
+#' @seealso \code{\link{linkfun}}, \code{\link{link_bounds_clamp}}
 #' @export
-linkinv <- S7::new_generic("linkinv", "x", fun = function(x, eta) S7::S7_dispatch())
+linkinv <- S7::new_generic("linkinv", "x", fun = function(x, eta) {
+  # S7_dispatch() has to be assigned on its own line rather than nested in the
+  # call: evaluated as an argument it re-enters the promise for `eta` and fails
+  # with "recursive default argument reference". The same shape as
+  # distributions7's link-scale interception, and for the same reason.
+  theta <- S7::S7_dispatch()
+  link_bounds_clamp(theta, x@link_bounds)
+})
 
 #' @title 1st Derivative of Link Function
 #' @description

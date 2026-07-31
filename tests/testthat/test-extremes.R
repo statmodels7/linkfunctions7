@@ -220,3 +220,112 @@ test_that("constructors reject malformed arguments", {
   expect_error(power_link(lambda = NA), "single finite number")
   expect_error(power_link(lambda = c(1, 2)), "single finite number")
 })
+
+
+# --- the open interval is open in double precision too ----------------------
+
+# Every link in the package, so that adding one puts it under this test without
+# anybody remembering to.
+all_shipped <- function() {
+  list(identity = identity_link(), log = log_link(), logit = logit_link(),
+       probit = probit_link(), cloglog = cloglog_link(),
+       loglog = loglog_link(), cauchit = cauchit_link(),
+       rhobit = rhobit_link(), sqrt = sqrt_link(), inverse = inverse_link(),
+       inverse_sq = inverse_sq_link(), power2 = power_link(2),
+       power_half = power_link(0.5), softplus1 = softplus_link(1),
+       softplus30 = softplus_link(30),
+       b01 = bounded_link(0, 1), b23 = bounded_link(-2, 3),
+       blo0 = bounded_link(lwr = 0), blo2 = bounded_link(lwr = 2),
+       bup5 = bounded_link(upr = 5))
+}
+
+test_that("linkinv never lands ON a bound, however far out eta goes", {
+  # The defect this replaces: linkinv(logit_link(), 37) was exactly 1, and
+  # linkinv(bounded_link(lwr = 2), -40) was exactly 2. A link is documented as a
+  # bijection onto an OPEN interval, which is what lets its output be handed
+  # back to linkfun, or to a density that validates against open intervals.
+  # Nine of the links here reached a bound somewhere in |eta| <= 800.
+  eta <- c(-800, -300, -100, -40, -37, -10, 10, 37, 40, 100, 300, 800)
+  for (nm in names(all_shipped())) {
+    lk <- all_shipped()[[nm]]
+    b <- lk@link_bounds
+    th <- suppressWarnings(linkinv(lk, eta))
+    keep <- !is.na(th)
+    if (is.finite(b[1])) {
+      expect_false(any(th[keep] == b[1]),
+                   label = sprintf("%s touches its lower bound", nm))
+    }
+    if (is.finite(b[2])) {
+      expect_false(any(th[keep] == b[2]),
+                   label = sprintf("%s touches its upper bound", nm))
+    }
+    expect_false(any(is.infinite(th)),
+                 label = sprintf("%s returns an infinite theta", nm))
+  }
+})
+
+
+test_that("the round trip stays finite where it used to give Inf", {
+  # linkfun(linkinv(eta)) cannot recover eta once the forward map has
+  # saturated -- no clamp can put back information the arithmetic destroyed --
+  # but it must return a NUMBER, because the caller's next act is arithmetic.
+  for (nm in c("logit", "probit", "rhobit", "loglog", "cloglog", "b01",
+               "b23", "blo2", "bup5")) {
+    lk <- all_shipped()[[nm]]
+    th <- linkinv(lk, c(-800, -40, 40, 800))
+    expect_true(all(is.finite(suppressWarnings(linkfun(lk, th)))),
+                label = sprintf("%s round trip", nm))
+  }
+})
+
+
+test_that("the clamp fires only on saturation, never on an inadmissible eta", {
+  # Not every link takes the whole real line. inverse_link() is a bijection from
+  # (0, Inf), so eta = -40 gives -0.025: outside the domain by a wide margin,
+  # and a complaint rather than a value. Clamping it would turn "you gave me an
+  # eta this link cannot take" into a small positive number, which is worse.
+  expect_lt(linkinv(inverse_link(), -40), 0)
+  expect_true(is.nan(linkinv(power_link(2), -40)))
+
+  # ...while a value that has landed exactly on the bound is moved just inside
+  expect_gt(linkinv(bounded_link(lwr = 2), -40), 2)
+  expect_lt(linkinv(bounded_link(0, 1), 40), 1)
+})
+
+
+test_that("the clamp does not disturb the ordinary range", {
+  # It fires on equality with a bound and nowhere else, so everything a caller
+  # would recognise must be bit-for-bit what the formula produced.
+  eta <- seq(-6, 6, by = 0.25)
+  expect_equal(linkinv(logit_link(), eta), stats::plogis(eta))
+  expect_equal(linkinv(log_link(), eta), exp(eta))
+  expect_equal(linkinv(bounded_link(-2, 3), eta),
+               -2 + 5 * stats::plogis(eta))
+})
+
+
+test_that("link_bounds_clamp leaves NA and NaN alone", {
+  # Converting one would hide a defect upstream rather than fix one here.
+  x <- c(NA_real_, NaN, 0, 0.5, 1)
+  out <- link_bounds_clamp(x, c(0, 1))
+  expect_true(is.na(out[1]))
+  expect_true(is.nan(out[2]))
+  expect_gt(out[3], 0)
+  expect_equal(out[4], 0.5)
+  expect_lt(out[5], 1)
+})
+
+
+test_that("a user-written link inherits the clamp without asking", {
+  # The reason it lives in the generic: a link nobody here wrote is protected
+  # by the same guarantee, and its method can be the plain formula.
+  Saturating <- S7::new_class("Saturating", parent = link)
+  S7::method(linkfun, Saturating) <- function(x, theta) stats::qlogis(theta)
+  S7::method(linkinv, Saturating) <- function(x, eta) stats::plogis(eta)
+  lk <- Saturating(link_name = "saturating", link_bounds = c(0, 1),
+                   link_params = list())
+
+  expect_equal(stats::plogis(40), 1)          # the method saturates
+  expect_lt(linkinv(lk, 40), 1)               # the generic does not
+  expect_gt(linkinv(lk, -800), 0)
+})

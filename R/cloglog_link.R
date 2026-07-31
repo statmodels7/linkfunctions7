@@ -16,7 +16,12 @@ ClogLogLink <- S7::new_class(
 # --- Methods for ClogLogLink ---
 
 S7::method(linkfun, ClogLogLink) <- function(x, theta) {
-  log(-log(1 - theta))
+  # log1p(-theta), not log(1 - theta). For small theta the subtraction rounds to
+  # exactly 1, its logarithm to exactly 0, and the answer to -Inf -- while the
+  # true value, log(-log(1-theta)) ~ log(theta), is perfectly representable:
+  # at theta = 1.9e-77 it is -176.66. linkinv() reaches that far down on purpose
+  # (see its floor below), so linkfun has to come back from there.
+  log(-log1p(-theta))
 }
 
 S7::method(linkinv, ClogLogLink) <- function(x, eta) {
@@ -31,22 +36,22 @@ S7::method(linkinv, ClogLogLink) <- function(x, eta) {
 # Exact analytical derivatives of the link function (wrt theta)
 S7::method(dlinkfun, ClogLogLink) <- function(x, theta) {
   val <- 1 - theta
-  L <- log(val)
+  L <- log1p(-theta)
   -1 / (val * L)
 }
 S7::method(d2linkfun, ClogLogLink) <- function(x, theta) {
   val <- 1 - theta
-  L <- log(val)
+  L <- log1p(-theta)
   -(L + 1) / ((val^2) * (L^2))
 }
 S7::method(d3linkfun, ClogLogLink) <- function(x, theta) {
   val <- 1 - theta
-  L <- log(val)
+  L <- log1p(-theta)
   -(2 * (L^2) + 3 * L + 2) / ((val^3) * (L^3))
 }
 S7::method(d4linkfun, ClogLogLink) <- function(x, theta) {
   val <- 1 - theta
-  L <- log(val)
+  L <- log1p(-theta)
   -(6 * (L^3) + 11 * (L^2) + 12 * L + 6) / ((val^4) * (L^4))
 }
 
