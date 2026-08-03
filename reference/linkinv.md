@@ -43,8 +43,8 @@ largest finite double of that sign. Both are derived rather than chosen
 permits, and no tolerance is invented. The clamp costs one comparison
 per bound and fires only in the tails.
 
-Doing it in the generic body means every link inherits it, including one
-you write yourself, and that a method can be written as the plain
+Doing it in the generic body means every link inherits it, including a
+user-defined one, and that a method can be written as the plain
 mathematical formula without a guard of its own.
 
 ## See also

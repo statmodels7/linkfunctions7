@@ -22,10 +22,9 @@ the fourth order.
 The Log link is defined mathematically as \\\eta = \log(\theta)\\. The
 inverse link is the exponential function \\\theta = \exp(\eta)\\.
 
-A remarkable mathematical property of this link is that the inverse
-function is its own derivative. Therefore, the parameter \\\theta\\ and
-all its derivatives with respect to \\\eta\\ are equal to
-\\\exp(\eta)\\.
+The inverse function of this link is its own derivative. Therefore, the
+parameter \\\theta\\ and all its derivatives with respect to \\\eta\\
+are equal to \\\exp(\eta)\\.
 
 The valid mathematical domain of \\\theta\\ is `c(0, Inf)`.
 

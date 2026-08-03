@@ -25,8 +25,8 @@ leading orders implemented analytically, from 0 to 4.
 
 Every link can answer every derivative generic, because the base class
 supplies numerical fallbacks for the orders a link does not implement.
-That convenience makes it worth being able to ask which is which — a
-fallback is correct but not exact, and it is the reason
+That convenience requires a way of asking which is which — a fallback is
+correct but not exact, and it is the reason
 [`check_link`](https://statmodels7.github.io/linkfunctions7/reference/check_link.md)
 reports such orders separately rather than passing them.
 
