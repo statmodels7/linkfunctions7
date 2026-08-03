@@ -79,17 +79,17 @@
 to an unconstrained linear predictor
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>η</mi><annotation encoding="application/x-tex">\eta</annotation></semantics></math>,
 so that a model can be fitted without fighting the parameter’s boundary.
-A variance must stay positive, a probability must stay in
+A variance must stay positive and a probability must stay in
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0, 1)</annotation></semantics></math>;
-the log and logit links let you optimise over the whole real line and
-map back.</p>
-<p>What sets <strong>linkfunctions7</strong> apart from a couple of
+the log and logit links move the optimisation onto the whole real line
+and map the result back.</p>
+<p>What distinguishes <strong>linkfunctions7</strong> from a couple of
 <code><a href="https://rdrr.io/r/base/Log.html" class="external-link">log()</a></code> and <code><a href="https://rdrr.io/r/stats/Logistic.html" class="external-link">plogis()</a></code> calls is that every link
 carries its <strong>exact analytical derivatives up to fourth
-order</strong>, in both directions — and a diagnostic that proves they
-are right. That is what a modelling package needs: a Newton or
-Fisher-scoring step wants the derivative of the inverse link, and a
-higher-order correction wants the ones above it.</p>
+order</strong>, in both directions, together with a diagnostic that
+verifies them. Those derivatives are what a modelling package needs: a
+Newton or Fisher-scoring step uses the derivative of the inverse link,
+and a higher-order correction uses the orders above it.</p>
 <div class="section level2">
 <h2 id="a-link-is-an-object">A link is an object<a class="anchor" aria-label="anchor" href="#a-link-is-an-object"></a>
 </h2>
@@ -158,8 +158,8 @@ and inverse transformations over sensible ranges:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="../reference/logit_link.html">logit_link</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="link-functions_files/figure-html/unnamed-chunk-7-1.png" class="r-plt" alt="" width="672"></p>
-<p>The <strong>softplus</strong> link is a good one to look at. Like the
-log it keeps
+<p>The <strong>softplus</strong> link illustrates the differences
+between positivity links. Like the log it keeps
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>
 positive, but instead of the log’s global exponential it bends smoothly
 into a straight line for large
@@ -260,7 +260,7 @@ is, and the derivatives are available here too:</p>
 </table>
 </div>
 <div class="section level2">
-<h2 id="trust-but-verify">Trust, but verify<a class="anchor" aria-label="anchor" href="#trust-but-verify"></a>
+<h2 id="validating-a-link">Validating a link<a class="anchor" aria-label="anchor" href="#validating-a-link"></a>
 </h2>
 <p>Because the derivatives are hand-written, the package ships a
 diagnostic that checks them. <code><a href="../reference/check_link.html">check_link()</a></code> confirms that the
@@ -277,11 +277,11 @@ holds, and that every analytical derivative matches a numerical one:</p>
 <span><span class="co">#&gt;   [4] Inverse Function Theorem:    [PASSED] </span></span>
 <span><span class="co">#&gt;   [5] Link Derivatives:            [PASSED] </span></span>
 <span><span class="co">#&gt;   [6] Inverse Link Derivatives:    [PASSED]</span></span></code></pre></div>
-<p>Run it on any link before you rely on it — and certainly on any link
-you write yourself.</p>
+<p>The diagnostic runs on any link, and it matters most for a newly
+written one, where a wrong derivative is likeliest.</p>
 </div>
 <div class="section level2">
-<h2 id="defining-your-own-link">Defining your own link<a class="anchor" aria-label="anchor" href="#defining-your-own-link"></a>
+<h2 id="defining-a-new-link">Defining a new link<a class="anchor" aria-label="anchor" href="#defining-a-new-link"></a>
 </h2>
 <p>A new link is a subclass of <code>link</code> with its ten methods:
 the two directions and their four derivatives each. The pattern is
@@ -319,8 +319,7 @@ on
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">neglog</span> <span class="op">&lt;-</span> <span class="fu">NegLogLog</span><span class="op">(</span>link_name <span class="op">=</span> <span class="st">"neglog-log"</span>, link_bounds <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, link_params <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
-<p>Did the derivatives come out right? Ask the diagnostic rather than
-trusting the algebra:</p>
+<p>The diagnostic verifies the hand-written derivatives:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="fu"><a href="../reference/check_link.html">check_link</a></span><span class="op">(</span><span class="va">neglog</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Checking S7 Link Object: neglog-log </span></span>
@@ -330,12 +329,12 @@ trusting the algebra:</p>
 <span><span class="co">#&gt;   [4] Inverse Function Theorem:    [PASSED] </span></span>
 <span><span class="co">#&gt;   [5] Link Derivatives:            [PASSED] </span></span>
 <span><span class="co">#&gt;   [6] Inverse Link Derivatives:    [PASSED]</span></span></code></pre></div>
-<p>If any line came back <code>[FAILED]</code>, that is a derivative to
-revisit — which is exactly the mistake <code><a href="../reference/check_link.html">check_link()</a></code> exists
-to catch.</p>
+<p>A line reporting <code>[FAILED]</code> identifies a derivative to
+revisit, which is the mistake <code><a href="../reference/check_link.html">check_link()</a></code> exists to
+catch.</p>
 </div>
 <div class="section level2">
-<h2 id="where-to-go-next">Where to go next<a class="anchor" aria-label="anchor" href="#where-to-go-next"></a>
+<h2 id="further-reading">Further reading<a class="anchor" aria-label="anchor" href="#further-reading"></a>
 </h2>
 <ul>
 <li>

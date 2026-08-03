@@ -7,18 +7,18 @@ library(linkfunctions7)
 
 A link function maps a constrained parameter $`\theta`$ to an
 unconstrained linear predictor $`\eta`$, so that a model can be fitted
-without fighting the parameter’s boundary. A variance must stay
-positive, a probability must stay in $`(0, 1)`$; the log and logit links
-let you optimise over the whole real line and map back.
+without fighting the parameter’s boundary. A variance must stay positive
+and a probability must stay in $`(0, 1)`$; the log and logit links move
+the optimisation onto the whole real line and map the result back.
 
-What sets **linkfunctions7** apart from a couple of
+What distinguishes **linkfunctions7** from a couple of
 [`log()`](https://rdrr.io/r/base/Log.html) and
 [`plogis()`](https://rdrr.io/r/stats/Logistic.html) calls is that every
 link carries its **exact analytical derivatives up to fourth order**, in
-both directions — and a diagnostic that proves they are right. That is
-what a modelling package needs: a Newton or Fisher-scoring step wants
-the derivative of the inverse link, and a higher-order correction wants
-the ones above it.
+both directions, together with a diagnostic that verifies them. Those
+derivatives are what a modelling package needs: a Newton or
+Fisher-scoring step uses the derivative of the inverse link, and a
+higher-order correction uses the orders above it.
 
 ## A link is an object
 
@@ -107,10 +107,11 @@ plot(logit_link())
 
 ![](link-functions_files/figure-html/unnamed-chunk-7-1.png)
 
-The **softplus** link is a good one to look at. Like the log it keeps
-$`\theta`$ positive, but instead of the log’s global exponential it
-bends smoothly into a straight line for large $`\eta`$, which makes it
-better behaved when the linear predictor wanders:
+The **softplus** link illustrates the differences between positivity
+links. Like the log it keeps $`\theta`$ positive, but instead of the
+log’s global exponential it bends smoothly into a straight line for
+large $`\eta`$, which makes it better behaved when the linear predictor
+wanders:
 
 ``` r
 
@@ -164,7 +165,7 @@ d2linkfun(lk, theta)
 | `softplus_link(a)` | $`(0, \infty)`$ |
 | `bounded_link(lwr, upr)` | $`(\text{lwr}, \text{upr})`$ |
 
-## Trust, but verify
+## Validating a link
 
 Because the derivatives are hand-written, the package ships a diagnostic
 that checks them.
@@ -185,10 +186,10 @@ invisible(check_link(logit_link()))
 #>   [6] Inverse Link Derivatives:    [PASSED]
 ```
 
-Run it on any link before you rely on it — and certainly on any link you
-write yourself.
+The diagnostic runs on any link, and it matters most for a newly written
+one, where a wrong derivative is likeliest.
 
-## Defining your own link
+## Defining a new link
 
 A new link is a subclass of `link` with its ten methods: the two
 directions and their four derivatives each. The pattern is short; here
@@ -227,8 +228,7 @@ S7::method(d4linkinv, NegLogLog) <- function(x, eta) {
 neglog <- NegLogLog(link_name = "neglog-log", link_bounds = c(0, 1), link_params = NULL)
 ```
 
-Did the derivatives come out right? Ask the diagnostic rather than
-trusting the algebra:
+The diagnostic verifies the hand-written derivatives:
 
 ``` r
 
@@ -242,12 +242,12 @@ invisible(check_link(neglog))
 #>   [6] Inverse Link Derivatives:    [PASSED]
 ```
 
-If any line came back `[FAILED]`, that is a derivative to revisit —
-which is exactly the mistake
+A line reporting `[FAILED]` identifies a derivative to revisit, which is
+the mistake
 [`check_link()`](https://statmodels7.github.io/linkfunctions7/reference/check_link.md)
 exists to catch.
 
-## Where to go next
+## Further reading
 
 - [`?check_link`](https://statmodels7.github.io/linkfunctions7/reference/check_link.md)
   — the full diagnostic and what each check means.
