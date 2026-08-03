@@ -37,10 +37,9 @@ S7::method(d4linkinv, LogLink) <- function(x, eta) exp_floored(eta)
 #' @include generics.R
 #' @include link_class.R
 #' @description
-#' Creates an S7 object of class \code{link} implementing the natural logarithm transformation.
-#' This is the canonical link function for the mean of the Poisson distribution and is 
-#' widely used for modeling count data or non-negative continuous data with multiplicative effects.
-#'
+#' The log link \eqn{\eta = \log\theta} on \eqn{(0, \infty)}, with
+#' inverse \eqn{\theta = e^\eta}; the canonical link for a positive
+#' parameter.
 #' @details
 #' The Log link is defined mathematically as \eqn{\eta = \log(\theta)}.
 #' The inverse link is the exponential function \eqn{\theta = \exp(\eta)}.

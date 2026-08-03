@@ -40,10 +40,8 @@ S7::method(d4linkinv, PowerLink) <- function(x, eta) { k <- 1 / x@lambda; na_fro
 #' @include generics.R
 #' @include link_class.R
 #' @description
-#' Creates an S7 object of class \code{link} implementing the Power transformation family.
-#' This function generates a specific link function based on the provided power parameter \code{lambda}.
-#' It elegantly includes the special case where \code{lambda = 0}, which dynamically returns the Log link.
-#'
+#' The power link \eqn{\eta = \theta^\lambda} on \eqn{(0, \infty)}; at
+#' \eqn{\lambda = 0} it returns the log link, its limit by continuity.
 #' @param lambda A numeric value defining the power of the transformation. Defaults to 1.
 #'
 #' @details

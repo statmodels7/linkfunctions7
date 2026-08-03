@@ -35,9 +35,10 @@ derivative that raises an error still counts as \code{FALSE}. Called mainly
 for the summary printed to the console.
 }
 \description{
-A diagnostic S7 method to mathematically validate a \code{link} object.
-It sequentially verifies the algebraic invertibility and the correctness
-of the analytical derivatives using numerical gradients in a chained sequence.
+Validates a \code{link} object numerically: invertibility in both
+directions on a grid, strict monotonicity, the inverse function theorem
+\eqn{h'(\eta)\,g'(\theta) = 1}, and every analytic derivative against one
+numerical differentiation of the analytic order below it.
 }
 \details{
 The function assumes the existence of S7 generics \code{linkfun}, \code{linkinv},

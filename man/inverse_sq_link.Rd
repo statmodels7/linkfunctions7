@@ -11,8 +11,9 @@ An S7 object of class \code{InverseSqLink} (inheriting from \code{link}) contain
 and their exact analytical derivatives up to the fourth order.
 }
 \description{
-Creates an S7 object of class \code{link} implementing the Inverse Square transformation.
-This is the canonical link function for the Inverse Gaussian distribution.
+The inverse-square link \eqn{\eta = 1/\theta^2} on \eqn{(0, \infty)},
+the canonical link of the inverse Gaussian family; its image is
+\eqn{(0, \infty)}.
 }
 \details{
 The Inverse Square link is defined mathematically as \eqn{\eta = 1 / \theta^2}.

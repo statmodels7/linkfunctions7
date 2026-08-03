@@ -161,25 +161,25 @@ S7::method(d4linkinv, UpperBoundedLink) <- function(x, eta) -exp_floored(eta)
 #' @include generics.R
 #' @include link_class.R
 #' @description
-#' Creates an S7 object of class \code{link} that maps a constrained interval to the 
-#' whole real line. By specifying \code{lwr} and \code{upr}, this function dynamically 
-#' constructs a doubly bounded (scaled logit), lower bounded (shifted log), upper bounded, 
-#' or unbounded (identity) link function.
+#' The link for a parameter confined to \eqn{(lwr, upr)}: a scaled logit when
+#' both endpoints are finite, a shifted log \eqn{\eta = \log(\theta - lwr)}
+#' when only the lower is, its mirror image \eqn{\eta = \log(upr - \theta)}
+#' when only the upper is, and the identity when neither is given.
 #'
 #' @param lwr Numeric or \code{NULL}. The lower bound of the interval.
 #' @param upr Numeric or \code{NULL}. The upper bound of the interval.
 #'
 #' @details
 #' \strong{Doubly Bounded (\code{lwr} and \code{upr} provided):}
-#' Transforms \eqn{\theta} by normalizing it to \code{c(0, 1)} via 
+#' Transforms \eqn{\theta} by normalizing it to \code{c(0, 1)} via
 #' \eqn{p = \frac{\theta - \text{lwr}}{\text{upr} - \text{lwr}}}, and then applying the logit function.
-#' 
+#'
 #' \strong{Lower Bounded (\code{lwr} provided, \code{upr = NULL}):}
 #' Defined as \eqn{\eta = \log(\theta - \text{lwr})}, with inverse \eqn{\theta = \exp(\eta) + \text{lwr}}.
-#' 
+#'
 #' \strong{Upper Bounded (\code{lwr = NULL}, \code{upr} provided):}
 #' Defined as \eqn{\eta = \log(\text{upr} - \theta)}, with inverse \eqn{\theta = \text{upr} - \exp(\eta)}.
-#' 
+#'
 #' \strong{Unbounded (\code{lwr = NULL}, \code{upr = NULL}):}
 #' Returns the standard \code{\link{identity_link}}.
 #'

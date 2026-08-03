@@ -12,10 +12,9 @@ containing the transformation functions and their exact analytical derivatives
 up to the fourth order.
 }
 \description{
-Creates an S7 object of class \code{link} implementing the Complementary Log-Log
-transformation. This link is highly asymmetric and is predominantly used for modeling
-binary data where the probability of the event approaches 1 very slowly but approaches
-0 rather sharply.
+The complementary log-log link \eqn{\eta = \log(-\log(1-\theta))} on
+\eqn{(0, 1)}, with inverse \eqn{\theta = 1 - \exp(-e^\eta)};
+asymmetric about \eqn{\theta = 1/2}.
 }
 \details{
 The ClogLog link is defined mathematically as \eqn{\eta = \log(-\log(1 - \theta))}.

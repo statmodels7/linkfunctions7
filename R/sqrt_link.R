@@ -45,11 +45,8 @@ S7::method(d4linkinv, SqrtLink) <- function(x, eta) const_like(eta, 0)
 #' @include generics.R
 #' @include link_class.R
 #' @description
-#' Creates an S7 object of class \code{link} implementing the Square Root transformation.
-#' This is a specific case of the Power link family (with \eqn{\lambda = 0.5}) and is 
-#' prominently used for modeling count data (e.g., Poisson regression) as a 
-#' variance-stabilizing transformation.
-#'
+#' The square-root link \eqn{\eta = \sqrt{\theta}} on \eqn{(0, \infty)};
+#' its image is \eqn{(0, \infty)}.
 #' @details
 #' The Square Root link is mathematically defined as \eqn{\eta = \sqrt{\theta}}.
 #' Consequently, the inverse link is derived as \eqn{\theta = \eta^2}.

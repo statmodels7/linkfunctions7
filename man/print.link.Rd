@@ -15,7 +15,8 @@
 The function returns \code{x} invisibly.
 }
 \description{
-A standard S7 print method for objects of class \code{link}.
+Print method for \code{link} objects: the name, the domain and any link
+parameters.
 It displays the name of the link function, its valid parameter domain, and any
 additional parameters it may have (e.g., lambda for a power link).
 }

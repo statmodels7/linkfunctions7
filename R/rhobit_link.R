@@ -34,7 +34,7 @@ S7::method(d4linkfun, RhobitLink) <- function(x, theta) {
 }
 
 # Exact analytical derivatives of the inverse link function (wrt eta)
-# We elegantly evaluate all these as polynomials of t = tanh(eta)
+# All of these are evaluated as polynomials in t = tanh(eta)
 S7::method(dlinkinv, RhobitLink) <- function(x, eta) {
   t <- tanh(eta); 1 - t^2
 }
@@ -53,12 +53,9 @@ S7::method(d4linkinv, RhobitLink) <- function(x, eta) {
 #' @include generics.R
 #' @include link_class.R
 #' @description
-#' Creates an S7 object of class \code{link} implementing the Rhobit transformation, 
-#' also known as Fisher's z-transformation. This link function rigorously maps the 
-#' open interval \code{c(-1, 1)} to the real line \code{c(-Inf, Inf)}. It is primarily 
-#' used for modeling correlation coefficients or other bounded parameters that are 
-#' symmetrically constrained.
-#'
+#' The rhobit link
+#' \eqn{\eta = \mathrm{atanh}(\theta) = \log((1+\theta)/(1-\theta))/2}
+#' on \eqn{(-1, 1)}, Fisher's z; the natural link for a correlation.
 #' @details
 #' The Rhobit link is defined mathematically using the inverse hyperbolic tangent function:
 #' \eqn{\eta = \text{arctanh}(\theta) = \frac{1}{2} \log\left(\frac{1 + \theta}{1 - \theta}\right)}.

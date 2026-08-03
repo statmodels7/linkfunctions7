@@ -11,9 +11,9 @@ An S7 object of class \code{CauchitLink} (inheriting from \code{link}) containin
 and their exact analytical derivatives up to the fourth order.
 }
 \description{
-Creates an S7 object of class \code{link} implementing the Cauchit transformation.
-This link function rigorously maps the open interval \code{c(0, 1)} to the real line
-by utilizing the quantile function of the standard Cauchy distribution.
+The cauchit link \eqn{\eta = \tan(\pi(\theta - 1/2))} on
+\eqn{(0, 1)}, the Cauchy quantile function; heavier-tailed than the
+logit or the probit.
 }
 \details{
 The Cauchit link is defined mathematically as \eqn{\eta = \tan(\pi(\theta - 0.5))},

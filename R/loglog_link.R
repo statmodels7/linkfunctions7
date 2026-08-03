@@ -48,21 +48,16 @@ S7::method(d4linkinv, LogLogLink) <- function(x, eta) { z <- exp(-eta); exp(-z) 
 #' @include generics.R
 #' @include link_class.R
 #' @description
-#' Creates an S7 object of class \code{link} implementing the Log-Log transformation.
-#' This link is the asymmetric opposite of the \code{cloglog} link and is often used 
-#' in survival analysis (e.g., Gompertz models) or for modeling binary data with 
-#' specific asymmetry requirements.
-#'
+#' The log-log link \eqn{\eta = -\log(-\log\theta)} on \eqn{(0, 1)},
+#' with inverse \eqn{\theta = \exp(-e^{-\eta})}; the mirror image of
+#' \code{\link{cloglog_link}}.
 #' @details
 #' The Log-Log link is mathematically defined as \eqn{\eta = -\log(-\log(\theta))}.
 #' Consequently, the inverse link is derived as \eqn{\theta = \exp(-\exp(-\eta))}.
 #'
-#' \strong{Asymmetry:} Unlike the symmetric Logit or Probit links, the Log-Log link 
-#' is highly asymmetric. It is particularly suitable for modeling events where the 
-#' probability approaches 0 very slowly but approaches 1 sharply. This represents 
-#' the mathematical reverse of the \code{cloglog} link.
-#'
-#' The strict mathematical domain for \eqn{\theta} is \code{c(0, 1)}.
+#' Unlike the logit and the probit the link is asymmetric: the probability
+#' approaches 0 slowly and 1 sharply, the mirror image of
+#' \code{\link{cloglog_link}}. The domain of \eqn{\theta} is \eqn{(0, 1)}.
 #'
 #' @return An S7 object of class \code{LogLogLink} (inheriting from \code{link}) containing the transformation functions
 #' and their exact analytical derivatives up to the fourth order.

@@ -35,7 +35,7 @@ chosen. What binds is "strictly inside, and finite",
 and its two extremes are the neighbouring representable double and the
 largest finite one.
 
-\subsection{Why the bump is a relative one}{
+\subsection{The relative bump}{
 R has no \code{nextafter}, and the arithmetic substitute has to respect that
 \strong{the spacing of doubles is absolute near a non-zero bound}. One ulp at
 2 is about 4.4e-16 while one ulp at 1e-300 is about 1e-316, so a single

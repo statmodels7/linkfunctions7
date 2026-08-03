@@ -11,10 +11,8 @@ An S7 object of class \code{ProbitLink} (inheriting from \code{link}) containing
 and their exact analytical derivatives up to the fourth order.
 }
 \description{
-Creates an S7 object of class \code{link} implementing the Probit transformation.
-This link function rigorously relies on the cumulative distribution function (CDF)
-of the standard Normal distribution. It is widely used in Generalized Linear Models
-(GLMs) for binary data, often justified by a latent normal variable interpretation.
+The probit link \eqn{\eta = \Phi^{-1}(\theta)} on \eqn{(0, 1)}, with
+\eqn{\Phi} the standard normal distribution function.
 }
 \details{
 The Probit link is mathematically defined as \eqn{\eta = \Phi^{-1}(\theta)}, where

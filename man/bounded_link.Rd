@@ -19,10 +19,10 @@ exactly depends on the endpoints given: \code{\link{DoublyBoundedLink}},
 \code{\link{IdentityLink}} when neither endpoint is supplied.
 }
 \description{
-Creates an S7 object of class \code{link} that maps a constrained interval to the
-whole real line. By specifying \code{lwr} and \code{upr}, this function dynamically
-constructs a doubly bounded (scaled logit), lower bounded (shifted log), upper bounded,
-or unbounded (identity) link function.
+The link for a parameter confined to \eqn{(lwr, upr)}: a scaled logit when
+both endpoints are finite, a shifted log \eqn{\eta = \log(\theta - lwr)}
+when only the lower is, its mirror image \eqn{\eta = \log(upr - \theta)}
+when only the upper is, and the identity when neither is given.
 }
 \details{
 \strong{Doubly Bounded (\code{lwr} and \code{upr} provided):}

@@ -93,12 +93,9 @@ S7::method(d4linkinv, SoftplusLink) <- function(x, eta) {
 #' @include generics.R
 #' @include link_class.R
 #' @description
-#' Creates an S7 object of class \code{link} implementing the Softplus transformation.
-#' The Softplus function is a smooth approximation of the rectifier (ReLU) and ensures 
-#' the parameter \eqn{\theta} remains positive. Unlike the Log link, which implies an 
-#' exponential relationship throughout, the Softplus link asymptotically approaches 
-#' linearity for large positive values of the linear predictor.
-#'
+#' The softplus link with scale \eqn{a}: the inverse is
+#' \eqn{\theta = \log(1 + e^{a\eta})/a}, a smooth approximation of
+#' \eqn{\max(0, \eta)} that sharpens as \eqn{a} grows.
 #' @param a A numeric value specifying the scaling parameter (smoothness/steepness). 
 #' Must be strictly positive. Defaults to 1.
 #'

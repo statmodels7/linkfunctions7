@@ -3,7 +3,8 @@
 #' @include generics.R
 #' @include link_class.R
 #' @description
-#' A standard S7 print method for objects of class \code{link}.
+#' Print method for \code{link} objects: the name, the domain and any link
+#' parameters.
 #' It displays the name of the link function, its valid parameter domain, and any
 #' additional parameters it may have (e.g., lambda for a power link).
 #'
@@ -29,13 +30,13 @@ print.link <- function(x, ...) {
     "  - Parameter domain (theta): (", x@link_bounds[1], ", ", x@link_bounds[2], ")\n",
     sep = ""
   )
-  
+
   # Intelligently print additional parameters if they exist
   if (!is.null(x@link_params) && length(x@link_params) > 0) {
     params_str <- paste(names(x@link_params), x@link_params, sep = " = ", collapse = ", ")
     cat("  - Link parameters: ", params_str, "\n", sep = "")
   }
-  
+
   invisible(x)
 }
 
@@ -44,7 +45,7 @@ S7::method(print, link) <- print.link
 #' @title Visualize Link Functions
 #'
 #' @description
-#' A robust S7 plot method for objects of class \code{link}.
+#' Plot method for \code{link} objects.
 #' It generates a panel with two plots:
 #' \enumerate{
 #'   \item The link function \eqn{\eta = g(\theta)} over its valid domain.
@@ -74,19 +75,19 @@ S7::method(print, link) <- print.link
 plot.link <- function(x, ...) {
   old_par <- graphics::par(no.readonly = TRUE)
   on.exit(graphics::par(old_par))
-  
+
   graphics::par(
     mfrow = c(1, 2),
     mar = c(5, 5, 3.5, 1) + 0.1,
     oma = c(0, 0, 2.5, 0)
   )
-  
+
   # --- Plot 1: Link function (eta vs. theta) ---
-  
+
   lb <- x@link_bounds[1]
   ub <- x@link_bounds[2]
   eps <- 1e-4 # A smaller epsilon for better boundary visualization
-  
+
   # Robustly define the theta sequence based on bounds
   if (is.finite(lb) && is.finite(ub)) {
     theta_seq <- seq(lb + eps, ub - eps, length.out = 1001)
@@ -97,9 +98,9 @@ plot.link <- function(x, ...) {
   } else { # Both infinite
     theta_seq <- seq(-5, 5, length.out = 1001)
   }
-  
+
   eta_vals <- linkfun(x, theta_seq)
-  
+
   graphics::plot(
     theta_seq, eta_vals,
     type = "l", lwd = 2, las = 1,
@@ -109,27 +110,27 @@ plot.link <- function(x, ...) {
   )
   graphics::grid()
   graphics::abline(h = 0, v = 0, lty = 3, col = "darkgray")
-  
+
   # --- Plot 2: Inverse link function (theta vs. eta) ---
-  
+
   # Determine a sensible range for eta based on the link function's output
   # to avoid NaNs for links with restricted eta domains (e.g., inverse_sq_link)
   valid_eta <- eta_vals[is.finite(eta_vals)]
   if (length(valid_eta) > 0) {
     eta_min <- min(valid_eta)
     eta_max <- max(valid_eta)
-    
+
     # Try to constrain within a standard [-6, 6] range for visual consistency,
     # but respect the actual valid domain of eta
     eta_start <- max(eta_min, -6)
     eta_end <- min(eta_max, 6)
-    
+
     # If the natural range does not overlap with [-6, 6], use the natural range
     if (eta_start >= eta_end) {
       eta_start <- eta_min
       eta_end <- eta_max
     }
-    
+
     # Fallback for constant eta (highly unlikely for a valid link function)
     if (abs(eta_end - eta_start) < 1e-6) {
       eta_start <- eta_start - 1
@@ -139,12 +140,12 @@ plot.link <- function(x, ...) {
     eta_start <- -5
     eta_end <- 5
   }
-  
+
   eta_seq <- seq(eta_start, eta_end, length.out = 1001)
-  
+
   # Suppress warnings gracefully in case evaluation hits undefined boundary areas
   theta_vals <- suppressWarnings(linkinv(x, eta_seq))
-  
+
   graphics::plot(
     eta_seq, theta_vals,
     type = "l", lwd = 2, las = 1,
@@ -154,7 +155,7 @@ plot.link <- function(x, ...) {
   )
   graphics::grid()
   graphics::abline(h = 0, v = 0, lty = 3, col = "darkgray")
-  
+
   graphics::mtext(
     text = paste("Link:", x@link_name),
     side = 3,
@@ -217,9 +218,10 @@ S7::method(linkinvderiv, link) <- linkinvderiv.link
 #' @title Validate and Check a Link Object
 #'
 #' @description
-#' A diagnostic S7 method to mathematically validate a \code{link} object.
-#' It sequentially verifies the algebraic invertibility and the correctness
-#' of the analytical derivatives using numerical gradients in a chained sequence.
+#' Validates a \code{link} object numerically: invertibility in both
+#' directions on a grid, strict monotonicity, the inverse function theorem
+#' \eqn{h'(\eta)\,g'(\theta) = 1}, and every analytic derivative against one
+#' numerical differentiation of the analytic order below it.
 #'
 #' @param x An object of class \code{link}.
 #' @param tolerance Numeric tolerance for floating-point comparisons.
@@ -267,9 +269,9 @@ S7::method(linkinvderiv, link) <- linkinvderiv.link
 #' @rdname check_link
 #' @keywords internal
 check_link.link <- function(x, tolerance = 1e-5, ...) {
-  
+
   cat("Checking S7 Link Object:", x@link_name, "\n")
-  
+
   # 1. Generate evaluation points strictly inside valid bounds for theta.
   #
   # The inset has to leave room for the numerical differentiation performed
@@ -292,14 +294,14 @@ check_link.link <- function(x, tolerance = 1e-5, ...) {
   } else {
     theta_seq <- seq(-3, 3, length.out = 15)
   }
-  
+
   # 2. Test Algebraic Invertibility (Theta -> Eta -> Theta)
   eta_vals <- linkfun(x, theta_seq)
   theta_hat <- linkinv(x, eta_vals)
-  
+
   inv_error <- max(abs(theta_seq - theta_hat))
   invertibility_pass <- !is.na(inv_error) && inv_error <= tolerance
-  
+
   # 3. Test Algebraic Invertibility (Eta -> Theta -> Eta)
   #
   # Over the eta the link can actually produce, not a fixed [-4, 4]. A link whose
@@ -311,16 +313,16 @@ check_link.link <- function(x, tolerance = 1e-5, ...) {
   eta_hat <- linkfun(x, linkinv(x, eta_seq_test))
   inv_eta_error <- max(abs(eta_seq_test - eta_hat))
   invertibility_eta_pass <- !is.na(inv_eta_error) && inv_eta_error <= tolerance
-  
+
   # 4. Test Strict Monotonicity
   d1_theta <- linkderiv(x, theta_seq, order = 1)
   monotonicity_pass <- all(d1_theta > 0) || all(d1_theta < 0)
-  
+
   # 5. Test Inverse Function Theorem (Derivative Reciprocal Identity)
   d1_eta <- linkinvderiv(x, eta_vals, order = 1)
   inv_thm_error <- max(abs(d1_eta * d1_theta - 1))
   inv_thm_pass <- !is.na(inv_thm_error) && inv_thm_error <= tolerance
-  
+
   # Generic function to test a chain of derivatives
   test_derivative_chain <- function(eval_seq, deriv_fn, max_order = 4,
                                     n_exact = max_order) {
@@ -397,7 +399,7 @@ check_link.link <- function(x, tolerance = 1e-5, ...) {
     }
     "[PASSED]"
   }
-  
+
   # Concise console summary
   cat("  [1] Invertibility (Theta space):", if (invertibility_pass) "[PASSED]" else "[FAILED]", "\n")
   cat("  [2] Invertibility (Eta space):  ", if (invertibility_eta_pass) "[PASSED]" else "[FAILED]", "\n")
@@ -405,7 +407,7 @@ check_link.link <- function(x, tolerance = 1e-5, ...) {
   cat("  [4] Inverse Function Theorem:   ", if (inv_thm_pass) "[PASSED]" else "[FAILED]", "\n")
   cat("  [5] Link Derivatives:           ", deriv_verdict(link_deriv_pass, exact$forward), "\n")
   cat("  [6] Inverse Link Derivatives:   ", deriv_verdict(inv_deriv_pass, exact$inverse), "\n")
-  
+
   out <- list(
     invertibility_theta = invertibility_pass,
     invertibility_eta = invertibility_eta_pass,

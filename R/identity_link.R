@@ -37,10 +37,8 @@ S7::method(d4linkinv, IdentityLink) <- function(x, eta) const_like(eta, 0)
 #' @include generics.R
 #' @include link_class.R
 #' @description
-#' Creates an S7 object of class \code{link} implementing the Identity transformation.
-#' This is the canonical link function for the mean parameter of the Normal (Gaussian) 
-#' distribution.
-#'
+#' The identity link \eqn{\eta = \theta}, for a parameter that is already
+#' unconstrained.
 #' @details
 #' The Identity link is defined simply as \eqn{\eta = \theta}.
 #' Consequently, the inverse link is also \eqn{\theta = \eta}.

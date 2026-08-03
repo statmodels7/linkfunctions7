@@ -37,9 +37,9 @@ S7::method(d4linkinv, InverseSqLink) <- function(x, eta) 105 / (16 * eta^4.5)
 #' @include generics.R
 #' @include link_class.R
 #' @description
-#' Creates an S7 object of class \code{link} implementing the Inverse Square transformation.
-#' This is the canonical link function for the Inverse Gaussian distribution.
-#'
+#' The inverse-square link \eqn{\eta = 1/\theta^2} on \eqn{(0, \infty)},
+#' the canonical link of the inverse Gaussian family; its image is
+#' \eqn{(0, \infty)}.
 #' @details
 #' The Inverse Square link is defined mathematically as \eqn{\eta = 1 / \theta^2}.
 #' Consequently, the inverse link function is derived as \eqn{\theta = 1 / \sqrt{\eta}}.

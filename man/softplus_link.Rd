@@ -15,11 +15,9 @@ An S7 object of class \code{SoftplusLink} (inheriting from \code{link}) containi
 their exact analytical derivatives up to the fourth order, and the parameter \code{a}.
 }
 \description{
-Creates an S7 object of class \code{link} implementing the Softplus transformation.
-The Softplus function is a smooth approximation of the rectifier (ReLU) and ensures
-the parameter \eqn{\theta} remains positive. Unlike the Log link, which implies an
-exponential relationship throughout, the Softplus link asymptotically approaches
-linearity for large positive values of the linear predictor.
+The softplus link with scale \eqn{a}: the inverse is
+\eqn{\theta = \log(1 + e^{a\eta})/a}, a smooth approximation of
+\eqn{\max(0, \eta)} that sharpens as \eqn{a} grows.
 }
 \details{
 The Softplus link describes the relationship where the response parameter \eqn{\theta}

@@ -2,10 +2,10 @@
 #'
 #' @import S7
 #' @description
-#' A strictly typed S7 object that encapsulates the metadata of a statistical 
-#' link function. The mathematical transformations, including the forward and 
-#' inverse functions and their exact analytical derivatives up to the fourth 
-#' order, are implemented and registered as S7 generic methods.
+#' The base S7 class for link functions. It carries the name, the domain and
+#' any link parameters; the transformations themselves -- forward, inverse and
+#' their analytical derivatives to fourth order -- are methods that each
+#' subclass registers on the ten generics.
 #'
 #' @details
 #' Objects of class \code{link} are instantiated using the S7 object system.
@@ -44,13 +44,13 @@ link <- S7::new_class(
     link_bounds = S7::class_numeric,
     link_params = S7::class_any
   ),
-  
+
   validator = function(self) {
     # Ensure bounds contain exactly two numeric elements
     if (length(self@link_bounds) != 2) {
       return("Property 'link_bounds' must be a numeric vector of length 2: c(lower, upper).")
     }
-    
+
     # Ensure logical domain definition
     if (self@link_bounds[1] >= self@link_bounds[2]) {
       return("The lower bound must be strictly less than the upper bound.")
@@ -218,7 +218,7 @@ exp_floored <- function(eta) pmax(exp(eta), exp_floor)
 #' and its two extremes are the neighbouring representable double and the
 #' largest finite one.
 #'
-#' \subsection{Why the bump is a relative one}{
+#' \subsection{The relative bump}{
 #' R has no \code{nextafter}, and the arithmetic substitute has to respect that
 #' \strong{the spacing of doubles is absolute near a non-zero bound}. One ulp at
 #' 2 is about 4.4e-16 while one ulp at 1e-300 is about 1e-316, so a single

@@ -15,7 +15,7 @@
 No return value, called for side effects (plotting).
 }
 \description{
-A robust S7 plot method for objects of class \code{link}.
+Plot method for \code{link} objects.
 It generates a panel with two plots:
 \enumerate{
 \item The link function \eqn{\eta = g(\theta)} over its valid domain.

@@ -11,11 +11,9 @@ An S7 object of class \code{RhobitLink} (inheriting from \code{link}) containing
 and their exact analytical derivatives up to the fourth order.
 }
 \description{
-Creates an S7 object of class \code{link} implementing the Rhobit transformation,
-also known as Fisher's z-transformation. This link function rigorously maps the
-open interval \code{c(-1, 1)} to the real line \code{c(-Inf, Inf)}. It is primarily
-used for modeling correlation coefficients or other bounded parameters that are
-symmetrically constrained.
+The rhobit link
+\eqn{\eta = \mathrm{atanh}(\theta) = \log((1+\theta)/(1-\theta))/2}
+on \eqn{(-1, 1)}, Fisher's z; the natural link for a correlation.
 }
 \details{
 The Rhobit link is defined mathematically using the inverse hyperbolic tangent function:

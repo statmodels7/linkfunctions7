@@ -11,10 +11,8 @@ An S7 object of class \code{SqrtLink} (inheriting from \code{link}) containing t
 and their exact analytical derivatives up to the fourth order.
 }
 \description{
-Creates an S7 object of class \code{link} implementing the Square Root transformation.
-This is a specific case of the Power link family (with \eqn{\lambda = 0.5}) and is
-prominently used for modeling count data (e.g., Poisson regression) as a
-variance-stabilizing transformation.
+The square-root link \eqn{\eta = \sqrt{\theta}} on \eqn{(0, \infty)};
+its image is \eqn{(0, \infty)}.
 }
 \details{
 The Square Root link is mathematically defined as \eqn{\eta = \sqrt{\theta}}.

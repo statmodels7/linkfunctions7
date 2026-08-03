@@ -48,25 +48,20 @@ S7::method(d4linkinv, LogitLink) <- function(x, eta) {
 #' @include generics.R
 #' @include link_class.R
 #' @description
-#' Creates an S7 object of class \code{link} implementing the Logit (log-odds) transformation.
-#' This is the canonical link function for the success probability parameter of the Bernoulli 
-#' and Binomial distributions and serves as the foundation of Logistic Regression.
-#'
+#' The logit link \eqn{\eta = \log(\theta/(1-\theta))} on \eqn{(0, 1)},
+#' with inverse \eqn{\theta = 1/(1+e^{-\eta})}; the canonical link for a
+#' probability, whose linear predictor is the log-odds.
 #' @details
 #' The Logit link is defined mathematically as \eqn{\eta = \log(\frac{\theta}{1 - \theta})}.
-#' The inverse link is the standard logistic function (sigmoid): 
+#' The inverse link is the standard logistic function (sigmoid):
 #' \eqn{\theta = \frac{1}{1 + \exp(-\eta)}}.
 #'
-#' The link is perfectly symmetric around \eqn{\theta = 0.5} (which corresponds to \eqn{\eta = 0}). 
-#' It elegantly interprets the linear predictor as the log-odds of the event probability.
+#' The link is symmetric about \eqn{\theta = 0.5}, where \eqn{\eta = 0}, and
+#' the linear predictor is the log-odds of the event probability. The domain of
+#' \eqn{\theta} is \eqn{(0, 1)}.
 #'
-#' The mathematical domain of \eqn{\theta} is \code{c(0, 1)}.
-#'
-#' \strong{Implementation Details:} 
-#' This function internally delegates to R's highly optimized native functions 
-#' \code{stats::qlogis} and \code{stats::plogis}. This ensures maximum numerical stability 
-#' and precision, especially when evaluating probabilities exceedingly close to the 
-#' boundaries of 0 and 1.
+#' The implementation delegates to \code{stats::qlogis} and
+#' \code{stats::plogis}, which remain accurate near both boundaries.
 #'
 #' @return An S7 object of class \code{LogitLink} (inheriting from \code{link}) containing the transformation functions
 #' and their exact analytical derivatives up to the fourth order.
@@ -97,7 +92,7 @@ logit_link <- function() {
   LogitLink(
     link_name = "logit",
     link_bounds = c(0, 1),
-    
+
     # The logit link requires no additional mathematical parameters
     link_params = NULL
   )

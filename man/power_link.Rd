@@ -14,9 +14,8 @@ An S7 object of class \code{PowerLink} (inheriting from \code{link}),
 or an object of class \code{LogLink} if \code{lambda = 0}.
 }
 \description{
-Creates an S7 object of class \code{link} implementing the Power transformation family.
-This function generates a specific link function based on the provided power parameter \code{lambda}.
-It elegantly includes the special case where \code{lambda = 0}, which dynamically returns the Log link.
+The power link \eqn{\eta = \theta^\lambda} on \eqn{(0, \infty)}; at
+\eqn{\lambda = 0} it returns the log link, its limit by continuity.
 }
 \details{
 The Power link is defined mathematically as \eqn{\eta = \theta^\lambda}.

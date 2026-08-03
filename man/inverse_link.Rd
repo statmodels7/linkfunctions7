@@ -11,7 +11,9 @@ An S7 object of class \code{InverseLink} (inheriting from \code{link}) containin
 and their exact analytical derivatives up to the fourth order.
 }
 \description{
-Creates an S7 object of class \code{link} implementing the reciprocal transformation.
+The reciprocal link \eqn{\eta = 1/\theta} on \eqn{(0, \infty)}, the
+canonical link of the Gamma family; its image is \eqn{(0, \infty)},
+not the whole real line.
 }
 \details{
 The Inverse link is defined as \eqn{\eta = 1/\theta}.

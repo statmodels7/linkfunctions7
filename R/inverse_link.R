@@ -38,8 +38,9 @@ S7::method(d4linkinv, InverseLink) <- function(x, eta) 24 / (eta^5)
 #' @include generics.R
 #' @include link_class.R
 #' @description
-#' Creates an S7 object of class \code{link} implementing the reciprocal transformation.
-#'
+#' The reciprocal link \eqn{\eta = 1/\theta} on \eqn{(0, \infty)}, the
+#' canonical link of the Gamma family; its image is \eqn{(0, \infty)},
+#' not the whole real line.
 #' @details
 #' The Inverse link is defined as \eqn{\eta = 1/\theta}.
 #' The inverse link function is therefore perfectly symmetric: \eqn{\theta = 1/\eta}.
