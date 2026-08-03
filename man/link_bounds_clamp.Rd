@@ -31,7 +31,7 @@ A caller then receives a probability of exactly 1, or a variance of exactly
 0, and the next thing they do is take its logarithm or divide by it.
 
 The correction is the smallest one that can work and it is derived, not
-chosen. What binds is "strictly inside, and a number you can compute with",
+chosen. What binds is "strictly inside, and finite",
 and its two extremes are the neighbouring representable double and the
 largest finite one.
 

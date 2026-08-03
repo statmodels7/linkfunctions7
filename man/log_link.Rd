@@ -19,7 +19,7 @@ widely used for modeling count data or non-negative continuous data with multipl
 The Log link is defined mathematically as \eqn{\eta = \log(\theta)}.
 The inverse link is the exponential function \eqn{\theta = \exp(\eta)}.
 
-A remarkable mathematical property of this link is that the inverse function is its
+The inverse function of this link is its
 own derivative. Therefore, the parameter \eqn{\theta} and all its derivatives with
 respect to \eqn{\eta} are equal to \eqn{\exp(\eta)}.
 

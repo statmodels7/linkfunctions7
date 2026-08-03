@@ -20,7 +20,7 @@ analytically and which are therefore obtained by finite differences.
 \details{
 Every link can answer every derivative generic, because the base class
 supplies numerical fallbacks for the orders a link does not implement. That
-convenience makes it worth being able to ask which is which — a fallback is
+convenience requires a way of asking which is which — a fallback is
 correct but not exact, and it is the reason \code{\link{check_link}} reports
 such orders separately rather than passing them.
 }

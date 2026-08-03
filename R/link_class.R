@@ -95,7 +95,7 @@ const_like <- function(v, value) {
 #' @details
 #' Same hazard as \code{\link{const_like}}, one step further along: an expression
 #' whose exponent happens to vanish stops depending on its argument, and loses the
-#' argument's missingness along with it. The power link is where this bites,
+#' argument's missingness along with it. The power link is the affected case,
 #' \code{theta^(lambda - 2)} being exactly \code{1} for a missing \code{theta}
 #' once \code{lambda} is 2.
 #'
@@ -214,7 +214,7 @@ exp_floored <- function(eta) pmax(exp(eta), exp_floor)
 #' 0, and the next thing they do is take its logarithm or divide by it.
 #'
 #' The correction is the smallest one that can work and it is derived, not
-#' chosen. What binds is "strictly inside, and a number you can compute with",
+#' chosen. What binds is "strictly inside, and finite",
 #' and its two extremes are the neighbouring representable double and the
 #' largest finite one.
 #'

@@ -33,7 +33,7 @@ Applying one stencil of order \eqn{k} is not the same as applying \eqn{k}
 stencils of order one, and the difference is the whole reason this function
 exists: each numerical differentiation multiplies the error of the one before
 it, so a fourth derivative reached by four nested first differences is noise.
-The identity link makes the point without any arithmetic -- its third
+The identity link illustrates the failure directly -- its third
 derivative is exactly zero, and nested differentiation returns a number of
 order one.
 }

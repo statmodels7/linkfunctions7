@@ -33,24 +33,14 @@ NULL
 #' own. Comparing method objects with \code{identical()} does not work for this,
 #' because S7 wraps them.
 #'
-#' Comparing the recorded \emph{class} with \code{identical()} does not work
-#' either, and the reason is worth recording because the failure is silent and
-#' spectacular. \code{identical()} on two S7 class objects is object identity, so
-#' it returns \code{FALSE} for a class re-created from the same definition — and
-#' that is exactly what happens whenever the package's code is re-evaluated
-#' rather than loaded, as under test coverage instrumentation. The base
-#' fallback is then mistaken for the link's own method, this function returns 4
-#' for a link that implements nothing, and \code{\link{fallback_deriv}} walks
-#' down through \code{\link{linkderiv}} into precisely the chain of nested first
-#' differences the design exists to avoid. It is not a small error: the fourth
-#' derivative of the log link came back wrong by a factor of 900. Classes are
-#' therefore compared by name and package, with identity kept only as a fast
-#' path.
+#' The recorded class is compared by name and package rather than with
+#' \code{identical()}, since \code{identical()} on S7 class objects tests
+#' object identity and returns \code{FALSE} for a class re-created from the
+#' same definition, as happens when the package's code is re-evaluated under
+#' coverage instrumentation; identity is kept only as a fast path.
 #'
-#' The search stops at the first missing order rather than continuing, since a
-#' link that implements the first and the third but not the second is not a case
-#' worth optimising for, and stopping keeps the answer meaning "everything up to
-#' here is exact".
+#' The search stops at the first missing order, so the answer always means
+#' that every order up to it is analytic.
 #'
 #' @param x An object of class \code{link}.
 #' @param inverse Logical; \code{TRUE} to ask about the inverse-link generics.
@@ -144,7 +134,7 @@ fd_step <- function(x, order, bounds = NULL) {
 #' stencils of order one, and the difference is the whole reason this function
 #' exists: each numerical differentiation multiplies the error of the one before
 #' it, so a fourth derivative reached by four nested first differences is noise.
-#' The identity link makes the point without any arithmetic -- its third
+#' The identity link illustrates the failure directly -- its third
 #' derivative is exactly zero, and nested differentiation returns a number of
 #' order one.
 #'
@@ -240,7 +230,7 @@ S7::method(d4linkinv, link) <- function(x, eta) fallback_deriv(x, eta, 4L, TRUE)
 #' @details
 #' Every link can answer every derivative generic, because the base class
 #' supplies numerical fallbacks for the orders a link does not implement. That
-#' convenience makes it worth being able to ask which is which — a fallback is
+#' convenience requires a way of asking which is which — a fallback is
 #' correct but not exact, and it is the reason \code{\link{check_link}} reports
 #' such orders separately rather than passing them.
 #'
