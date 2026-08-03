@@ -1,8 +1,7 @@
 # The Identity Link Function
 
-Creates an S7 object of class `link` implementing the Identity
-transformation. This is the canonical link function for the mean
-parameter of the Normal (Gaussian) distribution.
+The identity link \\\eta = \theta\\, for a parameter that is already
+unconstrained.
 
 ## Usage
 

@@ -1,8 +1,9 @@
 # Print Method for S7 Link Objects
 
-A standard S7 print method for objects of class `link`. It displays the
-name of the link function, its valid parameter domain, and any
-additional parameters it may have (e.g., lambda for a power link).
+Print method for `link` objects: the name, the domain and any link
+parameters. It displays the name of the link function, its valid
+parameter domain, and any additional parameters it may have (e.g.,
+lambda for a power link).
 
 ## Usage
 

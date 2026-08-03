@@ -44,7 +44,7 @@ chosen. What binds is "strictly inside, and finite", and its two
 extremes are the neighbouring representable double and the largest
 finite one.
 
-### Why the bump is a relative one
+### The relative bump
 
 R has no `nextafter`, and the arithmetic substitute has to respect that
 **the spacing of doubles is absolute near a non-zero bound**. One ulp at

@@ -1,9 +1,9 @@
 # The General Bounded Link Function
 
-Creates an S7 object of class `link` that maps a constrained interval to
-the whole real line. By specifying `lwr` and `upr`, this function
-dynamically constructs a doubly bounded (scaled logit), lower bounded
-(shifted log), upper bounded, or unbounded (identity) link function.
+The link for a parameter confined to \\(lwr, upr)\\: a scaled logit when
+both endpoints are finite, a shifted log \\\eta = \log(\theta - lwr)\\
+when only the lower is, its mirror image \\\eta = \log(upr - \theta)\\
+when only the upper is, and the identity when neither is given.
 
 ## Usage
 

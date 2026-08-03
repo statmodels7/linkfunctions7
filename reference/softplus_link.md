@@ -1,11 +1,8 @@
 # The Softplus Link Function
 
-Creates an S7 object of class `link` implementing the Softplus
-transformation. The Softplus function is a smooth approximation of the
-rectifier (ReLU) and ensures the parameter \\\theta\\ remains positive.
-Unlike the Log link, which implies an exponential relationship
-throughout, the Softplus link asymptotically approaches linearity for
-large positive values of the linear predictor.
+The softplus link with scale \\a\\: the inverse is \\\theta = \log(1 +
+e^{a\eta})/a\\, a smooth approximation of \\\max(0, \eta)\\ that
+sharpens as \\a\\ grows.
 
 ## Usage
 

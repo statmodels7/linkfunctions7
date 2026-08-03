@@ -1,9 +1,7 @@
 # The Logarithmic Link Function
 
-Creates an S7 object of class `link` implementing the natural logarithm
-transformation. This is the canonical link function for the mean of the
-Poisson distribution and is widely used for modeling count data or
-non-negative continuous data with multiplicative effects.
+The log link \\\eta = \log\theta\\ on \\(0, \infty)\\, with inverse
+\\\theta = e^\eta\\; the canonical link for a positive parameter.
 
 ## Usage
 

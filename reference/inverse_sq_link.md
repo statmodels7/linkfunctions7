@@ -1,8 +1,8 @@
 # The Inverse Square Link Function
 
-Creates an S7 object of class `link` implementing the Inverse Square
-transformation. This is the canonical link function for the Inverse
-Gaussian distribution.
+The inverse-square link \\\eta = 1/\theta^2\\ on \\(0, \infty)\\, the
+canonical link of the inverse Gaussian family; its image is \\(0,
+\infty)\\.
 
 ## Usage
 

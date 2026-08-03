@@ -1,9 +1,8 @@
 # The Complementary Log-Log (ClogLog) Link Function
 
-Creates an S7 object of class `link` implementing the Complementary
-Log-Log transformation. This link is highly asymmetric and is
-predominantly used for modeling binary data where the probability of the
-event approaches 1 very slowly but approaches 0 rather sharply.
+The complementary log-log link \\\eta = \log(-\log(1-\theta))\\ on \\(0,
+1)\\, with inverse \\\theta = 1 - \exp(-e^\eta)\\; asymmetric about
+\\\theta = 1/2\\.
 
 ## Usage
 

@@ -1,10 +1,7 @@
 # The Probit Link Function
 
-Creates an S7 object of class `link` implementing the Probit
-transformation. This link function rigorously relies on the cumulative
-distribution function (CDF) of the standard Normal distribution. It is
-widely used in Generalized Linear Models (GLMs) for binary data, often
-justified by a latent normal variable interpretation.
+The probit link \\\eta = \Phi^{-1}(\theta)\\ on \\(0, 1)\\, with
+\\\Phi\\ the standard normal distribution function.
 
 ## Usage
 

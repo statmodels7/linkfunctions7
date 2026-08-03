@@ -1,7 +1,6 @@
 # Visualize Link Functions
 
-A robust S7 plot method for objects of class `link`. It generates a
-panel with two plots:
+Plot method for `link` objects. It generates a panel with two plots:
 
 1.  The link function \\\eta = g(\theta)\\ over its valid domain.
 

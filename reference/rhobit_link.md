@@ -1,11 +1,8 @@
 # The Rhobit (Fisher's z) Link Function
 
-Creates an S7 object of class `link` implementing the Rhobit
-transformation, also known as Fisher's z-transformation. This link
-function rigorously maps the open interval `c(-1, 1)` to the real line
-`c(-Inf, Inf)`. It is primarily used for modeling correlation
-coefficients or other bounded parameters that are symmetrically
-constrained.
+The rhobit link \\\eta = \mathrm{atanh}(\theta) =
+\log((1+\theta)/(1-\theta))/2\\ on \\(-1, 1)\\, Fisher's z; the natural
+link for a correlation.
 
 ## Usage
 

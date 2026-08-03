@@ -1,9 +1,7 @@
 # The Square Root Link Function
 
-Creates an S7 object of class `link` implementing the Square Root
-transformation. This is a specific case of the Power link family (with
-\\\lambda = 0.5\\) and is prominently used for modeling count data
-(e.g., Poisson regression) as a variance-stabilizing transformation.
+The square-root link \\\eta = \sqrt{\theta}\\ on \\(0, \infty)\\; its
+image is \\(0, \infty)\\.
 
 ## Usage
 

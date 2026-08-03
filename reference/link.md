@@ -1,10 +1,9 @@
 # S7 Class for Statistical Link Functions
 
-A strictly typed S7 object that encapsulates the metadata of a
-statistical link function. The mathematical transformations, including
-the forward and inverse functions and their exact analytical derivatives
-up to the fourth order, are implemented and registered as S7 generic
-methods.
+The base S7 class for link functions. It carries the name, the domain
+and any link parameters; the transformations themselves – forward,
+inverse and their analytical derivatives to fourth order – are methods
+that each subclass registers on the ten generics.
 
 ## Usage
 

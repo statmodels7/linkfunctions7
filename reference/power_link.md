@@ -1,10 +1,7 @@
 # The Power Link Function
 
-Creates an S7 object of class `link` implementing the Power
-transformation family. This function generates a specific link function
-based on the provided power parameter `lambda`. It elegantly includes
-the special case where `lambda = 0`, which dynamically returns the Log
-link.
+The power link \\\eta = \theta^\lambda\\ on \\(0, \infty)\\; at
+\\\lambda = 0\\ it returns the log link, its limit by continuity.
 
 ## Usage
 

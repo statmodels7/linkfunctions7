@@ -1,9 +1,9 @@
 # Validate and Check a Link Object
 
-A diagnostic S7 method to mathematically validate a `link` object. It
-sequentially verifies the algebraic invertibility and the correctness of
-the analytical derivatives using numerical gradients in a chained
-sequence.
+Validates a `link` object numerically: invertibility in both directions
+on a grid, strict monotonicity, the inverse function theorem
+\\h'(\eta)\\g'(\theta) = 1\\, and every analytic derivative against one
+numerical differentiation of the analytic order below it.
 
 ## Usage
 

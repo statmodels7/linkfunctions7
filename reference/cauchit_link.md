@@ -1,9 +1,7 @@
 # The Cauchit Link Function
 
-Creates an S7 object of class `link` implementing the Cauchit
-transformation. This link function rigorously maps the open interval
-`c(0, 1)` to the real line by utilizing the quantile function of the
-standard Cauchy distribution.
+The cauchit link \\\eta = \tan(\pi(\theta - 1/2))\\ on \\(0, 1)\\, the
+Cauchy quantile function; heavier-tailed than the logit or the probit.
 
 ## Usage
 
