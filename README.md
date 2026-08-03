@@ -28,7 +28,7 @@ diagnostic that verifies those derivatives against numerical ones.
 
 It is part of [statmodels7](https://statmodels7.github.io), an S7
 toolkit for statistical modelling, and is what
-[distributions7](https://statmodels7.github.io/distributions7) uses to
+[distributions7](https://statmodels7.github.io/distributions7/) uses to
 move between a constrained parameter and the unconstrained scale a
 fitting routine works on. The mathematics behind every formula,
 including the derivation of the derivatives to fourth order, is worked
