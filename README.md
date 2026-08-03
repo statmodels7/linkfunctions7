@@ -16,25 +16,23 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 # linkfunctions7 <img src="man/figures/logo.png" align="right" height="139" alt="" />
 
 In most R modelling packages a link function has no standing of its own.
-It is a string you pass to a fitting routine, unpacked internally into a
-couple of closures that nothing outside can reach: you cannot hand one
-to another package, ask it for its second derivative, or add your own
-without editing somebody else’s source.
+It is a string passed to a fitting routine and unpacked internally into
+a couple of closures that nothing outside can reach: it cannot be handed
+to another package, asked for its second derivative, or extended without
+editing the source that owns it.
 
-`{linkfunctions7}` makes a link an object. Fourteen of them, each
-carrying **exact analytical derivatives up to fourth order in both
-directions** — forward and inverse — and a diagnostic that verifies
-those derivatives against numerical ones. Written once, usable by
-anything.
+`{linkfunctions7}` makes a link an object. The package provides fourteen
+constructors, each carrying **exact analytical derivatives up to fourth
+order in both directions**, forward and inverse, together with a
+diagnostic that verifies those derivatives against numerical ones.
 
-It is part of [statmodels7](https://statmodels7.github.io), an S7 toolkit
-for statistical modelling, and is what
+It is part of [statmodels7](https://statmodels7.github.io), an S7
+toolkit for statistical modelling, and is what
 [distributions7](https://statmodels7.github.io/distributions7) uses to
 move between a constrained parameter and the unconstrained scale a
-fitting routine works on. The mathematics behind every formula —
-including the derivation of all the derivatives to fourth order — is
-worked out in full in [the statmodels7
-book](https://statmodels7.github.io/book/).
+fitting routine works on. The mathematics behind every formula,
+including the derivation of the derivatives to fourth order, is worked
+out in [the statmodels7 book](https://statmodels7.github.io/book/).
 
 ## Installation
 
@@ -46,16 +44,15 @@ pak::pak("statmodels7/linkfunctions7")
 ## A link is an object
 
 Each link is created by a constructor and knows its own name, domain and
-parameters. The two directions — the forward link $\eta = g(\theta)$ and
-the inverse $\theta = g^{-1}(\eta)$ — are generics that dispatch on it,
-as are all eight derivatives.
+parameters. The forward link $\eta = g(\theta)$ and the inverse
+$\theta = g^{-1}(\eta)$ are generics that dispatch on it, as are all
+eight derivatives.
 
-The softplus link is a good place to start, because it shows why having
-more than one positivity link matters. Like the log it keeps $\theta$
-positive, but where the log implies an exponential relationship
-everywhere, the softplus bends smoothly into a straight line as $\eta$
-grows, so a large linear predictor is not amplified into an enormous
-parameter:
+The softplus link illustrates why more than one positivity link is
+useful. Like the log it keeps $\theta$ positive, but where the log
+implies an exponential relationship everywhere, the softplus bends
+smoothly into a straight line as $\eta$ grows, so a large linear
+predictor is not amplified into an enormous parameter:
 
 ``` r
 softplus_link(a = 1)
@@ -68,10 +65,10 @@ plot(softplus_link(a = 1))
 <img src="man/figures/README-unnamed-chunk-3-1.png" alt="" width="100%" />
 
 A parameter confined to an interval gets `bounded_link()`, which maps
-the interval onto the whole real line — give it a lower bound, an upper
-bound, or both. Whatever the link, the derivatives are exact formulas
-rather than finite differences, and they go to fourth order in both
-directions:
+the interval onto the whole real line and accepts a lower bound, an
+upper bound, or both. Whatever the link, the derivatives are exact
+formulas rather than finite differences, and they go to fourth order in
+both directions:
 
 ``` r
 link <- bounded_link(lwr = -3, upr = 2)
@@ -85,15 +82,15 @@ d4linkfun(link, theta)   # ... down to the fourth order
 #> [1] -1897.611144    -8.646712     0.000000     8.646712  1897.611144
 ```
 
-## Trust, but verify
+## Validating a link
 
 The derivatives are hand-written, so the package ships the tool that
 checks them. `check_link()` confirms that a link inverts cleanly in both
 directions, that it is strictly monotone, that the inverse function
 theorem $g'(\theta)\,(g^{-1})'(\eta) = 1$ holds, and that every
-analytical derivative agrees with a numerical one. It runs on any link —
-including one you wrote yourself five minutes ago, which is exactly when
-it is most useful:
+analytical derivative agrees with a numerical one. It runs on any link,
+and it is most useful on a newly written one, where a wrong derivative
+is likeliest:
 
 ``` r
 check_link(log_link())
