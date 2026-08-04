@@ -68,10 +68,30 @@ analytic_order <- function(x, inverse = FALSE) {
 }
 
 
-# Is this S7 class the package's own base `link` class? Identity first, because
-# it is the usual case and costs nothing; name and package after, because
-# identity is not preserved when the package's code is re-evaluated rather than
-# loaded. See the details of analytic_order() for what that costs when missed.
+#' Is a Class the Base Link Class
+#'
+#' @description
+#' Answers whether an S7 class is this package's own \code{\link{link}} class,
+#' which is how a method inherited from the base class is told from one a link
+#' registered for itself.
+#'
+#' @details
+#' Object identity is tried first, since it is the usual case and costs
+#' nothing, and the class name and package are compared after. The second
+#' comparison is what makes the answer reliable: \code{identical()} on an S7
+#' class is object identity, so it is false for a class re-created from the
+#' same definition, which is what happens whenever a package's code is
+#' evaluated rather than loaded. A base fallback mistaken for an analytic
+#' method makes every fallback differentiate the order below it, which is the
+#' nested differencing the design exists to forbid.
+#'
+#' @param cls An S7 class.
+#'
+#' @return \code{TRUE} or \code{FALSE}.
+#'
+#' @seealso \code{\link{link_fallback_orders}}
+#'
+#' @keywords internal
 is_base_link_class <- function(cls) {
   if (identical(cls, link)) return(TRUE)
   nm <- attr(cls, "name")
@@ -156,10 +176,27 @@ stencil_deriv <- function(f, x, order, h) {
 }
 
 
-# The range the inverse link is evaluated on, when it can be established. A link
-# need not map onto the whole real line -- the square root reaches only the
-# positive half -- and a stencil straying outside returns NaN, so the image of
-# the parameter bounds is used to clamp eta exactly as the bounds clamp theta.
+#' The Range a Stencil May Evaluate the Inverse Link On
+#'
+#' @description
+#' The image of the link's parameter bounds under \code{\link{linkfun}}, used
+#' to keep a finite-difference grid inside the set the inverse link is defined
+#' on.
+#'
+#' @details
+#' A link need not map onto the whole real line: the square root reaches only
+#' the positive half, and a stencil straying outside returns \code{NaN}, which
+#' would make a numerical derivative missing rather than inaccurate. The
+#' bounds are returned sorted, since a decreasing link reverses them, and are
+#' infinite in the directions where they cannot be established.
+#'
+#' @param x A \code{\link{link}} object.
+#'
+#' @return A numeric vector of length two.
+#'
+#' @seealso \code{\link{link_bounds_clamp}}
+#'
+#' @keywords internal
 eta_bounds <- function(x) {
   b <- tryCatch(sort(linkfun(x, x@link_bounds)), error = function(e) NULL)
   if (is.null(b) || length(b) != 2L || anyNA(b)) c(-Inf, Inf) else b
