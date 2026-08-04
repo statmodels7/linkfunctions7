@@ -78,21 +78,24 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"statmodels7/linkfunctions7"</span><span class="op">)</span></span></code></pre></div>
+<p>Or the whole toolkit at once, which also installs the four sibling packages:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"statmodels7/statmodels7"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="a-link-is-an-object">A link is an object<a class="anchor" aria-label="anchor" href="#a-link-is-an-object"></a>
 </h2>
 <p>Each link is created by a constructor and knows its own name, domain and parameters. The forward link <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>η</mi><mo>=</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\eta = g(\theta)</annotation></semantics></math> and the inverse <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi><mo>=</mo><msup><mi>g</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\theta = g^{-1}(\eta)</annotation></semantics></math> are generics that dispatch on it, as are all eight derivatives.</p>
 <p>The softplus link illustrates why more than one positivity link is useful. Like the log it keeps <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math> positive, but where the log implies an exponential relationship everywhere, the softplus bends smoothly into a straight line as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>η</mi><annotation encoding="application/x-tex">\eta</annotation></semantics></math> grows, so a large linear predictor is not amplified into an enormous parameter:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/softplus_link.html">softplus_link</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; S7 Link Object: softplus(a=1)</span></span>
 <span><span class="co">#&gt;   - Parameter domain (theta): (0, Inf)</span></span>
 <span><span class="co">#&gt;   - Link parameters: a = 1</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="reference/softplus_link.html">softplus_link</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-3-1.png" alt="" width="100%"></p>
+<p><img src="reference/figures/README-unnamed-chunk-4-1.png" alt="" width="100%"></p>
 <p>A parameter confined to an interval gets <code><a href="reference/bounded_link.html">bounded_link()</a></code>, which maps the interval onto the whole real line and accepts a lower bound, an upper bound, or both. Whatever the link, the derivatives are exact formulas rather than finite differences, and they go to fourth order in both directions:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">link</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bounded_link.html">bounded_link</a></span><span class="op">(</span>lwr <span class="op">=</span> <span class="op">-</span><span class="fl">3</span>, upr <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="va">theta</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/linkinv.html">linkinv</a></span><span class="op">(</span><span class="va">link</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span>, length.out <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -107,7 +110,7 @@
 <h2 id="validating-a-link">Validating a link<a class="anchor" aria-label="anchor" href="#validating-a-link"></a>
 </h2>
 <p>The derivatives are hand-written, so the package ships the tool that checks them. <code><a href="reference/check_link.html">check_link()</a></code> confirms that a link inverts cleanly in both directions, that it is strictly monotone, that the inverse function theorem <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>g</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">(</mo><msup><mi>g</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><msup><mo stretchy="false" form="postfix">)</mo><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">g'(\theta)\,(g^{-1})'(\eta) = 1</annotation></semantics></math> holds, and that every analytical derivative agrees with a numerical one. It runs on any link, and it is most useful on a newly written one, where a wrong derivative is likeliest:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/check_link.html">check_link</a></span><span class="op">(</span><span class="fu"><a href="reference/log_link.html">log_link</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Checking S7 Link Object: log </span></span>
 <span><span class="co">#&gt;   [1] Invertibility (Theta space): [PASSED] </span></span>

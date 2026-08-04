@@ -28,6 +28,14 @@ out in [the statmodels7 book](https://statmodels7.github.io/book/).
 pak::pak("statmodels7/linkfunctions7")
 ```
 
+Or the whole toolkit at once, which also installs the four sibling
+packages:
+
+``` r
+
+pak::pak("statmodels7/statmodels7")
+```
+
 ## A link is an object
 
 Each link is created by a constructor and knows its own name, domain and
@@ -50,7 +58,7 @@ softplus_link(a = 1)
 plot(softplus_link(a = 1))
 ```
 
-![](reference/figures/README-unnamed-chunk-3-1.png)
+![](reference/figures/README-unnamed-chunk-4-1.png)
 
 A parameter confined to an interval gets
 [`bounded_link()`](https://statmodels7.github.io/linkfunctions7/reference/bounded_link.md),
