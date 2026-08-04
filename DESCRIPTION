@@ -21,6 +21,7 @@ Collate:
     'identity_link.R'
     'inverse_link.R'
     'inverse_sq_link.R'
+    'linkfunctions7-package.R'
     'log_link.R'
     'logit_link.R'
     'loglog_link.R'
