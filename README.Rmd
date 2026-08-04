@@ -50,6 +50,13 @@ the derivatives to fourth order, is worked out in
 pak::pak("statmodels7/linkfunctions7")
 ```
 
+Or the whole toolkit at once, which also installs the four sibling
+packages:
+
+```{r eval=FALSE}
+pak::pak("statmodels7/statmodels7")
+```
+
 ## A link is an object
 
 Each link is created by a constructor and knows its own name, domain and
