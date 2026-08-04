@@ -248,6 +248,9 @@ route to these; call them directly where the extra dispatch matters.
 - [`linkderiv()`](https://statmodels7.github.io/linkfunctions7/reference/linkderiv.md)
   [`linkderiv.link()`](https://statmodels7.github.io/linkfunctions7/reference/linkderiv.md)
   : Evaluate Derivative of Link Function by Order
+- [`linkfunctions7`](https://statmodels7.github.io/linkfunctions7/reference/linkfunctions7-package.md)
+  [`linkfunctions7-package`](https://statmodels7.github.io/linkfunctions7/reference/linkfunctions7-package.md)
+  : linkfunctions7: An S7 Framework for Link Functions
 - [`linkinvderiv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinvderiv.md)
   [`linkinvderiv.link()`](https://statmodels7.github.io/linkfunctions7/reference/linkinvderiv.md)
   : Evaluate Derivative of Inverse Link Function by Order
