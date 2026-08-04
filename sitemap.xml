@@ -36,6 +36,7 @@
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/d4linkinv.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/dlinkfun.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/dlinkinv.html</loc></url>
+<url><loc>https://statmodels7.github.io/linkfunctions7/reference/eta_bounds.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/exp_floor.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/exp_floored.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/fallback_deriv.html</loc></url>
@@ -44,6 +45,7 @@
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/index.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/inverse_link.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/inverse_sq_link.html</loc></url>
+<url><loc>https://statmodels7.github.io/linkfunctions7/reference/is_base_link_class.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/link.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/link_bounds_clamp.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/link_fallback_orders.html</loc></url>

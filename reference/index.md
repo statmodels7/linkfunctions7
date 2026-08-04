@@ -135,6 +135,8 @@ route to these; call them directly where the extra dispatch matters.
   : Validate and Check a Link Object
 - [`const_like()`](https://statmodels7.github.io/linkfunctions7/reference/const_like.md)
   : A Constant Vector That Preserves Missingness
+- [`eta_bounds()`](https://statmodels7.github.io/linkfunctions7/reference/eta_bounds.md)
+  : The Range a Stencil May Evaluate the Inverse Link On
 - [`exp_floor`](https://statmodels7.github.io/linkfunctions7/reference/exp_floor.md)
   : The Smallest Parameter Value the Exponential Links Will Report
 - [`exp_floored()`](https://statmodels7.github.io/linkfunctions7/reference/exp_floored.md)
@@ -143,6 +145,8 @@ route to these; call them directly where the extra dispatch matters.
   : The Body Shared by Every Numerical Fallback
 - [`fd_step()`](https://statmodels7.github.io/linkfunctions7/reference/fd_step.md)
   : A Finite-Difference Step for a Given Order
+- [`is_base_link_class()`](https://statmodels7.github.io/linkfunctions7/reference/is_base_link_class.md)
+  : Is a Class the Base Link Class
 - [`linkderiv()`](https://statmodels7.github.io/linkfunctions7/reference/linkderiv.md)
   [`linkderiv.link()`](https://statmodels7.github.io/linkfunctions7/reference/linkderiv.md)
   : Evaluate Derivative of Link Function by Order
