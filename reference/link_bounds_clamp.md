@@ -41,8 +41,8 @@ it.
 
 The correction is the smallest one that can work and it is derived, not
 chosen. What binds is "strictly inside, and finite", and its two
-extremes are the neighbouring representable double and the largest
-finite one.
+extremes are the neighboring representable double and the largest finite
+one.
 
 ### The relative bump
 

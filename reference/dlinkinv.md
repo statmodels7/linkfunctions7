@@ -24,7 +24,7 @@ A numeric vector of the same length as `eta`, missing wherever `eta` is.
 
 ## Details
 
-This and its higher-order siblings are the generics a modelling routine
+This and its higher-order siblings are the generics a modeling routine
 working on the unconstrained scale actually wants. Call them directly
 rather than through
 [`linkinvderiv`](https://statmodels7.github.io/linkfunctions7/reference/linkinvderiv.md)

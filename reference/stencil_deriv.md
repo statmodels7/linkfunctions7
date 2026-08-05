@@ -13,7 +13,7 @@ stencil_deriv(f, x, order, h)
 
 - f:
 
-  A vectorised function of one numeric argument.
+  A vectorized function of one numeric argument.
 
 - x:
 

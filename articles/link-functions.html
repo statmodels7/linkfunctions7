@@ -81,13 +81,13 @@ to an unconstrained linear predictor
 so that a model can be fitted without fighting the parameter’s boundary.
 A variance must stay positive and a probability must stay in
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0, 1)</annotation></semantics></math>;
-the log and logit links move the optimisation onto the whole real line
+the log and logit links move the optimization onto the whole real line
 and map the result back.</p>
 <p>What distinguishes <strong>linkfunctions7</strong> from a couple of
 <code><a href="https://rdrr.io/r/base/Log.html" class="external-link">log()</a></code> and <code><a href="https://rdrr.io/r/stats/Logistic.html" class="external-link">plogis()</a></code> calls is that every link
 carries its <strong>exact analytical derivatives up to fourth
 order</strong>, in both directions, together with a diagnostic that
-verifies them. Those derivatives are what a modelling package needs: a
+verifies them. Those derivatives are what a modeling package needs: a
 Newton or Fisher-scoring step uses the derivative of the inverse link,
 and a higher-order correction uses the orders above it.</p>
 <div class="section level2">

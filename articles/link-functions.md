@@ -9,14 +9,14 @@ A link function maps a constrained parameter $`\theta`$ to an
 unconstrained linear predictor $`\eta`$, so that a model can be fitted
 without fighting the parameter’s boundary. A variance must stay positive
 and a probability must stay in $`(0, 1)`$; the log and logit links move
-the optimisation onto the whole real line and map the result back.
+the optimization onto the whole real line and map the result back.
 
 What distinguishes **linkfunctions7** from a couple of
 [`log()`](https://rdrr.io/r/base/Log.html) and
 [`plogis()`](https://rdrr.io/r/stats/Logistic.html) calls is that every
 link carries its **exact analytical derivatives up to fourth order**, in
 both directions, together with a diagnostic that verifies them. Those
-derivatives are what a modelling package needs: a Newton or
+derivatives are what a modeling package needs: a Newton or
 Fisher-scoring step uses the derivative of the inverse link, and a
 higher-order correction uses the orders above it.
 
