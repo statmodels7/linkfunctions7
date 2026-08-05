@@ -1,4 +1,4 @@
-# Behaviour far out in the tails, where the ordinary grids of test-derivatives.R
+# Behavior far out in the tails, where the ordinary grids of test-derivatives.R
 # never go. Three defects lived here undetected precisely because every other
 # test evaluates well inside the domain.
 
@@ -140,7 +140,7 @@ test_that("the numerical fallbacks reproduce a known link", {
 })
 
 test_that("the shipped links are all analytic to fourth order", {
-  # The fallbacks exist for user-defined links; nothing in the catalogue should
+  # The fallbacks exist for user-defined links; nothing in the catalog should
   # ever reach them.
   for (nm in names(all_links())) {
     expect_equal(link_fallback_orders(all_links()[[nm]]),
@@ -295,7 +295,7 @@ test_that("the clamp fires only on saturation, never on an inadmissible eta", {
 
 test_that("the clamp does not disturb the ordinary range", {
   # It fires on equality with a bound and nowhere else, so everything a caller
-  # would recognise must be bit-for-bit what the formula produced.
+  # would recognize must be bit-for-bit what the formula produced.
   eta <- seq(-6, 6, by = 0.25)
   expect_equal(linkinv(logit_link(), eta), stats::plogis(eta))
   expect_equal(linkinv(log_link(), eta), exp(eta))

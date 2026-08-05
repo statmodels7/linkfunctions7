@@ -69,7 +69,7 @@ test_that("check_link passes on every link the package ships", {
   }
 })
 
-test_that("derivatives are vectorised and preserve missing values", {
+test_that("derivatives are vectorized and preserve missing values", {
   # A derivative that reduces to a constant must still return NA for an NA input.
   # R makes this easy to miss: NA^0 is 1, so theta^(lambda - 2) quietly turns a
   # missing parameter into a number as soon as lambda is 2.

@@ -5,7 +5,7 @@ NULL
 # Numerical fallbacks for the derivative generics.
 #
 # A link is a formula and its derivatives, so writing all ten methods is a dozen
-# lines and the catalogue does it everywhere. But a user experimenting with a
+# lines and the catalog does it everywhere. But a user experimenting with a
 # transformation should not have to differentiate it by hand four times before
 # anything works, so the base class supplies every derivative it was not given.
 #
@@ -154,7 +154,7 @@ fd_step <- function(x, order, bounds = NULL) {
 #' derivative is exactly zero, and nested differentiation returns a number of
 #' order one.
 #'
-#' @param f A vectorised function of one numeric argument.
+#' @param f A vectorized function of one numeric argument.
 #' @param x A numeric vector of evaluation points.
 #' @param order The derivative order, 1 to 4.
 #' @param h A numeric vector of steps, from \code{\link{fd_step}}.

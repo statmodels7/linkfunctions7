@@ -19,7 +19,7 @@ A numeric vector of the same length as \code{eta}, missing wherever
 The first derivative of \eqn{g^{-1}(\eta)} with respect to \eqn{\eta}.
 }
 \details{
-This and its higher-order siblings are the generics a modelling routine
+This and its higher-order siblings are the generics a modeling routine
 working on the unconstrained scale actually wants. Call them directly rather
 than through \code{\link{linkinvderiv}} in a hot loop: the router dispatches
 once on itself and then again on the order-specific generic, which is about a

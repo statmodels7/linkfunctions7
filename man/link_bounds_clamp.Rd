@@ -32,7 +32,7 @@ A caller then receives a probability of exactly 1, or a variance of exactly
 
 The correction is the smallest one that can work and it is derived, not
 chosen. What binds is "strictly inside, and finite",
-and its two extremes are the neighbouring representable double and the
+and its two extremes are the neighboring representable double and the
 largest finite one.
 
 \subsection{The relative bump}{

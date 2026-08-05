@@ -15,7 +15,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 
 # linkfunctions7 <img src="man/figures/logo.png" align="right" height="139" alt="" />
 
-In most R modelling packages a link function has no standing of its own.
+In most R modeling packages a link function has no standing of its own.
 It is a string passed to a fitting routine and unpacked internally into
 a couple of closures that nothing outside can reach: it cannot be handed
 to another package, asked for its second derivative, or extended without
@@ -27,7 +27,7 @@ order in both directions**, forward and inverse, together with a
 diagnostic that verifies those derivatives against numerical ones.
 
 It is part of [statmodels7](https://statmodels7.github.io), an S7
-toolkit for statistical modelling, and is what
+toolkit for statistical modeling, and is what
 [distributions7](https://statmodels7.github.io/distributions7/) uses to
 move between a constrained parameter and the unconstrained scale a
 fitting routine works on. The mathematics behind every formula,

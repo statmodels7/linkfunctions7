@@ -7,7 +7,7 @@
 stencil_deriv(f, x, order, h)
 }
 \arguments{
-\item{f}{A vectorised function of one numeric argument.}
+\item{f}{A vectorized function of one numeric argument.}
 
 \item{x}{A numeric vector of evaluation points.}
 
