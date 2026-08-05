@@ -36,6 +36,7 @@ Collate:
 Imports:
     graphics,
     numDeriv,
+    numericals7 (>= 0.2.0),
     S7,
     stats
 Config/roxygen2/version: 8.0.0
@@ -46,4 +47,6 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+Remotes:
+    statmodels7/numericals7
 Config/testthat/edition: 3

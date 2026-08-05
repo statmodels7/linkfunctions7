@@ -127,13 +127,9 @@ is_base_link_class <- function(cls) {
 #'
 #' @keywords internal
 fd_step <- function(x, order, bounds = NULL) {
-  reach <- if (order >= 3L) 2 else 1
-  h <- .Machine$double.eps^(1 / (order + 2)) * pmax(1, abs(x))
-  if (!is.null(bounds)) {
-    if (is.finite(bounds[1])) h <- pmin(h, 0.49 * (x - bounds[1]) / reach)
-    if (is.finite(bounds[2])) h <- pmin(h, 0.49 * (bounds[2] - x) / reach)
-  }
-  h
+  # The step rule moved to numericals7 with the rest of the stencil library;
+  # this wrapper keeps the policy name the fallbacks speak through.
+  numericals7::fd_step(x, order, bounds = bounds)
 }
 
 
@@ -167,12 +163,10 @@ fd_step <- function(x, order, bounds = NULL) {
 #'
 #' @keywords internal
 stencil_deriv <- function(f, x, order, h) {
-  switch(order,
-    (f(x + h) - f(x - h)) / (2 * h),
-    (f(x + h) - 2 * f(x) + f(x - h)) / h^2,
-    (f(x + 2 * h) - 2 * f(x + h) + 2 * f(x - h) - f(x - 2 * h)) / (2 * h^3),
-    (f(x + 2 * h) - 4 * f(x + h) + 6 * f(x) - 4 * f(x - h) + f(x - 2 * h)) / h^4
-  )
+  # One stencil of the requested order from numericals7's shared weights;
+  # the four formulas the documentation displays are exactly what the
+  # Vandermonde construction produces at the default accuracy.
+  numericals7::fd_derivative(f, x, order, h = h)
 }
 
 
