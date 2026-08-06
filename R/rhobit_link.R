@@ -20,33 +20,17 @@ S7::method(linkfun, RhobitLink) <- function(x, theta) atanh(theta)
 S7::method(linkinv, RhobitLink) <- function(x, eta) tanh(eta)
 
 # Exact analytical derivatives of the link function (wrt theta)
-S7::method(dlinkfun, RhobitLink) <- function(x, theta) {
-  1 / (1 - theta^2)
-}
-S7::method(d2linkfun, RhobitLink) <- function(x, theta) {
-  (2 * theta) / ((1 - theta^2)^2)
-}
-S7::method(d3linkfun, RhobitLink) <- function(x, theta) {
-  (2 + 6 * (theta^2)) / ((1 - theta^2)^3)
-}
-S7::method(d4linkfun, RhobitLink) <- function(x, theta) {
-  (24 * theta * (1 + theta^2)) / ((1 - theta^2)^4)
-}
+S7::method(dlinkfun, RhobitLink) <- function(x, theta) lk_rhobit_fwd_cpp(theta, 1L)
+S7::method(d2linkfun, RhobitLink) <- function(x, theta) lk_rhobit_fwd_cpp(theta, 2L)
+S7::method(d3linkfun, RhobitLink) <- function(x, theta) lk_rhobit_fwd_cpp(theta, 3L)
+S7::method(d4linkfun, RhobitLink) <- function(x, theta) lk_rhobit_fwd_cpp(theta, 4L)
 
 # Exact analytical derivatives of the inverse link function (wrt eta)
 # All of these are evaluated as polynomials in t = tanh(eta)
-S7::method(dlinkinv, RhobitLink) <- function(x, eta) {
-  t <- tanh(eta); 1 - t^2
-}
-S7::method(d2linkinv, RhobitLink) <- function(x, eta) {
-  t <- tanh(eta); -2 * t * (1 - t^2)
-}
-S7::method(d3linkinv, RhobitLink) <- function(x, eta) {
-  t <- tanh(eta); -2 + 8 * (t^2) - 6 * (t^4)
-}
-S7::method(d4linkinv, RhobitLink) <- function(x, eta) {
-  t <- tanh(eta); 16 * t - 40 * (t^3) + 24 * (t^5)
-}
+S7::method(dlinkinv, RhobitLink) <- function(x, eta) lk_rhobit_inv_cpp(eta, 1L)
+S7::method(d2linkinv, RhobitLink) <- function(x, eta) lk_rhobit_inv_cpp(eta, 2L)
+S7::method(d3linkinv, RhobitLink) <- function(x, eta) lk_rhobit_inv_cpp(eta, 3L)
+S7::method(d4linkinv, RhobitLink) <- function(x, eta) lk_rhobit_inv_cpp(eta, 4L)
 
 #' @title The Rhobit (Fisher's z) Link Function
 #'

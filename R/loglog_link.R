@@ -19,29 +19,19 @@ S7::method(linkfun, LogLogLink) <- function(x, theta) -log(-log(theta))
 S7::method(linkinv, LogLogLink) <- function(x, eta) exp(-exp(-eta))
 
 # Exact analytical derivatives of the link function (wrt theta)
-S7::method(dlinkfun, LogLogLink) <- function(x, theta) {
-  -1 / (theta * log(theta))
-}
-S7::method(d2linkfun, LogLogLink) <- function(x, theta) {
-  l <- log(theta)
-  (1 + l) / (theta^2 * (l^2))
-}
-S7::method(d3linkfun, LogLogLink) <- function(x, theta) {
-  l <- log(theta)
-  -(2 + 3 * l + 2 * (l^2)) / (theta^3 * (l^3))
-}
-S7::method(d4linkfun, LogLogLink) <- function(x, theta) {
-  l <- log(theta)
-  (6 + 12 * l + 11 * (l^2) + 6 * (l^3)) / (theta^4 * (l^4))
-}
+S7::method(dlinkfun, LogLogLink) <- function(x, theta) lk_loglog_fwd_cpp(theta, 1L)
+S7::method(d2linkfun, LogLogLink) <- function(x, theta) lk_loglog_fwd_cpp(theta, 2L)
+
+S7::method(d3linkfun, LogLogLink) <- function(x, theta) lk_loglog_fwd_cpp(theta, 3L)
+S7::method(d4linkfun, LogLogLink) <- function(x, theta) lk_loglog_fwd_cpp(theta, 4L)
 
 # Exact analytical derivatives of the inverse link function (wrt eta)
 # Utilizing the term z = exp(-eta) to evaluate derivatives as polynomials,
 # thus maximizing computational performance.
-S7::method(dlinkinv, LogLogLink) <- function(x, eta) { z <- exp(-eta); exp(-z) * z }
-S7::method(d2linkinv, LogLogLink) <- function(x, eta) { z <- exp(-eta); exp(-z) * (z^2 - z) }
-S7::method(d3linkinv, LogLogLink) <- function(x, eta) { z <- exp(-eta); exp(-z) * (z^3 - 3 * z^2 + z) }
-S7::method(d4linkinv, LogLogLink) <- function(x, eta) { z <- exp(-eta); exp(-z) * (z^4 - 6 * z^3 + 7 * z^2 - z) }
+S7::method(dlinkinv, LogLogLink) <- function(x, eta) lk_loglog_inv_cpp(eta, 1L)
+S7::method(d2linkinv, LogLogLink) <- function(x, eta) lk_loglog_inv_cpp(eta, 2L)
+S7::method(d3linkinv, LogLogLink) <- function(x, eta) lk_loglog_inv_cpp(eta, 3L)
+S7::method(d4linkinv, LogLogLink) <- function(x, eta) lk_loglog_inv_cpp(eta, 4L)
 
 #' @title The Log-Log Link Function
 #'

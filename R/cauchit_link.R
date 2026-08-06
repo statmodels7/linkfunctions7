@@ -22,37 +22,17 @@ S7::method(linkinv, CauchitLink) <- function(x, eta) stats::pcauchy(eta)
 # Exact analytical derivatives of the link function (wrt theta)
 # We compute eta locally to maximize computational efficiency 
 # and express higher-order derivatives as elegant polynomials of eta.
-S7::method(dlinkfun, CauchitLink) <- function(x, theta) {
-  eta <- stats::qcauchy(theta)
-  pi * (1 + eta^2)
-}
-S7::method(d2linkfun, CauchitLink) <- function(x, theta) {
-  eta <- stats::qcauchy(theta)
-  2 * (pi^2) * eta * (1 + eta^2)
-}
-S7::method(d3linkfun, CauchitLink) <- function(x, theta) {
-  eta <- stats::qcauchy(theta)
-  2 * (pi^3) * (1 + eta^2) * (1 + 3 * (eta^2))
-}
-S7::method(d4linkfun, CauchitLink) <- function(x, theta) {
-  eta <- stats::qcauchy(theta)
-  8 * (pi^4) * eta * (1 + eta^2) * (2 + 3 * (eta^2))
-}
+S7::method(dlinkfun, CauchitLink) <- function(x, theta) lk_cauchit_fwd_cpp(theta, 1L)
+S7::method(d2linkfun, CauchitLink) <- function(x, theta) lk_cauchit_fwd_cpp(theta, 2L)
+S7::method(d3linkfun, CauchitLink) <- function(x, theta) lk_cauchit_fwd_cpp(theta, 3L)
+S7::method(d4linkfun, CauchitLink) <- function(x, theta) lk_cauchit_fwd_cpp(theta, 4L)
 
 # Exact analytical derivatives of the inverse link function (wrt eta)
 # Derived purely from the Cauchy probability density function
-S7::method(dlinkinv, CauchitLink) <- function(x, eta) {
-  1 / (pi * (1 + eta^2))
-}
-S7::method(d2linkinv, CauchitLink) <- function(x, eta) {
-  -2 * eta / (pi * ((1 + eta^2)^2))
-}
-S7::method(d3linkinv, CauchitLink) <- function(x, eta) {
-  2 * (3 * (eta^2) - 1) / (pi * ((1 + eta^2)^3))
-}
-S7::method(d4linkinv, CauchitLink) <- function(x, eta) {
-  24 * eta * (1 - eta^2) / (pi * ((1 + eta^2)^4))
-}
+S7::method(dlinkinv, CauchitLink) <- function(x, eta) lk_cauchit_inv_cpp(eta, 1L)
+S7::method(d2linkinv, CauchitLink) <- function(x, eta) lk_cauchit_inv_cpp(eta, 2L)
+S7::method(d3linkinv, CauchitLink) <- function(x, eta) lk_cauchit_inv_cpp(eta, 3L)
+S7::method(d4linkinv, CauchitLink) <- function(x, eta) lk_cauchit_inv_cpp(eta, 4L)
 
 #' @title The Cauchit Link Function
 #'

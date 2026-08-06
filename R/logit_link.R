@@ -20,28 +20,20 @@ S7::method(linkfun, LogitLink) <- function(x, theta) stats::qlogis(theta)
 S7::method(linkinv, LogitLink) <- function(x, eta) stats::plogis(eta)
 
 # Exact analytical derivatives of the link function (wrt theta)
-S7::method(dlinkfun, LogitLink) <- function(x, theta) 1 / (theta * (1 - theta))
-S7::method(d2linkfun, LogitLink) <- function(x, theta) (2 * theta - 1) / ((theta * (1 - theta))^2)
-S7::method(d3linkfun, LogitLink) <- function(x, theta) 2 / (theta^3) + 2 / ((1 - theta)^3)
-S7::method(d4linkfun, LogitLink) <- function(x, theta) -6 / (theta^4) + 6 / ((1 - theta)^4)
+S7::method(dlinkfun, LogitLink) <- function(x, theta) lk_logit_fwd_cpp(theta, 1L)
+S7::method(d2linkfun, LogitLink) <- function(x, theta) lk_logit_fwd_cpp(theta, 2L)
+S7::method(d3linkfun, LogitLink) <- function(x, theta) lk_logit_fwd_cpp(theta, 3L)
+S7::method(d4linkfun, LogitLink) <- function(x, theta) lk_logit_fwd_cpp(theta, 4L)
 
 # Exact analytical derivatives of the inverse link function (wrt eta).
 #
 # Polynomials in the probability p itself. They are shared with the doubly
 # bounded link, which scales them by the interval width, and with the softplus,
 # which uses them one order down; see logistic_deriv().
-S7::method(dlinkinv, LogitLink) <- function(x, eta) {
-  logistic_deriv(stats::plogis(eta), 1L)
-}
-S7::method(d2linkinv, LogitLink) <- function(x, eta) {
-  logistic_deriv(stats::plogis(eta), 2L)
-}
-S7::method(d3linkinv, LogitLink) <- function(x, eta) {
-  logistic_deriv(stats::plogis(eta), 3L)
-}
-S7::method(d4linkinv, LogitLink) <- function(x, eta) {
-  logistic_deriv(stats::plogis(eta), 4L)
-}
+S7::method(dlinkinv, LogitLink) <- function(x, eta) lk_logit_inv_cpp(eta, 1L)
+S7::method(d2linkinv, LogitLink) <- function(x, eta) lk_logit_inv_cpp(eta, 2L)
+S7::method(d3linkinv, LogitLink) <- function(x, eta) lk_logit_inv_cpp(eta, 3L)
+S7::method(d4linkinv, LogitLink) <- function(x, eta) lk_logit_inv_cpp(eta, 4L)
 
 #' @title The Logit Link Function
 #'

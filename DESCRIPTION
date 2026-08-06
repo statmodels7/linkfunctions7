@@ -13,6 +13,7 @@ BugReports: https://github.com/statmodels7/linkfunctions7/issues
 Depends:
     R (>= 4.1.0)
 Collate:
+    'RcppExports.R'
     'link_class.R'
     'generics.R'
     'bounded_link.R'
@@ -34,6 +35,7 @@ Collate:
     'sqrt_link.R'
     'zzz.R'
 Imports:
+    Rcpp,
     graphics,
     numDeriv,
     numericals7 (>= 0.2.0),
@@ -41,6 +43,8 @@ Imports:
     stats
 Config/roxygen2/version: 8.0.0
 RoxygenNote: 7.3.3
+LinkingTo:
+    Rcpp
 Suggests:
     pkgdown,
     testthat (>= 3.0.0),

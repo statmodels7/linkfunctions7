@@ -21,43 +21,17 @@ S7::method(linkinv, ProbitLink) <- function(x, eta) stats::pnorm(eta)
 # Exact analytical derivatives of the link function (wrt theta)
 # We calculate eta = qnorm(theta) and phi = dnorm(eta) locally 
 # to significantly optimize computational operations.
-S7::method(dlinkfun, ProbitLink) <- function(x, theta) {
-  eta <- stats::qnorm(theta)
-  1 / stats::dnorm(eta)
-}
-S7::method(d2linkfun, ProbitLink) <- function(x, theta) {
-  eta <- stats::qnorm(theta)
-  phi <- stats::dnorm(eta)
-  eta / (phi^2)
-}
-S7::method(d3linkfun, ProbitLink) <- function(x, theta) {
-  eta <- stats::qnorm(theta)
-  phi <- stats::dnorm(eta)
-  (1 + 2 * (eta^2)) / (phi^3)
-}
-S7::method(d4linkfun, ProbitLink) <- function(x, theta) {
-  eta <- stats::qnorm(theta)
-  phi <- stats::dnorm(eta)
-  (7 * eta + 6 * (eta^3)) / (phi^4)
-}
+S7::method(dlinkfun, ProbitLink) <- function(x, theta) lk_probit_fwd_cpp(theta, 1L)
+S7::method(d2linkfun, ProbitLink) <- function(x, theta) lk_probit_fwd_cpp(theta, 2L)
+S7::method(d3linkfun, ProbitLink) <- function(x, theta) lk_probit_fwd_cpp(theta, 3L)
+S7::method(d4linkfun, ProbitLink) <- function(x, theta) lk_probit_fwd_cpp(theta, 4L)
 
 # Exact analytical derivatives of the inverse link function (wrt eta)
 # They rely exclusively on standard normal density properties.
-S7::method(dlinkinv, ProbitLink) <- function(x, eta) {
-  stats::dnorm(eta)
-}
-S7::method(d2linkinv, ProbitLink) <- function(x, eta) {
-  phi <- stats::dnorm(eta)
-  -eta * phi
-}
-S7::method(d3linkinv, ProbitLink) <- function(x, eta) {
-  phi <- stats::dnorm(eta)
-  (eta^2 - 1) * phi
-}
-S7::method(d4linkinv, ProbitLink) <- function(x, eta) {
-  phi <- stats::dnorm(eta)
-  (3 * eta - eta^3) * phi
-}
+S7::method(dlinkinv, ProbitLink) <- function(x, eta) lk_probit_inv_cpp(eta, 1L)
+S7::method(d2linkinv, ProbitLink) <- function(x, eta) lk_probit_inv_cpp(eta, 2L)
+S7::method(d3linkinv, ProbitLink) <- function(x, eta) lk_probit_inv_cpp(eta, 3L)
+S7::method(d4linkinv, ProbitLink) <- function(x, eta) lk_probit_inv_cpp(eta, 4L)
 
 #' @title The Probit Link Function
 #'

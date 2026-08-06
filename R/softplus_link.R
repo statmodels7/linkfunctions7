@@ -53,21 +53,10 @@ S7::method(linkinv, SoftplusLink) <- function(x, eta) {
 }
 
 # Exact analytical derivatives of the link function (wrt theta)
-S7::method(dlinkfun, SoftplusLink) <- function(x, theta) {
-  -1 / expm1(-x@a * theta)
-}
-S7::method(d2linkfun, SoftplusLink) <- function(x, theta) {
-  z <- x@a * theta; e <- exp(-z); u <- -expm1(-z)
-  -x@a * e / u^2
-}
-S7::method(d3linkfun, SoftplusLink) <- function(x, theta) {
-  z <- x@a * theta; e <- exp(-z); u <- -expm1(-z)
-  (x@a^2) * e * (1 + e) / u^3
-}
-S7::method(d4linkfun, SoftplusLink) <- function(x, theta) {
-  z <- x@a * theta; e <- exp(-z); u <- -expm1(-z)
-  -(x@a^3) * e * (1 + e * (4 + e)) / u^4
-}
+S7::method(dlinkfun, SoftplusLink) <- function(x, theta) lk_softplus_fwd_cpp(theta, x@a, 1L)
+S7::method(d2linkfun, SoftplusLink) <- function(x, theta) lk_softplus_fwd_cpp(theta, x@a, 2L)
+S7::method(d3linkfun, SoftplusLink) <- function(x, theta) lk_softplus_fwd_cpp(theta, x@a, 3L)
+S7::method(d4linkfun, SoftplusLink) <- function(x, theta) lk_softplus_fwd_cpp(theta, x@a, 4L)
 
 # Exact analytical derivatives of the inverse link function (wrt eta).
 #
@@ -79,13 +68,13 @@ S7::method(dlinkinv, SoftplusLink) <- function(x, eta) {
   stats::plogis(x@a * eta)
 }
 S7::method(d2linkinv, SoftplusLink) <- function(x, eta) {
-  x@a * logistic_deriv(stats::plogis(x@a * eta), 1L)
+  x@a * lk_logit_inv_cpp(x@a * eta, 1L)
 }
 S7::method(d3linkinv, SoftplusLink) <- function(x, eta) {
-  (x@a^2) * logistic_deriv(stats::plogis(x@a * eta), 2L)
+  (x@a^2) * lk_logit_inv_cpp(x@a * eta, 2L)
 }
 S7::method(d4linkinv, SoftplusLink) <- function(x, eta) {
-  (x@a^3) * logistic_deriv(stats::plogis(x@a * eta), 3L)
+  (x@a^3) * lk_logit_inv_cpp(x@a * eta, 3L)
 }
 
 #' @title The Softplus Link Function

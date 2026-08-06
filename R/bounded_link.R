@@ -110,16 +110,16 @@ S7::method(d4linkfun, DoublyBoundedLink) <- function(x, theta) {
   (-6 / (p^4) + 6 / ((1 - p)^4)) / (W^4)
 }
 S7::method(dlinkinv, DoublyBoundedLink) <- function(x, eta) {
-  x@width * logistic_deriv(stats::plogis(eta), 1L)
+  x@width * lk_logit_inv_cpp(eta, 1L)
 }
 S7::method(d2linkinv, DoublyBoundedLink) <- function(x, eta) {
-  x@width * logistic_deriv(stats::plogis(eta), 2L)
+  x@width * lk_logit_inv_cpp(eta, 2L)
 }
 S7::method(d3linkinv, DoublyBoundedLink) <- function(x, eta) {
-  x@width * logistic_deriv(stats::plogis(eta), 3L)
+  x@width * lk_logit_inv_cpp(eta, 3L)
 }
 S7::method(d4linkinv, DoublyBoundedLink) <- function(x, eta) {
-  x@width * logistic_deriv(stats::plogis(eta), 4L)
+  x@width * lk_logit_inv_cpp(eta, 4L)
 }
 
 # --- Methods for LowerBoundedLink ---
