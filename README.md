@@ -50,8 +50,8 @@ pak::pak("statmodels7/statmodels7")
 
 ## A link is an object
 
-Each link is created by a constructor and knows its own name, domain and
-parameters. The forward link $\eta = g(\theta)$ and the inverse
+Each link is created by a constructor and carries its own name, domain
+and parameters. The forward link $\eta = g(\theta)$ and the inverse
 $\theta = g^{-1}(\eta)$ are generics that dispatch on it, as are all
 eight derivatives.
 
