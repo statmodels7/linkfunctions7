@@ -28,7 +28,7 @@ out in [the statmodels7 book](https://statmodels7.github.io/book/).
 pak::pak("statmodels7/linkfunctions7")
 ```
 
-Or the whole toolkit at once, which also installs the four sibling
+Or the whole toolkit at once, which also installs the six sibling
 packages:
 
 ``` r
