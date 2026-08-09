@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,9 +37,9 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.0.0.9000" id="linkfunctions7-0009000">linkfunctions7 0.0.0.9000<a class="anchor" aria-label="anchor" href="#linkfunctions7-0009000"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.1.0" id="linkfunctions7-010">linkfunctions7 0.1.0<a class="anchor" aria-label="anchor" href="#linkfunctions7-010"></a></h2>
 <div class="section level3">
-<h3 id="numerical-behavior-0-0-0-9000">Numerical behavior<a class="anchor" aria-label="anchor" href="#numerical-behavior-0-0-0-9000"></a></h3>
+<h3 id="numerical-behavior-0-1-0">Numerical behavior<a class="anchor" aria-label="anchor" href="#numerical-behavior-0-1-0"></a></h3>
 <ul><li><p>The derivatives of the transcendental links – logit, probit, cloglog, loglog, cauchit, rhobit and softplus – are computed by compiled kernels in <code>src/link_kernels.cpp</code>. The doubly bounded link and the softplus inverse reuse the logit kernel, scaled by the width and shifted one order. Measured through S7 dispatch, <code><a href="../reference/d4linkinv.html">d4linkinv()</a></code> on the logit falls from 40 ms to 25 ms at a million points; what the port buys is not the transcendental, which costs the same in either language, but the vector temporaries an order-four polynomial allocates.</p></li>
 <li><p>The finite-difference weights and offsets come from <code>numericals7</code>, where the toolkit keeps one stencil library.</p></li>
 <li><p><code><a href="../reference/linkinv.html">linkinv()</a></code> returns a value strictly inside the open parameter interval. Nine of the eighteen links previously reached a bound or went non-finite under a large predictor: <code>linkinv(logit_link(), 37)</code> was exactly 1 and the round trip through <code><a href="../reference/linkfun.html">linkfun()</a></code> then <code>Inf</code>, which <code>distributions7</code> rejects, since it validates against open intervals. The correction is made in the generic, so every link inherits it and a user-written link needs no change. It fires only on exact equality with a bound; a value outside by a real margin is left alone, that being a complaint rather than a rounding artifact.</p></li>
@@ -48,12 +48,12 @@
 <li><p><code><a href="../reference/softplus_link.html">softplus_link()</a></code> is written in <code>u = -expm1(-a*theta)</code> rather than in <code>expm1(a*theta)</code>. The old form gave <code>NaN</code> for <code>d4linkfun</code> from <code>theta = 177</code> at <code>a = 1</code> and from <code>theta = 24</code> at <code>a = 30</code>, an ordinary value for a steep softplus.</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="derivatives-0-0-0-9000">Derivatives<a class="anchor" aria-label="anchor" href="#derivatives-0-0-0-9000"></a></h3>
+<h3 id="derivatives-0-1-0">Derivatives<a class="anchor" aria-label="anchor" href="#derivatives-0-1-0"></a></h3>
 <ul><li><p>A link that implements only <code><a href="../reference/linkfun.html">linkfun()</a></code> and <code><a href="../reference/linkinv.html">linkinv()</a></code> is complete: the base class supplies the eight derivative generics numerically. Each fallback finds the highest order implemented analytically and applies one central stencil of order <code>k - m</code> to it, never a chain of first differences. On a log link defined with nothing the fourth derivative is accurate to about 2e-5; supplying the analytic first and second takes it to 2e-8.</p></li>
 <li><p>S7 classes are compared by name and package rather than by object identity. <code><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical()</a></code> on a class is <code>FALSE</code> for a class re-created from the same definition, which is what happens whenever the code is re-evaluated rather than loaded, so the base numerical fallback was taken for an analytic method and every fallback differentiated the order below it: the log link’s fourth derivative was wrong by a factor of 900.</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="validation-and-documentation-0-0-0-9000">Validation and documentation<a class="anchor" aria-label="anchor" href="#validation-and-documentation-0-0-0-9000"></a></h3>
+<h3 id="validation-and-documentation-0-1-0">Validation and documentation<a class="anchor" aria-label="anchor" href="#validation-and-documentation-0-1-0"></a></h3>
 <ul><li><p><code><a href="../reference/check_link.html">check_link()</a></code> reports an unimplemented derivative as a failure. An order that raises left <code>NA</code> and broke the loop, and the summary reduced with <code>na.rm = TRUE</code>, so a link implementing only its first derivative was reported as passing all four orders.</p></li>
 <li><p><code><a href="../reference/check_link.html">check_link()</a></code> distinguishes an order it verified from one it could not. An order supplied by a numerical fallback would be compared against a numerical differentiation of the order below, which is the same arithmetic twice and agrees however wrong the link is; such an order is left <code>NA</code> and printed as <code>[numerical]</code>. <code><a href="../reference/link_fallback_orders.html">link_fallback_orders()</a></code> answers the same question programmatically.</p></li>
 <li><p>Every object in the namespace has a help page, every exported topic a <code>\value</code> and an executable example, and <code>tests/testthat/test-docs.R</code> asks all of that plus whether the pkgdown index is complete.</p></li>

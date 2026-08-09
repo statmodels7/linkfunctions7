@@ -1,6 +1,6 @@
 # Changelog
 
-## linkfunctions7 0.0.0.9000
+## linkfunctions7 0.1.0
 
 ### Numerical behavior
 
