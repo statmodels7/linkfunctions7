@@ -50,6 +50,14 @@ The object assumes the following mathematical notation:
 The relationship is defined as \\\eta = g(\theta)\\ (link function) and
 \\\theta = g^{-1}(\eta)\\ (inverse link function).
 
+## See also
+
+[`linkfun`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md),
+[`linkinv`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md),
+[`linkderiv`](https://statmodels7.github.io/linkfunctions7/reference/linkderiv.md),
+[`linkinvderiv`](https://statmodels7.github.io/linkfunctions7/reference/linkinvderiv.md),
+[`check_link`](https://statmodels7.github.io/linkfunctions7/reference/check_link.md)
+
 ## Examples
 
 ``` r

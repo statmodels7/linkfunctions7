@@ -83,6 +83,14 @@ Both forward and inverse derivative testing avoids compounding numerical
 errors by applying first-order numerical differentiation iteratively to
 the exact lower-order analytical derivatives.
 
+## See also
+
+[`linkfun`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md),
+[`linkinv`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md),
+[`linkderiv`](https://statmodels7.github.io/linkfunctions7/reference/linkderiv.md),
+[`linkinvderiv`](https://statmodels7.github.io/linkfunctions7/reference/linkinvderiv.md),
+[`link`](https://statmodels7.github.io/linkfunctions7/reference/link.md)
+
 ## Examples
 
 ``` r

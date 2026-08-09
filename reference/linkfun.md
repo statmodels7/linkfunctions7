@@ -34,6 +34,14 @@ evaluates that inverse and is the only other method a link has to
 supply; the eight derivative generics have numerical fallbacks derived
 from the pair.
 
+## See also
+
+[`linkinv`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md),
+[`linkderiv`](https://statmodels7.github.io/linkfunctions7/reference/linkderiv.md),
+[`linkinvderiv`](https://statmodels7.github.io/linkfunctions7/reference/linkinvderiv.md),
+[`check_link`](https://statmodels7.github.io/linkfunctions7/reference/check_link.md),
+[`link`](https://statmodels7.github.io/linkfunctions7/reference/link.md)
+
 ## Examples
 
 ``` r
