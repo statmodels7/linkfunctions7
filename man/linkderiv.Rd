@@ -40,4 +40,7 @@ linkderiv(lk, 0.5, order = 1)
 # every order at once
 vapply(0:4, function(k) linkderiv(lk, 0.25, order = k), numeric(1))
 }
+\seealso{
+\code{\link{linkfun}}, \code{\link{linkinv}}, \code{\link{linkinvderiv}}, \code{\link{check_link}}, \code{\link{link}}
+}
 \keyword{internal}

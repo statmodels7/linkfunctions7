@@ -46,3 +46,6 @@ lk@link_name
 lk@link_bounds
 
 }
+\seealso{
+\code{\link{linkfun}}, \code{\link{linkinv}}, \code{\link{linkderiv}}, \code{\link{linkinvderiv}}, \code{\link{check_link}}
+}

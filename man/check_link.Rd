@@ -67,4 +67,7 @@ res$inverse_theorem
 all(unlist(check_link(bounded_link(0, 10))))
 
 }
+\seealso{
+\code{\link{linkfun}}, \code{\link{linkinv}}, \code{\link{linkderiv}}, \code{\link{linkinvderiv}}, \code{\link{link}}
+}
 \keyword{internal}

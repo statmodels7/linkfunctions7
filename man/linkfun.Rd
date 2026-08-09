@@ -31,3 +31,6 @@ generics have numerical fallbacks derived from the pair.
 linkfun(logit_link(), c(0.25, 0.5, 0.75))
 linkfun(log_link(), c(1, exp(1)))
 }
+\seealso{
+\code{\link{linkinv}}, \code{\link{linkderiv}}, \code{\link{linkinvderiv}}, \code{\link{check_link}}, \code{\link{link}}
+}

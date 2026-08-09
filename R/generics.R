@@ -20,6 +20,7 @@
 #' @examples
 #' linkfun(logit_link(), c(0.25, 0.5, 0.75))
 #' linkfun(log_link(), c(1, exp(1)))
+#' @seealso \code{\link{linkinv}}, \code{\link{linkderiv}}, \code{\link{linkinvderiv}}, \code{\link{check_link}}, \code{\link{link}}
 #' @export
 linkfun <- S7::new_generic("linkfun", "x", fun = function(x, theta) S7::S7_dispatch())
 
@@ -214,6 +215,7 @@ d4linkinv <- S7::new_generic("d4linkinv", "x", fun = function(x, eta) S7::S7_dis
 #'
 #' # every order at once
 #' vapply(0:4, function(k) linkderiv(lk, 0.25, order = k), numeric(1))
+#' @seealso \code{\link{linkfun}}, \code{\link{linkinv}}, \code{\link{linkinvderiv}}, \code{\link{check_link}}, \code{\link{link}}
 #' @export
 linkderiv <- S7::new_generic("linkderiv", "x", fun = function(x, theta, order = 1) S7::S7_dispatch())
 
@@ -236,6 +238,7 @@ linkderiv <- S7::new_generic("linkderiv", "x", fun = function(x, theta, order = 
 #' linkinvderiv(lk, 0, order = 1)
 #'
 #' vapply(0:4, function(k) linkinvderiv(lk, 0.5, order = k), numeric(1))
+#' @seealso \code{\link{linkfun}}, \code{\link{linkinv}}, \code{\link{linkderiv}}, \code{\link{check_link}}, \code{\link{link}}
 #' @export
 linkinvderiv <- S7::new_generic("linkinvderiv", "x", fun = function(x, eta, order = 1) S7::S7_dispatch())
 
@@ -248,5 +251,6 @@ linkinvderiv <- S7::new_generic("linkinvderiv", "x", fun = function(x, eta, orde
 #'   printed to the console.
 #' @examples
 #' check_link(sqrt_link())
+#' @seealso \code{\link{linkfun}}, \code{\link{linkinv}}, \code{\link{linkderiv}}, \code{\link{linkinvderiv}}, \code{\link{link}}
 #' @export
 check_link <- S7::new_generic("check_link", "x", fun = function(x, tolerance = 1e-5, ...) S7::S7_dispatch())
