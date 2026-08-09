@@ -1,5 +1,19 @@
 #' @title Evaluate Forward Link Function
 #' @include link_class.R
+#'
+#' @description
+#' Carries a parameter from its own domain onto the real line,
+#' \eqn{\eta = g(\theta)}.
+#'
+#' @details
+#' A link is a strictly monotone differentiable bijection
+#' \eqn{g : \Theta \to \mathbb{R}} from the parameter's open domain
+#' \code{x@link_bounds} onto the whole line, so that an unconstrained
+#' optimizer may work in \eqn{\eta} while \eqn{\theta = g^{-1}(\eta)} stays
+#' admissible at every point. \code{\link{linkinv}} evaluates that inverse
+#' and is the only other method a link has to supply; the eight derivative
+#' generics have numerical fallbacks derived from the pair.
+#'
 #' @param x An object of class \code{link}.
 #' @param theta A numeric vector of parameters.
 #' @return A numeric vector of the linear predictor.
