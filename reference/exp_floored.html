@@ -58,6 +58,16 @@
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A numeric vector, never smaller than <code><a href="exp_floor.html">exp_floor</a></code>.</p>
     </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>A profile of a plain gaussian fit puts this <code>pmax</code> above the QR
+decomposition of the same fit, which invites replacing it with a
+<code><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min()</a></code> reduction and an early return. Measured, that is not worth
+doing: it gains 7 to 11 per cent on the call itself and LOSES on the fit,
+because the reduction is a second pass over the same vector and the
+allocation it avoids was not what the profile was really charging for.
+The simple form is kept.</p>
+    </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
