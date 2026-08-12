@@ -192,6 +192,15 @@ exp_floor <- (24 / .Machine$double.xmax)^0.25
 #' @description
 #' \code{exp(eta)}, bounded below by \code{\link{exp_floor}}.
 #'
+#' @details
+#' A profile of a plain gaussian fit puts this \code{pmax} above the QR
+#' decomposition of the same fit, which invites replacing it with a
+#' \code{min()} reduction and an early return. Measured, that is not worth
+#' doing: it gains 7 to 11 per cent on the call itself and LOSES on the fit,
+#' because the reduction is a second pass over the same vector and the
+#' allocation it avoids was not what the profile was really charging for.
+#' The simple form is kept.
+#'
 #' @param eta A numeric vector of linear predictors.
 #'
 #' @return A numeric vector, never smaller than \code{\link{exp_floor}}.
@@ -254,6 +263,15 @@ link_bounds_clamp <- function(theta, bounds) {
   upr <- bounds[2]
   eps <- .Machine$double.eps
   big <- .Machine$double.xmax
+
+  # This body runs from linkinv()'s generic for EVERY link on every call, so
+  # it looks like the place to spend an optimization, and a range() over
+  # theta does decide all four questions below at once without allocating.
+  # Measured, it is not worth doing: on a two-sided bound it gains about
+  # 1.6x on the call, on a one-sided bound it loses, and end to end a
+  # gaussian fit at n = 100000 got 40 per cent SLOWER, the extra pass
+  # costing more than the logical vectors it avoided. The elementwise form
+  # is kept.
 
   # Infinities first, so that the comparisons below see a number. NaN is left
   # alone deliberately, and Inf is a value a caller cannot use either way.

@@ -15,4 +15,13 @@ A numeric vector, never smaller than \code{\link{exp_floor}}.
 \description{
 \code{exp(eta)}, bounded below by \code{\link{exp_floor}}.
 }
+\details{
+A profile of a plain gaussian fit puts this \code{pmax} above the QR
+decomposition of the same fit, which invites replacing it with a
+\code{min()} reduction and an early return. Measured, that is not worth
+doing: it gains 7 to 11 per cent on the call itself and LOSES on the fit,
+because the reduction is a second pass over the same vector and the
+allocation it avoids was not what the profile was really charging for.
+The simple form is kept.
+}
 \keyword{internal}
