@@ -10,6 +10,19 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// lf7_scalar_probe
+Rcpp::List lf7_scalar_probe(std::string name, Rcpp::NumericVector eta, Rcpp::NumericVector bounds);
+RcppExport SEXP _linkfunctions7_lf7_scalar_probe(SEXP nameSEXP, SEXP etaSEXP, SEXP boundsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type name(nameSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type eta(etaSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type bounds(boundsSEXP);
+    rcpp_result_gen = Rcpp::wrap(lf7_scalar_probe(name, eta, bounds));
+    return rcpp_result_gen;
+END_RCPP
+}
 // lk_logit_inv_cpp
 NumericVector lk_logit_inv_cpp(NumericVector eta, int k);
 RcppExport SEXP _linkfunctions7_lk_logit_inv_cpp(SEXP etaSEXP, SEXP kSEXP) {
@@ -181,6 +194,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_linkfunctions7_lf7_scalar_probe", (DL_FUNC) &_linkfunctions7_lf7_scalar_probe, 3},
     {"_linkfunctions7_lk_logit_inv_cpp", (DL_FUNC) &_linkfunctions7_lk_logit_inv_cpp, 2},
     {"_linkfunctions7_lk_logistic_poly_cpp", (DL_FUNC) &_linkfunctions7_lk_logistic_poly_cpp, 2},
     {"_linkfunctions7_lk_logit_fwd_cpp", (DL_FUNC) &_linkfunctions7_lk_logit_fwd_cpp, 2},
@@ -198,7 +212,9 @@ static const R_CallMethodDef CallEntries[] = {
     {NULL, NULL, 0}
 };
 
+void lf7_register_ccallable(DllInfo* dll);
 RcppExport void R_init_linkfunctions7(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
+    lf7_register_ccallable(dll);
 }

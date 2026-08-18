@@ -1,6 +1,6 @@
 Package: linkfunctions7
 Title: An S7 Framework for Link Functions
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: 
     person("Giovanni", "Tinervia", , "giovannitinervia9@gmail.com", role = c("aut", "cre"))
 Description: Implements link functions using the S7 object-oriented system. Includes forward and inverse transformations with exact analytical derivatives up to the fourth order, along with diagnostic tools to verify basic mathematical properties like invertibility and monotonicity.
