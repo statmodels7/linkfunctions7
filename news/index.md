@@ -1,5 +1,19 @@
 # Changelog
 
+## linkfunctions7 0.2.0
+
+- Scalar C entry points for the fast route of a score-driven filter
+  (piano_parallel.txt, section 2a), registered with
+  `R_RegisterCCallable`: `lf7_scalar_id` (identity and log; an unknown
+  name answers -1 and the consumer keeps its R callbacks), `lf7_inv12`
+  (the inverse and its first two derivatives at one value, mirroring the
+  R methods expression by expression,
+  [`exp_floored()`](https://statmodels7.github.io/linkfunctions7/reference/exp_floored.md)’s
+  derived guard included) and `lf7_clamp`
+  ([`link_bounds_clamp()`](https://statmodels7.github.io/linkfunctions7/reference/link_bounds_clamp.md)
+  on one value). A twin test holds each against the R method it stands
+  for with [`identical()`](https://rdrr.io/r/base/identical.html).
+
 ## linkfunctions7 0.1.0
 
 ### Numerical behavior
