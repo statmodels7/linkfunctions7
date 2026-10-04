@@ -32,6 +32,7 @@ Collate:
     'probit_link.R'
     'rhobit_link.R'
     'softplus_link.R'
+    'scalar_route.R'
     'sqrt_link.R'
     'zzz.R'
 Imports:
