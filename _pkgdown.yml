@@ -72,6 +72,13 @@ reference:
   - link_bounds_clamp
   - eta_bounds
 
+- title: Compiled entry points
+  desc: >
+    The address of a link in the scalar C entry points that other packages
+    resolve with `R_GetCCallable()`.
+  contents:
+  - link_scalar_route
+
 - title: Derivatives by order
   desc: >
     The order-specific generics. `linkderiv()` and `linkinvderiv()` route to

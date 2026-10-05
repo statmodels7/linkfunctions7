@@ -1,4 +1,5 @@
 #include <Rcpp.h>
+#include "link_points.h"
 using namespace Rcpp;
 
 // Compiled kernels for the transcendental links' derivatives. The formulas
@@ -11,32 +12,11 @@ using namespace Rcpp;
 // check_link(), which validates every order against numDeriv and the
 // inverse function theorem, and the extremes suite, which walks the tails.
 
-// the logistic derivative polynomials in p: shared by the logit (as is),
-// the doubly bounded link (scaled by the width) and the softplus (an
-// antiderivative of the logistic, so shifted one place down)
-static inline double logistic_poly(double p, int k) {
-    double pq = p * (1.0 - p);
-    switch (k) {
-    case 1: return pq;
-    case 2: return pq * (1.0 - 2.0 * p);
-    case 3: return pq * (1.0 + p * (-6.0 + 6.0 * p));
-    case 4: return pq * (1.0 + p * (-14.0 + p * (36.0 - 24.0 * p)));
-    // P_{k+1} = (1 - 2p) P_k + pq P_k', so the fifth follows from the fourth
-    // and the orders above it are generated rather than transcribed.
-    case 5: return pq * (1.0 + p * (-30.0 + p * (150.0 +
-                                    p * (-240.0 + 120.0 * p))));
-    default: return NA_REAL;
-    }
-}
-
 // [[Rcpp::export]]
 NumericVector lk_logit_inv_cpp(NumericVector eta, int k) {
     R_xlen_t n = eta.size();
     NumericVector out(n);
-    for (R_xlen_t i = 0; i < n; ++i) {
-        double p = 1.0 / (1.0 + std::exp(-eta[i]));
-        out[i] = logistic_poly(p, k);
-    }
+    for (R_xlen_t i = 0; i < n; ++i) out[i] = lf7::logit_inv(eta[i], k);
     return out;
 }
 
@@ -44,7 +24,7 @@ NumericVector lk_logit_inv_cpp(NumericVector eta, int k) {
 NumericVector lk_logistic_poly_cpp(NumericVector p, int k) {
     R_xlen_t n = p.size();
     NumericVector out(n);
-    for (R_xlen_t i = 0; i < n; ++i) out[i] = logistic_poly(p[i], k);
+    for (R_xlen_t i = 0; i < n; ++i) out[i] = lf7::logistic_poly(p[i], k);
     return out;
 }
 
@@ -102,21 +82,7 @@ NumericVector lk_probit_fwd_cpp(NumericVector theta, int k) {
 NumericVector lk_probit_inv_cpp(NumericVector eta, int k) {
     R_xlen_t n = eta.size();
     NumericVector out(n);
-    for (R_xlen_t i = 0; i < n; ++i) {
-        double e = eta[i], phi = R::dnorm4(e, 0.0, 1.0, 0);
-        switch (k) {
-        case 1: out[i] = phi; break;
-        case 2: out[i] = -e * phi; break;
-        case 3: out[i] = (e * e - 1.0) * phi; break;
-        case 4: out[i] = (3.0 * e - e * e * e) * phi; break;
-        case 5: {
-            double e2 = e * e;
-            out[i] = (e2 * e2 - 6.0 * e2 + 3.0) * phi;
-            break;
-        }
-        default: out[i] = NA_REAL;
-        }
-    }
+    for (R_xlen_t i = 0; i < n; ++i) out[i] = lf7::probit_inv(eta[i], k);
     return out;
 }
 
@@ -152,19 +118,7 @@ NumericVector lk_cloglog_fwd_cpp(NumericVector theta, int k) {
 NumericVector lk_cloglog_inv_cpp(NumericVector eta, int k) {
     R_xlen_t n = eta.size();
     NumericVector out(n);
-    for (R_xlen_t i = 0; i < n; ++i) {
-        double w = std::exp(eta[i]);
-        double E = std::exp(eta[i] - w);
-        switch (k) {
-        case 1: out[i] = E; break;
-        case 2: out[i] = E * (1.0 - w); break;
-        case 3: out[i] = E * (1.0 + w * (-3.0 + w)); break;
-        case 4: out[i] = E * (1.0 + w * (-7.0 + w * (6.0 - w))); break;
-        case 5: out[i] = E * (1.0 + w * (-15.0 + w * (25.0 + w * (-10.0 + w))));
-            break;
-        default: out[i] = NA_REAL;
-        }
-    }
+    for (R_xlen_t i = 0; i < n; ++i) out[i] = lf7::cloglog_inv(eta[i], k);
     return out;
 }
 
@@ -200,20 +154,7 @@ NumericVector lk_loglog_fwd_cpp(NumericVector theta, int k) {
 NumericVector lk_loglog_inv_cpp(NumericVector eta, int k) {
     R_xlen_t n = eta.size();
     NumericVector out(n);
-    for (R_xlen_t i = 0; i < n; ++i) {
-        double z = std::exp(-eta[i]);
-        double E = std::exp(-z);
-        switch (k) {
-        case 1: out[i] = E * z; break;
-        case 2: out[i] = E * z * (z - 1.0); break;
-        case 3: out[i] = E * z * (1.0 + z * (-3.0 + z)); break;
-        case 4: out[i] = E * z * (-1.0 + z * (7.0 + z * (-6.0 + z))); break;
-        case 5: out[i] = E * z * (1.0 + z * (-15.0 + z * (25.0 +
-                                  z * (-10.0 + z))));
-            break;
-        default: out[i] = NA_REAL;
-        }
-    }
+    for (R_xlen_t i = 0; i < n; ++i) out[i] = lf7::loglog_inv(eta[i], k);
     return out;
 }
 
@@ -245,22 +186,7 @@ NumericVector lk_cauchit_fwd_cpp(NumericVector theta, int k) {
 NumericVector lk_cauchit_inv_cpp(NumericVector eta, int k) {
     R_xlen_t n = eta.size();
     NumericVector out(n);
-    for (R_xlen_t i = 0; i < n; ++i) {
-        double e = eta[i], u = 1.0 + e * e;
-        switch (k) {
-        case 1: out[i] = 1.0 / (M_PI * u); break;
-        case 2: out[i] = -2.0 * e / (M_PI * u * u); break;
-        case 3: out[i] = 2.0 * (3.0 * e * e - 1.0) / (M_PI * u * u * u); break;
-        case 4: out[i] = 24.0 * e * (1.0 - e * e) / (M_PI * u * u * u * u);
-            break;
-        case 5: {
-            double u2 = u * u, e2 = e * e;
-            out[i] = 24.0 * (1.0 - 10.0 * e2 + 5.0 * e2 * e2) / (M_PI * u2 * u2 * u);
-            break;
-        }
-        default: out[i] = NA_REAL;
-        }
-    }
+    for (R_xlen_t i = 0; i < n; ++i) out[i] = lf7::cauchit_inv(eta[i], k);
     return out;
 }
 
@@ -290,18 +216,7 @@ NumericVector lk_rhobit_fwd_cpp(NumericVector theta, int k) {
 NumericVector lk_rhobit_inv_cpp(NumericVector eta, int k) {
     R_xlen_t n = eta.size();
     NumericVector out(n);
-    for (R_xlen_t i = 0; i < n; ++i) {
-        double t = std::tanh(eta[i]), t2 = t * t;
-        switch (k) {
-        case 1: out[i] = 1.0 - t2; break;
-        case 2: out[i] = -2.0 * t * (1.0 - t2); break;
-        case 3: out[i] = -2.0 + 8.0 * t2 - 6.0 * t2 * t2; break;
-        case 4: out[i] = t * (16.0 + t2 * (-40.0 + 24.0 * t2)); break;
-        case 5: out[i] = 16.0 + t2 * (-136.0 + t2 * (240.0 - 120.0 * t2));
-            break;
-        default: out[i] = NA_REAL;
-        }
-    }
+    for (R_xlen_t i = 0; i < n; ++i) out[i] = lf7::rhobit_inv(eta[i], k);
     return out;
 }
 
