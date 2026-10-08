@@ -1,7 +1,5 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://statmodels7.github.io/linkfunctions7/404.html</loc></url>
-<url><loc>https://statmodels7.github.io/linkfunctions7/LICENSE-text.html</loc></url>
-<url><loc>https://statmodels7.github.io/linkfunctions7/LICENSE.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/articles/index.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/articles/link-functions.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/authors.html</loc></url>
@@ -52,6 +50,7 @@
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/link.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/link_bounds_clamp.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/link_fallback_orders.html</loc></url>
+<url><loc>https://statmodels7.github.io/linkfunctions7/reference/link_scalar_route.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/linkderiv.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/linkfun.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/linkfunctions7-package.html</loc></url>

@@ -2,7 +2,7 @@
 
 Implements link functions using the S7 object-oriented system. Includes
 forward and inverse transformations with exact analytical derivatives up
-to the fourth order, along with diagnostic tools to verify basic
+to the fifth order, along with diagnostic tools to verify basic
 mathematical properties like invertibility and monotonicity.
 
 ## See also

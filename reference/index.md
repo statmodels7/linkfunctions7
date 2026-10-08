@@ -71,6 +71,14 @@ or to a density that validates against open intervals.
 - [`eta_bounds()`](https://statmodels7.github.io/linkfunctions7/reference/eta_bounds.md)
   : The Range of Predictors a Link Admits
 
+## Compiled entry points
+
+The address of a link in the scalar C entry points that other packages
+resolve with `R_GetCCallable()`.
+
+- [`link_scalar_route()`](https://statmodels7.github.io/linkfunctions7/reference/link_scalar_route.md)
+  : The Scalar Route of a Link
+
 ## Derivatives by order
 
 The order-specific generics.

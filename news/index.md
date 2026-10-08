@@ -1,5 +1,16 @@
 # Changelog
 
+## linkfunctions7 0.5.0
+
+- [`link_scalar_route()`](https://statmodels7.github.io/linkfunctions7/reference/link_scalar_route.md)
+  returns the name and the parameters by which the compiled registry
+  knows a link, or `NULL`. Every link class has scalar C entries,
+  `lf7_class_id()` and `lf7_inv12p()` beside `lf7_scalar_id()`,
+  registered with `R_RegisterCCallable()`, which a compiled consumer
+  such as the `gas()` filter of modelterms7 reads instead of calling
+  back into R. The vector kernels and the entries share
+  `src/link_points.h`.
+
 ## linkfunctions7 0.4.0
 
 - Every link carries its **fifth** derivative analytically, in both
