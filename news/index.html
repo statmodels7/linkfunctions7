@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,6 +36,11 @@
       <small>Source: <a href="https://github.com/statmodels7/linkfunctions7/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.5.2" id="linkfunctions7-052">linkfunctions7 0.5.2<a class="anchor" aria-label="anchor" href="#linkfunctions7-052"></a></h2>
+<ul><li><p>The inverse derivatives of <code><a href="../reference/logit_link.html">logit_link()</a></code>, and through the same kernel those of <code><a href="../reference/bounded_link.html">bounded_link()</a></code> with two endpoints and of <code><a href="../reference/softplus_link.html">softplus_link()</a></code>, are written in <code>p</code>, <code>1 - p</code> and their product, with <code>1 - p</code> computed from the predictor. Computed by subtraction from <code>p</code>, the complement lost its digits for a large positive predictor, and every order was 0 from <code>eta = 37</code>.</p></li>
+<li><p>The inverse derivatives of <code><a href="../reference/rhobit_link.html">rhobit_link()</a></code> are written in <code>tanh(eta)</code> and <code>sech(eta)^2</code>, with the latter computed from <code>exp(-2 * abs(eta))</code>. Computed as <code>1 - tanh(eta)^2</code>, every order lost its digits for a large <code>abs(eta)</code> and was 0 from <code>abs(eta) = 20</code>.</p></li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.5.1" id="linkfunctions7-051">linkfunctions7 0.5.1<a class="anchor" aria-label="anchor" href="#linkfunctions7-051"></a></h2>
 <ul><li><p><code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> on a link passes named graphical parameters to <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">graphics::plot()</a></code> for both panels, where they replace the defaults. They were documented as passed and were ignored. An unnamed argument in <code>...</code> signals an error.</p></li>

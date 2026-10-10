@@ -63,7 +63,11 @@ and
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md)
 are [`atanh()`](https://rdrr.io/r/base/Hyperbolic.html) and
 [`tanh()`](https://rdrr.io/r/base/Hyperbolic.html). The ten derivatives
-come from a compiled kernel, one call per order and direction.
+come from a compiled kernel, one call per order and direction. The
+inverse derivatives are written in \\\tanh\eta\\ and
+\\\mathrm{sech}^2\eta\\, the latter computed from \\e^{-2\|\eta\|}\\ and
+not as \\1 - \tanh^2\eta\\, so that they keep their relative accuracy
+for large \\\|\eta\|\\.
 
 ## See also
 

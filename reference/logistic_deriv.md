@@ -38,13 +38,17 @@ Three links use these polynomials:
   uses them shifted one order down, since the softplus is an
   antiderivative of the logistic: \\h^{(k+1)} = a^k \sigma^{(k)}\\.
 
-The three links call the transcription of these polynomials in
-`src/link_kernels.cpp`, which replaced the R bodies when the
-transcendental links were compiled. This function is the R statement of
-the same five polynomials. `test-logistic-twin.R` compares the two at
-every order and checks that each of the three links reaches the
-polynomial named in its description, and `lk_logistic_poly_cpp()` calls
-the compiled version directly.
+The three links evaluate these polynomials in compiled code, written in
+\\p\\, \\q = 1 - p\\ and \\pq\\ with \\q\\ computed from \\z\\ and not
+as \\1 - p\\, so that the derivatives keep their relative accuracy as
+\\p\\ approaches 1: \\\sigma' = pq\\, \\\sigma'' = pq(q - p)\\,
+\\\sigma''' = pq(1 - 6pq)\\, \\\sigma'''' = pq(q - p)(1 - 12pq)\\ and
+\\\sigma^{(5)} = pq(1 - 30pq + 120p^2q^2)\\. The transcription of the
+polynomials in \\p\\ alone is kept in `src/link_points.h` and reached
+through `lk_logistic_poly_cpp()`. This function is the R statement of
+the same five polynomials, and `test-logistic-twin.R` compares the two
+at every order and checks that each of the three links reaches the
+polynomial named in its description.
 
 The comparison uses a tolerance instead of exact equality, because both
 forms are Horner evaluations that contain multiply-adds, and a compiler

@@ -9,7 +9,7 @@ polynomial in \(p = \sigma(z)\) itself."><meta property="og:image" content="http
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,13 +72,18 @@ polynomial in \(p = \sigma(z)\) itself.</p>
 interval width, \(h^{(k)} = W \sigma^{(k)}\);</p></li>
 <li><p><code><a href="softplus_link.html">softplus_link()</a></code> uses them shifted one order down, since the
 softplus is an antiderivative of the logistic: \(h^{(k+1)} = a^k \sigma^{(k)}\).</p></li>
-</ul><p>The three links call the transcription of these polynomials in
-<code>src/link_kernels.cpp</code>, which replaced the R bodies when the
-transcendental links were compiled. This function is the R statement of
-the same five polynomials. <code>test-logistic-twin.R</code> compares the two at
+</ul><p>The three links evaluate these polynomials in compiled code, written in
+\(p\), \(q = 1 - p\) and \(pq\) with \(q\) computed from \(z\)
+and not as \(1 - p\), so that the derivatives keep their relative
+accuracy as \(p\) approaches 1: \(\sigma' = pq\),
+\(\sigma'' = pq(q - p)\), \(\sigma''' = pq(1 - 6pq)\),
+\(\sigma'''' = pq(q - p)(1 - 12pq)\) and
+\(\sigma^{(5)} = pq(1 - 30pq + 120p^2q^2)\). The transcription of the
+polynomials in \(p\) alone is kept in <code>src/link_points.h</code> and reached
+through <code>lk_logistic_poly_cpp()</code>. This function is the R statement of the
+same five polynomials, and <code>test-logistic-twin.R</code> compares the two at
 every order and checks that each of the three links reaches the
-polynomial named in its description, and <code>lk_logistic_poly_cpp()</code> calls
-the compiled version directly.</p>
+polynomial named in its description.</p>
 <p>The comparison uses a tolerance instead of exact equality, because both
 forms are Horner evaluations that contain multiply-adds, and a compiler may
 fuse these into FMA instructions that skip an intermediate rounding.</p>

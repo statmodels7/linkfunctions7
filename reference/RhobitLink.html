@@ -17,7 +17,7 @@ cannot propose a correlation outside \((-1, 1)\)."><meta property="og:image" con
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -99,7 +99,10 @@ and the five derivative orders in each direction, <code><a href="dlinkfun.html">
 <code><a href="d5linkfun.html">d5linkfun()</a></code> going out and <code><a href="dlinkinv.html">dlinkinv()</a></code> through <code><a href="d5linkinv.html">d5linkinv()</a></code> coming
 back. <code><a href="linkfun.html">linkfun()</a></code> and <code><a href="linkinv.html">linkinv()</a></code> are <code><a href="https://rdrr.io/r/base/Hyperbolic.html" class="external-link">atanh()</a></code> and <code><a href="https://rdrr.io/r/base/Hyperbolic.html" class="external-link">tanh()</a></code>. The ten
 derivatives come from a compiled kernel, one call per order and
-direction.</p>
+direction. The inverse derivatives are written in \(\tanh\eta\) and
+\(\mathrm{sech}^2\eta\), the latter computed from \(e^{-2|\eta|}\)
+and not as \(1 - \tanh^2\eta\), so that they keep their relative
+accuracy for large \(|\eta|\).</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

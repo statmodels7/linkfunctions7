@@ -1,5 +1,24 @@
 # Changelog
 
+## linkfunctions7 0.5.2
+
+- The inverse derivatives of
+  [`logit_link()`](https://statmodels7.github.io/linkfunctions7/reference/logit_link.md),
+  and through the same kernel those of
+  [`bounded_link()`](https://statmodels7.github.io/linkfunctions7/reference/bounded_link.md)
+  with two endpoints and of
+  [`softplus_link()`](https://statmodels7.github.io/linkfunctions7/reference/softplus_link.md),
+  are written in `p`, `1 - p` and their product, with `1 - p` computed
+  from the predictor. Computed by subtraction from `p`, the complement
+  lost its digits for a large positive predictor, and every order was 0
+  from `eta = 37`.
+
+- The inverse derivatives of
+  [`rhobit_link()`](https://statmodels7.github.io/linkfunctions7/reference/rhobit_link.md)
+  are written in `tanh(eta)` and `sech(eta)^2`, with the latter computed
+  from `exp(-2 * abs(eta))`. Computed as `1 - tanh(eta)^2`, every order
+  lost its digits for a large `abs(eta)` and was 0 from `abs(eta) = 20`.
+
 ## linkfunctions7 0.5.1
 
 - [`plot()`](https://rdrr.io/r/graphics/plot.default.html) on a link

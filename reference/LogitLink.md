@@ -64,7 +64,10 @@ and
 delegate to [`stats::qlogis()`](https://rdrr.io/r/stats/Logistic.html)
 and [`stats::plogis()`](https://rdrr.io/r/stats/Logistic.html), which
 remain accurate near both boundaries. The ten derivatives come from a
-compiled kernel, one call per order and direction.
+compiled kernel, one call per order and direction. The inverse
+derivatives are evaluated in \\\theta\\, \\1 - \theta\\ and their
+product, each computed from \\\eta\\, so that they keep their relative
+accuracy in both tails.
 
 ## See also
 
