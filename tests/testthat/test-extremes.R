@@ -357,3 +357,43 @@ test_that("a user-written link inherits the clamp without asking", {
   expect_lt(linkinv(lk, 40), 1)               # the generic does not
   expect_gt(linkinv(lk, -800), 0)
 })
+
+test_that("the logit and rhobit inverse derivatives keep their relative accuracy in the tails", {
+  # Both were written in p and 1 - p (or t and 1 - t^2), and the subtraction
+  # lost every digit as the complement fell below the spacing of doubles
+  # near 1: the relative error was 3.6e-8 at eta = 20 and 1 from eta = 37
+  # for the logit, 1.1e-8 at eta = 10 and 1 from eta = 20 for the rhobit,
+  # at every order. The references are mpmath at 60 digits.
+  eta_logit <- c(-40, -20, 0.7, 20, 30, 37, 45)
+  ref_logit <- rbind(
+    c(4.248354255291589e-18, 4.2483542552915889e-18, 4.2483542552915889e-18, 4.2483542552915887e-18, 4.2483542552915884e-18),
+    c(2.0611536139418493e-9, 2.0611536054451409e-9, 2.061153588451724e-9, 2.0611535544648905e-9, 2.0611534864912238e-9),
+    c(2.2171287329310905e-1, -7.4578788440341806e-2, -7.3226715810208326e-2, 1.2384214122158326e-1, 5.4853002736231234e-2),
+    c(2.0611536139418493e-9, -2.0611536054451409e-9, 2.061153588451724e-9, -2.0611535544648905e-9, 2.0611534864912238e-9),
+    c(9.3576229688384233e-14, -9.357622968836672e-14, 9.3576229688331694e-14, -9.3576229688261642e-14, 9.3576229688121538e-14),
+    c(8.5330476257440643e-17, -8.5330476257440629e-17, 8.53304762574406e-17, -8.5330476257440541e-17, 8.5330476257440425e-17),
+    c(2.8625185805493936e-20, -2.8625185805493936e-20, 2.8625185805493936e-20, -2.8625185805493936e-20, 2.8625185805493936e-20)
+  )
+  eta_rhobit <- c(-40, -20, -10, 0.7, 10, 20, 40)
+  ref_rhobit <- rbind(
+    c(7.2194055513816607e-35, 1.4438811102763321e-34, 2.8877622205526643e-34, 5.7755244411053286e-34, 1.1551048882210657e-33),
+    c(1.6993417021166356e-17, 3.3986834042332711e-17, 6.7973668084665422e-17, 1.3594733616933084e-16, 2.7189467233866166e-16),
+    c(8.2446144557673974e-9, 1.6489228843561127e-8, 3.2978457415227584e-8, 6.5956913742876494e-8, 1.3191382313543832e-7),
+    c(6.3473958998245862e-1, -7.6723231009191656e-1, 1.2159227738323637e-1, 2.7749834227807858, -7.5035290897500261),
+    c(8.2446144557673974e-9, -1.6489228843561127e-8, 3.2978457415227584e-8, -6.5956913742876494e-8, 1.3191382313543832e-7),
+    c(1.6993417021166356e-17, -3.3986834042332711e-17, 6.7973668084665422e-17, -1.3594733616933084e-16, 2.7189467233866166e-16),
+    c(7.2194055513816607e-35, -1.4438811102763321e-34, 2.8877622205526643e-34, -5.7755244411053286e-34, 1.1551048882210657e-33)
+  )
+  rel <- function(got, ref) max(abs(got - ref) / abs(ref))
+  gens <- list(dlinkinv, d2linkinv, d3linkinv, d4linkinv, d5linkinv)
+  for (k in 1:5) {
+    expect_lt(rel(gens[[k]](logit_link(), eta_logit), ref_logit[, k]), 1e-13,
+      label = sprintf("logit order %d", k))
+    expect_lt(rel(gens[[k]](rhobit_link(), eta_rhobit), ref_rhobit[, k]), 1e-13,
+      label = sprintf("rhobit order %d", k))
+  }
+  # the doubly bounded link and the softplus share the logistic kernel
+  expect_lt(rel(dlinkinv(bounded_link(lwr = 0, upr = 3), eta_logit),
+                3 * ref_logit[, 1]), 1e-13)
+  expect_lt(rel(d2linkinv(softplus_link(1), eta_logit), ref_logit[, 1]), 1e-13)
+})

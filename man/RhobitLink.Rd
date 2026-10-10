@@ -53,7 +53,10 @@ and the five derivative orders in each direction, \code{\link[=dlinkfun]{dlinkfu
 \code{\link[=d5linkfun]{d5linkfun()}} going out and \code{\link[=dlinkinv]{dlinkinv()}} through \code{\link[=d5linkinv]{d5linkinv()}} coming
 back. \code{linkfun()} and \code{linkinv()} are \code{atanh()} and \code{tanh()}. The ten
 derivatives come from a compiled kernel, one call per order and
-direction.
+direction. The inverse derivatives are written in \eqn{\tanh\eta} and
+\eqn{\mathrm{sech}^2\eta}, the latter computed from \eqn{e^{-2|\eta|}}
+and not as \eqn{1 - \tanh^2\eta}, so that they keep their relative
+accuracy for large \eqn{|\eta|}.
 }
 
 \seealso{

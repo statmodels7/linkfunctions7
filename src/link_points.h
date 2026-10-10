@@ -29,9 +29,22 @@ inline double logistic_poly(double p, int k) {
     }
 }
 
+// The same polynomials written in p, q = 1 - p and pq, with q computed from
+// eta and not as 1 - p: at eta = 37 the subtraction returns q = 0 and every
+// order 0, where pq is 8.5e-17. P_3 = pq(1 - 6pq), P_4 = pq(q - p)(1 - 12pq)
+// and P_5 = pq(1 - 30pq + 120(pq)^2) expand to logistic_poly()'s forms.
 inline double logit_inv(double eta, int k) {
     double p = 1.0 / (1.0 + std::exp(-eta));
-    return logistic_poly(p, k);
+    double q = 1.0 / (1.0 + std::exp(eta));
+    double pq = p * q;
+    switch (k) {
+    case 1: return pq;
+    case 2: return pq * (q - p);
+    case 3: return pq * (1.0 - 6.0 * pq);
+    case 4: return pq * (q - p) * (1.0 - 12.0 * pq);
+    case 5: return pq * (1.0 + pq * (-30.0 + 120.0 * pq));
+    default: return NA_REAL;
+    }
 }
 
 inline double probit_inv(double e, int k) {
@@ -90,14 +103,20 @@ inline double cauchit_inv(double e, int k) {
     }
 }
 
+// Written in t = tanh(eta) and u = sech^2(eta) = 1 - t^2, with u computed
+// from eta as 4a / (1 + a)^2, a = exp(-2|eta|), and not as 1 - t^2: at
+// eta = 20 the subtraction returns 0 where u is 1.7e-17. Each order is u
+// times a polynomial in t and u, from dt = u and du = -2tu.
 inline double rhobit_inv(double eta, int k) {
     double t = std::tanh(eta), t2 = t * t;
+    double a = std::exp(-2.0 * std::fabs(eta));
+    double u = 4.0 * a / ((1.0 + a) * (1.0 + a));
     switch (k) {
-    case 1: return 1.0 - t2;
-    case 2: return -2.0 * t * (1.0 - t2);
-    case 3: return -2.0 + 8.0 * t2 - 6.0 * t2 * t2;
-    case 4: return t * (16.0 + t2 * (-40.0 + 24.0 * t2));
-    case 5: return 16.0 + t2 * (-136.0 + t2 * (240.0 - 120.0 * t2));
+    case 1: return u;
+    case 2: return -2.0 * t * u;
+    case 3: return u * (4.0 * t2 - 2.0 * u);
+    case 4: return 8.0 * t * u * (2.0 * u - t2);
+    case 5: return u * (16.0 * u * u - 88.0 * t2 * u + 16.0 * t2 * t2);
     default: return NA_REAL;
     }
 }

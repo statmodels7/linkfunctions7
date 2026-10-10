@@ -26,7 +26,10 @@
 #' [d5linkfun()] going out and [dlinkinv()] through [d5linkinv()] coming
 #' back. `linkfun()` and `linkinv()` are `atanh()` and `tanh()`. The ten
 #' derivatives come from a compiled kernel, one call per order and
-#' direction.
+#' direction. The inverse derivatives are written in \eqn{\tanh\eta} and
+#' \eqn{\mathrm{sech}^2\eta}, the latter computed from \eqn{e^{-2|\eta|}}
+#' and not as \eqn{1 - \tanh^2\eta}, so that they keep their relative
+#' accuracy for large \eqn{|\eta|}.
 #'
 #' @aliases linkfun.RhobitLink
 #' @aliases linkinv.RhobitLink

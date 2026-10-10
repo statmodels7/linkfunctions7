@@ -28,13 +28,18 @@ interval width, \eqn{h^{(k)} = W \sigma^{(k)}};
 softplus is an antiderivative of the logistic: \eqn{h^{(k+1)} = a^k \sigma^{(k)}}.
 }
 
-The three links call the transcription of these polynomials in
-\code{src/link_kernels.cpp}, which replaced the R bodies when the
-transcendental links were compiled. This function is the R statement of
-the same five polynomials. \code{test-logistic-twin.R} compares the two at
+The three links evaluate these polynomials in compiled code, written in
+\eqn{p}, \eqn{q = 1 - p} and \eqn{pq} with \eqn{q} computed from \eqn{z}
+and not as \eqn{1 - p}, so that the derivatives keep their relative
+accuracy as \eqn{p} approaches 1: \eqn{\sigma' = pq},
+\eqn{\sigma'' = pq(q - p)}, \eqn{\sigma''' = pq(1 - 6pq)},
+\eqn{\sigma'''' = pq(q - p)(1 - 12pq)} and
+\eqn{\sigma^{(5)} = pq(1 - 30pq + 120p^2q^2)}. The transcription of the
+polynomials in \eqn{p} alone is kept in \code{src/link_points.h} and reached
+through \code{lk_logistic_poly_cpp()}. This function is the R statement of the
+same five polynomials, and \code{test-logistic-twin.R} compares the two at
 every order and checks that each of the three links reaches the
-polynomial named in its description, and \code{lk_logistic_poly_cpp()} calls
-the compiled version directly.
+polynomial named in its description.
 
 The comparison uses a tolerance instead of exact equality, because both
 forms are Horner evaluations that contain multiply-adds, and a compiler may

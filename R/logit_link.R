@@ -26,7 +26,9 @@
 #' back. `linkfun()` and `linkinv()` delegate to `stats::qlogis()` and
 #' `stats::plogis()`, which remain accurate near both boundaries. The ten
 #' derivatives come from a compiled kernel, one call per order and
-#' direction.
+#' direction. The inverse derivatives are evaluated in \eqn{\theta},
+#' \eqn{1 - \theta} and their product, each computed from \eqn{\eta}, so
+#' that they keep their relative accuracy in both tails.
 #'
 #' @aliases linkfun.LogitLink
 #' @aliases linkinv.LogitLink
