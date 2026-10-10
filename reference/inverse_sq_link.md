@@ -12,29 +12,25 @@ inverse_sq_link()
 
 ## Value
 
-An S7 object of class `InverseSqLink` (inheriting from `link`)
-containing the transformation functions and their exact analytical
-derivatives up to the fourth order.
+An S7 object of class `InverseSqLink`, inheriting from
+[`link()`](https://statmodels7.github.io/linkfunctions7/reference/link.md),
+whose methods compute the link, its inverse and their derivatives to the
+fifth order.
 
 ## Details
 
-The Inverse Square link is defined mathematically as \\\eta = 1 /
-\theta^2\\. Consequently, the inverse link function is derived as
-\\\theta = 1 / \sqrt{\eta}\\.
+The inverse-square link is \\\eta = 1/\theta^2\\, with inverse \\\theta
+= 1/\sqrt{\eta}\\.
 
-This specific link function is predominantly utilized in Generalized
-Linear Models (GLMs) assuming an Inverse Gaussian response distribution.
-In such frameworks, the variance is proportional to the cube of the mean
-(\\\text{Var}(Y) \propto \mu^3\\).
+It is the canonical link of the inverse Gaussian family, whose variance
+is proportional to the cube of the mean.
 
-**Domain and Optimization Constraints:** Both the parameter \\\theta\\
-and the linear predictor \\\eta\\ must be strictly positive. The valid
-mathematical domain for \\\theta\\ is `c(0, Inf)`. During optimization
-routines (e.g., Fisher Scoring or Newton-Raphson), extreme care must be
-taken to ensure the linear predictor \\\eta \> 0\\. Evaluating the
-inverse link or its derivatives at non-positive values of \\\eta\\ will
-inevitably result in `NaN`s due to fractional powers and square root
-operations.
+The domain of \\\theta\\ is \\(0, \infty)\\, and so is the image of the
+link. The inverse link and its derivatives return `NaN` for a negative
+\\\eta\\, so the linear predictor must stay positive during
+optimization;
+[`eta_bounds()`](https://statmodels7.github.io/linkfunctions7/reference/eta_bounds.md)
+returns this range.
 
 ## See also
 

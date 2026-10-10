@@ -11,7 +11,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,33 +57,31 @@
 
 
 <dl><dt id="arg-a">a<a class="anchor" aria-label="anchor" href="#arg-a"></a></dt>
-<dd><p>A numeric value specifying the scaling parameter (smoothness/steepness).
-Must be strictly positive. Defaults to 1.</p></dd>
+<dd><p>The scale parameter, which sets the steepness: a single number
+strictly greater than 0. Defaults to 1.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An S7 object of class <code>SoftplusLink</code> (inheriting from <code>link</code>) containing the transformation functions,
-their exact analytical derivatives up to the fourth order, and the parameter <code>a</code>.</p>
+    <p>An S7 object of class <code>SoftplusLink</code>, inheriting from <code><a href="link.html">link()</a></code>,
+whose methods compute the link, its inverse and their derivatives to the
+fifth order; its <code>link_params</code> holds <code>a</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The Softplus link describes the relationship where the response parameter \(\theta\)
-is the Softplus of the linear predictor \(\eta\).</p>
-<p>Mathematically:</p><ul><li><p>Inverse Link (Softplus): \(\theta = \frac{1}{a} \log(1 + \exp(a \eta))\)</p></li>
-<li><p>Link Function: \(\eta = \frac{1}{a} \log(\exp(a \theta) - 1)\)</p></li>
-</ul><p><strong>Behavior:</strong>
-For large negative \(\eta\), \(\theta \approx 0\).
-For large positive \(\eta\), \(\theta \approx \eta\), growing linearly
-where a log link would grow as \(\exp(\eta)\).</p>
-<p><strong>Numerical Stability:</strong>
-Both directions are written so that no intermediate quantity grows with
-\(a\theta\) or \(a\eta\). The inverse link uses the log-sum-exp form, and
-the forward link and its derivatives are expressed in
-\(u = 1 - e^{-a\theta}\) rather than in \(e^{a\theta} - 1\), which
-overflows once \(a\theta\) passes about 709, and because the derivatives
-divide by its fourth power, well before that at the higher orders.</p>
-<p>The mathematical domain of \(\theta\) is <code>c(0, Inf)</code>.</p>
+    <p>The softplus link expresses the parameter \(\theta\) as the softplus of
+the linear predictor \(\eta\):</p><ul><li><p>inverse link: \(\theta = \frac{1}{a} \log(1 + \exp(a \eta))\);</p></li>
+<li><p>link: \(\eta = \frac{1}{a} \log(\exp(a \theta) - 1)\).</p></li>
+</ul><p>For a large negative \(\eta\), \(\theta \approx 0\). For a large
+positive \(\eta\), \(\theta \approx \eta\), which grows linearly where
+the inverse of a log link would grow as \(\exp(\eta)\).</p>
+<p>Both directions are written so that no intermediate quantity grows with
+\(a\theta\) or \(a\eta\). The inverse link uses the log-sum-exp form,
+and the forward link and its derivatives are expressed in
+\(u = 1 - e^{-a\theta}\) instead of \(e^{a\theta} - 1\). The latter
+overflows once \(a\theta\) exceeds about 709, and earlier at the higher
+orders, because the derivatives divide by a power of it.</p>
+<p>The domain of \(\theta\) is \((0, \infty)\).</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

@@ -12,23 +12,23 @@ logit_link()
 
 ## Value
 
-An S7 object of class `LogitLink` (inheriting from `link`) containing
-the transformation functions and their exact analytical derivatives up
-to the fourth order.
+An S7 object of class `LogitLink`, inheriting from
+[`link()`](https://statmodels7.github.io/linkfunctions7/reference/link.md),
+whose methods compute the link, its inverse and their derivatives to the
+fifth order.
 
 ## Details
 
-The Logit link is defined mathematically as \\\eta =
-\log(\frac{\theta}{1 - \theta})\\. The inverse link is the standard
-logistic function (sigmoid): \\\theta = \frac{1}{1 + \exp(-\eta)}\\.
+The logit link is \\\eta = \log(\theta/(1 - \theta))\\, and its inverse
+is the logistic function \\\theta = 1/(1 + \exp(-\eta))\\.
 
-The link is symmetric about \\\theta = 0.5\\, where \\\eta = 0\\, and
+The link is symmetric about \\\theta = 1/2\\, where \\\eta = 0\\, and
 the linear predictor is the log-odds of the event probability. The
 domain of \\\theta\\ is \\(0, 1)\\.
 
-The implementation delegates to
-[`stats::qlogis`](https://rdrr.io/r/stats/Logistic.html) and
-[`stats::plogis`](https://rdrr.io/r/stats/Logistic.html), which remain
+The implementation calls
+[`stats::qlogis()`](https://rdrr.io/r/stats/Logistic.html) and
+[`stats::plogis()`](https://rdrr.io/r/stats/Logistic.html), which remain
 accurate near both boundaries.
 
 ## See also

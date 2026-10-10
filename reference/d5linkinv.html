@@ -9,7 +9,7 @@ to the linear predictor."><meta property="og:image" content="https://statmodels7
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,9 +58,9 @@ to the linear predictor.</p>
 
 
 <dt id="arg-eta">eta<a class="anchor" aria-label="anchor" href="#arg-eta"></a></dt>
-<dd><p>A numeric vector of linear predictors. Any finite value is
-admissible; the inverse link clamps its result strictly inside
-<code>x@link_bounds</code> before this derivative is taken.</p></dd>
+<dd><p>A numeric vector of linear predictors, inside the range that
+<code><a href="eta_bounds.html">eta_bounds()</a></code> returns for the link. The derivative is computed from
+<code>eta</code> directly, without the clamp that <code><a href="linkinv.html">linkinv()</a></code> applies.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -70,22 +70,24 @@ admissible; the inverse link clamps its result strictly inside
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>This is the order a score-driven filter's outer curvature reaches. The
+    <p>This order is reached by the outer curvature of a score-driven filter. The
 chain rule that carries a log-likelihood derivative of order \(k\) from
-\(\theta\) onto \(\eta\) contracts the family's components against
+\(\theta\) onto \(\eta\) combines the derivatives of the family with
 the partial Bell polynomials in \(h', \ldots, h^{(k)}\), so an order-5
-quantity on the unconstrained scale needs the fifth derivative of the
-inverse link and nothing beyond it.</p>
-<p>Every link answers this generic. A link whose class registers no method
-for it gets the base class's numerical one, which applies a single central
-stencil to the highest order that link does supply analytically, never a
-chain of lower-order differences. <code><a href="link_fallback_orders.html">link_fallback_orders()</a></code> says which
-orders of a given link are exact, and <code><a href="check_link.html">check_link()</a></code> leaves a fallback
-order unchecked, since comparing it against a difference of itself would
-agree however wrong the link is.</p>
-<p>Call this generic directly in a hot loop. <code><a href="linkderiv.html">linkderiv()</a></code> and
+quantity on the unconstrained scale requires the fifth derivative of the
+inverse link and no higher one.</p>
+<p>Every link has a method for this generic. If the class of a link registers
+no method for it, the numerical method of the base class is used: it
+applies a single central stencil to the highest order that the link
+supplies analytically, never a chain of lower-order differences.
+<code><a href="link_fallback_orders.html">link_fallback_orders()</a></code> reports which orders of a given link are exact,
+and <code><a href="check_link.html">check_link()</a></code> leaves a fallback order unchecked, because comparing it
+with a finite difference of the order below would repeat the same
+computation and could not detect an error.</p>
+<p>In code where speed matters, call this generic directly: <code><a href="linkderiv.html">linkderiv()</a></code> and
 <code><a href="linkinvderiv.html">linkinvderiv()</a></code> route by order and so dispatch twice, once on themselves
-and once here, which is about a third of the cost of the call.</p>
+and once here, and on a short vector the routed call takes two to three
+times as long as the direct one.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

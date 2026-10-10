@@ -2,8 +2,9 @@
 
 ## The link class
 
-The S7 class every link inherits from, the diagnostic that checks one,
-and the report of which derivative orders it computes exactly.
+The S7 class from which every link inherits, the diagnostic that checks
+a link, and the report of which derivative orders a link computes
+exactly.
 
 - [`link()`](https://statmodels7.github.io/linkfunctions7/reference/link.md)
   : S7 Class for Statistical Link Functions
@@ -51,8 +52,8 @@ family: a power, a softplus scale, a bounded interval.
 
 The two directions, and any derivative order of either.
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md)
-guarantees a result strictly inside the parameter’s domain, which is
-what lets its output be handed straight back to
+returns a value strictly inside the parameter’s domain, so its output
+can be passed back to
 [`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md)
 or to a density that validates against open intervals.
 
@@ -73,7 +74,7 @@ or to a density that validates against open intervals.
 
 ## Compiled entry points
 
-The address of a link in the scalar C entry points that other packages
+The address of a link in the scalar C entry points, which other packages
 resolve with `R_GetCCallable()`.
 
 - [`link_scalar_route()`](https://statmodels7.github.io/linkfunctions7/reference/link_scalar_route.md)
@@ -150,7 +151,7 @@ route to these; call them directly where the extra dispatch matters.
 - [`const_like()`](https://statmodels7.github.io/linkfunctions7/reference/const_like.md)
   : A Constant Vector That Preserves Missingness
 - [`exp_floor`](https://statmodels7.github.io/linkfunctions7/reference/exp_floor.md)
-  : The Smallest Parameter Value the Exponential Links Will Report
+  : The Floor of the Exponential Links
 - [`exp_floored()`](https://statmodels7.github.io/linkfunctions7/reference/exp_floored.md)
   : A Floored Exponential
 - [`fallback_deriv()`](https://statmodels7.github.io/linkfunctions7/reference/fallback_deriv.md)

@@ -11,7 +11,7 @@ logit or the probit."><meta property="og:image" content="https://statmodels7.git
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,21 +54,21 @@ logit or the probit.</p>
 
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An S7 object of class <code>CauchitLink</code> (inheriting from <code>link</code>) containing the transformation functions
-and their exact analytical derivatives up to the fourth order.</p>
+    <p>An S7 object of class <code>CauchitLink</code>, inheriting from <code><a href="link.html">link()</a></code>, whose
+methods compute the link, its inverse and their derivatives to the fifth
+order.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The Cauchit link is defined mathematically as \(\eta = \tan(\pi(\theta - 0.5))\),
-which corresponds perfectly to <code>qcauchy(theta)</code>.
-The inverse link is the standard Cauchy CDF \(\theta = \frac{1}{\pi} \arctan(\eta) + 0.5\),
-computed via <code>pcauchy(eta)</code>.</p>
-<p><strong>Heavy Tails:</strong> Unlike the Logit or Probit links, the Cauchit link has
-exceedingly heavier tails. This makes it particularly robust and useful for modeling
-binary data where the probability approaches 0 or 1 very slowly, or when the dataset
-contains severe outliers that might disproportionately influence the fit of
-light-tailed link functions.</p>
-<p>The strictly valid mathematical domain for \(\theta\) is <code>c(0, 1)</code>.</p>
+    <p>The cauchit link is \(\eta = \tan(\pi(\theta - 1/2))\), computed as
+<code>qcauchy(theta)</code>. The inverse link is the standard Cauchy distribution
+function \(\theta = \arctan(\eta)/\pi + 1/2\), computed as
+<code>pcauchy(eta)</code>.</p>
+<p>The Cauchy distribution has heavier tails than the logistic and the normal,
+so the probability approaches 0 and 1 more slowly than under the logit or
+the probit link. The link is therefore less sensitive to observations whose
+linear predictor is extreme.</p>
+<p>The domain of \(\theta\) is \((0, 1)\).</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

@@ -2,10 +2,10 @@
 
 The image of the link's parameter bounds under
 [`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md),
-which is the set of predictors the inverse link is defined on. Where a
-link maps onto the whole real line the answer is `c(-Inf, Inf)`; where
-it does not, the two finite ends are the boundary of what a caller may
-hand to
+which is the set of predictors on which the inverse link is defined.
+Where a link maps onto the whole real line the result is `c(-Inf, Inf)`;
+otherwise its finite end or ends bound the values that a caller may pass
+to
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md).
 
 ## Usage
@@ -35,29 +35,29 @@ only the positive half, and so do
 [`inverse_sq_link()`](https://statmodels7.github.io/linkfunctions7/reference/inverse_sq_link.md)
 and
 [`power_link()`](https://statmodels7.github.io/linkfunctions7/reference/power_link.md)
-at a positive exponent. The bounds are returned sorted, since a
+at any non-zero exponent. The bounds are returned sorted, since a
 decreasing link reverses them, and are infinite in the directions where
 they cannot be established.
 
-## Why a caller outside this package asks
+## Use outside the package
 
-The internal use is to keep a finite-difference grid inside the set the
-inverse link is defined on, a stencil straying outside returning `NaN`
-and so making a numerical derivative missing rather than inaccurate. The
-use from outside is a different question with the same answer:
+Inside the package the function keeps a finite-difference grid within
+the set on which the inverse link is defined, since a stencil point
+outside it returns `NaN` and makes a numerical derivative missing.
+Outside the package it serves a related purpose:
 [link_bounds()](https://statmodels7.github.io/linkfunctions7/reference/link.md)
-says what a link maps **onto**, and a consumer that carries an
-unconstrained vector needs to know what it maps **from**.
+gives the set that a link maps **onto**, and a consumer that carries an
+unconstrained vector needs the set that it maps **from**.
 
-Both ends matter, and only together. A family that reads a free vector
-in \\\mathbb{R}^d\\ and applies an inverse link to each coordinate needs
-the map to be defined and injective there, and a link with finite eta
-bounds is neither:
+A family that reads a free vector in \\\mathbb{R}^d\\ and applies an
+inverse link to each coordinate needs the map to be defined and
+injective on the whole real line, which fails for a link with finite eta
+bounds:
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md)
 of a square root link is even, so `-2` and `2` both give 4 and the round
-trip returns the absolute value. Asking
-`all(is.infinite(eta_bounds(link)))` is how such a family rejects one at
-construction, where the message can name the link.
+trip returns the absolute value. Such a family can reject the link at
+construction by testing `all(is.infinite(eta_bounds(link)))`, and its
+error message can then name the link.
 
 ## See also
 

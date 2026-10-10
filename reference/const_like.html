@@ -9,7 +9,7 @@ v is missing."><meta property="og:image" content="https://statmodels7.github.io/
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,12 +68,12 @@ where <code>v</code> is <code>NA</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>A derivative that reduces to a constant must still report that it does not
-know the answer for an input it was not given. R makes this easy to get wrong:
-<code>NA^0</code> is <code>1</code>, so <code>theta^(lambda - 2)</code> silently turns a missing
-parameter into a number as soon as <code>lambda</code> is 2. Every derivative method
-that returns a constant (the identity link's, the square root link's third and
-fourth inverse derivatives) goes through this helper instead of <code><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep()</a></code>.</p>
+    <p>A derivative that reduces to a constant must still return <code>NA</code> where its
+input is <code>NA</code>. This is easy to get wrong in R: <code>NA^0</code> is <code>1</code>, so
+<code>theta^(lambda - 2)</code> silently turns a missing parameter into a number as
+soon as <code>lambda</code> is 2. Every derivative method that returns a constant (the
+identity link's, and the square root link's second to fifth inverse
+derivatives) goes through this helper instead of <code><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep()</a></code>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

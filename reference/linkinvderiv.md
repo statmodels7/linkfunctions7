@@ -2,7 +2,7 @@
 
 A convenience router over
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md)
-and the four `d*linkinv` generics.
+and the five `d*linkinv` generics.
 
 Routes to the correct inverse derivative generic based on order.
 

@@ -4,9 +4,9 @@ Carries the rhobit transformation \\\eta = \mathrm{atanh}(\theta) =
 \tfrac{1}{2}\log((1+\theta)/(1-\theta))\\ on \\(-1, 1)\\, with inverse
 \\\theta = \tanh(\eta)\\.
 
-This is Fisher's z, the natural chart for a correlation: it carries the
-open interval onto the whole line, so an optimizer moving freely in
-\\\eta\\ never proposes a correlation outside its range.
+This is Fisher's z transformation of a correlation. It maps the open
+interval onto the whole real line, so an optimizer working in \\\eta\\
+cannot propose a correlation outside \\(-1, 1)\\.
 
 ## Usage
 
@@ -27,8 +27,8 @@ RhobitLink(
 
 - link_bounds:
 
-  A length-two numeric vector, the open interval the parameter lives in.
-  Set by the constructor; see Value for this link's.
+  A length-two numeric vector, the open interval in which the parameter
+  lies. Set by the constructor; see Value for this link's.
 
 - link_params:
 

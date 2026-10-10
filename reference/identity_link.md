@@ -11,20 +11,20 @@ identity_link()
 
 ## Value
 
-An S7 object of class `IdentityLink` (inheriting from `link`) containing
-the transformation functions and their exact analytical derivatives up
-to the fourth order.
+An S7 object of class `IdentityLink`, inheriting from
+[`link()`](https://statmodels7.github.io/linkfunctions7/reference/link.md),
+whose methods compute the link, its inverse and their derivatives to the
+fifth order.
 
 ## Details
 
-The Identity link is defined simply as \\\eta = \theta\\. Consequently,
-the inverse link is also \\\theta = \eta\\.
+The identity link is \\\eta = \theta\\, and its inverse is \\\theta =
+\eta\\.
 
-All first derivatives are constant (equal to 1), and all higher-order
-derivatives up to the fourth order are exactly zero.
+The first derivative is 1 in both directions, and every higher
+derivative is 0.
 
-The domain of \\\theta\\ is unbounded, meaning the valid domain is
-`c(-Inf, Inf)`.
+The domain of \\\theta\\ is the whole real line.
 
 ## See also
 

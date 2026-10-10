@@ -12,20 +12,19 @@ rhobit_link()
 
 ## Value
 
-An S7 object of class `RhobitLink` (inheriting from `link`) containing
-the transformation functions and their exact analytical derivatives up
-to the fourth order.
+An S7 object of class `RhobitLink`, inheriting from
+[`link()`](https://statmodels7.github.io/linkfunctions7/reference/link.md),
+whose methods compute the link, its inverse and their derivatives to the
+fifth order.
 
 ## Details
 
-The Rhobit link is defined mathematically using the inverse hyperbolic
-tangent function: \\\eta = \text{arctanh}(\theta) = \frac{1}{2}
-\log\left(\frac{1 + \theta}{1 - \theta}\right)\\.
-
-The inverse link is the hyperbolic tangent function: \\\theta =
+The rhobit link is the inverse hyperbolic tangent, \\\eta =
+\text{arctanh}(\theta) = \frac{1}{2} \log\left(\frac{1 + \theta}{1 -
+\theta}\right)\\, and its inverse is the hyperbolic tangent, \\\theta =
 \tanh(\eta) = \frac{\exp(2\eta) - 1}{\exp(2\eta) + 1}\\.
 
-The valid mathematical domain of \\\theta\\ is exactly `c(-1, 1)`.
+The domain of \\\theta\\ is \\(-1, 1)\\.
 
 ## See also
 

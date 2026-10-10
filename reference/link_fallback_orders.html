@@ -9,7 +9,7 @@ analytically and which are therefore obtained by finite differences."><meta prop
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,11 +64,11 @@ number of leading orders implemented analytically, from 0 to 5.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Every link can answer every derivative generic, because the base class
-supplies numerical fallbacks for the orders a link does not implement. That
-convenience requires a way of asking which is which. A fallback is correct
-but not exact, and that is why <code><a href="check_link.html">check_link()</a></code> reports such orders
-separately instead of passing them.</p>
+    <p>Every link has a method for every derivative generic, because the base
+class supplies numerical fallbacks for the orders that a link does not
+implement. This function reports which orders are analytic. A fallback is
+accurate only to the precision of a finite difference, so <code><a href="check_link.html">check_link()</a></code>
+reports such orders separately instead of counting them as passed.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -77,7 +77,7 @@ separately instead of passing them.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># everything the package ships is exact to fourth order</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># everything the package ships is exact to fifth order</span></span></span>
 <span class="r-in"><span><span class="fu">link_fallback_orders</span><span class="op">(</span><span class="fu"><a href="logit_link.html">logit_link</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $forward</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>

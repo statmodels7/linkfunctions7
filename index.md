@@ -1,16 +1,15 @@
 # linkfunctions7
 
-In most R modeling packages a link function has no standing of its own.
-It is a string passed to a fitting routine and unpacked internally into
-a couple of closures that nothing outside can reach: it cannot be handed
-to another package, asked for its second derivative, or extended without
-editing the source that owns it.
+In most R modeling packages a link function is a character string passed
+to a fitting routine, which turns it internally into a few closures.
+Code outside that package cannot use those closures, compute their
+higher derivatives, or extend them without editing the package source.
 
 [linkfunctions7](https://statmodels7.github.io/linkfunctions7/) makes a
-link an object. The package provides fourteen constructors, each
-carrying **exact analytical derivatives up to fifth order in both
-directions**, forward and inverse, together with a diagnostic that
-verifies those derivatives against numerical ones.
+link an object. Each constructor in the package returns a link with
+**exact analytical derivatives up to fifth order in both directions**,
+forward and inverse, and a diagnostic verifies those derivatives against
+numerical ones.
 
 It is part of [statmodels7](https://statmodels7.github.io), an S7
 toolkit for statistical modeling, and is what
@@ -28,8 +27,7 @@ book](https://statmodels7.github.io/book/).
 pak::pak("statmodels7/linkfunctions7")
 ```
 
-Or the whole toolkit at once, which also installs the six sibling
-packages:
+Or install the whole toolkit at once:
 
 ``` r
 
@@ -63,9 +61,9 @@ plot(softplus_link(a = 1))
 A parameter confined to an interval gets
 [`bounded_link()`](https://statmodels7.github.io/linkfunctions7/reference/bounded_link.md),
 which maps the interval onto the whole real line and accepts a lower
-bound, an upper bound, or both. Whatever the link, the derivatives are
-exact formulas rather than finite differences, and they go to fifth
-order in both directions:
+bound, an upper bound, or both. For every link in the package the
+derivatives are closed-form expressions, not finite differences, and
+they go to fifth order in both directions:
 
 ``` r
 
@@ -88,9 +86,8 @@ checks them.
 confirms that a link inverts cleanly in both directions, that it is
 strictly monotone, that the inverse function theorem
 $`g'(\theta)\,(g^{-1})'(\eta) = 1`$ holds, and that every analytical
-derivative agrees with a numerical one. It runs on any link, and it is
-most useful on a newly written one, where a wrong derivative is
-likeliest:
+derivative agrees with a numerical one. It accepts any link and is most
+useful for a newly written one:
 
 ``` r
 

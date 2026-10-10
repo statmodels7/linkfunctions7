@@ -9,7 +9,7 @@ its image is \((0, \infty)\)."><meta property="og:image" content="https://statmo
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,19 +51,19 @@ its image is \((0, \infty)\).</p>
 
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An S7 object of class <code>SqrtLink</code> (inheriting from <code>link</code>) containing the transformation functions
-and their exact analytical derivatives up to the fourth order.</p>
+    <p>An S7 object of class <code>SqrtLink</code>, inheriting from <code><a href="link.html">link()</a></code>, whose
+methods compute the link, its inverse and their derivatives to the fifth
+order.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The Square Root link is mathematically defined as \(\eta = \sqrt{\theta}\).
-Consequently, the inverse link is derived as \(\theta = \eta^2\).</p>
-<p>Unlike the Log link, this transformation allows \(\theta\) to reach 0 exactly.
-While the inverse function (\(\eta^2\)) is mathematically valid for negative
-values of \(\eta\), in the specific context of this link function, the linear
-predictor \(\eta\) is typically constrained to be non-negative. This restriction
-preserves a strictly one-to-one mapping with \(\theta\).</p>
-<p>The strict mathematical domain for \(\theta\) is <code>c(0, Inf)</code>.</p>
+    <p>The square-root link is \(\eta = \sqrt{\theta}\), with inverse
+\(\theta = \eta^2\).</p>
+<p>The inverse \(\eta^2\) is defined for a negative \(\eta\) as well, but
+there it is not one-to-one, since \(\eta\) and \(-\eta\) give the same
+\(\theta\). The linear predictor is therefore meant to stay positive;
+<code><a href="eta_bounds.html">eta_bounds()</a></code> returns this range.</p>
+<p>The domain of \(\theta\) is \((0, \infty)\).</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

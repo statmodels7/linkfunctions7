@@ -23,33 +23,33 @@ bounded_link(lwr = NULL, upr = NULL)
 
 ## Value
 
-An S7 object of class `link` containing the transformation functions and
-their exact analytical derivatives up to the fourth order. Which class
-exactly depends on the endpoints given:
+An S7 object inheriting from
+[`link()`](https://statmodels7.github.io/linkfunctions7/reference/link.md),
+whose methods compute the link, its inverse and their derivatives to the
+fifth order. Its class depends on the endpoints given:
 [`DoublyBoundedLink()`](https://statmodels7.github.io/linkfunctions7/reference/DoublyBoundedLink.md),
 [`LowerBoundedLink()`](https://statmodels7.github.io/linkfunctions7/reference/LowerBoundedLink.md),
 [`UpperBoundedLink()`](https://statmodels7.github.io/linkfunctions7/reference/UpperBoundedLink.md),
-or an
+or
 [`IdentityLink()`](https://statmodels7.github.io/linkfunctions7/reference/IdentityLink.md)
 when neither endpoint is supplied.
 
 ## Details
 
-**Doubly Bounded (`lwr` and `upr` provided):** Transforms \\\theta\\ by
-normalizing it to `c(0, 1)` via \\p = \frac{\theta -
-\text{lwr}}{\text{upr} - \text{lwr}}\\, and then applying the logit
-function.
+The link depends on which endpoints are given:
 
-**Lower Bounded (`lwr` provided, `upr = NULL`):** Defined as \\\eta =
-\log(\theta - \text{lwr})\\, with inverse \\\theta = \exp(\eta) +
-\text{lwr}\\.
+- `lwr` and `upr`: \\\theta\\ is mapped to \\p = (\theta -
+  \text{lwr})/(\text{upr} - \text{lwr})\\ in \\(0, 1)\\, and then
+  through the logit;
 
-**Upper Bounded (`lwr = NULL`, `upr` provided):** Defined as \\\eta =
-\log(\text{upr} - \theta)\\, with inverse \\\theta = \text{upr} -
-\exp(\eta)\\.
+- `lwr` only: \\\eta = \log(\theta - \text{lwr})\\, with inverse
+  \\\theta = \exp(\eta) + \text{lwr}\\;
 
-**Unbounded (`lwr = NULL`, `upr = NULL`):** Returns the standard
-[`identity_link()`](https://statmodels7.github.io/linkfunctions7/reference/identity_link.md).
+- `upr` only: \\\eta = \log(\text{upr} - \theta)\\, with inverse
+  \\\theta = \text{upr} - \exp(\eta)\\;
+
+- neither: the result is
+  [`identity_link()`](https://statmodels7.github.io/linkfunctions7/reference/identity_link.md).
 
 ## See also
 

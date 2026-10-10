@@ -9,7 +9,7 @@ polynomial in \(p = \sigma(z)\) itself."><meta property="og:image" content="http
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,34 +67,32 @@ polynomial in \(p = \sigma(z)\) itself.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Three separate links need these same four polynomials, and each reaches
-them the same way:</p><ul><li><p><code><a href="logit_link.html">logit_link()</a></code> uses them directly, \(h^{(k)} = \sigma^{(k)}\);</p></li>
+    <p>Three links use these polynomials:</p><ul><li><p><code><a href="logit_link.html">logit_link()</a></code> uses them directly, \(h^{(k)} = \sigma^{(k)}\);</p></li>
 <li><p><code><a href="bounded_link.html">bounded_link()</a></code> with both endpoints scales them by the
 interval width, \(h^{(k)} = W \sigma^{(k)}\);</p></li>
 <li><p><code><a href="softplus_link.html">softplus_link()</a></code> uses them shifted one order down, since the
 softplus is an antiderivative of the logistic: \(h^{(k+1)} = a^k \sigma^{(k)}\).</p></li>
-</ul><p>What the three call is not this function but its transcription in
-<code>src/link_kernels.cpp</code>, the compiled kernels having replaced the R bodies
-when the transcendental links were compiled. This function is the R
-statement of the same five polynomials, and <code>test-logistic-twin.R</code> holds the
-two together at every order and checks that each of the three links reaches
-the polynomial its description names. <code>lk_logistic_poly_cpp()</code> reaches the
-compiled one directly.</p>
-<p>The twin comparison carries a tolerance rather than asking for identity.
-Both forms are Horner and so contain multiply-adds, which a compiler may
-contract into an FMA, dropping an intermediate rounding; measured here the
-two agree to the bit at every order, and that is a statement about one
-compiler rather than about the arithmetic.</p>
+</ul><p>The three links call the transcription of these polynomials in
+<code>src/link_kernels.cpp</code>, which replaced the R bodies when the
+transcendental links were compiled. This function is the R statement of
+the same five polynomials. <code>test-logistic-twin.R</code> compares the two at
+every order and checks that each of the three links reaches the
+polynomial named in its description, and <code>lk_logistic_poly_cpp()</code> calls
+the compiled version directly.</p>
+<p>The comparison uses a tolerance instead of exact equality, because both
+forms are Horner evaluations that contain multiply-adds, and a compiler may
+fuse these into FMA instructions that skip an intermediate rounding.</p>
 <p>The polynomials are
 $$\sigma' = p(1-p)$$
 $$\sigma'' = p(1-p)(1-2p)$$
 $$\sigma''' = p(1-p)(1 - 6p + 6p^2)$$
 $$\sigma'''' = p(1-p)(1 - 14p + 36p^2 - 24p^3)$$
 $$\sigma^{(5)} = p(1-p)(1 - 30p + 150p^2 - 240p^3 + 120p^4)$$
-and are evaluated in Horner form, which is twice as fast at the fourth order
-and agrees with the expanded form to within one unit in the last place. Each
-follows from the one before it by \(P_{k+1} = (1-2p)P_k + p(1-p)P_k'\), so
-an order beyond those written here is generated rather than transcribed.</p>
+and are evaluated in Horner form, which is faster than the expanded form
+and agrees with it up to rounding error; near a root of a polynomial that
+error can be large relative to the value. Each polynomial
+follows from the one before by \(P_{k+1} = (1-2p)P_k + p(1-p)P_k'\), so a
+higher order can be generated from the recurrence.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

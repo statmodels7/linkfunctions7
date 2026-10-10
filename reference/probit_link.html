@@ -9,7 +9,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,18 +51,21 @@
 
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An S7 object of class <code>ProbitLink</code> (inheriting from <code>link</code>) containing the transformation functions
-and their exact analytical derivatives up to the fourth order.</p>
+    <p>An S7 object of class <code>ProbitLink</code>, inheriting from <code><a href="link.html">link()</a></code>, whose
+methods compute the link, its inverse and their derivatives to the fifth
+order.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The Probit link is mathematically defined as \(\eta = \Phi^{-1}(\theta)\), where
-\(\Phi^{-1}\) is the quantile function of the standard normal distribution (<code>qnorm</code>).
-The inverse link is \(\theta = \Phi(\eta)\), the standard normal CDF (<code>pnorm</code>).</p>
-<p>Similarly to the <code>logit</code> link, the Probit is symmetric around \(\theta = 0.5\)
-(where \(\eta = 0\)). However, the tails of the Normal distribution approach 0
-and 1 faster than the Logistic distribution.</p>
-<p>The strictly mathematical domain of \(\theta\) is <code>c(0, 1)</code>.</p>
+    <p>The probit link is \(\eta = \Phi^{-1}(\theta)\), where \(\Phi^{-1}\)
+is the quantile function of the standard normal distribution (<code><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">qnorm()</a></code>).
+The inverse link is the standard normal distribution function,
+\(\theta = \Phi(\eta)\) (<code><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm()</a></code>).</p>
+<p>Like the logit, the probit link is symmetric about \(\theta = 1/2\),
+where \(\eta = 0\). The tails of the normal distribution are lighter than
+those of the logistic, so \(\theta\) approaches 0 and 1 faster than under
+the logit link.</p>
+<p>The domain of \(\theta\) is \((0, 1)\).</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

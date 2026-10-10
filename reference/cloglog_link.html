@@ -11,7 +11,7 @@ asymmetric about \(\theta = 1/2\)."><meta property="og:image" content="https://s
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,19 +54,20 @@ asymmetric about \(\theta = 1/2\).</p>
 
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An S7 object of class <code>ClogLogLink</code> (inheriting from <code>link</code>)
-containing the transformation functions and their exact analytical derivatives
-up to the fourth order.</p>
+    <p>An S7 object of class <code>ClogLogLink</code>, inheriting from <code><a href="link.html">link()</a></code>, whose
+methods compute the link, its inverse and their derivatives to the fifth
+order.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The ClogLog link is defined mathematically as \(\eta = \log(-\log(1 - \theta))\).
-Consequently, the inverse link is derived as \(\theta = 1 - \exp(-\exp(\eta))\).</p>
-<p>Unlike the symmetric Logit and Probit links, the ClogLog link lacks symmetry.
-It is fundamentally related to the Extreme Value (Gumbel) distribution and is
-frequently utilized in discrete-time survival analysis (proportional hazards models)
-as well as for modeling rare events.</p>
-<p>The strictly valid mathematical domain for \(\theta\) is <code>c(0, 1)</code>.</p>
+    <p>The complementary log-log link is \(\eta = \log(-\log(1 - \theta))\),
+with inverse \(\theta = 1 - \exp(-\exp(\eta))\).</p>
+<p>Unlike the logit and the probit, the link is asymmetric: \(\theta\)
+approaches 1 faster than 0. The inverse link is the distribution function
+of the Gumbel distribution for minima. The link is used in discrete-time
+survival analysis, where it gives a proportional-hazards model, and for
+rare events.</p>
+<p>The domain of \(\theta\) is \((0, 1)\).</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -87,7 +88,7 @@ as well as for modeling rare events.</p>
 <span class="r-in"><span><span class="fu"><a href="linkinv.html">linkinv</a></span><span class="op">(</span><span class="va">lk</span>, <span class="va">eta</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1 0.5 0.9</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># asymmetric: it reaches 1 slowly and 0 sharply, the mirror of loglog</span></span></span>
+<span class="r-in"><span><span class="co"># asymmetric: it reaches 1 sharply and 0 slowly, the mirror of loglog</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="linkinv.html">linkinv</a></span><span class="op">(</span><span class="fu">cloglog_link</span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.126577 0.999382</span>
 <span class="r-in"><span><span class="fu"><a href="linkinv.html">linkinv</a></span><span class="op">(</span><span class="fu"><a href="loglog_link.html">loglog_link</a></span><span class="op">(</span><span class="op">)</span>,  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>

@@ -14,40 +14,37 @@ softplus_link(a = 1)
 
 - a:
 
-  A numeric value specifying the scaling parameter
-  (smoothness/steepness). Must be strictly positive. Defaults to 1.
+  The scale parameter, which sets the steepness: a single number
+  strictly greater than 0. Defaults to 1.
 
 ## Value
 
-An S7 object of class `SoftplusLink` (inheriting from `link`) containing
-the transformation functions, their exact analytical derivatives up to
-the fourth order, and the parameter `a`.
+An S7 object of class `SoftplusLink`, inheriting from
+[`link()`](https://statmodels7.github.io/linkfunctions7/reference/link.md),
+whose methods compute the link, its inverse and their derivatives to the
+fifth order; its `link_params` holds `a`.
 
 ## Details
 
-The Softplus link describes the relationship where the response
-parameter \\\theta\\ is the Softplus of the linear predictor \\\eta\\.
+The softplus link expresses the parameter \\\theta\\ as the softplus of
+the linear predictor \\\eta\\:
 
-Mathematically:
+- inverse link: \\\theta = \frac{1}{a} \log(1 + \exp(a \eta))\\;
 
-- Inverse Link (Softplus): \\\theta = \frac{1}{a} \log(1 + \exp(a
-  \eta))\\
+- link: \\\eta = \frac{1}{a} \log(\exp(a \theta) - 1)\\.
 
-- Link Function: \\\eta = \frac{1}{a} \log(\exp(a \theta) - 1)\\
+For a large negative \\\eta\\, \\\theta \approx 0\\. For a large
+positive \\\eta\\, \\\theta \approx \eta\\, which grows linearly where
+the inverse of a log link would grow as \\\exp(\eta)\\.
 
-**Behavior:** For large negative \\\eta\\, \\\theta \approx 0\\. For
-large positive \\\eta\\, \\\theta \approx \eta\\, growing linearly where
-a log link would grow as \\\exp(\eta)\\.
+Both directions are written so that no intermediate quantity grows with
+\\a\theta\\ or \\a\eta\\. The inverse link uses the log-sum-exp form,
+and the forward link and its derivatives are expressed in \\u = 1 -
+e^{-a\theta}\\ instead of \\e^{a\theta} - 1\\. The latter overflows once
+\\a\theta\\ exceeds about 709, and earlier at the higher orders, because
+the derivatives divide by a power of it.
 
-**Numerical Stability:** Both directions are written so that no
-intermediate quantity grows with \\a\theta\\ or \\a\eta\\. The inverse
-link uses the log-sum-exp form, and the forward link and its derivatives
-are expressed in \\u = 1 - e^{-a\theta}\\ rather than in \\e^{a\theta} -
-1\\, which overflows once \\a\theta\\ passes about 709, and because the
-derivatives divide by its fourth power, well before that at the higher
-orders.
-
-The mathematical domain of \\\theta\\ is `c(0, Inf)`.
+The domain of \\\theta\\ is \\(0, \infty)\\.
 
 ## See also
 

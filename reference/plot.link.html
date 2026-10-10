@@ -17,7 +17,7 @@ The inverse link function \(\theta = g^{-1}(\eta)\) over a standard range of lin
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,7 +68,9 @@ It generates a panel with two plots:</p><ol><li><p>The link function \(\eta = g(
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Additional graphical parameters passed to <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">graphics::plot()</a></code>.</p></dd>
+<dd><p>Named graphical parameters passed to <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">graphics::plot()</a></code> for
+both panels, where they replace the defaults (for example <code>col</code>, <code>lwd</code>
+or <code>main</code>).</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -77,9 +79,9 @@ It generates a panel with two plots:</p><ol><li><p>The link function \(\eta = g(
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The function automatically determines sensible plotting ranges based on whether the
-link bounds are finite or infinite. It temporarily modifies the graphical parameters
-(<code>par</code>) to create a side-by-side layout and restores the original settings upon exit.</p>
+    <p>The plotting ranges depend on whether the link bounds are finite. The
+function sets the graphical parameters (<code>par</code>) for a side-by-side layout
+and restores the original settings on exit.</p>
     </div>
 
     <div class="section level2">

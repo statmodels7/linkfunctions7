@@ -3,12 +3,13 @@
 Carries the reflected log on \\(-\infty, u)\\: \\\eta = \log(u -
 \theta)\\, with inverse \\\theta = u - e^{\eta}\\.
 
-The reflection makes the map decreasing, so the odd-order derivatives
-change sign against
-[LowerBoundedLink](https://statmodels7.github.io/linkfunctions7/reference/LowerBoundedLink.md)'s
-while the even ones do not. It is the mirror image of
+It is the mirror image of
 [`LowerBoundedLink()`](https://statmodels7.github.io/linkfunctions7/reference/LowerBoundedLink.md),
-the log of the distance below `upr`.
+the log of the distance below `upr`. The reflection makes the map
+decreasing, so the odd-order forward derivatives change sign relative to
+those of
+[LowerBoundedLink](https://statmodels7.github.io/linkfunctions7/reference/LowerBoundedLink.md)
+while the even ones do not, and every inverse derivative changes sign.
 
 ## Usage
 
@@ -30,8 +31,8 @@ UpperBoundedLink(
 
 - link_bounds:
 
-  A length-two numeric vector, the open interval the parameter lives in.
-  Set by the constructor; see Value for this link's.
+  A length-two numeric vector, the open interval in which the parameter
+  lies. Set by the constructor; see Value for this link's.
 
 - link_params:
 
@@ -68,8 +69,8 @@ coming back. The reflection makes the map decreasing, so every inverse
 derivative is the negative of
 [`exp_floored()`](https://statmodels7.github.io/linkfunctions7/reference/exp_floored.md)
 of \\\eta\\, and the forward ones are the log's read at \\\mathrm{upr} -
-\theta\\, the odd orders carrying the sign the reflection introduces and
-the even ones not.
+\theta\\, with the change of sign that the reflection introduces at the
+odd orders.
 
 ## See also
 

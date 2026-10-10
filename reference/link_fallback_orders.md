@@ -23,12 +23,12 @@ leading orders implemented analytically, from 0 to 5.
 
 ## Details
 
-Every link can answer every derivative generic, because the base class
-supplies numerical fallbacks for the orders a link does not implement.
-That convenience requires a way of asking which is which. A fallback is
-correct but not exact, and that is why
+Every link has a method for every derivative generic, because the base
+class supplies numerical fallbacks for the orders that a link does not
+implement. This function reports which orders are analytic. A fallback
+is accurate only to the precision of a finite difference, so
 [`check_link()`](https://statmodels7.github.io/linkfunctions7/reference/check_link.md)
-reports such orders separately instead of passing them.
+reports such orders separately instead of counting them as passed.
 
 ## See also
 
@@ -37,7 +37,7 @@ reports such orders separately instead of passing them.
 ## Examples
 
 ``` r
-# everything the package ships is exact to fourth order
+# everything the package ships is exact to fifth order
 link_fallback_orders(logit_link())
 #> $forward
 #> [1] 5

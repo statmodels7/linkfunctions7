@@ -9,7 +9,7 @@ parameter, on the parameter scale."><meta property="og:image" content="https://s
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,8 +59,9 @@ parameter, on the parameter scale.</p>
 
 <dt id="arg-theta">theta<a class="anchor" aria-label="anchor" href="#arg-theta"></a></dt>
 <dd><p>A numeric vector of parameter values, inside
-<code>x@link_bounds</code>. A value outside gives <code>NaN</code> or <code>NA</code> according to the
-link, and nothing is thrown.</p></dd>
+<code>x@link_bounds</code>. The domain is not checked: outside it the formula is
+evaluated as written, so the result may be <code>NaN</code>, <code>NA</code> or an ordinary
+number, and no error is signaled.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -70,21 +71,22 @@ link, and nothing is thrown.</p></dd>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The fifth order exists for the same reason the fourth does, one step
-further along: each order of differentiating a filtered predictor through
-its own recursion draws in one more order of the link and of the family,
-because the score driving the recursion is read at the predictor the
-recursion produces.</p>
-<p>Every link answers this generic. A link whose class registers no method
-for it gets the base class's numerical one, which applies a single central
-stencil to the highest order that link does supply analytically, never a
-chain of lower-order differences. <code><a href="link_fallback_orders.html">link_fallback_orders()</a></code> says which
-orders of a given link are exact, and <code><a href="check_link.html">check_link()</a></code> leaves a fallback
-order unchecked, since comparing it against a difference of itself would
-agree however wrong the link is.</p>
-<p>Call this generic directly in a hot loop. <code><a href="linkderiv.html">linkderiv()</a></code> and
+    <p>The fifth order is used by score-driven filters. Each order of
+differentiation of a filtered predictor through its recursion involves one
+more order of the link and of the family, because the score that drives the
+recursion is evaluated at the predictor that the recursion produces.</p>
+<p>Every link has a method for this generic. If the class of a link registers
+no method for it, the numerical method of the base class is used: it
+applies a single central stencil to the highest order that the link
+supplies analytically, never a chain of lower-order differences.
+<code><a href="link_fallback_orders.html">link_fallback_orders()</a></code> reports which orders of a given link are exact,
+and <code><a href="check_link.html">check_link()</a></code> leaves a fallback order unchecked, because comparing it
+with a finite difference of the order below would repeat the same
+computation and could not detect an error.</p>
+<p>In code where speed matters, call this generic directly: <code><a href="linkderiv.html">linkderiv()</a></code> and
 <code><a href="linkinvderiv.html">linkinvderiv()</a></code> route by order and so dispatch twice, once on themselves
-and once here, which is about a third of the cost of the call.</p>
+and once here, and on a short vector the routed call takes two to three
+times as long as the direct one.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

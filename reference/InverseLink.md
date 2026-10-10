@@ -3,9 +3,10 @@
 Carries the reciprocal transformation \\\eta = 1/\theta\\ on \\(0,
 \infty)\\, which is its own inverse.
 
-It is the canonical link of the Gamma family. Its image is only \\(0,
-\infty)\\, so a negative linear predictor has no parameter behind it,
-and the map is decreasing: a larger parameter gives a smaller \\\eta\\.
+It is the canonical link of the Gamma family. Its image is \\(0,
+\infty)\\, so the inverse link is defined only for a positive linear
+predictor, and the map is decreasing: a larger parameter gives a smaller
+\\\eta\\.
 
 ## Usage
 
@@ -26,8 +27,8 @@ InverseLink(
 
 - link_bounds:
 
-  A length-two numeric vector, the open interval the parameter lives in.
-  Set by the constructor; see Value for this link's.
+  A length-two numeric vector, the open interval in which the parameter
+  lies. Set by the constructor; see Value for this link's.
 
 - link_params:
 
@@ -57,7 +58,7 @@ going out and
 through
 [`d5linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkinv.md)
 coming back. The link is its own inverse, so the two directions carry
-the same expressions: \\1/\theta\\ and \\1/\eta\\, with the four
+the same expressions: \\1/\theta\\ and \\1/\eta\\, with the five
 derivatives \\(-1)^k k!\\z^{-(k+1)}\\ written out in both.
 
 ## See also

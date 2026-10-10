@@ -6,9 +6,7 @@ interval and that position is carried by the logit, so \\\eta =
 \log(p/(1-p))\\.
 
 Its derivatives are the logistic polynomials scaled by the width \\u -
-l\\, so a bounded link costs no more than a logit. It is the logit of
-\\p = (\theta - \mathrm{lwr})/W\\, the position of \\\theta\\ within the
-interval.
+l\\, so a bounded link costs no more than a logit.
 
 ## Usage
 
@@ -32,8 +30,8 @@ DoublyBoundedLink(
 
 - link_bounds:
 
-  A length-two numeric vector, the open interval the parameter lives in.
-  Set by the constructor; see Value for this link's.
+  A length-two numeric vector, the open interval in which the parameter
+  lies. Set by the constructor; see Value for this link's.
 
 - link_params:
 
@@ -59,10 +57,8 @@ and carrying its three properties `link_name`, `link_bounds` and
 ## Details
 
 The interval width \\W = \mathrm{upr} - \mathrm{lwr}\\ is stored as its
-own property rather than recomputed. Every method needs it, and reading
-two S7 properties and subtracting cost about a third of a call to
-[`dlinkinv()`](https://statmodels7.github.io/linkfunctions7/reference/dlinkinv.md);
-the constructor is the only place it can change.
+own property, set by the constructor, so that each method reads one
+property instead of two.
 
 ## Methods
 
@@ -80,10 +76,9 @@ through
 [`d5linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkinv.md)
 coming back. The forward derivatives are the logit's divided by \\W^k\\
 and the inverse ones the logit's multiplied by \\W\\, because \\p\\ is
-\\\theta\\ rescaled by the width; the inverse set therefore calls the
-logit's own compiled kernel rather than transcribing four more
-polynomials, and the forward set is the logit's four expressions written
-in \\p\\.
+\\\theta\\ rescaled by the width. The inverse set therefore calls the
+compiled kernel of the logit, and the forward set is the logit's
+expressions written in \\p\\.
 
 ## See also
 

@@ -1,9 +1,9 @@
 # Is a Class the Base Link Class
 
-Answers whether an S7 class is this package's own
+Returns whether an S7 class is this package's own
 [`link()`](https://statmodels7.github.io/linkfunctions7/reference/link.md)
-class, which is how a method inherited from the base class is told from
-one a link registered for itself.
+class. It is used to tell a method inherited from the base class from
+one that a link registered for itself.
 
 ## Usage
 
@@ -29,10 +29,10 @@ comparison is the one that makes the answer reliable.
 [`identical()`](https://rdrr.io/r/base/identical.html) on an S7 class is
 object identity, so it is false for a class re-created from the same
 definition, which happens whenever a package's code is evaluated instead
-of loaded, as it is under coverage instrumentation. A base fallback
-mistaken for an analytic method makes every fallback differentiate the
-order below it, which is the nested differencing the design exists to
-forbid.
+of loaded, as it is under coverage instrumentation. If a base fallback
+were mistaken for an analytic method, every fallback would differentiate
+the order below it, which is the nested differencing that the fallbacks
+are written to avoid.
 
 ## See also
 

@@ -22,8 +22,10 @@ plot(x, ...)
 
 - ...:
 
-  Additional graphical parameters passed to
-  [`graphics::plot()`](https://rdrr.io/r/graphics/plot.default.html).
+  Named graphical parameters passed to
+  [`graphics::plot()`](https://rdrr.io/r/graphics/plot.default.html) for
+  both panels, where they replace the defaults (for example `col`, `lwd`
+  or `main`).
 
 ## Value
 
@@ -31,10 +33,9 @@ No return value, called for side effects (plotting).
 
 ## Details
 
-The function automatically determines sensible plotting ranges based on
-whether the link bounds are finite or infinite. It temporarily modifies
-the graphical parameters (`par`) to create a side-by-side layout and
-restores the original settings upon exit.
+The plotting ranges depend on whether the link bounds are finite. The
+function sets the graphical parameters (`par`) for a side-by-side layout
+and restores the original settings on exit.
 
 ## Examples
 

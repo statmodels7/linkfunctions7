@@ -4,11 +4,11 @@ Carries the softplus transformation on \\(0, \infty)\\, whose inverse
 \\\theta = \log(1 + e^{a\eta})/a\\ is a smooth approximation of
 \\\max(0, \eta)\\ that sharpens as the scale \\a\\ grows.
 
-It is the alternative to the log link for a positive parameter: the log
-link maps a large negative \\\eta\\ to something indistinguishable from
-zero, while the softplus approaches zero linearly and stays numerically
-alive there. The scale is stored in `link_params`, so one class serves
-every \\a\\.
+It is an alternative to the log link for a positive parameter. For a
+large positive \\\eta\\ the softplus grows linearly, \\\theta \approx
+\eta\\, where the inverse of the log link grows exponentially; for a
+large negative \\\eta\\ both approach zero exponentially. The scale is
+stored in `link_params`, so one class serves every \\a\\.
 
 ## Usage
 
@@ -30,8 +30,8 @@ SoftplusLink(
 
 - link_bounds:
 
-  A length-two numeric vector, the open interval the parameter lives in.
-  Set by the constructor; see Value for this link's.
+  A length-two numeric vector, the open interval in which the parameter
+  lies. Set by the constructor; see Value for this link's.
 
 - link_params:
 

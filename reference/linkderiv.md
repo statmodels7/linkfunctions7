@@ -2,7 +2,7 @@
 
 A convenience router over
 [`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md)
-and the four `d*linkfun` generics.
+and the five `d*linkfun` generics.
 
 Routes to the correct forward derivative generic based on order.
 

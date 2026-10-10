@@ -11,7 +11,7 @@ probability, whose linear predictor is the log-odds."><meta property="og:image" 
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,19 +54,19 @@ probability, whose linear predictor is the log-odds.</p>
 
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An S7 object of class <code>LogitLink</code> (inheriting from <code>link</code>) containing the transformation functions
-and their exact analytical derivatives up to the fourth order.</p>
+    <p>An S7 object of class <code>LogitLink</code>, inheriting from <code><a href="link.html">link()</a></code>, whose
+methods compute the link, its inverse and their derivatives to the fifth
+order.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The Logit link is defined mathematically as \(\eta = \log(\frac{\theta}{1 - \theta})\).
-The inverse link is the standard logistic function (sigmoid):
-\(\theta = \frac{1}{1 + \exp(-\eta)}\).</p>
-<p>The link is symmetric about \(\theta = 0.5\), where \(\eta = 0\), and
-the linear predictor is the log-odds of the event probability. The domain of
-\(\theta\) is \((0, 1)\).</p>
-<p>The implementation delegates to <code><a href="https://rdrr.io/r/stats/Logistic.html" class="external-link">stats::qlogis</a></code> and
-<code><a href="https://rdrr.io/r/stats/Logistic.html" class="external-link">stats::plogis</a></code>, which remain accurate near both boundaries.</p>
+    <p>The logit link is \(\eta = \log(\theta/(1 - \theta))\), and its inverse
+is the logistic function \(\theta = 1/(1 + \exp(-\eta))\).</p>
+<p>The link is symmetric about \(\theta = 1/2\), where \(\eta = 0\), and
+the linear predictor is the log-odds of the event probability. The domain
+of \(\theta\) is \((0, 1)\).</p>
+<p>The implementation calls <code><a href="https://rdrr.io/r/stats/Logistic.html" class="external-link">stats::qlogis()</a></code> and <code><a href="https://rdrr.io/r/stats/Logistic.html" class="external-link">stats::plogis()</a></code>, which
+remain accurate near both boundaries.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

@@ -1,7 +1,8 @@
 # The Body Shared by Every Numerical Fallback
 
 Computes the order-`order` derivative of a link, in either direction, by
-differentiating once the highest order the link supplies analytically.
+one numerical differentiation of the highest order that the link
+supplies analytically.
 
 ## Usage
 
@@ -33,20 +34,21 @@ A numeric vector of the same length as `v`.
 
 ## Details
 
-The whole design is in the two lines that pick `m` and `gap`: never
-differentiate numerically more than the number of orders actually
-missing. A link analytic to the second order asks for a first difference
-to reach the third, not three; a link supplying nothing but
+The function takes the highest analytic order \\m\\ below the requested
+one and applies a single central stencil of order `order - m` to it,
+never a chain of lower-order stencils. For a link analytic to the second
+order, the third derivative is one first difference of the second; only
+for a link that supplies nothing but
 [`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md)
-is the only case in which a fourth-order stencil is applied to the
-function itself.
+is a stencil of the full order applied to the function itself.
 
-Note the recursion is only apparent. The base function is fetched
-through
-[`linkderiv()`](https://statmodels7.github.io/linkfunctions7/reference/linkderiv.md),
-which dispatches to the link's own method for an order it implements, so
-the chain always terminates on analytic code, and never on another
-fallback.
+The recursion is only apparent. The base function is obtained through
+[`linkderiv()`](https://statmodels7.github.io/linkfunctions7/reference/linkderiv.md)
+or
+[`linkinvderiv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinvderiv.md),
+which dispatch to the link's own method for an order that the link
+implements, so the chain always ends on analytic code and never on
+another fallback.
 
 ## Methods
 
@@ -66,7 +68,7 @@ nothing but
 [`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md)
 and
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md)
-can still answer every derivative generic. S7 requires a method's
-formals to match the generic's, and the two directions name their
-argument differently, so the eight wrappers are written out rather than
-generated.
+still has a method for every derivative generic. S7 requires the formals
+of a method to match those of the generic, and the two directions name
+their argument differently, so the ten wrappers are written out instead
+of generated.

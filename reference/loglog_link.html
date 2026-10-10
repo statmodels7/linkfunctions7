@@ -11,7 +11,7 @@ cloglog_link()."><meta property="og:image" content="https://statmodels7.github.i
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,16 +54,17 @@ with inverse \(\theta = \exp(-e^{-\eta})\); the mirror image of
 
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An S7 object of class <code>LogLogLink</code> (inheriting from <code>link</code>) containing the transformation functions
-and their exact analytical derivatives up to the fourth order.</p>
+    <p>An S7 object of class <code>LogLogLink</code>, inheriting from <code><a href="link.html">link()</a></code>, whose
+methods compute the link, its inverse and their derivatives to the fifth
+order.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The Log-Log link is mathematically defined as \(\eta = -\log(-\log(\theta))\).
-Consequently, the inverse link is derived as \(\theta = \exp(-\exp(-\eta))\).</p>
-<p>Unlike the logit and the probit the link is asymmetric: the probability
-approaches 0 slowly and 1 sharply, the mirror image of
-<code><a href="cloglog_link.html">cloglog_link()</a></code>. The domain of \(\theta\) is \((0, 1)\).</p>
+    <p>The log-log link is \(\eta = -\log(-\log\theta)\), with inverse
+\(\theta = \exp(-\exp(-\eta))\).</p>
+<p>Unlike the logit and the probit, the link is asymmetric: \(\theta\)
+approaches 0 faster than 1, which is the mirror image of <code><a href="cloglog_link.html">cloglog_link()</a></code>.
+The domain of \(\theta\) is \((0, 1)\).</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

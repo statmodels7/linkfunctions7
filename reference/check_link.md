@@ -36,52 +36,41 @@ Invisibly, a named list of the check results: the four scalar logicals
 `invertibility_theta`, `invertibility_eta`, `monotonicity` and
 `inverse_theorem`, plus `link_derivatives` and
 `inverse_link_derivatives`, each a logical vector of length five named
-`order_1` to `order_5`. In those two, `TRUE` and `FALSE` mean what they
-say and `NA` means **not checked**: the order is supplied by a numerical
-fallback, so the value and the reference would be the same arithmetic
-and would agree whatever the link did. The number of orders actually
-implemented is carried on the result as the attribute
-`"analytic_orders"`; see
+`order_1` to `order_5`. In those two, `NA` means that the order was not
+checked: it is supplied by a numerical fallback, so the value and the
+reference would come from the same computation and would agree even for
+a wrong link. The number of orders actually implemented is carried on
+the result as the attribute `"analytic_orders"`; see
 [`link_fallback_orders()`](https://statmodels7.github.io/linkfunctions7/reference/link_fallback_orders.md).
 A derivative that raises an error still counts as `FALSE`. Called mainly
 for the summary printed to the console.
 
 ## Details
 
-The function assumes the existence of S7 generics `linkfun`, `linkinv`,
-`linkderiv`, and `linkinvderiv`. The method performs the following six
-diagnostic checks:
+The method performs six checks:
 
-1.  **Invertibility (\\\theta\\ space):** Verifies \\g^{-1}(g(\theta)) =
-    \theta\\. Ensures that mapping from the parameter space to the
-    linear predictor and back is lossless.
+1.  **Invertibility (\\\theta\\ space):** verifies \\g^{-1}(g(\theta)) =
+    \theta\\ on a grid of parameter values.
 
-2.  **Invertibility (\\\eta\\ space):** Verifies \\g(g^{-1}(\eta)) =
-    \eta\\. Ensures that mapping from the linear predictor to the
-    parameter space and back is lossless. Note that this test may fail
-    intentionally and correctly for links that map to a restricted
-    \\\eta\\ domain (e.g., the square root link).
+2.  **Invertibility (\\\eta\\ space):** verifies \\g(g^{-1}(\eta)) =
+    \eta\\ on a grid spanning the linear predictors that the link
+    produces from the parameter grid.
 
-3.  **Strict Monotonicity:** Checks if the first derivative
-    \\g'(\theta)\\ is strictly positive or strictly negative across the
-    domain, guaranteeing a one-to-one mapping.
+3.  **Strict monotonicity:** checks that \\g'(\theta)\\ has the same
+    sign at every point of the grid, so that the map is one-to-one.
 
-4.  **Inverse Function Theorem:** Verifies the mathematical identity
-    \\g'(\theta) \cdot (g^{-1})'(\eta) = 1\\, confirming the theoretical
-    relationship between the link derivative and the inverse link
-    derivative.
+4.  **Inverse function theorem:** verifies \\g'(\theta) \cdot
+    (g^{-1})'(\eta) = 1\\.
 
-5.  **Link Derivatives:** Validates the exact analytical forward
-    derivatives of \\g(\theta)\\ up to the 5th order by comparing them
-    against numerical gradients.
+5.  **Link derivatives:** compares each analytic derivative of
+    \\g(\theta)\\, up to the fifth order, with a numerical one.
 
-6.  **Inverse Link Derivatives:** Validates the exact analytical inverse
-    derivatives of \\g^{-1}(\eta)\\ up to the 5th order by comparing
-    them against numerical gradients.
+6.  **Inverse link derivatives:** compares each analytic derivative of
+    \\g^{-1}(\eta)\\, up to the fifth order, with a numerical one.
 
-Both forward and inverse derivative testing avoids compounding numerical
-errors by applying first-order numerical differentiation iteratively to
-the exact lower-order analytical derivatives.
+Each analytic derivative of order \\k\\ is compared with one numerical
+differentiation of the analytic derivative of order \\k - 1\\, so the
+errors of successive numerical differentiations do not compound.
 
 ## See also
 

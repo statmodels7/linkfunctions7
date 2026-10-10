@@ -12,23 +12,23 @@ inverse_link()
 
 ## Value
 
-An S7 object of class `InverseLink` (inheriting from `link`) containing
-the transformation functions and their exact analytical derivatives up
-to the fourth order.
+An S7 object of class `InverseLink`, inheriting from
+[`link()`](https://statmodels7.github.io/linkfunctions7/reference/link.md),
+whose methods compute the link, its inverse and their derivatives to the
+fifth order.
 
 ## Details
 
-The Inverse link is defined as \\\eta = 1/\theta\\. The inverse link
-function is therefore perfectly symmetric: \\\theta = 1/\eta\\.
+The inverse link is \\\eta = 1/\theta\\, and it is its own inverse,
+\\\theta = 1/\eta\\.
 
-This link is typically used for modeling positive continuous data where
-the mean is inversely proportional to the linear predictor (e.g., in
-Gamma regression).
+It is the canonical link of the Gamma family, used when the mean is
+modeled as the reciprocal of a linear predictor.
 
-The domain of \\\theta\\ is conventionally `c(0, Inf)`. Care must be
-taken to ensure the linear predictor \\\eta\\ remains strictly positive
-(or strictly negative) during optimization to avoid division by zero or
-mapping to invalid negative parameter values.
+The domain of \\\theta\\ is \\(0, \infty)\\, and so is the image of the
+link, so the linear predictor must stay positive during optimization;
+[`eta_bounds()`](https://statmodels7.github.io/linkfunctions7/reference/eta_bounds.md)
+returns this range.
 
 ## See also
 

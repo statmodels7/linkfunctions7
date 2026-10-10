@@ -27,7 +27,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -83,16 +83,15 @@ A variance must stay positive and a probability must stay in
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0, 1)</annotation></semantics></math>;
 the log and logit links move the optimization onto the whole real line
 and map the result back.</p>
-<p>What distinguishes <strong>linkfunctions7</strong> from a couple of
-<code><a href="https://rdrr.io/r/base/Log.html" class="external-link">log()</a></code> and <code><a href="https://rdrr.io/r/stats/Logistic.html" class="external-link">plogis()</a></code> calls is that every link
-carries its <strong>exact analytical derivatives up to fifth
-order</strong>, in both directions, together with a diagnostic that
-verifies them. Those derivatives are what a modeling package needs: a
-Newton or Fisher-scoring step uses the derivative of the inverse link,
-and a higher-order correction uses the orders above it. The fifth is
-reached by a model whose predictor comes out of a recursion, where each
-order of differentiating through the recursion draws in one further
-order of the link.</p>
+<p>Unlike a pair of <code><a href="https://rdrr.io/r/base/Log.html" class="external-link">log()</a></code> and <code><a href="https://rdrr.io/r/stats/Logistic.html" class="external-link">plogis()</a></code> calls,
+every link in <strong>linkfunctions7</strong> carries its <strong>exact
+analytical derivatives up to fifth order</strong>, in both directions,
+together with a diagnostic that verifies them. A modeling package needs
+these derivatives: a Newton or Fisher-scoring step uses the derivative
+of the inverse link, and a higher-order correction uses the orders above
+it. The fifth order is needed by models whose predictor is defined by a
+recursion, since each order of differentiation through the recursion
+involves one more order of the link.</p>
 <div class="section level2">
 <h2 id="a-link-is-an-object">A link is an object<a class="anchor" aria-label="anchor" href="#a-link-is-an-object"></a>
 </h2>
@@ -126,11 +125,11 @@ the inverse ones with respect to
 <span><span class="co">#&gt; [1] 2.0 1.0 0.5</span></span>
 <span><span class="fu"><a href="../reference/dlinkinv.html">dlinkinv</a></span><span class="op">(</span><span class="va">lk</span>, <span class="va">eta</span><span class="op">)</span>        <span class="co"># (g^{-1})'(eta)</span></span>
 <span><span class="co">#&gt; [1] 0.5 1.0 2.0</span></span></code></pre></div>
-<p>They are exact, not finite differences. For the log link
+<p>These derivatives are closed-form expressions, not finite
+differences. For the log link,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">g(\theta) = \log\theta</annotation></semantics></math>
-so
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>g</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>1</mn><mi>/</mi><mi>θ</mi></mrow><annotation encoding="application/x-tex">g'(\theta) = 1/\theta</annotation></semantics></math>,
-and indeed:</p>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>g</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>1</mn><mi>/</mi><mi>θ</mi></mrow><annotation encoding="application/x-tex">g'(\theta) = 1/\theta</annotation></semantics></math>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="fu"><a href="../reference/dlinkfun.html">dlinkfun</a></span><span class="op">(</span><span class="va">lk</span>, <span class="va">theta</span><span class="op">)</span>, <span class="fl">1</span> <span class="op">/</span> <span class="va">theta</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
@@ -152,23 +151,24 @@ order from zero to five without naming a separate function:</p>
 <span><span class="co">#&gt; [3,]  0.8 0.16 -0.096  0.0064  0.08832 -0.11648</span></span></code></pre></div>
 <p>Order zero is the function itself; the columns are the successive
 derivatives of the inverse logit at those three points.</p>
-<p>One limit at the top order is worth stating. The exponential links
-floor
+<p>The fifth forward derivative of the exponential links has a limited
+range. These links floor
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi><mo>=</mo><msup><mi>e</mi><mi>η</mi></msup></mrow><annotation encoding="application/x-tex">\theta = e^{\eta}</annotation></semantics></math>
-at the smallest value whose fourth forward derivative
+at a value chosen so that the fourth forward derivative
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>6</mn><mi>/</mi><msup><mi>θ</mi><mn>4</mn></msup></mrow><annotation encoding="application/x-tex">-6/\theta^4</annotation></semantics></math>
-is still representable, and the fifth,
+stays representable with a factor of four to spare, and at that value
+the fifth,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>24</mn><mi>/</mi><msup><mi>θ</mi><mn>5</mn></msup></mrow><annotation encoding="application/x-tex">24/\theta^5</annotation></semantics></math>,
-is not: the forward fifth derivative of a log, lower- or upper-bounded
-link is <code>Inf</code> below about
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>η</mi><mo>=</mo><mi>−</mi><mn>145</mn></mrow><annotation encoding="application/x-tex">\eta = -145</annotation></semantics></math>,
-where the fourth remains finite to
+is not. The forward fifth derivative of a log, lower- or upper-bounded
+link is therefore <code>Inf</code> below about
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>η</mi><mo>=</mo><mi>−</mi><mn>141</mn></mrow><annotation encoding="application/x-tex">\eta = -141</annotation></semantics></math>,
+while the fourth remains finite to
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>η</mi><mo>=</mo><mi>−</mi><mn>200</mn></mrow><annotation encoding="application/x-tex">\eta = -200</annotation></semantics></math>.
-Raising the floor to accommodate it would clamp
+Raising the floor to cover the fifth would clamp
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>
-over a range where <code><a href="../reference/linkinv.html">linkinv()</a></code> is exact today, which is the
-worse trade. The inverse direction, which is the one a chain rule onto
-the link scale uses, is finite at every order.</p>
+over a range where <code><a href="../reference/linkinv.html">linkinv()</a></code> is now exact, so the floor is
+left where it is. In the lower tail the inverse direction, which a chain
+rule onto the link scale uses, is finite at every order.</p>
 </div>
 <div class="section level2">
 <h2 id="seeing-a-link">Seeing a link<a class="anchor" aria-label="anchor" href="#seeing-a-link"></a>
@@ -181,10 +181,10 @@ and inverse transformations over sensible ranges:</p>
 <p>The <strong>softplus</strong> link illustrates the differences
 between positivity links. Like the log it keeps
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>
-positive, but instead of the log’s global exponential it bends smoothly
-into a straight line for large
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>η</mi><annotation encoding="application/x-tex">\eta</annotation></semantics></math>,
-which makes it better behaved when the linear predictor wanders:</p>
+positive, but for large
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>η</mi><annotation encoding="application/x-tex">\eta</annotation></semantics></math>
+it grows linearly instead of exponentially, so a large linear predictor
+does not produce an extremely large parameter:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="../reference/softplus_link.html">softplus_link</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="link-functions_files/figure-html/unnamed-chunk-8-1.png" class="r-plt" alt="" width="672"></p>
@@ -212,7 +212,7 @@ is, and the derivatives are available here too:</p>
 <span><span class="co">#&gt; [1] -17.739913  -1.142115   0.000000   1.142115  17.739913</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="the-links-on-offer">The links on offer<a class="anchor" aria-label="anchor" href="#the-links-on-offer"></a>
+<h2 id="the-available-links">The available links<a class="anchor" aria-label="anchor" href="#the-available-links"></a>
 </h2>
 <table class="table">
 <thead><tr class="header">
@@ -297,19 +297,20 @@ holds, and that every analytical derivative matches a numerical one:</p>
 <span><span class="co">#&gt;   [4] Inverse Function Theorem:    [PASSED] </span></span>
 <span><span class="co">#&gt;   [5] Link Derivatives:            [PASSED] </span></span>
 <span><span class="co">#&gt;   [6] Inverse Link Derivatives:    [PASSED]</span></span></code></pre></div>
-<p>The diagnostic runs on any link, and it matters most for a newly
-written one, where a wrong derivative is likeliest.</p>
+<p>The diagnostic accepts any link and is most useful for a newly
+written one.</p>
 </div>
 <div class="section level2">
 <h2 id="defining-a-new-link">Defining a new link<a class="anchor" aria-label="anchor" href="#defining-a-new-link"></a>
 </h2>
-<p>A new link is a subclass of <code>link</code> carrying the two
-directions and their five derivatives each, twelve methods in all. Fewer
-will do: only <code><a href="../reference/linkfun.html">linkfun()</a></code> and <code><a href="../reference/linkinv.html">linkinv()</a></code> are
-compulsory, and the base class supplies every derivative a link does not
-implement by one stencil applied to the highest order it does. The
-example below writes four orders in each direction and leaves the fifth
-to that fallback. It is the <strong>negative log-log</strong> link,
+<p>A new link is a subclass of <code>link</code> with methods for the
+two directions and their five derivatives each, twelve methods in all.
+Only <code><a href="../reference/linkfun.html">linkfun()</a></code> and <code><a href="../reference/linkinv.html">linkinv()</a></code> are compulsory:
+the base class supplies every derivative that a link does not implement,
+by one stencil applied to the highest order that the link does
+implement. The example below writes four orders in each direction and
+leaves the fifth to that fallback. It is the <strong>negative
+log-log</strong> link,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>η</mi><mo>=</mo><mi>−</mi><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><mi>θ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\eta = -\log(-\log\theta)</annotation></semantics></math>
 on
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0, 1)</annotation></semantics></math>.</p>
@@ -352,25 +353,24 @@ on
 <span><span class="co">#&gt;   [4] Inverse Function Theorem:    [PASSED] </span></span>
 <span><span class="co">#&gt;   [5] Link Derivatives:            [PASSED to order 4, 1 numerical] </span></span>
 <span><span class="co">#&gt;   [6] Inverse Link Derivatives:    [PASSED to order 4, 1 numerical]</span></span></code></pre></div>
-<p>Both derivative rows report that they passed to order four with one
-order numerical. The fifth came from the fallback, and a fallback is not
-checked, since it would be compared against a numerical differentiation
-of the order below it, which is the same arithmetic twice and would
-agree however wrong the link was. <code><a href="../reference/link_fallback_orders.html">link_fallback_orders()</a></code>
-answers that question programmatically.</p>
-<p>A line reporting <code>[FAILED]</code> identifies a derivative to
-revisit, which is the mistake <code><a href="../reference/check_link.html">check_link()</a></code> exists to
-catch.</p>
+<p>Both derivative rows report that they passed to order four, with one
+order numerical. The fifth order comes from the fallback and is not
+checked, since it would be compared with a numerical differentiation of
+the order below it; the two would be the same computation and would
+agree even for a wrong link. <code><a href="../reference/link_fallback_orders.html">link_fallback_orders()</a></code> returns
+the same information as a list.</p>
+<p>A line reporting <code>[FAILED]</code> marks a derivative that
+disagrees with its numerical reference.</p>
 </div>
 <div class="section level2">
 <h2 id="further-reading">Further reading<a class="anchor" aria-label="anchor" href="#further-reading"></a>
 </h2>
 <ul>
 <li>
-<code><a href="../reference/check_link.html">?check_link</a></code> — the full diagnostic and what each check
-means.</li>
+<code><a href="../reference/check_link.html">?check_link</a></code>: the full diagnostic and the meaning of
+each check.</li>
 <li>
-<code><a href="../reference/linkinvderiv.html">?linkinvderiv</a></code> — reaching any derivative order.</li>
+<code><a href="../reference/linkinvderiv.html">?linkinvderiv</a></code>: derivatives of any order.</li>
 <li>The <a href="https://github.com/statmodels7/distributions7" class="external-link">distributions7</a>
 package, where these links become the scale on which distributions are
 fitted.</li>

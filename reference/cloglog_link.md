@@ -12,23 +12,23 @@ cloglog_link()
 
 ## Value
 
-An S7 object of class `ClogLogLink` (inheriting from `link`) containing
-the transformation functions and their exact analytical derivatives up
-to the fourth order.
+An S7 object of class `ClogLogLink`, inheriting from
+[`link()`](https://statmodels7.github.io/linkfunctions7/reference/link.md),
+whose methods compute the link, its inverse and their derivatives to the
+fifth order.
 
 ## Details
 
-The ClogLog link is defined mathematically as \\\eta = \log(-\log(1 -
-\theta))\\. Consequently, the inverse link is derived as \\\theta = 1 -
-\exp(-\exp(\eta))\\.
+The complementary log-log link is \\\eta = \log(-\log(1 - \theta))\\,
+with inverse \\\theta = 1 - \exp(-\exp(\eta))\\.
 
-Unlike the symmetric Logit and Probit links, the ClogLog link lacks
-symmetry. It is fundamentally related to the Extreme Value (Gumbel)
-distribution and is frequently utilized in discrete-time survival
-analysis (proportional hazards models) as well as for modeling rare
-events.
+Unlike the logit and the probit, the link is asymmetric: \\\theta\\
+approaches 1 faster than 0. The inverse link is the distribution
+function of the Gumbel distribution for minima. The link is used in
+discrete-time survival analysis, where it gives a proportional-hazards
+model, and for rare events.
 
-The strictly valid mathematical domain for \\\theta\\ is `c(0, 1)`.
+The domain of \\\theta\\ is \\(0, 1)\\.
 
 ## See also
 
@@ -51,7 +51,7 @@ eta
 linkinv(lk, eta)
 #> [1] 0.1 0.5 0.9
 
-# asymmetric: it reaches 1 slowly and 0 sharply, the mirror of loglog
+# asymmetric: it reaches 1 sharply and 0 slowly, the mirror of loglog
 linkinv(cloglog_link(), c(-2, 2))
 #> [1] 0.126577 0.999382
 linkinv(loglog_link(),  c(-2, 2))

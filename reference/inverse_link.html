@@ -11,7 +11,7 @@ not the whole real line."><meta property="og:image" content="https://statmodels7
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,19 +54,19 @@ not the whole real line.</p>
 
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An S7 object of class <code>InverseLink</code> (inheriting from <code>link</code>) containing the transformation functions
-and their exact analytical derivatives up to the fourth order.</p>
+    <p>An S7 object of class <code>InverseLink</code>, inheriting from <code><a href="link.html">link()</a></code>, whose
+methods compute the link, its inverse and their derivatives to the fifth
+order.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The Inverse link is defined as \(\eta = 1/\theta\).
-The inverse link function is therefore perfectly symmetric: \(\theta = 1/\eta\).</p>
-<p>This link is typically used for modeling positive continuous data where the mean is
-inversely proportional to the linear predictor (e.g., in Gamma regression).</p>
-<p>The domain of \(\theta\) is conventionally <code>c(0, Inf)</code>. Care must be taken
-to ensure the linear predictor \(\eta\) remains strictly positive (or strictly
-negative) during optimization to avoid division by zero or mapping to invalid
-negative parameter values.</p>
+    <p>The inverse link is \(\eta = 1/\theta\), and it is its own inverse,
+\(\theta = 1/\eta\).</p>
+<p>It is the canonical link of the Gamma family, used when the mean is
+modeled as the reciprocal of a linear predictor.</p>
+<p>The domain of \(\theta\) is \((0, \infty)\), and so is the image of
+the link, so the linear predictor must stay positive during optimization;
+<code><a href="eta_bounds.html">eta_bounds()</a></code> returns this range.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

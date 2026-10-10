@@ -4,9 +4,9 @@ Carries the probit transformation \\\eta = \Phi^{-1}(\theta)\\ on \\(0,
 1)\\, with \\\Phi\\ the standard normal distribution function and the
 inverse \\\theta = \Phi(\eta)\\.
 
-It is symmetric about \\\theta = 1/2\\, like the logit, and reaches its
-bounds faster: the same change in \\\eta\\ moves a probability further
-in the tails.
+It is symmetric about \\\theta = 1/2\\, like the logit, and it reaches
+its bounds faster, because the tails of the normal distribution are
+lighter than those of the logistic.
 
 ## Usage
 
@@ -27,8 +27,8 @@ ProbitLink(
 
 - link_bounds:
 
-  A length-two numeric vector, the open interval the parameter lives in.
-  Set by the constructor; see Value for this link's.
+  A length-two numeric vector, the open interval in which the parameter
+  lies. Set by the constructor; see Value for this link's.
 
 - link_params:
 
@@ -62,7 +62,7 @@ coming back.
 and
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md)
 delegate to [`stats::qnorm()`](https://rdrr.io/r/stats/Normal.html) and
-[`stats::pnorm()`](https://rdrr.io/r/stats/Normal.html). The eight
+[`stats::pnorm()`](https://rdrr.io/r/stats/Normal.html). The ten
 derivatives come from a compiled kernel, one call per order and
 direction.
 

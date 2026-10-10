@@ -13,7 +13,7 @@ numerical differentiation of the analytic order below it."><meta property="og:im
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,10 +82,10 @@ printed to the console.</p>
 <code>invertibility_theta</code>, <code>invertibility_eta</code>, <code>monotonicity</code> and
 <code>inverse_theorem</code>, plus <code>link_derivatives</code> and
 <code>inverse_link_derivatives</code>, each a logical vector of length five named
-<code>order_1</code> to <code>order_5</code>. In those two, <code>TRUE</code> and <code>FALSE</code>
-mean what they say and <code>NA</code> means <strong>not checked</strong>: the order is
-supplied by a numerical fallback, so the value and the reference would be
-the same arithmetic and would agree whatever the link did. The number of
+<code>order_1</code> to <code>order_5</code>. In those two, <code>NA</code> means that the order was not
+checked: it is supplied by a numerical fallback, so the value and the
+reference would come from the same computation and would agree even for
+a wrong link. The number of
 orders actually implemented is carried on the result as the attribute
 <code>"analytic_orders"</code>; see <code><a href="link_fallback_orders.html">link_fallback_orders()</a></code>. A
 derivative that raises an error still counts as <code>FALSE</code>. Called mainly
@@ -93,15 +93,22 @@ for the summary printed to the console.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The function assumes the existence of S7 generics <code>linkfun</code>, <code>linkinv</code>,
-<code>linkderiv</code>, and <code>linkinvderiv</code>. The method performs the following six diagnostic checks:</p><ol><li><p><strong>Invertibility (\(\theta\) space):</strong> Verifies \(g^{-1}(g(\theta)) = \theta\). Ensures that mapping from the parameter space to the linear predictor and back is lossless.</p></li>
-<li><p><strong>Invertibility (\(\eta\) space):</strong> Verifies \(g(g^{-1}(\eta)) = \eta\). Ensures that mapping from the linear predictor to the parameter space and back is lossless. Note that this test may fail intentionally and correctly for links that map to a restricted \(\eta\) domain (e.g., the square root link).</p></li>
-<li><p><strong>Strict Monotonicity:</strong> Checks if the first derivative \(g'(\theta)\) is strictly positive or strictly negative across the domain, guaranteeing a one-to-one mapping.</p></li>
-<li><p><strong>Inverse Function Theorem:</strong> Verifies the mathematical identity \(g'(\theta) \cdot (g^{-1})'(\eta) = 1\), confirming the theoretical relationship between the link derivative and the inverse link derivative.</p></li>
-<li><p><strong>Link Derivatives:</strong> Validates the exact analytical forward derivatives of \(g(\theta)\) up to the 5th order by comparing them against numerical gradients.</p></li>
-<li><p><strong>Inverse Link Derivatives:</strong> Validates the exact analytical inverse derivatives of \(g^{-1}(\eta)\) up to the 5th order by comparing them against numerical gradients.</p></li>
-</ol><p>Both forward and inverse derivative testing avoids compounding numerical errors by applying
-first-order numerical differentiation iteratively to the exact lower-order analytical derivatives.</p>
+    <p>The method performs six checks:</p><ol><li><p><strong>Invertibility (\(\theta\) space):</strong> verifies
+\(g^{-1}(g(\theta)) = \theta\) on a grid of parameter values.</p></li>
+<li><p><strong>Invertibility (\(\eta\) space):</strong> verifies
+\(g(g^{-1}(\eta)) = \eta\) on a grid spanning the linear predictors
+that the link produces from the parameter grid.</p></li>
+<li><p><strong>Strict monotonicity:</strong> checks that \(g'(\theta)\) has the same sign
+at every point of the grid, so that the map is one-to-one.</p></li>
+<li><p><strong>Inverse function theorem:</strong> verifies
+\(g'(\theta) \cdot (g^{-1})'(\eta) = 1\).</p></li>
+<li><p><strong>Link derivatives:</strong> compares each analytic derivative of
+\(g(\theta)\), up to the fifth order, with a numerical one.</p></li>
+<li><p><strong>Inverse link derivatives:</strong> compares each analytic derivative of
+\(g^{-1}(\eta)\), up to the fifth order, with a numerical one.</p></li>
+</ol><p>Each analytic derivative of order \(k\) is compared with one numerical
+differentiation of the analytic derivative of order \(k - 1\), so the
+errors of successive numerical differentiations do not compound.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

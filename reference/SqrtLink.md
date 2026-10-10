@@ -3,11 +3,10 @@
 Carries the square-root transformation \\\eta = \sqrt{\theta}\\ on \\(0,
 \infty)\\, with inverse \\\theta = \eta^2\\.
 
-Its image is only \\(0, \infty)\\, so a negative linear predictor has no
-parameter behind it. That is a property of the link, and
-[`check_link()`](https://statmodels7.github.io/linkfunctions7/reference/check_link.md)
-reports the failing invertibility check as expected for exactly this
-reason.
+Its image is \\(0, \infty)\\. On the whole real line the inverse link is
+not one-to-one, since \\\eta\\ and \\-\eta\\ give the same \\\theta\\;
+[`eta_bounds()`](https://statmodels7.github.io/linkfunctions7/reference/eta_bounds.md)
+returns the range on which it is.
 
 ## Usage
 
@@ -28,8 +27,8 @@ SqrtLink(
 
 - link_bounds:
 
-  A length-two numeric vector, the open interval the parameter lives in.
-  Set by the constructor; see Value for this link's.
+  A length-two numeric vector, the open interval in which the parameter
+  lies. Set by the constructor; see Value for this link's.
 
 - link_params:
 
@@ -60,10 +59,10 @@ through
 [`d5linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkinv.md)
 coming back. The forward derivatives are half-integer falling
 factorials. The inverse map is \\\eta^2\\, so its derivatives terminate:
-the second is the constant two and the third and fourth are exactly
-zero, both built by
+the second is the constant two and the third to fifth are exactly zero,
+all built by
 [`const_like()`](https://statmodels7.github.io/linkfunctions7/reference/const_like.md)
-so a missing value still propagates.
+so that a missing value still propagates.
 
 ## See also
 

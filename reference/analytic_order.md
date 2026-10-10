@@ -22,7 +22,7 @@ analytic_order(x, inverse = FALSE)
 
 - inverse:
 
-  Logical; `TRUE` to ask about the inverse-link generics.
+  Logical; `TRUE` for the inverse-link generics.
 
 ## Value
 
@@ -30,21 +30,20 @@ An integer between 0 and 5.
 
 ## Details
 
-Detection uses the documented S7 property that a method records the
-class it was registered on in its `signature` attribute: a method
+Detection uses the documented S7 property that a method records, in its
+`signature` attribute, the class on which it was registered: a method
 inherited from the base
 [`link()`](https://statmodels7.github.io/linkfunctions7/reference/link.md)
 class is a fallback, anything else is the link's own. Comparing method
 objects with [`identical()`](https://rdrr.io/r/base/identical.html) does
 not work for this, because S7 wraps them.
 
-The recorded class is compared by name and package, never with
-[`identical()`](https://rdrr.io/r/base/identical.html):
+The recorded class is compared by name and package.
 [`identical()`](https://rdrr.io/r/base/identical.html) on S7 class
 objects tests object identity and returns `FALSE` for a class re-created
 from the same definition, as happens when the package's code is
-re-evaluated under coverage instrumentation; identity is kept only as a
-fast path.
+re-evaluated under coverage instrumentation, so identity serves only as
+a fast path.
 
 The search stops at the first missing order, so the answer always means
 that every order up to it is analytic.

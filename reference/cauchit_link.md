@@ -11,24 +11,24 @@ cauchit_link()
 
 ## Value
 
-An S7 object of class `CauchitLink` (inheriting from `link`) containing
-the transformation functions and their exact analytical derivatives up
-to the fourth order.
+An S7 object of class `CauchitLink`, inheriting from
+[`link()`](https://statmodels7.github.io/linkfunctions7/reference/link.md),
+whose methods compute the link, its inverse and their derivatives to the
+fifth order.
 
 ## Details
 
-The Cauchit link is defined mathematically as \\\eta = \tan(\pi(\theta -
-0.5))\\, which corresponds perfectly to `qcauchy(theta)`. The inverse
-link is the standard Cauchy CDF \\\theta = \frac{1}{\pi} \arctan(\eta) +
-0.5\\, computed via `pcauchy(eta)`.
+The cauchit link is \\\eta = \tan(\pi(\theta - 1/2))\\, computed as
+`qcauchy(theta)`. The inverse link is the standard Cauchy distribution
+function \\\theta = \arctan(\eta)/\pi + 1/2\\, computed as
+`pcauchy(eta)`.
 
-**Heavy Tails:** Unlike the Logit or Probit links, the Cauchit link has
-exceedingly heavier tails. This makes it particularly robust and useful
-for modeling binary data where the probability approaches 0 or 1 very
-slowly, or when the dataset contains severe outliers that might
-disproportionately influence the fit of light-tailed link functions.
+The Cauchy distribution has heavier tails than the logistic and the
+normal, so the probability approaches 0 and 1 more slowly than under the
+logit or the probit link. The link is therefore less sensitive to
+observations whose linear predictor is extreme.
 
-The strictly valid mathematical domain for \\\theta\\ is `c(0, 1)`.
+The domain of \\\theta\\ is \\(0, 1)\\.
 
 ## See also
 

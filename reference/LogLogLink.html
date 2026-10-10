@@ -15,7 +15,7 @@ faster than one."><meta property="og:image" content="https://statmodels7.github.
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,8 +72,8 @@ constructor and shown by <code><a href="https://rdrr.io/r/base/print.html" class
 
 
 <dt id="arg-link-bounds">link_bounds<a class="anchor" aria-label="anchor" href="#arg-link-bounds"></a></dt>
-<dd><p>A length-two numeric vector, the open interval the
-parameter lives in. Set by the constructor; see Value for this link's.</p></dd>
+<dd><p>A length-two numeric vector, the open interval in
+which the parameter lies. Set by the constructor; see Value for this link's.</p></dd>
 
 
 <dt id="arg-link-params">link_params<a class="anchor" aria-label="anchor" href="#arg-link-params"></a></dt>
@@ -95,7 +95,7 @@ carrying its three properties <code>link_name</code>, <code>link_bounds</code> a
 and the five derivative orders in each direction, <code><a href="dlinkfun.html">dlinkfun()</a></code> through
 <code><a href="d5linkfun.html">d5linkfun()</a></code> going out and <code><a href="dlinkinv.html">dlinkinv()</a></code> through <code><a href="d5linkinv.html">d5linkinv()</a></code> coming
 back. <code><a href="linkfun.html">linkfun()</a></code> and <code><a href="linkinv.html">linkinv()</a></code> are the elementary
-\(-\log(-\log\theta)\) and \(\exp(-\exp(-\eta))\); the eight
+\(-\log(-\log\theta)\) and \(\exp(-\exp(-\eta))\); the ten
 derivatives come from a compiled kernel.</p>
     </div>
     <div class="section level2">

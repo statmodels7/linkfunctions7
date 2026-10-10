@@ -4,16 +4,12 @@ mapped to its position \(p = (\theta - l)/(u - l)\) within the interval and
 that position is carried by the logit, so
 \(\eta = \log(p/(1-p))\).
 Its derivatives are the logistic polynomials scaled by the width
-\(u - l\), so a bounded link costs no more than a logit.
-It is the logit of \(p = (\theta - \mathrm{lwr})/W\), the position of
-\(\theta\) within the interval."><meta property="og:description" content="Carries the scaled logit on a finite interval \((l, u)\): the parameter is
+\(u - l\), so a bounded link costs no more than a logit."><meta property="og:description" content="Carries the scaled logit on a finite interval \((l, u)\): the parameter is
 mapped to its position \(p = (\theta - l)/(u - l)\) within the interval and
 that position is carried by the logit, so
 \(\eta = \log(p/(1-p))\).
 Its derivatives are the logistic polynomials scaled by the width
-\(u - l\), so a bounded link costs no more than a logit.
-It is the logit of \(p = (\theta - \mathrm{lwr})/W\), the position of
-\(\theta\) within the interval."><meta property="og:image" content="https://statmodels7.github.io/linkfunctions7/logo.png"></head><body>
+\(u - l\), so a bounded link costs no more than a logit."><meta property="og:image" content="https://statmodels7.github.io/linkfunctions7/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -21,7 +17,7 @@ It is the logit of \(p = (\theta - \mathrm{lwr})/W\), the position of
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,9 +53,7 @@ mapped to its position \(p = (\theta - l)/(u - l)\) within the interval and
 that position is carried by the logit, so
 \(\eta = \log(p/(1-p))\).</p>
 <p>Its derivatives are the logistic polynomials scaled by the width
-\(u - l\), so a bounded link costs no more than a logit.
-It is the logit of \(p = (\theta - \mathrm{lwr})/W\), the position of
-\(\theta\) within the interval.</p>
+\(u - l\), so a bounded link costs no more than a logit.</p>
     </div>
 
     <div class="section level2">
@@ -84,8 +78,8 @@ constructor and shown by <code><a href="https://rdrr.io/r/base/print.html" class
 
 
 <dt id="arg-link-bounds">link_bounds<a class="anchor" aria-label="anchor" href="#arg-link-bounds"></a></dt>
-<dd><p>A length-two numeric vector, the open interval the
-parameter lives in. Set by the constructor; see Value for this link's.</p></dd>
+<dd><p>A length-two numeric vector, the open interval in
+which the parameter lies. Set by the constructor; see Value for this link's.</p></dd>
 
 
 <dt id="arg-link-params">link_params<a class="anchor" aria-label="anchor" href="#arg-link-params"></a></dt>
@@ -110,10 +104,9 @@ carrying its three properties <code>link_name</code>, <code>link_bounds</code> a
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The interval width \(W = \mathrm{upr} - \mathrm{lwr}\) is stored as its own
-property rather than recomputed. Every method needs it, and reading two S7
-properties and subtracting cost about a third of a call to <code><a href="dlinkinv.html">dlinkinv()</a></code>;
-the constructor is the only place it can change.</p>
+    <p>The interval width \(W = \mathrm{upr} - \mathrm{lwr}\) is stored as its
+own property, set by the constructor, so that each method reads one
+property instead of two.</p>
     </div>
     <div class="section level2">
     <h2 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a></h2>
@@ -124,10 +117,9 @@ and the five derivative orders in each direction, <code><a href="dlinkfun.html">
 <code><a href="d5linkfun.html">d5linkfun()</a></code> going out and <code><a href="dlinkinv.html">dlinkinv()</a></code> through <code><a href="d5linkinv.html">d5linkinv()</a></code> coming
 back. The forward derivatives are the logit's divided by \(W^k\) and
 the inverse ones the logit's multiplied by \(W\), because \(p\) is
-\(\theta\) rescaled by the width; the inverse set therefore calls the
-logit's own compiled kernel rather than transcribing four more
-polynomials, and the forward set is the logit's four expressions written
-in \(p\).</p>
+\(\theta\) rescaled by the width. The inverse set therefore calls the
+compiled kernel of the logit, and the forward set is the logit's
+expressions written in \(p\).</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

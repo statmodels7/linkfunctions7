@@ -3,17 +3,13 @@
 \((0, \infty)\) for a non-zero exponent, with inverse
 \(\theta = \eta^{1/\lambda}\). The exponent is stored in link_params, so
 one class serves every \(\lambda\).
-At \(\lambda = 0\) the constructor returns a LogLink instead, that being
-the limit of the family by continuity.
-At lambda = 0 the power link is the log link by continuity, and
-power_link() returns a LogLink() instead."><meta property="og:description" content="Carries the power transformation \(\eta = \theta^{\lambda}\) on
+At \(\lambda = 0\) the constructor returns a LogLink instead, the limit
+of the Box-Cox transformation \((\theta^\lambda - 1)/\lambda\)."><meta property="og:description" content="Carries the power transformation \(\eta = \theta^{\lambda}\) on
 \((0, \infty)\) for a non-zero exponent, with inverse
 \(\theta = \eta^{1/\lambda}\). The exponent is stored in link_params, so
 one class serves every \(\lambda\).
-At \(\lambda = 0\) the constructor returns a LogLink instead, that being
-the limit of the family by continuity.
-At lambda = 0 the power link is the log link by continuity, and
-power_link() returns a LogLink() instead."><meta property="og:image" content="https://statmodels7.github.io/linkfunctions7/logo.png"></head><body>
+At \(\lambda = 0\) the constructor returns a LogLink instead, the limit
+of the Box-Cox transformation \((\theta^\lambda - 1)/\lambda\)."><meta property="og:image" content="https://statmodels7.github.io/linkfunctions7/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -21,7 +17,7 @@ power_link() returns a LogLink() instead."><meta property="og:image" content="ht
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,10 +52,8 @@ power_link() returns a LogLink() instead."><meta property="og:image" content="ht
 \((0, \infty)\) for a non-zero exponent, with inverse
 \(\theta = \eta^{1/\lambda}\). The exponent is stored in <code>link_params</code>, so
 one class serves every \(\lambda\).</p>
-<p>At \(\lambda = 0\) the constructor returns a <a href="LogLink.html">LogLink</a> instead, that being
-the limit of the family by continuity.
-At <code>lambda = 0</code> the power link is the log link by continuity, and
-<code><a href="power_link.html">power_link()</a></code> returns a <code><a href="LogLink.html">LogLink()</a></code> instead.</p>
+<p>At \(\lambda = 0\) the constructor returns a <a href="LogLink.html">LogLink</a> instead, the limit
+of the Box-Cox transformation \((\theta^\lambda - 1)/\lambda\).</p>
     </div>
 
     <div class="section level2">
@@ -82,8 +76,8 @@ constructor and shown by <code><a href="https://rdrr.io/r/base/print.html" class
 
 
 <dt id="arg-link-bounds">link_bounds<a class="anchor" aria-label="anchor" href="#arg-link-bounds"></a></dt>
-<dd><p>A length-two numeric vector, the open interval the
-parameter lives in. Set by the constructor; see Value for this link's.</p></dd>
+<dd><p>A length-two numeric vector, the open interval in
+which the parameter lies. Set by the constructor; see Value for this link's.</p></dd>
 
 
 <dt id="arg-link-params">link_params<a class="anchor" aria-label="anchor" href="#arg-link-params"></a></dt>
@@ -108,7 +102,7 @@ carrying its three properties <code>link_name</code>, <code>link_bounds</code> a
 <p>Twelve methods are registered on this class: <code><a href="linkfun.html">linkfun()</a></code> and <code><a href="linkinv.html">linkinv()</a></code>,
 and the five derivative orders in each direction, <code><a href="dlinkfun.html">dlinkfun()</a></code> through
 <code><a href="d5linkfun.html">d5linkfun()</a></code> going out and <code><a href="dlinkinv.html">dlinkinv()</a></code> through <code><a href="d5linkinv.html">d5linkinv()</a></code> coming
-back. Both directions are a power, so all eight derivatives are falling
+back. Both directions are a power, so all ten derivatives are falling
 factorials in the exponent. Each is wrapped in <code><a href="na_from.html">na_from()</a></code> because <code>NA^0</code>
 is one in R, which would turn a missing parameter into a number as soon
 as an exponent reached zero.</p>

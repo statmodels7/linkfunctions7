@@ -12,18 +12,18 @@ loglog_link()
 
 ## Value
 
-An S7 object of class `LogLogLink` (inheriting from `link`) containing
-the transformation functions and their exact analytical derivatives up
-to the fourth order.
+An S7 object of class `LogLogLink`, inheriting from
+[`link()`](https://statmodels7.github.io/linkfunctions7/reference/link.md),
+whose methods compute the link, its inverse and their derivatives to the
+fifth order.
 
 ## Details
 
-The Log-Log link is mathematically defined as \\\eta =
--\log(-\log(\theta))\\. Consequently, the inverse link is derived as
-\\\theta = \exp(-\exp(-\eta))\\.
+The log-log link is \\\eta = -\log(-\log\theta)\\, with inverse \\\theta
+= \exp(-\exp(-\eta))\\.
 
-Unlike the logit and the probit the link is asymmetric: the probability
-approaches 0 slowly and 1 sharply, the mirror image of
+Unlike the logit and the probit, the link is asymmetric: \\\theta\\
+approaches 0 faster than 1, which is the mirror image of
 [`cloglog_link()`](https://statmodels7.github.io/linkfunctions7/reference/cloglog_link.md).
 The domain of \\\theta\\ is \\(0, 1)\\.
 

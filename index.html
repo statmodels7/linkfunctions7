@@ -18,9 +18,9 @@
 <link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Link functions as reusable objects">
-<meta name="description" content="Link functions written once, as objects any package can use, each carrying exact derivatives to fifth order in both directions and a diagnostic that proves them right — instead of being buried as helper functions inside the package that happens to need them.
+<meta name="description" content="Link functions written once, as objects that any package can use, each with exact derivatives to fifth order in both directions and a diagnostic that verifies them against numerical ones.
 ">
-<meta property="og:description" content="Link functions written once, as objects any package can use, each carrying exact derivatives to fifth order in both directions and a diagnostic that proves them right — instead of being buried as helper functions inside the package that happens to need them.
+<meta property="og:description" content="Link functions written once, as objects that any package can use, each with exact derivatives to fifth order in both directions and a diagnostic that verifies them against numerical ones.
 ">
 <meta property="og:image" content="https://statmodels7.github.io/linkfunctions7/logo.png">
 </head>
@@ -32,7 +32,7 @@
 
     <a class="navbar-brand me-2" href="index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,8 +69,8 @@
 <img src="logo.png" class="logo" alt=""><h1 id="linkfunctions7-">linkfunctions7 <a class="anchor" aria-label="anchor" href="#linkfunctions7-"></a>
 </h1>
 </div>
-<p>In most R modeling packages a link function has no standing of its own. It is a string passed to a fitting routine and unpacked internally into a couple of closures that nothing outside can reach: it cannot be handed to another package, asked for its second derivative, or extended without editing the source that owns it.</p>
-<p><a href="https://statmodels7.github.io/linkfunctions7/">linkfunctions7</a> makes a link an object. The package provides fourteen constructors, each carrying <strong>exact analytical derivatives up to fifth order in both directions</strong>, forward and inverse, together with a diagnostic that verifies those derivatives against numerical ones.</p>
+<p>In most R modeling packages a link function is a character string passed to a fitting routine, which turns it internally into a few closures. Code outside that package cannot use those closures, compute their higher derivatives, or extend them without editing the package source.</p>
+<p><a href="https://statmodels7.github.io/linkfunctions7/">linkfunctions7</a> makes a link an object. Each constructor in the package returns a link with <strong>exact analytical derivatives up to fifth order in both directions</strong>, forward and inverse, and a diagnostic verifies those derivatives against numerical ones.</p>
 <p>It is part of <a href="https://statmodels7.github.io" class="external-link">statmodels7</a>, an S7 toolkit for statistical modeling, and is what <a href="https://statmodels7.github.io/distributions7/" class="external-link">distributions7</a> uses to move between a constrained parameter and the unconstrained scale a fitting routine works on. The mathematics behind the formulas, and the derivations the derivatives come from, is worked out in <a href="https://statmodels7.github.io/book/" class="external-link">the statmodels7 book</a>.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -78,7 +78,7 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"statmodels7/linkfunctions7"</span><span class="op">)</span></span></code></pre></div>
-<p>Or the whole toolkit at once, which also installs the six sibling packages:</p>
+<p>Or install the whole toolkit at once:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"statmodels7/statmodels7"</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -94,7 +94,7 @@
 <span><span class="co">#&gt;   - Link parameters: a = 1</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="reference/softplus_link.html">softplus_link</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-4-1.png" alt="" width="100%"></p>
-<p>A parameter confined to an interval gets <code><a href="reference/bounded_link.html">bounded_link()</a></code>, which maps the interval onto the whole real line and accepts a lower bound, an upper bound, or both. Whatever the link, the derivatives are exact formulas rather than finite differences, and they go to fifth order in both directions:</p>
+<p>A parameter confined to an interval gets <code><a href="reference/bounded_link.html">bounded_link()</a></code>, which maps the interval onto the whole real line and accepts a lower bound, an upper bound, or both. For every link in the package the derivatives are closed-form expressions, not finite differences, and they go to fifth order in both directions:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">link</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bounded_link.html">bounded_link</a></span><span class="op">(</span>lwr <span class="op">=</span> <span class="op">-</span><span class="fl">3</span>, upr <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="va">theta</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/linkinv.html">linkinv</a></span><span class="op">(</span><span class="va">link</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span>, length.out <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
@@ -109,7 +109,7 @@
 <div class="section level2">
 <h2 id="validating-a-link">Validating a link<a class="anchor" aria-label="anchor" href="#validating-a-link"></a>
 </h2>
-<p>The derivatives are hand-written, so the package ships the tool that checks them. <code><a href="reference/check_link.html">check_link()</a></code> confirms that a link inverts cleanly in both directions, that it is strictly monotone, that the inverse function theorem <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>g</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">(</mo><msup><mi>g</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><msup><mo stretchy="false" form="postfix">)</mo><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">g'(\theta)\,(g^{-1})'(\eta) = 1</annotation></semantics></math> holds, and that every analytical derivative agrees with a numerical one. It runs on any link, and it is most useful on a newly written one, where a wrong derivative is likeliest:</p>
+<p>The derivatives are hand-written, so the package ships the tool that checks them. <code><a href="reference/check_link.html">check_link()</a></code> confirms that a link inverts cleanly in both directions, that it is strictly monotone, that the inverse function theorem <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>g</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">(</mo><msup><mi>g</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><msup><mo stretchy="false" form="postfix">)</mo><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">g'(\theta)\,(g^{-1})'(\eta) = 1</annotation></semantics></math> holds, and that every analytical derivative agrees with a numerical one. It accepts any link and is most useful for a newly written one:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/check_link.html">check_link</a></span><span class="op">(</span><span class="fu"><a href="reference/log_link.html">log_link</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Checking S7 Link Object: log </span></span>

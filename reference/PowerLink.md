@@ -7,12 +7,8 @@ class serves every \\\lambda\\.
 
 At \\\lambda = 0\\ the constructor returns a
 [LogLink](https://statmodels7.github.io/linkfunctions7/reference/LogLink.md)
-instead, that being the limit of the family by continuity. At
-`lambda = 0` the power link is the log link by continuity, and
-[`power_link()`](https://statmodels7.github.io/linkfunctions7/reference/power_link.md)
-returns a
-[`LogLink()`](https://statmodels7.github.io/linkfunctions7/reference/LogLink.md)
-instead.
+instead, the limit of the Box-Cox transformation \\(\theta^\lambda -
+1)/\lambda\\.
 
 ## Usage
 
@@ -34,8 +30,8 @@ PowerLink(
 
 - link_bounds:
 
-  A length-two numeric vector, the open interval the parameter lives in.
-  Set by the constructor; see Value for this link's.
+  A length-two numeric vector, the open interval in which the parameter
+  lies. Set by the constructor; see Value for this link's.
 
 - link_params:
 
@@ -68,7 +64,7 @@ going out and
 [`dlinkinv()`](https://statmodels7.github.io/linkfunctions7/reference/dlinkinv.md)
 through
 [`d5linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkinv.md)
-coming back. Both directions are a power, so all eight derivatives are
+coming back. Both directions are a power, so all ten derivatives are
 falling factorials in the exponent. Each is wrapped in
 [`na_from()`](https://statmodels7.github.io/linkfunctions7/reference/na_from.md)
 because `NA^0` is one in R, which would turn a missing parameter into a

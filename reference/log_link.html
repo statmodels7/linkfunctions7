@@ -11,7 +11,7 @@ parameter."><meta property="og:image" content="https://statmodels7.github.io/lin
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,24 +54,24 @@ parameter.</p>
 
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An S7 object of class <code>LogLink</code> (inheriting from <code>link</code>) containing the transformation functions
-and their exact analytical derivatives up to the fourth order.</p>
+    <p>An S7 object of class <code>LogLink</code>, inheriting from <code><a href="link.html">link()</a></code>, whose
+methods compute the link, its inverse and their derivatives to the fifth
+order.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The Log link is defined mathematically as \(\eta = \log(\theta)\).
-The inverse link is the exponential function \(\theta = \exp(\eta)\).</p>
-<p>The inverse function of this link is its
-own derivative. Therefore, the parameter \(\theta\) and all its derivatives with
-respect to \(\eta\) are equal to \(\exp(\eta)\).</p>
-<p>The valid mathematical domain of \(\theta\) is <code>c(0, Inf)</code>.</p>
-<p><strong>Numerical Stability:</strong>
-The inverse link and its derivatives are bounded below by <code>exp_floor</code>,
-which is <code>.Machine$double.xmin^0.25</code>, about <code>1.2e-77</code>. This prevents
-underflow to exactly zero for large negative \(\eta\), which would produce
-<code>Inf</code> when the forward derivatives divide by \(\theta\); the fourth of
-them divides by \(\theta^4\), and that is what sets the value. The floor is
-low enough that \(\theta\) is exact down to \(\eta \approx -177\).</p>
+    <p>The log link is \(\eta = \log(\theta)\), and its inverse is the
+exponential function \(\theta = \exp(\eta)\).</p>
+<p>The exponential is its own derivative, so every derivative of the inverse
+link with respect to \(\eta\) equals \(\exp(\eta)\).</p>
+<p>The domain of \(\theta\) is \((0, \infty)\).</p>
+<p>The inverse link and its derivatives are bounded below by <code><a href="exp_floor.html">exp_floor()</a></code>,
+\((24/x_{\max})^{1/4} \approx 1.9 \times 10^{-77}\), where \(x_{\max}\)
+is the largest finite double. The floor prevents an underflow to exactly
+zero for a large negative \(\eta\), which would make the forward
+derivatives infinite; its value is set by the fourth of them, which divides
+by \(\theta^4\). The floor is low enough that \(\theta\) is exact down
+to \(\eta \approx -176.7\).</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

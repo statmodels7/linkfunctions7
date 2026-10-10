@@ -1,9 +1,7 @@
 # 2nd Derivative of a Link Function
 
 The second derivative of the link \\g(\theta)\\ with respect to the
-parameter, on the parameter scale. This is the direction a delta-method
-standard error is carried in, from a variance on \\\theta\\ to one on
-\\\eta\\.
+parameter, on the parameter scale.
 
 ## Usage
 
@@ -19,9 +17,10 @@ d2linkfun(x, theta)
 
 - theta:
 
-  A numeric vector of parameter values, inside `x@link_bounds`. A value
-  outside gives `NaN` or `NA` according to the link, and nothing is
-  thrown.
+  A numeric vector of parameter values, inside `x@link_bounds`. The
+  domain is not checked: outside it the formula is evaluated as written,
+  so the result may be `NaN`, `NA` or an ordinary number, and no error
+  is signaled.
 
 ## Value
 
@@ -30,22 +29,24 @@ is.
 
 ## Details
 
-Every link answers this generic. A link whose class registers no method
-for it gets the base class's numerical one, which applies a single
-central stencil to the highest order that link does supply analytically,
-never a chain of lower-order differences.
+Every link has a method for this generic. If the class of a link
+registers no method for it, the numerical method of the base class is
+used: it applies a single central stencil to the highest order that the
+link supplies analytically, never a chain of lower-order differences.
 [`link_fallback_orders()`](https://statmodels7.github.io/linkfunctions7/reference/link_fallback_orders.md)
-says which orders of a given link are exact, and
+reports which orders of a given link are exact, and
 [`check_link()`](https://statmodels7.github.io/linkfunctions7/reference/check_link.md)
-leaves a fallback order unchecked, since comparing it against a
-difference of itself would agree however wrong the link is.
+leaves a fallback order unchecked, because comparing it with a finite
+difference of the order below would repeat the same computation and
+could not detect an error.
 
-Call this generic directly in a hot loop.
+In code where speed matters, call this generic directly:
 [`linkderiv()`](https://statmodels7.github.io/linkfunctions7/reference/linkderiv.md)
 and
 [`linkinvderiv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinvderiv.md)
 route by order and so dispatch twice, once on themselves and once here,
-which is about a third of the cost of the call.
+and on a short vector the routed call takes two to three times as long
+as the direct one.
 
 ## See also
 

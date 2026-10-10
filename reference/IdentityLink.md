@@ -3,11 +3,10 @@
 Carries the identity transformation \\\eta = \theta\\ on the whole real
 line, for a parameter that needs no chart because it is already
 unconstrained. Every derivative is a constant: the first is one and the
-rest are zero, at both directions and every order.
+higher ones are zero, in both directions.
 
 [`bounded_link()`](https://statmodels7.github.io/linkfunctions7/reference/bounded_link.md)
-returns an object of this class when it is given neither endpoint, there
-being nothing then to constrain.
+returns an object of this class when neither endpoint is given.
 
 ## Usage
 
@@ -28,8 +27,8 @@ IdentityLink(
 
 - link_bounds:
 
-  A length-two numeric vector, the open interval the parameter lives in.
-  Set by the constructor; see Value for this link's.
+  A length-two numeric vector, the open interval in which the parameter
+  lies. Set by the constructor; see Value for this link's.
 
 - link_params:
 
@@ -65,9 +64,8 @@ and
 return their argument. The first derivative is one and every higher one
 is zero, each built by
 [`const_like()`](https://statmodels7.github.io/linkfunctions7/reference/const_like.md)
-so that a missing value in the argument propagates to the result: a
-derivative that does not depend on \\\theta\\ is still undefined where
-\\\theta\\ is.
+so that the result is `NA` wherever the argument is `NA`, although the
+derivative does not depend on it.
 
 ## See also
 

@@ -1,10 +1,9 @@
 # 2nd Derivative of an Inverse Link Function
 
 The second derivative of the inverse link \\g^{-1}(\eta)\\ with respect
-to the linear predictor. This is the direction a modeling routine
-working on the unconstrained scale needs: it is the chain-rule factor
-that carries a derivative of the log-likelihood from \\\theta\\ onto
-\\\eta\\.
+to the linear predictor. It enters the chain rule (the formula of Faa di
+Bruno) that carries the higher derivatives of the log-likelihood from
+\\\theta\\ onto \\\eta\\.
 
 ## Usage
 
@@ -20,9 +19,12 @@ d2linkinv(x, eta)
 
 - eta:
 
-  A numeric vector of linear predictors. Any finite value is admissible;
-  the inverse link clamps its result strictly inside `x@link_bounds`
-  before this derivative is taken.
+  A numeric vector of linear predictors, inside the range that
+  [`eta_bounds()`](https://statmodels7.github.io/linkfunctions7/reference/eta_bounds.md)
+  returns for the link. The derivative is computed from `eta` directly,
+  without the clamp that
+  [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md)
+  applies.
 
 ## Value
 
@@ -30,22 +32,24 @@ A numeric vector of the same length as `eta`, missing wherever `eta` is.
 
 ## Details
 
-Every link answers this generic. A link whose class registers no method
-for it gets the base class's numerical one, which applies a single
-central stencil to the highest order that link does supply analytically,
-never a chain of lower-order differences.
+Every link has a method for this generic. If the class of a link
+registers no method for it, the numerical method of the base class is
+used: it applies a single central stencil to the highest order that the
+link supplies analytically, never a chain of lower-order differences.
 [`link_fallback_orders()`](https://statmodels7.github.io/linkfunctions7/reference/link_fallback_orders.md)
-says which orders of a given link are exact, and
+reports which orders of a given link are exact, and
 [`check_link()`](https://statmodels7.github.io/linkfunctions7/reference/check_link.md)
-leaves a fallback order unchecked, since comparing it against a
-difference of itself would agree however wrong the link is.
+leaves a fallback order unchecked, because comparing it with a finite
+difference of the order below would repeat the same computation and
+could not detect an error.
 
-Call this generic directly in a hot loop.
+In code where speed matters, call this generic directly:
 [`linkderiv()`](https://statmodels7.github.io/linkfunctions7/reference/linkderiv.md)
 and
 [`linkinvderiv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinvderiv.md)
 route by order and so dispatch twice, once on themselves and once here,
-which is about a third of the cost of the call.
+and on a short vector the routed call takes two to three times as long
+as the direct one.
 
 ## See also
 

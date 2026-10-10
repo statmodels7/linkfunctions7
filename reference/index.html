@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,7 +38,7 @@
     <div class="section level2">
       <h2 id="the-link-class">The link class<a class="anchor" aria-label="anchor" href="#the-link-class"></a></h2>
 
-      <div class="section-desc"><p>The S7 class every link inherits from, the diagnostic that checks one, and the report of which derivative orders it computes exactly.</p></div>
+      <div class="section-desc"><p>The S7 class from which every link inherits, the diagnostic that checks a link, and the report of which derivative orders a link computes exactly.</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -175,7 +175,7 @@
       </dl></div><div class="section level2">
       <h2 id="evaluating-a-link">Evaluating a link<a class="anchor" aria-label="anchor" href="#evaluating-a-link"></a></h2>
 
-      <div class="section-desc"><p>The two directions, and any derivative order of either. <code><a href="../reference/linkinv.html">linkinv()</a></code> guarantees a result strictly inside the parameter’s domain, which is what lets its output be handed straight back to <code><a href="../reference/linkfun.html">linkfun()</a></code> or to a density that validates against open intervals.</p></div>
+      <div class="section-desc"><p>The two directions, and any derivative order of either. <code><a href="../reference/linkinv.html">linkinv()</a></code> returns a value strictly inside the parameter’s domain, so its output can be passed back to <code><a href="../reference/linkfun.html">linkfun()</a></code> or to a density that validates against open intervals.</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -226,7 +226,7 @@
       </dl></div><div class="section level2">
       <h2 id="compiled-entry-points">Compiled entry points<a class="anchor" aria-label="anchor" href="#compiled-entry-points"></a></h2>
 
-      <div class="section-desc"><p>The address of a link in the scalar C entry points that other packages resolve with <code>R_GetCCallable()</code>.</p></div>
+      <div class="section-desc"><p>The address of a link in the scalar C entry points, which other packages resolve with <code>R_GetCCallable()</code>.</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -466,7 +466,7 @@
           <code><a href="exp_floor.html">exp_floor</a></code>
 
         </dt>
-        <dd>The Smallest Parameter Value the Exponential Links Will Report</dd>
+        <dd>The Floor of the Exponential Links</dd>
 
         <dt>
 

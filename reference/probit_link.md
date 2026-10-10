@@ -11,22 +11,25 @@ probit_link()
 
 ## Value
 
-An S7 object of class `ProbitLink` (inheriting from `link`) containing
-the transformation functions and their exact analytical derivatives up
-to the fourth order.
+An S7 object of class `ProbitLink`, inheriting from
+[`link()`](https://statmodels7.github.io/linkfunctions7/reference/link.md),
+whose methods compute the link, its inverse and their derivatives to the
+fifth order.
 
 ## Details
 
-The Probit link is mathematically defined as \\\eta =
-\Phi^{-1}(\theta)\\, where \\\Phi^{-1}\\ is the quantile function of the
-standard normal distribution (`qnorm`). The inverse link is \\\theta =
-\Phi(\eta)\\, the standard normal CDF (`pnorm`).
+The probit link is \\\eta = \Phi^{-1}(\theta)\\, where \\\Phi^{-1}\\ is
+the quantile function of the standard normal distribution
+([`qnorm()`](https://rdrr.io/r/stats/Normal.html)). The inverse link is
+the standard normal distribution function, \\\theta = \Phi(\eta)\\
+([`pnorm()`](https://rdrr.io/r/stats/Normal.html)).
 
-Similarly to the `logit` link, the Probit is symmetric around \\\theta =
-0.5\\ (where \\\eta = 0\\). However, the tails of the Normal
-distribution approach 0 and 1 faster than the Logistic distribution.
+Like the logit, the probit link is symmetric about \\\theta = 1/2\\,
+where \\\eta = 0\\. The tails of the normal distribution are lighter
+than those of the logistic, so \\\theta\\ approaches 0 and 1 faster than
+under the logit link.
 
-The strictly mathematical domain of \\\theta\\ is `c(0, 1)`.
+The domain of \\\theta\\ is \\(0, 1)\\.
 
 ## See also
 

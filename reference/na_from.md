@@ -24,12 +24,12 @@ na_from(r, v)
 
 ## Details
 
-Same hazard as
-[`const_like()`](https://statmodels7.github.io/linkfunctions7/reference/const_like.md),
-one step further along: an expression whose exponent happens to vanish
-stops depending on its argument, and loses the argument's missingness
-along with it. The power link is the affected case, `theta^(lambda - 2)`
-being exactly `1` for a missing `theta` once `lambda` is 2.
+This handles the same problem as
+[`const_like()`](https://statmodels7.github.io/linkfunctions7/reference/const_like.md)
+for a computed result: an expression whose exponent vanishes no longer
+depends on its argument, and loses the argument's missingness with it.
+The power link is the case in point, since `theta^(lambda - 2)` is
+exactly `1` for a missing `theta` once `lambda` is 2.
 
 ## See also
 

@@ -27,8 +27,8 @@ LogLogLink(
 
 - link_bounds:
 
-  A length-two numeric vector, the open interval the parameter lives in.
-  Set by the constructor; see Value for this link's.
+  A length-two numeric vector, the open interval in which the parameter
+  lies. Set by the constructor; see Value for this link's.
 
 - link_params:
 
@@ -62,7 +62,7 @@ coming back.
 and
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md)
 are the elementary \\-\log(-\log\theta)\\ and \\\exp(-\exp(-\eta))\\;
-the eight derivatives come from a compiled kernel.
+the ten derivatives come from a compiled kernel.
 
 ## See also
 

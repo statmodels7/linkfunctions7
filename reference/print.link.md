@@ -1,8 +1,8 @@
 # Print Method for S7 Link Objects
 
-Prints a link's name, the open interval its parameter lives in, and the
-link parameters it carries, if any. Three lines at most, and two for a
-link with no parameters of its own.
+Prints the name of a link, the open interval in which its parameter
+lies, and its link parameters, if it has any. The output has two lines,
+and a third for a link with parameters.
 
 ## Usage
 
@@ -27,14 +27,14 @@ print(x, ...)
 
 ## Details
 
-The domain is shown as the open interval it is, so a probability link
-reads `(0, 1)` and never `[0, 1]`: no link ever returns an endpoint, and
+The domain is printed as an open interval, `(0, 1)` for a probability
+link and never `[0, 1]`, because a link never returns an endpoint;
 [`link_bounds_clamp()`](https://statmodels7.github.io/linkfunctions7/reference/link_bounds_clamp.md)
-is what keeps that true in double precision.
+ensures this in double precision.
 
-The parameter line appears only for a link that has parameters, and
-names them, so `power(lambda=2)` and `bounded(lwr=0, upr=10)` report the
-values they were constructed with.
+The parameter line appears only for a link that has parameters. It names
+them, so `power(lambda=2)` and `bounded(lwr=0, upr=10)` show the values
+passed to the constructor.
 
 ## Examples
 

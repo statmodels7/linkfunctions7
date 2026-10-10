@@ -11,24 +11,23 @@ sqrt_link()
 
 ## Value
 
-An S7 object of class `SqrtLink` (inheriting from `link`) containing the
-transformation functions and their exact analytical derivatives up to
-the fourth order.
+An S7 object of class `SqrtLink`, inheriting from
+[`link()`](https://statmodels7.github.io/linkfunctions7/reference/link.md),
+whose methods compute the link, its inverse and their derivatives to the
+fifth order.
 
 ## Details
 
-The Square Root link is mathematically defined as \\\eta =
-\sqrt{\theta}\\. Consequently, the inverse link is derived as \\\theta =
-\eta^2\\.
+The square-root link is \\\eta = \sqrt{\theta}\\, with inverse \\\theta
+= \eta^2\\.
 
-Unlike the Log link, this transformation allows \\\theta\\ to reach 0
-exactly. While the inverse function (\\\eta^2\\) is mathematically valid
-for negative values of \\\eta\\, in the specific context of this link
-function, the linear predictor \\\eta\\ is typically constrained to be
-non-negative. This restriction preserves a strictly one-to-one mapping
-with \\\theta\\.
+The inverse \\\eta^2\\ is defined for a negative \\\eta\\ as well, but
+there it is not one-to-one, since \\\eta\\ and \\-\eta\\ give the same
+\\\theta\\. The linear predictor is therefore meant to stay positive;
+[`eta_bounds()`](https://statmodels7.github.io/linkfunctions7/reference/eta_bounds.md)
+returns this range.
 
-The strict mathematical domain for \\\theta\\ is `c(0, Inf)`.
+The domain of \\\theta\\ is \\(0, \infty)\\.
 
 ## See also
 

@@ -11,7 +11,7 @@ that only linkfun() or linkinv() is available."><meta property="og:image" conten
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,7 +61,7 @@ that only <code><a href="linkfun.html">linkfun()</a></code> or <code><a href="li
 
 
 <dt id="arg-inverse">inverse<a class="anchor" aria-label="anchor" href="#arg-inverse"></a></dt>
-<dd><p>Logical; <code>TRUE</code> to ask about the inverse-link generics.</p></dd>
+<dd><p>Logical; <code>TRUE</code> for the inverse-link generics.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -70,16 +70,16 @@ that only <code><a href="linkfun.html">linkfun()</a></code> or <code><a href="li
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Detection uses the documented S7 property that a method records the class it
-was registered on in its <code>signature</code> attribute: a method inherited from
+    <p>Detection uses the documented S7 property that a method records, in its
+<code>signature</code> attribute, the class on which it was registered: a method inherited from
 the base <code><a href="link.html">link()</a></code> class is a fallback, anything else is the link's
 own. Comparing method objects with <code><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical()</a></code> does not work for this,
 because S7 wraps them.</p>
-<p>The recorded class is compared by name and package, never with
-<code><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical()</a></code>: <code><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical()</a></code> on S7 class objects tests
-object identity and returns <code>FALSE</code> for a class re-created from the
-same definition, as happens when the package's code is re-evaluated under
-coverage instrumentation; identity is kept only as a fast path.</p>
+<p>The recorded class is compared by name and package. <code><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical()</a></code> on S7
+class objects tests object identity and returns <code>FALSE</code> for a class
+re-created from the same definition, as happens when the package's code is
+re-evaluated under coverage instrumentation, so identity serves only as a
+fast path.</p>
 <p>The search stops at the first missing order, so the answer always means
 that every order up to it is analytic.</p>
     </div>

@@ -4,10 +4,9 @@ Carries the cauchit transformation \\\eta = \tan(\pi(\theta - 1/2))\\ on
 \\(0, 1)\\, the Cauchy quantile function, with inverse \\\theta = 1/2 +
 \arctan(\eta)/\pi\\.
 
-Its tails are far heavier than the logit's or the probit's, so an
-extreme linear predictor moves the probability much less. That makes it
-the choice when a few observations would otherwise drive the fit to a
-boundary.
+Its tails are heavier than those of the logit and the probit, so an
+extreme linear predictor moves the probability less, and a few
+observations are less able to drive the fit to a boundary.
 
 ## Usage
 
@@ -28,8 +27,8 @@ CauchitLink(
 
 - link_bounds:
 
-  A length-two numeric vector, the open interval the parameter lives in.
-  Set by the constructor; see Value for this link's.
+  A length-two numeric vector, the open interval in which the parameter
+  lies. Set by the constructor; see Value for this link's.
 
 - link_params:
 

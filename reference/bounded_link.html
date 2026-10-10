@@ -13,7 +13,7 @@ when only the upper is, and the identity when neither is given."><meta property=
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,24 +69,23 @@ when only the upper is, and the identity when neither is given.</p>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An S7 object of class <code>link</code> containing the transformation functions
-and their exact analytical derivatives up to the fourth order. Which class
-exactly depends on the endpoints given: <code><a href="DoublyBoundedLink.html">DoublyBoundedLink()</a></code>,
-<code><a href="LowerBoundedLink.html">LowerBoundedLink()</a></code>, <code><a href="UpperBoundedLink.html">UpperBoundedLink()</a></code>, or an
-<code><a href="IdentityLink.html">IdentityLink()</a></code> when neither endpoint is supplied.</p>
+    <p>An S7 object inheriting from <code><a href="link.html">link()</a></code>, whose methods compute the
+link, its inverse and their derivatives to the fifth order. Its class
+depends on the endpoints given: <code><a href="DoublyBoundedLink.html">DoublyBoundedLink()</a></code>,
+<code><a href="LowerBoundedLink.html">LowerBoundedLink()</a></code>, <code><a href="UpperBoundedLink.html">UpperBoundedLink()</a></code>, or <code><a href="IdentityLink.html">IdentityLink()</a></code> when
+neither endpoint is supplied.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p><strong>Doubly Bounded (<code>lwr</code> and <code>upr</code> provided):</strong>
-Transforms \(\theta\) by normalizing it to <code>c(0, 1)</code> via
-\(p = \frac{\theta - \text{lwr}}{\text{upr} - \text{lwr}}\), and then applying the logit function.</p>
-<p><strong>Lower Bounded (<code>lwr</code> provided, <code>upr = NULL</code>):</strong>
-Defined as \(\eta = \log(\theta - \text{lwr})\), with inverse \(\theta = \exp(\eta) + \text{lwr}\).</p>
-<p><strong>Upper Bounded (<code>lwr = NULL</code>, <code>upr</code> provided):</strong>
-Defined as \(\eta = \log(\text{upr} - \theta)\), with inverse \(\theta = \text{upr} - \exp(\eta)\).</p>
-<p><strong>Unbounded (<code>lwr = NULL</code>, <code>upr = NULL</code>):</strong>
-Returns the standard <code><a href="identity_link.html">identity_link()</a></code>.</p>
-    </div>
+    <p>The link depends on which endpoints are given:</p><ul><li><p><code>lwr</code> and <code>upr</code>: \(\theta\) is mapped to
+\(p = (\theta - \text{lwr})/(\text{upr} - \text{lwr})\) in \((0, 1)\),
+and then through the logit;</p></li>
+<li><p><code>lwr</code> only: \(\eta = \log(\theta - \text{lwr})\), with inverse
+\(\theta = \exp(\eta) + \text{lwr}\);</p></li>
+<li><p><code>upr</code> only: \(\eta = \log(\text{upr} - \theta)\), with inverse
+\(\theta = \text{upr} - \exp(\eta)\);</p></li>
+<li><p>neither: the result is <code><a href="identity_link.html">identity_link()</a></code>.</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="link.html">link()</a></code>, <code><a href="logit_link.html">logit_link()</a></code>, <code><a href="log_link.html">log_link()</a></code></p></div>

@@ -9,7 +9,7 @@ unconstrained."><meta property="og:image" content="https://statmodels7.github.io
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,16 +51,17 @@ unconstrained.</p>
 
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An S7 object of class <code>IdentityLink</code> (inheriting from <code>link</code>) containing the transformation functions
-and their exact analytical derivatives up to the fourth order.</p>
+    <p>An S7 object of class <code>IdentityLink</code>, inheriting from <code><a href="link.html">link()</a></code>, whose
+methods compute the link, its inverse and their derivatives to the fifth
+order.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The Identity link is defined simply as \(\eta = \theta\).
-Consequently, the inverse link is also \(\theta = \eta\).</p>
-<p>All first derivatives are constant (equal to 1), and all higher-order derivatives
-up to the fourth order are exactly zero.</p>
-<p>The domain of \(\theta\) is unbounded, meaning the valid domain is <code>c(-Inf, Inf)</code>.</p>
+    <p>The identity link is \(\eta = \theta\), and its inverse is
+\(\theta = \eta\).</p>
+<p>The first derivative is 1 in both directions, and every higher derivative
+is 0.</p>
+<p>The domain of \(\theta\) is the whole real line.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

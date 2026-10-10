@@ -22,8 +22,8 @@ fd_step(x, order, bounds = NULL)
 
 - bounds:
 
-  An optional length-2 numeric vector, the open interval `x` must stay
-  inside.
+  An optional length-2 numeric vector, the open interval inside which
+  `x` must stay.
 
 ## Value
 

@@ -6,8 +6,7 @@ with inverse \\\theta = l + e^{\eta}\\.
 Every derivative is the log link's, the shift being a constant that
 differentiates away, and the exponential is floored at
 [`exp_floor()`](https://statmodels7.github.io/linkfunctions7/reference/exp_floor.md)
-so the parameter never reaches the bound exactly. It is the log link
-shifted to start at `lwr`.
+so the parameter never reaches the bound exactly.
 
 ## Usage
 
@@ -29,8 +28,8 @@ LowerBoundedLink(
 
 - link_bounds:
 
-  A length-two numeric vector, the open interval the parameter lives in.
-  Set by the constructor; see Value for this link's.
+  A length-two numeric vector, the open interval in which the parameter
+  lies. Set by the constructor; see Value for this link's.
 
 - link_params:
 

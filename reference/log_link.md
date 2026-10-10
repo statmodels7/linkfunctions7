@@ -11,28 +11,29 @@ log_link()
 
 ## Value
 
-An S7 object of class `LogLink` (inheriting from `link`) containing the
-transformation functions and their exact analytical derivatives up to
-the fourth order.
+An S7 object of class `LogLink`, inheriting from
+[`link()`](https://statmodels7.github.io/linkfunctions7/reference/link.md),
+whose methods compute the link, its inverse and their derivatives to the
+fifth order.
 
 ## Details
 
-The Log link is defined mathematically as \\\eta = \log(\theta)\\. The
-inverse link is the exponential function \\\theta = \exp(\eta)\\.
+The log link is \\\eta = \log(\theta)\\, and its inverse is the
+exponential function \\\theta = \exp(\eta)\\.
 
-The inverse function of this link is its own derivative. Therefore, the
-parameter \\\theta\\ and all its derivatives with respect to \\\eta\\
-are equal to \\\exp(\eta)\\.
+The exponential is its own derivative, so every derivative of the
+inverse link with respect to \\\eta\\ equals \\\exp(\eta)\\.
 
-The valid mathematical domain of \\\theta\\ is `c(0, Inf)`.
+The domain of \\\theta\\ is \\(0, \infty)\\.
 
-**Numerical Stability:** The inverse link and its derivatives are
-bounded below by `exp_floor`, which is `.Machine$double.xmin^0.25`,
-about `1.2e-77`. This prevents underflow to exactly zero for large
-negative \\\eta\\, which would produce `Inf` when the forward
-derivatives divide by \\\theta\\; the fourth of them divides by
-\\\theta^4\\, and that is what sets the value. The floor is low enough
-that \\\theta\\ is exact down to \\\eta \approx -177\\.
+The inverse link and its derivatives are bounded below by
+[`exp_floor()`](https://statmodels7.github.io/linkfunctions7/reference/exp_floor.md),
+\\(24/x\_{\max})^{1/4} \approx 1.9 \times 10^{-77}\\, where
+\\x\_{\max}\\ is the largest finite double. The floor prevents an
+underflow to exactly zero for a large negative \\\eta\\, which would
+make the forward derivatives infinite; its value is set by the fourth of
+them, which divides by \\\theta^4\\. The floor is low enough that
+\\\theta\\ is exact down to \\\eta \approx -176.7\\.
 
 ## See also
 

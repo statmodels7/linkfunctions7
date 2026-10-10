@@ -11,17 +11,16 @@ without fighting the parameter’s boundary. A variance must stay positive
 and a probability must stay in $`(0, 1)`$; the log and logit links move
 the optimization onto the whole real line and map the result back.
 
-What distinguishes **linkfunctions7** from a couple of
-[`log()`](https://rdrr.io/r/base/Log.html) and
-[`plogis()`](https://rdrr.io/r/stats/Logistic.html) calls is that every
-link carries its **exact analytical derivatives up to fifth order**, in
-both directions, together with a diagnostic that verifies them. Those
-derivatives are what a modeling package needs: a Newton or
+Unlike a pair of [`log()`](https://rdrr.io/r/base/Log.html) and
+[`plogis()`](https://rdrr.io/r/stats/Logistic.html) calls, every link in
+**linkfunctions7** carries its **exact analytical derivatives up to
+fifth order**, in both directions, together with a diagnostic that
+verifies them. A modeling package needs these derivatives: a Newton or
 Fisher-scoring step uses the derivative of the inverse link, and a
-higher-order correction uses the orders above it. The fifth is reached
-by a model whose predictor comes out of a recursion, where each order of
-differentiating through the recursion draws in one further order of the
-link.
+higher-order correction uses the orders above it. The fifth order is
+needed by models whose predictor is defined by a recursion, since each
+order of differentiation through the recursion involves one more order
+of the link.
 
 ## A link is an object
 
@@ -65,8 +64,9 @@ dlinkinv(lk, eta)        # (g^{-1})'(eta)
 #> [1] 0.5 1.0 2.0
 ```
 
-They are exact, not finite differences. For the log link
-$`g(\theta) = \log\theta`$ so $`g'(\theta) = 1/\theta`$, and indeed:
+These derivatives are closed-form expressions, not finite differences.
+For the log link, $`g(\theta) = \log\theta`$ and
+$`g'(\theta) = 1/\theta`$:
 
 ``` r
 
@@ -97,17 +97,18 @@ sapply(0:5, function(k) linkinvderiv(lk, eta, order = k))
 Order zero is the function itself; the columns are the successive
 derivatives of the inverse logit at those three points.
 
-One limit at the top order is worth stating. The exponential links floor
-$`\theta = e^{\eta}`$ at the smallest value whose fourth forward
-derivative $`-6/\theta^4`$ is still representable, and the fifth,
-$`24/\theta^5`$, is not: the forward fifth derivative of a log, lower-
-or upper-bounded link is `Inf` below about $`\eta = -145`$, where the
-fourth remains finite to $`\eta = -200`$. Raising the floor to
-accommodate it would clamp $`\theta`$ over a range where
+The fifth forward derivative of the exponential links has a limited
+range. These links floor $`\theta = e^{\eta}`$ at a value chosen so that
+the fourth forward derivative $`-6/\theta^4`$ stays representable with a
+factor of four to spare, and at that value the fifth, $`24/\theta^5`$,
+is not. The forward fifth derivative of a log, lower- or upper-bounded
+link is therefore `Inf` below about $`\eta = -141`$, while the fourth
+remains finite to $`\eta = -200`$. Raising the floor to cover the fifth
+would clamp $`\theta`$ over a range where
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md)
-is exact today, which is the worse trade. The inverse direction, which
-is the one a chain rule onto the link scale uses, is finite at every
-order.
+is now exact, so the floor is left where it is. In the lower tail the
+inverse direction, which a chain rule onto the link scale uses, is
+finite at every order.
 
 ## Seeing a link
 
@@ -123,10 +124,9 @@ plot(logit_link())
 ![](link-functions_files/figure-html/unnamed-chunk-7-1.png)
 
 The **softplus** link illustrates the differences between positivity
-links. Like the log it keeps $`\theta`$ positive, but instead of the
-log’s global exponential it bends smoothly into a straight line for
-large $`\eta`$, which makes it better behaved when the linear predictor
-wanders:
+links. Like the log it keeps $`\theta`$ positive, but for large $`\eta`$
+it grows linearly instead of exponentially, so a large linear predictor
+does not produce an extremely large parameter:
 
 ``` r
 
@@ -161,7 +161,7 @@ d2linkfun(lk, theta)
 #> [1] -17.739913  -1.142115   0.000000   1.142115  17.739913
 ```
 
-## The links on offer
+## The available links
 
 | Constructor | Domain |
 |:---|:---|
@@ -201,21 +201,21 @@ invisible(check_link(logit_link()))
 #>   [6] Inverse Link Derivatives:    [PASSED]
 ```
 
-The diagnostic runs on any link, and it matters most for a newly written
-one, where a wrong derivative is likeliest.
+The diagnostic accepts any link and is most useful for a newly written
+one.
 
 ## Defining a new link
 
-A new link is a subclass of `link` carrying the two directions and their
-five derivatives each, twelve methods in all. Fewer will do: only
+A new link is a subclass of `link` with methods for the two directions
+and their five derivatives each, twelve methods in all. Only
 [`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md)
 and
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md)
-are compulsory, and the base class supplies every derivative a link does
-not implement by one stencil applied to the highest order it does. The
-example below writes four orders in each direction and leaves the fifth
-to that fallback. It is the **negative log-log** link,
-$`\eta = -\log(-\log\theta)`$ on $`(0, 1)`$.
+are compulsory: the base class supplies every derivative that a link
+does not implement, by one stencil applied to the highest order that the
+link does implement. The example below writes four orders in each
+direction and leaves the fifth to that fallback. It is the **negative
+log-log** link, $`\eta = -\log(-\log\theta)`$ on $`(0, 1)`$.
 
 ``` r
 
@@ -263,25 +263,23 @@ invisible(check_link(neglog))
 #>   [6] Inverse Link Derivatives:    [PASSED to order 4, 1 numerical]
 ```
 
-Both derivative rows report that they passed to order four with one
-order numerical. The fifth came from the fallback, and a fallback is not
-checked, since it would be compared against a numerical differentiation
-of the order below it, which is the same arithmetic twice and would
-agree however wrong the link was.
+Both derivative rows report that they passed to order four, with one
+order numerical. The fifth order comes from the fallback and is not
+checked, since it would be compared with a numerical differentiation of
+the order below it; the two would be the same computation and would
+agree even for a wrong link.
 [`link_fallback_orders()`](https://statmodels7.github.io/linkfunctions7/reference/link_fallback_orders.md)
-answers that question programmatically.
+returns the same information as a list.
 
-A line reporting `[FAILED]` identifies a derivative to revisit, which is
-the mistake
-[`check_link()`](https://statmodels7.github.io/linkfunctions7/reference/check_link.md)
-exists to catch.
+A line reporting `[FAILED]` marks a derivative that disagrees with its
+numerical reference.
 
 ## Further reading
 
-- [`?check_link`](https://statmodels7.github.io/linkfunctions7/reference/check_link.md)
-  — the full diagnostic and what each check means.
-- [`?linkinvderiv`](https://statmodels7.github.io/linkfunctions7/reference/linkinvderiv.md)
-  — reaching any derivative order.
+- [`?check_link`](https://statmodels7.github.io/linkfunctions7/reference/check_link.md):
+  the full diagnostic and the meaning of each check.
+- [`?linkinvderiv`](https://statmodels7.github.io/linkfunctions7/reference/linkinvderiv.md):
+  derivatives of any order.
 - The [distributions7](https://github.com/statmodels7/distributions7)
   package, where these links become the scale on which distributions are
   fitted.

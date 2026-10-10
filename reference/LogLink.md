@@ -1,9 +1,8 @@
 # S7 Class for the Logarithmic Link
 
 Carries the log transformation \\\eta = \log\theta\\ on \\(0, \infty)\\,
-with inverse \\\theta = e^{\eta}\\. It is the canonical link for a
-positive parameter, and the one a scale or a rate is almost always
-fitted on.
+with inverse \\\theta = e^{\eta}\\. It is the standard link for a
+positive parameter such as a scale or a rate.
 
 The inverse is floored at
 [`exp_floor()`](https://statmodels7.github.io/linkfunctions7/reference/exp_floor.md),
@@ -25,8 +24,8 @@ LogLink(link_name = character(0), link_bounds = integer(0), link_params = NULL)
 
 - link_bounds:
 
-  A length-two numeric vector, the open interval the parameter lives in.
-  Set by the constructor; see Value for this link's.
+  A length-two numeric vector, the open interval in which the parameter
+  lies. Set by the constructor; see Value for this link's.
 
 - link_params:
 
