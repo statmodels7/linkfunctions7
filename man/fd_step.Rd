@@ -12,7 +12,7 @@ fd_step(x, order, bounds = NULL)
 \item{order}{The derivative order, 1 to 5.}
 
 \item{bounds}{An optional length-2 numeric vector, the open interval
-\code{x} must stay inside.}
+inside which \code{x} must stay.}
 }
 \value{
 A numeric vector of steps, the same length as \code{x}.

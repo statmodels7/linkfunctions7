@@ -13,8 +13,8 @@ is_base_link_class(cls)
 \code{TRUE} or \code{FALSE}.
 }
 \description{
-Answers whether an S7 class is this package's own \code{\link[=link]{link()}} class,
-which is how a method inherited from the base class is told from one a link
+Returns whether an S7 class is this package's own \code{\link[=link]{link()}} class. It is
+used to tell a method inherited from the base class from one that a link
 registered for itself.
 }
 \details{
@@ -23,10 +23,10 @@ nothing, and the class name and package are compared after. The second
 comparison is the one that makes the answer reliable. \code{identical()} on an
 S7 class is object identity, so it is false for a class re-created from the
 same definition, which happens whenever a package's code is evaluated
-instead of loaded, as it is under coverage instrumentation. A base fallback
-mistaken for an analytic
-method makes every fallback differentiate the order below it, which is the
-nested differencing the design exists to forbid.
+instead of loaded, as it is under coverage instrumentation. If a base
+fallback were mistaken for an analytic method, every fallback would
+differentiate the order below it, which is the nested differencing that the
+fallbacks are written to avoid.
 }
 \seealso{
 \code{\link[=link_fallback_orders]{link_fallback_orders()}}

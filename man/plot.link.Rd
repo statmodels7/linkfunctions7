@@ -9,7 +9,9 @@
 \arguments{
 \item{x}{An object of class \code{link}.}
 
-\item{...}{Additional graphical parameters passed to \code{\link[graphics:plot.default]{graphics::plot()}}.}
+\item{...}{Named graphical parameters passed to \code{\link[graphics:plot.default]{graphics::plot()}} for
+both panels, where they replace the defaults (for example \code{col}, \code{lwd}
+or \code{main}).}
 }
 \value{
 No return value, called for side effects (plotting).
@@ -23,9 +25,9 @@ It generates a panel with two plots:
 }
 }
 \details{
-The function automatically determines sensible plotting ranges based on whether the
-link bounds are finite or infinite. It temporarily modifies the graphical parameters
-(\code{par}) to create a side-by-side layout and restores the original settings upon exit.
+The plotting ranges depend on whether the link bounds are finite. The
+function sets the graphical parameters (\code{par}) for a side-by-side layout
+and restores the original settings on exit.
 }
 \examples{
 plot(logit_link())

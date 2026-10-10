@@ -6,7 +6,7 @@
 #'
 #' @details
 #' It matters here for `print` and `plot`: those are S3 generics owned
-#' by \pkg{base} and \pkg{graphics}, and the `S7::method()` assignments in
+#' by \pkg{base}, and the `S7::method()` assignments in
 #' `methods.R` cannot attach to them until the package is loaded. Without
 #' this hook, printing a link object would fall back to the default S7 display.
 #'

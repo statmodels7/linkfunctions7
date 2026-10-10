@@ -7,8 +7,9 @@
 logit_link()
 }
 \value{
-An S7 object of class \code{LogitLink} (inheriting from \code{link}) containing the transformation functions
-and their exact analytical derivatives up to the fourth order.
+An S7 object of class \code{LogitLink}, inheriting from \code{\link[=link]{link()}}, whose
+methods compute the link, its inverse and their derivatives to the fifth
+order.
 }
 \description{
 The logit link \eqn{\eta = \log(\theta/(1-\theta))} on \eqn{(0, 1)},
@@ -16,16 +17,15 @@ with inverse \eqn{\theta = 1/(1+e^{-\eta})}; the canonical link for a
 probability, whose linear predictor is the log-odds.
 }
 \details{
-The Logit link is defined mathematically as \eqn{\eta = \log(\frac{\theta}{1 - \theta})}.
-The inverse link is the standard logistic function (sigmoid):
-\eqn{\theta = \frac{1}{1 + \exp(-\eta)}}.
+The logit link is \eqn{\eta = \log(\theta/(1 - \theta))}, and its inverse
+is the logistic function \eqn{\theta = 1/(1 + \exp(-\eta))}.
 
-The link is symmetric about \eqn{\theta = 0.5}, where \eqn{\eta = 0}, and
-the linear predictor is the log-odds of the event probability. The domain of
-\eqn{\theta} is \eqn{(0, 1)}.
+The link is symmetric about \eqn{\theta = 1/2}, where \eqn{\eta = 0}, and
+the linear predictor is the log-odds of the event probability. The domain
+of \eqn{\theta} is \eqn{(0, 1)}.
 
-The implementation delegates to \code{stats::qlogis} and
-\code{stats::plogis}, which remain accurate near both boundaries.
+The implementation calls \code{stats::qlogis()} and \code{stats::plogis()}, which
+remain accurate near both boundaries.
 }
 \examples{
 lk <- logit_link()

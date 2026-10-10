@@ -7,8 +7,9 @@
 cauchit_link()
 }
 \value{
-An S7 object of class \code{CauchitLink} (inheriting from \code{link}) containing the transformation functions
-and their exact analytical derivatives up to the fourth order.
+An S7 object of class \code{CauchitLink}, inheriting from \code{\link[=link]{link()}}, whose
+methods compute the link, its inverse and their derivatives to the fifth
+order.
 }
 \description{
 The cauchit link \eqn{\eta = \tan(\pi(\theta - 1/2))} on
@@ -16,18 +17,17 @@ The cauchit link \eqn{\eta = \tan(\pi(\theta - 1/2))} on
 logit or the probit.
 }
 \details{
-The Cauchit link is defined mathematically as \eqn{\eta = \tan(\pi(\theta - 0.5))},
-which corresponds perfectly to \code{qcauchy(theta)}.
-The inverse link is the standard Cauchy CDF \eqn{\theta = \frac{1}{\pi} \arctan(\eta) + 0.5},
-computed via \code{pcauchy(eta)}.
+The cauchit link is \eqn{\eta = \tan(\pi(\theta - 1/2))}, computed as
+\code{qcauchy(theta)}. The inverse link is the standard Cauchy distribution
+function \eqn{\theta = \arctan(\eta)/\pi + 1/2}, computed as
+\code{pcauchy(eta)}.
 
-\strong{Heavy Tails:} Unlike the Logit or Probit links, the Cauchit link has
-exceedingly heavier tails. This makes it particularly robust and useful for modeling
-binary data where the probability approaches 0 or 1 very slowly, or when the dataset
-contains severe outliers that might disproportionately influence the fit of
-light-tailed link functions.
+The Cauchy distribution has heavier tails than the logistic and the normal,
+so the probability approaches 0 and 1 more slowly than under the logit or
+the probit link. The link is therefore less sensitive to observations whose
+linear predictor is extreme.
 
-The strictly valid mathematical domain for \eqn{\theta} is \code{c(0, 1)}.
+The domain of \eqn{\theta} is \eqn{(0, 1)}.
 }
 \examples{
 lk <- cauchit_link()

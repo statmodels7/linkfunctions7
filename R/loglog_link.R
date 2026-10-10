@@ -10,8 +10,8 @@
 #'
 #' @param link_name A character string naming the link, set by the
 #'   constructor and shown by `print()`.
-#' @param link_bounds A length-two numeric vector, the open interval the
-#'   parameter lives in. Set by the constructor; see Value for this link's.
+#' @param link_bounds A length-two numeric vector, the open interval in
+#'   which the parameter lies. Set by the constructor; see Value for this link's.
 #' @param link_params A list of the link's own parameters, empty where it has
 #'   none. Set by the constructor.
 #'
@@ -24,7 +24,7 @@
 #' and the five derivative orders in each direction, [dlinkfun()] through
 #' [d5linkfun()] going out and [dlinkinv()] through [d5linkinv()] coming
 #' back. `linkfun()` and `linkinv()` are the elementary
-#' \eqn{-\log(-\log\theta)} and \eqn{\exp(-\exp(-\eta))}; the eight
+#' \eqn{-\log(-\log\theta)} and \eqn{\exp(-\exp(-\eta))}; the ten
 #' derivatives come from a compiled kernel.
 #'
 #' @aliases linkfun.LogLogLink
@@ -78,15 +78,16 @@ S7::method(d5linkinv, LogLogLink) <- function(x, eta) lk_loglog_inv_cpp(eta, 5L)
 #' with inverse \eqn{\theta = \exp(-e^{-\eta})}; the mirror image of
 #' [cloglog_link()].
 #' @details
-#' The Log-Log link is mathematically defined as \eqn{\eta = -\log(-\log(\theta))}.
-#' Consequently, the inverse link is derived as \eqn{\theta = \exp(-\exp(-\eta))}.
+#' The log-log link is \eqn{\eta = -\log(-\log\theta)}, with inverse
+#' \eqn{\theta = \exp(-\exp(-\eta))}.
 #'
-#' Unlike the logit and the probit the link is asymmetric: the probability
-#' approaches 0 slowly and 1 sharply, the mirror image of
-#' [cloglog_link()]. The domain of \eqn{\theta} is \eqn{(0, 1)}.
+#' Unlike the logit and the probit, the link is asymmetric: \eqn{\theta}
+#' approaches 0 faster than 1, which is the mirror image of [cloglog_link()].
+#' The domain of \eqn{\theta} is \eqn{(0, 1)}.
 #'
-#' @return An S7 object of class `LogLogLink` (inheriting from `link`) containing the transformation functions
-#' and their exact analytical derivatives up to the fourth order.
+#' @return An S7 object of class `LogLogLink`, inheriting from [link()], whose
+#'   methods compute the link, its inverse and their derivatives to the fifth
+#'   order.
 #'
 #' @examples
 #' lk <- loglog_link()

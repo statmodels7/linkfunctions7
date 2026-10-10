@@ -3,7 +3,7 @@
 \docType{data}
 \name{exp_floor}
 \alias{exp_floor}
-\title{The Smallest Parameter Value the Exponential Links Will Report}
+\title{The Floor of the Exponential Links}
 \format{
 A length-one numeric vector.
 }
@@ -20,23 +20,18 @@ exponential (\code{\link[=log_link]{log_link()}}, \code{\link[=cloglog_link]{clo
 lower- and upper-bounded links).
 }
 \details{
-The floor exists so that a parameter reported as \eqn{\theta} can be divided
-into without producing \code{Inf}: the forward derivatives of these links are
-\eqn{1/\theta}, \eqn{-1/\theta^2}, \eqn{2/\theta^3} and \eqn{-6/\theta^4}, and
-the fourth is the binding one. Solving \eqn{6/\theta^4 \le} \code{double.xmax}
-and keeping a factor of four in hand gives
-\code{(24 / .Machine$double.xmax)^0.25}, about \code{1.9e-77}, at which
+The floor exists so that a parameter returned as \eqn{\theta} can be
+divided into without producing \code{Inf}: the forward derivatives of these
+links are \eqn{1/\theta}, \eqn{-1/\theta^2}, \eqn{2/\theta^3} and
+\eqn{-6/\theta^4}, and the fourth is the binding one. Solving
+\eqn{6/\theta^4 \le} \code{double.xmax} and keeping a factor of four in hand
+gives \code{(24 / .Machine$double.xmax)^0.25}, about \code{1.9e-77}, at which
 \eqn{-6/\theta^4} evaluates to \code{-4.5e307}.
 
-The point of choosing it this way is that the floor should be as \emph{low} as
-that constraint allows, not as high as seems safe. It was previously
-\code{.Machine$double.eps}, which is 61 orders of magnitude higher than
-necessary and silently corrupted \eqn{\theta} for every \eqn{\eta < -36}:
-\code{linkinv(log_link(), -40)} returned \code{2.2e-16} instead of
-\code{4.2e-18}, and the round trip came back \code{-36.04} instead of
-\code{-40}. The present value keeps \eqn{\theta} exact down to
-\eqn{\eta \approx -177} while leaving every derivative just as finite as
-before.
+The floor is the lowest value that this constraint allows, and it keeps
+\eqn{\theta} exact down to \eqn{\eta \approx -176.7}. The fifth forward
+derivative, \eqn{24/\theta^5}, does not fit under it and is \code{Inf} for
+\eqn{\eta} below about \eqn{-141}.
 }
 \seealso{
 \code{\link[=exp_floored]{exp_floored()}}

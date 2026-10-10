@@ -7,24 +7,24 @@
 sqrt_link()
 }
 \value{
-An S7 object of class \code{SqrtLink} (inheriting from \code{link}) containing the transformation functions
-and their exact analytical derivatives up to the fourth order.
+An S7 object of class \code{SqrtLink}, inheriting from \code{\link[=link]{link()}}, whose
+methods compute the link, its inverse and their derivatives to the fifth
+order.
 }
 \description{
 The square-root link \eqn{\eta = \sqrt{\theta}} on \eqn{(0, \infty)};
 its image is \eqn{(0, \infty)}.
 }
 \details{
-The Square Root link is mathematically defined as \eqn{\eta = \sqrt{\theta}}.
-Consequently, the inverse link is derived as \eqn{\theta = \eta^2}.
+The square-root link is \eqn{\eta = \sqrt{\theta}}, with inverse
+\eqn{\theta = \eta^2}.
 
-Unlike the Log link, this transformation allows \eqn{\theta} to reach 0 exactly.
-While the inverse function (\eqn{\eta^2}) is mathematically valid for negative
-values of \eqn{\eta}, in the specific context of this link function, the linear
-predictor \eqn{\eta} is typically constrained to be non-negative. This restriction
-preserves a strictly one-to-one mapping with \eqn{\theta}.
+The inverse \eqn{\eta^2} is defined for a negative \eqn{\eta} as well, but
+there it is not one-to-one, since \eqn{\eta} and \eqn{-\eta} give the same
+\eqn{\theta}. The linear predictor is therefore meant to stay positive;
+\code{\link[=eta_bounds]{eta_bounds()}} returns this range.
 
-The strict mathematical domain for \eqn{\theta} is \code{c(0, Inf)}.
+The domain of \eqn{\theta} is \eqn{(0, \infty)}.
 }
 \examples{
 lk <- sqrt_link()

@@ -26,8 +26,8 @@ SqrtLink(
 \item{link_name}{A character string naming the link, set by the
 constructor and shown by \code{print()}.}
 
-\item{link_bounds}{A length-two numeric vector, the open interval the
-parameter lives in. Set by the constructor; see Value for this link's.}
+\item{link_bounds}{A length-two numeric vector, the open interval in
+which the parameter lies. Set by the constructor; see Value for this link's.}
 
 \item{link_params}{A list of the link's own parameters, empty where it has
 none. Set by the constructor.}
@@ -41,10 +41,9 @@ carrying its three properties \code{link_name}, \code{link_bounds} and
 Carries the square-root transformation \eqn{\eta = \sqrt{\theta}} on
 \eqn{(0, \infty)}, with inverse \eqn{\theta = \eta^2}.
 
-Its image is only \eqn{(0, \infty)}, so a negative linear predictor has no
-parameter behind it. That is a property of the link, and \code{\link[=check_link]{check_link()}}
-reports the failing invertibility check as expected for exactly this
-reason.
+Its image is \eqn{(0, \infty)}. On the whole real line the inverse link is
+not one-to-one, since \eqn{\eta} and \eqn{-\eta} give the same
+\eqn{\theta}; \code{\link[=eta_bounds]{eta_bounds()}} returns the range on which it is.
 }
 \section{Methods}{
 
@@ -53,8 +52,8 @@ and the five derivative orders in each direction, \code{\link[=dlinkfun]{dlinkfu
 \code{\link[=d5linkfun]{d5linkfun()}} going out and \code{\link[=dlinkinv]{dlinkinv()}} through \code{\link[=d5linkinv]{d5linkinv()}} coming
 back. The forward derivatives are half-integer falling factorials. The
 inverse map is \eqn{\eta^2}, so its derivatives terminate: the second is
-the constant two and the third and fourth are exactly zero, both built by
-\code{\link[=const_like]{const_like()}} so a missing value still propagates.
+the constant two and the third to fifth are exactly zero, all built by
+\code{\link[=const_like]{const_like()}} so that a missing value still propagates.
 }
 
 \seealso{

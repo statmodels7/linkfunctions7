@@ -8,20 +8,17 @@
 #'
 #' Its derivatives are the logistic polynomials scaled by the width
 #' \eqn{u - l}, so a bounded link costs no more than a logit.
-#' It is the logit of \eqn{p = (\theta - \mathrm{lwr})/W}, the position of
-#' \eqn{\theta} within the interval.
 #'
 #' @details
-#' The interval width \eqn{W = \mathrm{upr} - \mathrm{lwr}} is stored as its own
-#' property rather than recomputed. Every method needs it, and reading two S7
-#' properties and subtracting cost about a third of a call to `dlinkinv()`;
-#' the constructor is the only place it can change.
+#' The interval width \eqn{W = \mathrm{upr} - \mathrm{lwr}} is stored as its
+#' own property, set by the constructor, so that each method reads one
+#' property instead of two.
 #'
 #' @param lwr,upr The interval endpoints.
 #' @param link_name A character string naming the link, set by the
 #'   constructor and shown by `print()`.
-#' @param link_bounds A length-two numeric vector, the open interval the
-#'   parameter lives in. Set by the constructor; see Value for this link's.
+#' @param link_bounds A length-two numeric vector, the open interval in
+#'   which the parameter lies. Set by the constructor; see Value for this link's.
 #' @param link_params A list of the link's own parameters, empty where it has
 #'   none. Set by the constructor.
 #' @param width The interval width, `upr - lwr`, set by the constructor.
@@ -37,10 +34,9 @@
 #' [d5linkfun()] going out and [dlinkinv()] through [d5linkinv()] coming
 #' back. The forward derivatives are the logit's divided by \eqn{W^k} and
 #' the inverse ones the logit's multiplied by \eqn{W}, because \eqn{p} is
-#' \eqn{\theta} rescaled by the width; the inverse set therefore calls the
-#' logit's own compiled kernel rather than transcribing four more
-#' polynomials, and the forward set is the logit's four expressions written
-#' in \eqn{p}.
+#' \eqn{\theta} rescaled by the width. The inverse set therefore calls the
+#' compiled kernel of the logit, and the forward set is the logit's
+#' expressions written in \eqn{p}.
 #'
 #' @aliases linkfun.DoublyBoundedLink
 #' @aliases linkinv.DoublyBoundedLink
@@ -80,12 +76,12 @@ DoublyBoundedLink <- S7::new_class(
 #'
 #' Every derivative is the log link's, the shift being a constant that
 #' differentiates away, and the exponential is floored at [exp_floor()] so the
-#' parameter never reaches the bound exactly. It is the log link shifted to start at `lwr`.
+#' parameter never reaches the bound exactly.
 #'
 #' @param link_name A character string naming the link, set by the
 #'   constructor and shown by `print()`.
-#' @param link_bounds A length-two numeric vector, the open interval the
-#'   parameter lives in. Set by the constructor; see Value for this link's.
+#' @param link_bounds A length-two numeric vector, the open interval in
+#'   which the parameter lies. Set by the constructor; see Value for this link's.
 #' @param link_params A list of the link's own parameters, empty where it has
 #'   none. Set by the constructor.
 #' @param lwr The lower endpoint.
@@ -132,14 +128,15 @@ LowerBoundedLink <- S7::new_class(
 #' Carries the reflected log on \eqn{(-\infty, u)}: \eqn{\eta = \log(u - \theta)},
 #' with inverse \eqn{\theta = u - e^{\eta}}.
 #'
-#' The reflection makes the map decreasing, so the odd-order derivatives change
-#' sign against [LowerBoundedLink]'s while the even ones do not. It is the mirror image of [LowerBoundedLink()], the log of
-#' the distance below `upr`.
+#' It is the mirror image of [LowerBoundedLink()], the log of the distance
+#' below `upr`. The reflection makes the map decreasing, so the odd-order
+#' forward derivatives change sign relative to those of [LowerBoundedLink]
+#' while the even ones do not, and every inverse derivative changes sign.
 #'
 #' @param link_name A character string naming the link, set by the
 #'   constructor and shown by `print()`.
-#' @param link_bounds A length-two numeric vector, the open interval the
-#'   parameter lives in. Set by the constructor; see Value for this link's.
+#' @param link_bounds A length-two numeric vector, the open interval in
+#'   which the parameter lies. Set by the constructor; see Value for this link's.
 #' @param link_params A list of the link's own parameters, empty where it has
 #'   none. Set by the constructor.
 #' @param upr The upper endpoint.
@@ -155,8 +152,8 @@ LowerBoundedLink <- S7::new_class(
 #' back. The reflection makes the map decreasing, so every inverse
 #' derivative is the negative of [exp_floored()] of \eqn{\eta}, and the
 #' forward ones
-#' are the log's read at \eqn{\mathrm{upr} - \theta}, the odd orders
-#' carrying the sign the reflection introduces and the even ones not.
+#' are the log's read at \eqn{\mathrm{upr} - \theta}, with the change of sign
+#' that the reflection introduces at the odd orders.
 #'
 #' @aliases linkfun.UpperBoundedLink
 #' @aliases linkinv.UpperBoundedLink
@@ -286,24 +283,22 @@ S7::method(d5linkinv, UpperBoundedLink) <- function(x, eta) -exp_floored(eta)
 #' @param upr Numeric or `NULL`. The upper bound of the interval.
 #'
 #' @details
-#' **Doubly Bounded (`lwr` and `upr` provided):**
-#' Transforms \eqn{\theta} by normalizing it to `c(0, 1)` via
-#' \eqn{p = \frac{\theta - \text{lwr}}{\text{upr} - \text{lwr}}}, and then applying the logit function.
+#' The link depends on which endpoints are given:
 #'
-#' **Lower Bounded (`lwr` provided, `upr = NULL`):**
-#' Defined as \eqn{\eta = \log(\theta - \text{lwr})}, with inverse \eqn{\theta = \exp(\eta) + \text{lwr}}.
+#' - `lwr` and `upr`: \eqn{\theta} is mapped to
+#'   \eqn{p = (\theta - \text{lwr})/(\text{upr} - \text{lwr})} in \eqn{(0, 1)},
+#'   and then through the logit;
+#' - `lwr` only: \eqn{\eta = \log(\theta - \text{lwr})}, with inverse
+#'   \eqn{\theta = \exp(\eta) + \text{lwr}};
+#' - `upr` only: \eqn{\eta = \log(\text{upr} - \theta)}, with inverse
+#'   \eqn{\theta = \text{upr} - \exp(\eta)};
+#' - neither: the result is [identity_link()].
 #'
-#' **Upper Bounded (`lwr = NULL`, `upr` provided):**
-#' Defined as \eqn{\eta = \log(\text{upr} - \theta)}, with inverse \eqn{\theta = \text{upr} - \exp(\eta)}.
-#'
-#' **Unbounded (`lwr = NULL`, `upr = NULL`):**
-#' Returns the standard [identity_link()].
-#'
-#' @return An S7 object of class `link` containing the transformation functions
-#' and their exact analytical derivatives up to the fourth order. Which class
-#' exactly depends on the endpoints given: [DoublyBoundedLink()],
-#' [LowerBoundedLink()], [UpperBoundedLink()], or an
-#' [IdentityLink()] when neither endpoint is supplied.
+#' @return An S7 object inheriting from [link()], whose methods compute the
+#'   link, its inverse and their derivatives to the fifth order. Its class
+#'   depends on the endpoints given: [DoublyBoundedLink()],
+#'   [LowerBoundedLink()], [UpperBoundedLink()], or [IdentityLink()] when
+#'   neither endpoint is supplied.
 #'
 #' @examples
 #' # a parameter known to lie in (0, 10)

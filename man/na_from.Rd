@@ -18,10 +18,10 @@ na_from(r, v)
 Sets \code{r} to \code{NA} wherever \code{v} is \code{NA}.
 }
 \details{
-Same hazard as \code{\link[=const_like]{const_like()}}, one step further along: an expression
-whose exponent happens to vanish stops depending on its argument, and loses the
-argument's missingness along with it. The power link is the affected case,
-\code{theta^(lambda - 2)} being exactly \code{1} for a missing \code{theta}
+This handles the same problem as \code{\link[=const_like]{const_like()}} for a computed result: an
+expression whose exponent vanishes no longer depends on its argument, and
+loses the argument's missingness with it. The power link is the case in
+point, since \code{theta^(lambda - 2)} is exactly \code{1} for a missing \code{theta}
 once \code{lambda} is 2.
 }
 \seealso{

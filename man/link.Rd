@@ -22,13 +22,13 @@ constructors (\code{\link[=logit_link]{logit_link()}}, \code{\link[=power_link]{
 \description{
 The base S7 class for link functions. It carries the name, the domain and
 any link parameters. The transformations themselves are methods that each
-subclass registers on the ten generics: the forward map, the inverse, and
-their analytical derivatives to fourth order in both directions.
+subclass registers on the generics for the forward map, the inverse, and
+their analytical derivatives to fifth order in both directions.
 }
 \details{
 Objects of class \code{link} are instantiated using the S7 object system.
 
-The object assumes the following mathematical notation:
+The documentation uses the following notation:
 \itemize{
 \item \eqn{\theta}: The response parameter (e.g., probability, mean, dispersion).
 \item \eqn{\eta}: The linear predictor (unconstrained scale).

@@ -12,11 +12,11 @@ bounded_link(lwr = NULL, upr = NULL)
 \item{upr}{Numeric or \code{NULL}. The upper bound of the interval.}
 }
 \value{
-An S7 object of class \code{link} containing the transformation functions
-and their exact analytical derivatives up to the fourth order. Which class
-exactly depends on the endpoints given: \code{\link[=DoublyBoundedLink]{DoublyBoundedLink()}},
-\code{\link[=LowerBoundedLink]{LowerBoundedLink()}}, \code{\link[=UpperBoundedLink]{UpperBoundedLink()}}, or an
-\code{\link[=IdentityLink]{IdentityLink()}} when neither endpoint is supplied.
+An S7 object inheriting from \code{\link[=link]{link()}}, whose methods compute the
+link, its inverse and their derivatives to the fifth order. Its class
+depends on the endpoints given: \code{\link[=DoublyBoundedLink]{DoublyBoundedLink()}},
+\code{\link[=LowerBoundedLink]{LowerBoundedLink()}}, \code{\link[=UpperBoundedLink]{UpperBoundedLink()}}, or \code{\link[=IdentityLink]{IdentityLink()}} when
+neither endpoint is supplied.
 }
 \description{
 The link for a parameter confined to \eqn{(lwr, upr)}: a scaled logit when
@@ -25,18 +25,17 @@ when only the lower is, its mirror image \eqn{\eta = \log(upr - \theta)}
 when only the upper is, and the identity when neither is given.
 }
 \details{
-\strong{Doubly Bounded (\code{lwr} and \code{upr} provided):}
-Transforms \eqn{\theta} by normalizing it to \code{c(0, 1)} via
-\eqn{p = \frac{\theta - \text{lwr}}{\text{upr} - \text{lwr}}}, and then applying the logit function.
-
-\strong{Lower Bounded (\code{lwr} provided, \code{upr = NULL}):}
-Defined as \eqn{\eta = \log(\theta - \text{lwr})}, with inverse \eqn{\theta = \exp(\eta) + \text{lwr}}.
-
-\strong{Upper Bounded (\code{lwr = NULL}, \code{upr} provided):}
-Defined as \eqn{\eta = \log(\text{upr} - \theta)}, with inverse \eqn{\theta = \text{upr} - \exp(\eta)}.
-
-\strong{Unbounded (\code{lwr = NULL}, \code{upr = NULL}):}
-Returns the standard \code{\link[=identity_link]{identity_link()}}.
+The link depends on which endpoints are given:
+\itemize{
+\item \code{lwr} and \code{upr}: \eqn{\theta} is mapped to
+\eqn{p = (\theta - \text{lwr})/(\text{upr} - \text{lwr})} in \eqn{(0, 1)},
+and then through the logit;
+\item \code{lwr} only: \eqn{\eta = \log(\theta - \text{lwr})}, with inverse
+\eqn{\theta = \exp(\eta) + \text{lwr}};
+\item \code{upr} only: \eqn{\eta = \log(\text{upr} - \theta)}, with inverse
+\eqn{\theta = \text{upr} - \exp(\eta)};
+\item neither: the result is \code{\link[=identity_link]{identity_link()}}.
+}
 }
 \examples{
 # a parameter known to lie in (0, 10)

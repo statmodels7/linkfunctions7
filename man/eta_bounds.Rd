@@ -14,33 +14,33 @@ A numeric vector of length two, sorted, with \code{-Inf} or \code{Inf} in
 either position where that end is unbounded.
 }
 \description{
-The image of the link's parameter bounds under \code{\link[=linkfun]{linkfun()}}, which is the set
-of predictors the inverse link is defined on. Where a link maps onto the
-whole real line the answer is \code{c(-Inf, Inf)}; where it does not, the two
-finite ends are the boundary of what a caller may hand to \code{\link[=linkinv]{linkinv()}}.
+The image of the link's parameter bounds under \code{\link[=linkfun]{linkfun()}}, which is the
+set of predictors on which the inverse link is defined. Where a link maps
+onto the whole real line the result is \code{c(-Inf, Inf)}; otherwise its finite
+end or ends bound the values that a caller may pass to \code{\link[=linkinv]{linkinv()}}.
 }
 \details{
 A link need not map onto the whole real line: the square root reaches only
 the positive half, and so do \code{\link[=inverse_link]{inverse_link()}}, \code{\link[=inverse_sq_link]{inverse_sq_link()}} and
-\code{\link[=power_link]{power_link()}} at a positive exponent. The bounds are returned sorted, since
+\code{\link[=power_link]{power_link()}} at any non-zero exponent. The bounds are returned sorted, since
 a decreasing link reverses them, and are infinite in the directions where
 they cannot be established.
 }
-\section{Why a caller outside this package asks}{
-The internal use is to keep a finite-difference grid inside the set the
-inverse link is defined on, a stencil straying outside returning \code{NaN} and
-so making a numerical derivative missing rather than inaccurate. The use
-from outside is a different question with the same answer:
-\link[=link]{link_bounds()} says what a link maps \strong{onto}, and a consumer that
-carries an unconstrained vector needs to know what it maps \strong{from}.
+\section{Use outside the package}{
+Inside the package the function keeps a finite-difference grid within the
+set on which the inverse link is defined, since a stencil point outside it
+returns \code{NaN} and makes a numerical derivative missing. Outside the package
+it serves a related purpose: \link[=link]{link_bounds()} gives the set that a link
+maps \strong{onto}, and a consumer that carries an unconstrained vector needs the
+set that it maps \strong{from}.
 
-Both ends matter, and only together. A family that reads a free vector in
-\eqn{\mathbb{R}^d} and applies an inverse link to each coordinate needs
-the map to be defined and injective there, and a link with finite eta bounds
-is neither: \code{\link[=linkinv]{linkinv()}} of a square root link is even, so \code{-2} and \code{2} both
-give 4 and the round trip returns the absolute value. Asking
-\code{all(is.infinite(eta_bounds(link)))} is how such a family rejects one at
-construction, where the message can name the link.
+A family that reads a free vector in \eqn{\mathbb{R}^d} and applies an
+inverse link to each coordinate needs the map to be defined and injective
+on the whole real line, which fails for a link with finite eta bounds:
+\code{\link[=linkinv]{linkinv()}} of a square root link is even, so \code{-2} and \code{2} both give 4 and
+the round trip returns the absolute value. Such a family can reject the
+link at construction by testing \code{all(is.infinite(eta_bounds(link)))}, and
+its error message can then name the link.
 }
 
 \examples{

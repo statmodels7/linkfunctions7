@@ -24,7 +24,7 @@ A link is a strictly monotone differentiable bijection
 \code{x@link_bounds} onto the whole line, so that an unconstrained
 optimizer may work in \eqn{\eta} while \eqn{\theta = g^{-1}(\eta)} stays
 admissible at every point. \code{\link[=linkinv]{linkinv()}} evaluates that inverse
-and is the only other method a link has to supply; the eight derivative
+and is the only other method that a link must supply; the derivative
 generics have numerical fallbacks derived from the pair.
 }
 \examples{

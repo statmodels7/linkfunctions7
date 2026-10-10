@@ -7,12 +7,13 @@
 softplus_link(a = 1)
 }
 \arguments{
-\item{a}{A numeric value specifying the scaling parameter (smoothness/steepness).
-Must be strictly positive. Defaults to 1.}
+\item{a}{The scale parameter, which sets the steepness: a single number
+strictly greater than 0. Defaults to 1.}
 }
 \value{
-An S7 object of class \code{SoftplusLink} (inheriting from \code{link}) containing the transformation functions,
-their exact analytical derivatives up to the fourth order, and the parameter \code{a}.
+An S7 object of class \code{SoftplusLink}, inheriting from \code{\link[=link]{link()}},
+whose methods compute the link, its inverse and their derivatives to the
+fifth order; its \code{link_params} holds \code{a}.
 }
 \description{
 The softplus link with scale \eqn{a}: the inverse is
@@ -20,29 +21,25 @@ The softplus link with scale \eqn{a}: the inverse is
 \eqn{\max(0, \eta)} that sharpens as \eqn{a} grows.
 }
 \details{
-The Softplus link describes the relationship where the response parameter \eqn{\theta}
-is the Softplus of the linear predictor \eqn{\eta}.
-
-Mathematically:
+The softplus link expresses the parameter \eqn{\theta} as the softplus of
+the linear predictor \eqn{\eta}:
 \itemize{
-\item Inverse Link (Softplus): \eqn{\theta = \frac{1}{a} \log(1 + \exp(a \eta))}
-\item Link Function: \eqn{\eta = \frac{1}{a} \log(\exp(a \theta) - 1)}
+\item inverse link: \eqn{\theta = \frac{1}{a} \log(1 + \exp(a \eta))};
+\item link: \eqn{\eta = \frac{1}{a} \log(\exp(a \theta) - 1)}.
 }
 
-\strong{Behavior:}
-For large negative \eqn{\eta}, \eqn{\theta \approx 0}.
-For large positive \eqn{\eta}, \eqn{\theta \approx \eta}, growing linearly
-where a log link would grow as \eqn{\exp(\eta)}.
+For a large negative \eqn{\eta}, \eqn{\theta \approx 0}. For a large
+positive \eqn{\eta}, \eqn{\theta \approx \eta}, which grows linearly where
+the inverse of a log link would grow as \eqn{\exp(\eta)}.
 
-\strong{Numerical Stability:}
 Both directions are written so that no intermediate quantity grows with
-\eqn{a\theta} or \eqn{a\eta}. The inverse link uses the log-sum-exp form, and
-the forward link and its derivatives are expressed in
-\eqn{u = 1 - e^{-a\theta}} rather than in \eqn{e^{a\theta} - 1}, which
-overflows once \eqn{a\theta} passes about 709, and because the derivatives
-divide by its fourth power, well before that at the higher orders.
+\eqn{a\theta} or \eqn{a\eta}. The inverse link uses the log-sum-exp form,
+and the forward link and its derivatives are expressed in
+\eqn{u = 1 - e^{-a\theta}} instead of \eqn{e^{a\theta} - 1}. The latter
+overflows once \eqn{a\theta} exceeds about 709, and earlier at the higher
+orders, because the derivatives divide by a power of it.
 
-The mathematical domain of \eqn{\theta} is \code{c(0, Inf)}.
+The domain of \eqn{\theta} is \eqn{(0, \infty)}.
 }
 \examples{
 lk <- softplus_link(a = 2)

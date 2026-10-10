@@ -11,8 +11,8 @@
 #'
 #' @param link_name A character string naming the link, set by the
 #'   constructor and shown by `print()`.
-#' @param link_bounds A length-two numeric vector, the open interval the
-#'   parameter lives in. Set by the constructor; see Value for this link's.
+#' @param link_bounds A length-two numeric vector, the open interval in
+#'   which the parameter lies. Set by the constructor; see Value for this link's.
 #' @param link_params A list of the link's own parameters, empty where it has
 #'   none. Set by the constructor.
 #'
@@ -97,19 +97,20 @@ S7::method(d5linkinv, ClogLogLink) <- function(x, eta) lk_cloglog_inv_cpp(eta, 5
 #' \eqn{(0, 1)}, with inverse \eqn{\theta = 1 - \exp(-e^\eta)};
 #' asymmetric about \eqn{\theta = 1/2}.
 #' @details
-#' The ClogLog link is defined mathematically as \eqn{\eta = \log(-\log(1 - \theta))}.
-#' Consequently, the inverse link is derived as \eqn{\theta = 1 - \exp(-\exp(\eta))}.
+#' The complementary log-log link is \eqn{\eta = \log(-\log(1 - \theta))},
+#' with inverse \eqn{\theta = 1 - \exp(-\exp(\eta))}.
 #'
-#' Unlike the symmetric Logit and Probit links, the ClogLog link lacks symmetry. 
-#' It is fundamentally related to the Extreme Value (Gumbel) distribution and is 
-#' frequently utilized in discrete-time survival analysis (proportional hazards models) 
-#' as well as for modeling rare events.
+#' Unlike the logit and the probit, the link is asymmetric: \eqn{\theta}
+#' approaches 1 faster than 0. The inverse link is the distribution function
+#' of the Gumbel distribution for minima. The link is used in discrete-time
+#' survival analysis, where it gives a proportional-hazards model, and for
+#' rare events.
 #'
-#' The strictly valid mathematical domain for \eqn{\theta} is `c(0, 1)`.
+#' The domain of \eqn{\theta} is \eqn{(0, 1)}.
 #'
-#' @return An S7 object of class `ClogLogLink` (inheriting from `link`)
-#' containing the transformation functions and their exact analytical derivatives
-#' up to the fourth order.
+#' @return An S7 object of class `ClogLogLink`, inheriting from [link()], whose
+#'   methods compute the link, its inverse and their derivatives to the fifth
+#'   order.
 #'
 #' @examples
 #' lk <- cloglog_link()
@@ -120,7 +121,7 @@ S7::method(d5linkinv, ClogLogLink) <- function(x, eta) lk_cloglog_inv_cpp(eta, 5
 #' eta
 #' linkinv(lk, eta)
 #'
-#' # asymmetric: it reaches 1 slowly and 0 sharply, the mirror of loglog
+#' # asymmetric: it reaches 1 sharply and 0 slowly, the mirror of loglog
 #' linkinv(cloglog_link(), c(-2, 2))
 #' linkinv(loglog_link(),  c(-2, 2))
 #'

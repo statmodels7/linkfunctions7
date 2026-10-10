@@ -20,12 +20,12 @@ Returns \code{value} repeated to the length of \code{v}, but missing wherever
 \code{v} is missing.
 }
 \details{
-A derivative that reduces to a constant must still report that it does not
-know the answer for an input it was not given. R makes this easy to get wrong:
-\code{NA^0} is \code{1}, so \code{theta^(lambda - 2)} silently turns a missing
-parameter into a number as soon as \code{lambda} is 2. Every derivative method
-that returns a constant (the identity link's, the square root link's third and
-fourth inverse derivatives) goes through this helper instead of \code{rep()}.
+A derivative that reduces to a constant must still return \code{NA} where its
+input is \code{NA}. This is easy to get wrong in R: \code{NA^0} is \code{1}, so
+\code{theta^(lambda - 2)} silently turns a missing parameter into a number as
+soon as \code{lambda} is 2. Every derivative method that returns a constant (the
+identity link's, and the square root link's second to fifth inverse
+derivatives) goes through this helper instead of \code{rep()}.
 }
 \seealso{
 \code{\link[=na_from]{na_from()}}, the same idea for a computed result.

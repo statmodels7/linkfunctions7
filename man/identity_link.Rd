@@ -7,21 +7,22 @@
 identity_link()
 }
 \value{
-An S7 object of class \code{IdentityLink} (inheriting from \code{link}) containing the transformation functions
-and their exact analytical derivatives up to the fourth order.
+An S7 object of class \code{IdentityLink}, inheriting from \code{\link[=link]{link()}}, whose
+methods compute the link, its inverse and their derivatives to the fifth
+order.
 }
 \description{
 The identity link \eqn{\eta = \theta}, for a parameter that is already
 unconstrained.
 }
 \details{
-The Identity link is defined simply as \eqn{\eta = \theta}.
-Consequently, the inverse link is also \eqn{\theta = \eta}.
+The identity link is \eqn{\eta = \theta}, and its inverse is
+\eqn{\theta = \eta}.
 
-All first derivatives are constant (equal to 1), and all higher-order derivatives
-up to the fourth order are exactly zero.
+The first derivative is 1 in both directions, and every higher derivative
+is 0.
 
-The domain of \eqn{\theta} is unbounded, meaning the valid domain is \code{c(-Inf, Inf)}.
+The domain of \eqn{\theta} is the whole real line.
 }
 \examples{
 lk <- identity_link()

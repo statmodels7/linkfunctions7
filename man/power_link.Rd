@@ -10,33 +10,35 @@ power_link(lambda = 1)
 \item{lambda}{A numeric value defining the power of the transformation. Defaults to 1.}
 }
 \value{
-An S7 object of class \code{PowerLink} (inheriting from \code{link}),
-or an object of class \code{LogLink} if \code{lambda = 0}.
+An S7 object of class \code{PowerLink}, inheriting from \code{\link[=link]{link()}}, or of
+class \code{LogLink} when \code{lambda = 0}.
 }
 \description{
 The power link \eqn{\eta = \theta^\lambda} on \eqn{(0, \infty)}; at
-\eqn{\lambda = 0} it returns the log link, its limit by continuity.
+\eqn{\lambda = 0} it returns the log link, the limit of the Box-Cox
+transformation.
 }
 \details{
-The Power link is defined mathematically as \eqn{\eta = \theta^\lambda}.
-Consequently, the inverse link is derived as \eqn{\theta = \eta^{1/\lambda}}.
+The power link is \eqn{\eta = \theta^\lambda}, with inverse
+\eqn{\theta = \eta^{1/\lambda}}.
 
-\strong{Special Case (Box-Cox continuity):}
-If \code{lambda = 0}, the function mathematically approaches \eqn{\log(\theta)}.
-In this scenario, the function automatically instantiates and returns a \code{\link[=log_link]{log_link()}}
-object, modifying its internal state to reflect the \code{lambda = 0} parameter.
+As \eqn{\lambda \to 0} the Box-Cox transformation
+\eqn{(\theta^\lambda - 1)/\lambda} tends to \eqn{\log(\theta)}, so for
+\code{lambda = 0} the function returns a \code{\link[=log_link]{log_link()}} object whose
+\code{link_params} record \code{lambda = 0}.
 
-Common special cases include:
+Common special cases are
 \itemize{
-\item \code{lambda = 1}: Identity link.
-\item \code{lambda = 0.5}: Square-root link.
-\item \code{lambda = -1}: Inverse link.
-\item \code{lambda = 0}: Log link.
+\item \code{lambda = 1}: identity link;
+\item \code{lambda = 0.5}: square-root link;
+\item \code{lambda = -1}: inverse link;
+\item \code{lambda = 0}: log link.
 }
 
-The mathematical domain of \eqn{\theta} is \code{c(0, Inf)}. Depending on the value
-of \code{lambda}, extreme care must be taken during numerical optimization to guarantee
-that \eqn{\eta} remains strictly positive to avoid \code{NaN}s from fractional exponents.
+The domain of \eqn{\theta} is \eqn{(0, \infty)}. For every non-zero
+\code{lambda} the image of the link is also \eqn{(0, \infty)}, so the linear
+predictor must stay positive during optimization; \code{\link[=eta_bounds]{eta_bounds()}} returns
+this range.
 }
 \examples{
 lk <- power_link(2)
@@ -52,7 +54,7 @@ linkfun(power_link(1),    5)   # identity
 linkfun(power_link(0.5),  4)   # square root
 linkfun(power_link(-1),   4)   # inverse
 
-# lambda = 0 is the log link by continuity, and is returned as one
+# lambda = 0 returns the log link, the limit of the Box-Cox transformation
 power_link(0)
 linkfun(power_link(0), exp(1))
 

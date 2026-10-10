@@ -23,7 +23,7 @@ derivative of \eqn{g^{-1}} evaluated there.
 A numeric vector of the same length as \code{eta}.
 }
 \description{
-A convenience router over \code{\link[=linkinv]{linkinv()}} and the four
+A convenience router over \code{\link[=linkinv]{linkinv()}} and the five
 \code{d*linkinv} generics.
 
 Routes to the correct inverse derivative generic based on order.

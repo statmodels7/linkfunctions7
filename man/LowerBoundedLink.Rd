@@ -27,8 +27,8 @@ LowerBoundedLink(
 \item{link_name}{A character string naming the link, set by the
 constructor and shown by \code{print()}.}
 
-\item{link_bounds}{A length-two numeric vector, the open interval the
-parameter lives in. Set by the constructor; see Value for this link's.}
+\item{link_bounds}{A length-two numeric vector, the open interval in
+which the parameter lies. Set by the constructor; see Value for this link's.}
 
 \item{link_params}{A list of the link's own parameters, empty where it has
 none. Set by the constructor.}
@@ -46,7 +46,7 @@ with inverse \eqn{\theta = l + e^{\eta}}.
 
 Every derivative is the log link's, the shift being a constant that
 differentiates away, and the exponential is floored at \code{\link[=exp_floor]{exp_floor()}} so the
-parameter never reaches the bound exactly. It is the log link shifted to start at \code{lwr}.
+parameter never reaches the bound exactly.
 }
 \section{Methods}{
 

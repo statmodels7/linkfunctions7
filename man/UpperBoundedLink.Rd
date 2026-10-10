@@ -27,8 +27,8 @@ UpperBoundedLink(
 \item{link_name}{A character string naming the link, set by the
 constructor and shown by \code{print()}.}
 
-\item{link_bounds}{A length-two numeric vector, the open interval the
-parameter lives in. Set by the constructor; see Value for this link's.}
+\item{link_bounds}{A length-two numeric vector, the open interval in
+which the parameter lies. Set by the constructor; see Value for this link's.}
 
 \item{link_params}{A list of the link's own parameters, empty where it has
 none. Set by the constructor.}
@@ -44,9 +44,10 @@ carrying its three properties \code{link_name}, \code{link_bounds} and
 Carries the reflected log on \eqn{(-\infty, u)}: \eqn{\eta = \log(u - \theta)},
 with inverse \eqn{\theta = u - e^{\eta}}.
 
-The reflection makes the map decreasing, so the odd-order derivatives change
-sign against \link{LowerBoundedLink}'s while the even ones do not. It is the mirror image of \code{\link[=LowerBoundedLink]{LowerBoundedLink()}}, the log of
-the distance below \code{upr}.
+It is the mirror image of \code{\link[=LowerBoundedLink]{LowerBoundedLink()}}, the log of the distance
+below \code{upr}. The reflection makes the map decreasing, so the odd-order
+forward derivatives change sign relative to those of \link{LowerBoundedLink}
+while the even ones do not, and every inverse derivative changes sign.
 }
 \section{Methods}{
 
@@ -56,8 +57,8 @@ and the five derivative orders in each direction, \code{\link[=dlinkfun]{dlinkfu
 back. The reflection makes the map decreasing, so every inverse
 derivative is the negative of \code{\link[=exp_floored]{exp_floored()}} of \eqn{\eta}, and the
 forward ones
-are the log's read at \eqn{\mathrm{upr} - \theta}, the odd orders
-carrying the sign the reflection introduces and the even ones not.
+are the log's read at \eqn{\mathrm{upr} - \theta}, with the change of sign
+that the reflection introduces at the odd orders.
 }
 
 \seealso{

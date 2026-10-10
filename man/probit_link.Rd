@@ -7,23 +7,26 @@
 probit_link()
 }
 \value{
-An S7 object of class \code{ProbitLink} (inheriting from \code{link}) containing the transformation functions
-and their exact analytical derivatives up to the fourth order.
+An S7 object of class \code{ProbitLink}, inheriting from \code{\link[=link]{link()}}, whose
+methods compute the link, its inverse and their derivatives to the fifth
+order.
 }
 \description{
 The probit link \eqn{\eta = \Phi^{-1}(\theta)} on \eqn{(0, 1)}, with
 \eqn{\Phi} the standard normal distribution function.
 }
 \details{
-The Probit link is mathematically defined as \eqn{\eta = \Phi^{-1}(\theta)}, where
-\eqn{\Phi^{-1}} is the quantile function of the standard normal distribution (\code{qnorm}).
-The inverse link is \eqn{\theta = \Phi(\eta)}, the standard normal CDF (\code{pnorm}).
+The probit link is \eqn{\eta = \Phi^{-1}(\theta)}, where \eqn{\Phi^{-1}}
+is the quantile function of the standard normal distribution (\code{qnorm()}).
+The inverse link is the standard normal distribution function,
+\eqn{\theta = \Phi(\eta)} (\code{pnorm()}).
 
-Similarly to the \code{logit} link, the Probit is symmetric around \eqn{\theta = 0.5}
-(where \eqn{\eta = 0}). However, the tails of the Normal distribution approach 0
-and 1 faster than the Logistic distribution.
+Like the logit, the probit link is symmetric about \eqn{\theta = 1/2},
+where \eqn{\eta = 0}. The tails of the normal distribution are lighter than
+those of the logistic, so \eqn{\theta} approaches 0 and 1 faster than under
+the logit link.
 
-The strictly mathematical domain of \eqn{\theta} is \code{c(0, 1)}.
+The domain of \eqn{\theta} is \eqn{(0, 1)}.
 }
 \examples{
 lk <- probit_link()

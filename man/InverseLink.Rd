@@ -26,8 +26,8 @@ InverseLink(
 \item{link_name}{A character string naming the link, set by the
 constructor and shown by \code{print()}.}
 
-\item{link_bounds}{A length-two numeric vector, the open interval the
-parameter lives in. Set by the constructor; see Value for this link's.}
+\item{link_bounds}{A length-two numeric vector, the open interval in
+which the parameter lies. Set by the constructor; see Value for this link's.}
 
 \item{link_params}{A list of the link's own parameters, empty where it has
 none. Set by the constructor.}
@@ -41,9 +41,10 @@ carrying its three properties \code{link_name}, \code{link_bounds} and
 Carries the reciprocal transformation \eqn{\eta = 1/\theta} on
 \eqn{(0, \infty)}, which is its own inverse.
 
-It is the canonical link of the Gamma family. Its image is only
-\eqn{(0, \infty)}, so a negative linear predictor has no parameter behind it,
-and the map is decreasing: a larger parameter gives a smaller \eqn{\eta}.
+It is the canonical link of the Gamma family. Its image is
+\eqn{(0, \infty)}, so the inverse link is defined only for a positive linear
+predictor, and the map is decreasing: a larger parameter gives a smaller
+\eqn{\eta}.
 }
 \section{Methods}{
 
@@ -51,7 +52,7 @@ Twelve methods are registered on this class: \code{\link[=linkfun]{linkfun()}} a
 and the five derivative orders in each direction, \code{\link[=dlinkfun]{dlinkfun()}} through
 \code{\link[=d5linkfun]{d5linkfun()}} going out and \code{\link[=dlinkinv]{dlinkinv()}} through \code{\link[=d5linkinv]{d5linkinv()}} coming
 back. The link is its own inverse, so the two directions carry the same
-expressions: \eqn{1/\theta} and \eqn{1/\eta}, with the four derivatives
+expressions: \eqn{1/\theta} and \eqn{1/\eta}, with the five derivatives
 \eqn{(-1)^k k!\,z^{-(k+1)}} written out in both.
 }
 

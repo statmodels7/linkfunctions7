@@ -5,14 +5,14 @@
 #' \eqn{(0, 1)}, the Cauchy quantile function, with inverse
 #' \eqn{\theta = 1/2 + \arctan(\eta)/\pi}.
 #'
-#' Its tails are far heavier than the logit's or the probit's, so an extreme
-#' linear predictor moves the probability much less. That makes it the choice
-#' when a few observations would otherwise drive the fit to a boundary.
+#' Its tails are heavier than those of the logit and the probit, so an extreme
+#' linear predictor moves the probability less, and a few observations are
+#' less able to drive the fit to a boundary.
 #'
 #' @param link_name A character string naming the link, set by the
 #'   constructor and shown by `print()`.
-#' @param link_bounds A length-two numeric vector, the open interval the
-#'   parameter lives in. Set by the constructor; see Value for this link's.
+#' @param link_bounds A length-two numeric vector, the open interval in
+#'   which the parameter lies. Set by the constructor; see Value for this link's.
 #' @param link_params A list of the link's own parameters, empty where it has
 #'   none. Set by the constructor.
 #'
@@ -81,21 +81,21 @@ S7::method(d5linkinv, CauchitLink) <- function(x, eta) lk_cauchit_inv_cpp(eta, 5
 #' \eqn{(0, 1)}, the Cauchy quantile function; heavier-tailed than the
 #' logit or the probit.
 #' @details
-#' The Cauchit link is defined mathematically as \eqn{\eta = \tan(\pi(\theta - 0.5))}, 
-#' which corresponds perfectly to `qcauchy(theta)`.
-#' The inverse link is the standard Cauchy CDF \eqn{\theta = \frac{1}{\pi} \arctan(\eta) + 0.5},
-#' computed via `pcauchy(eta)`.
+#' The cauchit link is \eqn{\eta = \tan(\pi(\theta - 1/2))}, computed as
+#' `qcauchy(theta)`. The inverse link is the standard Cauchy distribution
+#' function \eqn{\theta = \arctan(\eta)/\pi + 1/2}, computed as
+#' `pcauchy(eta)`.
 #'
-#' **Heavy Tails:** Unlike the Logit or Probit links, the Cauchit link has 
-#' exceedingly heavier tails. This makes it particularly robust and useful for modeling 
-#' binary data where the probability approaches 0 or 1 very slowly, or when the dataset 
-#' contains severe outliers that might disproportionately influence the fit of 
-#' light-tailed link functions.
+#' The Cauchy distribution has heavier tails than the logistic and the normal,
+#' so the probability approaches 0 and 1 more slowly than under the logit or
+#' the probit link. The link is therefore less sensitive to observations whose
+#' linear predictor is extreme.
 #'
-#' The strictly valid mathematical domain for \eqn{\theta} is `c(0, 1)`.
+#' The domain of \eqn{\theta} is \eqn{(0, 1)}.
 #'
-#' @return An S7 object of class `CauchitLink` (inheriting from `link`) containing the transformation functions
-#' and their exact analytical derivatives up to the fourth order.
+#' @return An S7 object of class `CauchitLink`, inheriting from [link()], whose
+#'   methods compute the link, its inverse and their derivatives to the fifth
+#'   order.
 #'
 #' @examples
 #' lk <- cauchit_link()

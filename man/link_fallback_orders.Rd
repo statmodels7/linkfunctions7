@@ -18,14 +18,14 @@ Reports, for each direction, how many derivative orders the link implements
 analytically and which are therefore obtained by finite differences.
 }
 \details{
-Every link can answer every derivative generic, because the base class
-supplies numerical fallbacks for the orders a link does not implement. That
-convenience requires a way of asking which is which. A fallback is correct
-but not exact, and that is why \code{\link[=check_link]{check_link()}} reports such orders
-separately instead of passing them.
+Every link has a method for every derivative generic, because the base
+class supplies numerical fallbacks for the orders that a link does not
+implement. This function reports which orders are analytic. A fallback is
+accurate only to the precision of a finite difference, so \code{\link[=check_link]{check_link()}}
+reports such orders separately instead of counting them as passed.
 }
 \examples{
-# everything the package ships is exact to fourth order
+# everything the package ships is exact to fifth order
 link_fallback_orders(logit_link())
 
 }

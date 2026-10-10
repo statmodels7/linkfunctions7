@@ -11,7 +11,7 @@
 #' `x@link_bounds` onto the whole line, so that an unconstrained
 #' optimizer may work in \eqn{\eta} while \eqn{\theta = g^{-1}(\eta)} stays
 #' admissible at every point. [linkinv()] evaluates that inverse
-#' and is the only other method a link has to supply; the eight derivative
+#' and is the only other method that a link must supply; the derivative
 #' generics have numerical fallbacks derived from the pair.
 #'
 #' @param x An object of class `link`.
@@ -30,33 +30,34 @@ linkfun <- S7::new_generic("linkfun", "x", fun = function(x, theta) S7::S7_dispa
 #' Maps a linear predictor back onto the parameter's domain.
 #'
 #' @details
-#' **The result is always strictly inside `link_bounds`**, and that is
-#' enforced in the generic, so no method has to repeat it. A link is a
-#' bijection onto an
-#' *open* interval, which is exactly what makes it useful: a value it
-#' returns can be handed to [linkfun()] and come back, or to a density
-#' that validates its parameters against open intervals. In double precision the
-#' bijection is not quite onto: `plogis` is exactly 1 above about
-#' \eqn{\eta = 37}, `lwr + exp(eta)` rounds to `lwr` once the
-#' exponential falls below half an ulp of a non-zero `lwr`, and both
-#' overflow to infinity far out. Nine of the links shipped here reach a bound
-#' somewhere in \eqn{\lvert \eta \rvert \le 800}.
+#' A link is a bijection onto an open interval, so that a value returned by
+#' the inverse link can be passed back to [linkfun()], or to a density that
+#' validates its parameters against open intervals. In double precision the
+#' map is not quite onto: `plogis` is exactly 1 above about \eqn{\eta = 37},
+#' `lwr + exp(eta)` rounds to `lwr` once the exponential falls below half an
+#' ulp of a non-zero `lwr`, both overflow to infinity for large arguments, and
+#' the square-root, power, inverse and inverse-square links reach a bound or
+#' overflow at \eqn{\eta = 0}.
 #'
-#' So the generic clamps: a result at or beyond a finite bound becomes the
-#' nearest double strictly inside it, and a non-finite result becomes the
-#' largest finite double of that sign. Both bounds are derived, being
-#' the extremes of what "strictly inside, and a usable number" permits,
-#' and no tolerance is invented. The clamp costs one comparison per bound and
-#' fires only in the tails.
+#' The generic therefore clamps the result with [link_bounds_clamp()]: a value
+#' exactly equal to a finite bound is moved one or two units in the last place
+#' inside it (to the smallest positive normal double when the bound is zero),
+#' and an infinite value becomes the largest finite double of that sign. A
+#' value outside the bounds by more than rounding, which comes from a linear
+#' predictor outside [eta_bounds()], is returned unchanged, and so are `NA`
+#' and `NaN`. The clamp costs one comparison per bound.
 #'
-#' Doing it in the generic body means every link inherits it, including a
-#' user-defined one, and that a method can be written as the plain mathematical
+#' Because the clamp is applied in the generic, every link inherits it,
+#' including a user-defined one, and a method can be written as the plain
 #' formula without a guard of its own.
 #'
 #' @param x An object of class `link`.
 #' @param eta A numeric vector of linear predictors.
 #'
-#' @return A numeric vector, strictly inside `x@link_bounds`.
+#' @return A numeric vector of the same length as `eta`. A value that lands on
+#'   a bound or overflows is moved strictly inside `x@link_bounds`; a value
+#'   outside the bounds by more than rounding, `NA` and `NaN` are returned
+#'   unchanged.
 #'
 #' @examples
 #' linkinv(logit_link(), c(-1, 0, 1))
@@ -81,25 +82,27 @@ linkinv <- S7::new_generic("linkinv", "x", fun = function(x, eta) {
 #' @title 1st Derivative of a Link Function
 #' @description
 #' The first derivative of the link \eqn{g(\theta)} with respect to the
-#' parameter, on the parameter scale. This is the direction a delta-method
-#' standard error is carried in, from a variance on \eqn{\theta} to one on
-#' \eqn{\eta}.
+#' parameter, on the parameter scale. A delta-method standard error is carried
+#' in this direction, from a variance on \eqn{\theta} to one on \eqn{\eta}.
 #' @details
-#' Every link answers this generic. A link whose class registers no method
-#' for it gets the base class's numerical one, which applies a single central
-#' stencil to the highest order that link does supply analytically, never a
-#' chain of lower-order differences. [link_fallback_orders()] says which
-#' orders of a given link are exact, and [check_link()] leaves a fallback
-#' order unchecked, since comparing it against a difference of itself would
-#' agree however wrong the link is.
+#' Every link has a method for this generic. If the class of a link registers
+#' no method for it, the numerical method of the base class is used: it
+#' applies a single central stencil to the highest order that the link
+#' supplies analytically, never a chain of lower-order differences.
+#' [link_fallback_orders()] reports which orders of a given link are exact,
+#' and [check_link()] leaves a fallback order unchecked, because comparing it
+#' with a finite difference of the order below would repeat the same
+#' computation and could not detect an error.
 #'
-#' Call this generic directly in a hot loop. [linkderiv()] and
+#' In code where speed matters, call this generic directly: [linkderiv()] and
 #' [linkinvderiv()] route by order and so dispatch twice, once on themselves
-#' and once here, which is about a third of the cost of the call.
+#' and once here, and on a short vector the routed call takes two to three
+#' times as long as the direct one.
 #' @param x An object of class `link`.
 #' @param theta A numeric vector of parameter values, inside
-#'   `x@link_bounds`. A value outside gives `NaN` or `NA` according to the
-#'   link, and nothing is thrown.
+#'   `x@link_bounds`. The domain is not checked: outside it the formula is
+#'   evaluated as written, so the result may be `NaN`, `NA` or an ordinary
+#'   number, and no error is signaled.
 #' @return A numeric vector of the same length as `theta`, missing wherever
 #'   `theta` is.
 #' @seealso [linkderiv()], which routes to this generic by order, and
@@ -116,25 +119,26 @@ dlinkfun <- S7::new_generic("dlinkfun", "x", fun = function(x, theta) S7::S7_dis
 #' @title 2nd Derivative of a Link Function
 #' @description
 #' The second derivative of the link \eqn{g(\theta)} with respect to the
-#' parameter, on the parameter scale. This is the direction a delta-method
-#' standard error is carried in, from a variance on \eqn{\theta} to one on
-#' \eqn{\eta}.
+#' parameter, on the parameter scale.
 #' @details
-#' Every link answers this generic. A link whose class registers no method
-#' for it gets the base class's numerical one, which applies a single central
-#' stencil to the highest order that link does supply analytically, never a
-#' chain of lower-order differences. [link_fallback_orders()] says which
-#' orders of a given link are exact, and [check_link()] leaves a fallback
-#' order unchecked, since comparing it against a difference of itself would
-#' agree however wrong the link is.
+#' Every link has a method for this generic. If the class of a link registers
+#' no method for it, the numerical method of the base class is used: it
+#' applies a single central stencil to the highest order that the link
+#' supplies analytically, never a chain of lower-order differences.
+#' [link_fallback_orders()] reports which orders of a given link are exact,
+#' and [check_link()] leaves a fallback order unchecked, because comparing it
+#' with a finite difference of the order below would repeat the same
+#' computation and could not detect an error.
 #'
-#' Call this generic directly in a hot loop. [linkderiv()] and
+#' In code where speed matters, call this generic directly: [linkderiv()] and
 #' [linkinvderiv()] route by order and so dispatch twice, once on themselves
-#' and once here, which is about a third of the cost of the call.
+#' and once here, and on a short vector the routed call takes two to three
+#' times as long as the direct one.
 #' @param x An object of class `link`.
 #' @param theta A numeric vector of parameter values, inside
-#'   `x@link_bounds`. A value outside gives `NaN` or `NA` according to the
-#'   link, and nothing is thrown.
+#'   `x@link_bounds`. The domain is not checked: outside it the formula is
+#'   evaluated as written, so the result may be `NaN`, `NA` or an ordinary
+#'   number, and no error is signaled.
 #' @return A numeric vector of the same length as `theta`, missing wherever
 #'   `theta` is.
 #' @seealso [linkderiv()], which routes to this generic by order, and
@@ -151,25 +155,26 @@ d2linkfun <- S7::new_generic("d2linkfun", "x", fun = function(x, theta) S7::S7_d
 #' @title 3rd Derivative of a Link Function
 #' @description
 #' The third derivative of the link \eqn{g(\theta)} with respect to the
-#' parameter, on the parameter scale. This is the direction a delta-method
-#' standard error is carried in, from a variance on \eqn{\theta} to one on
-#' \eqn{\eta}.
+#' parameter, on the parameter scale.
 #' @details
-#' Every link answers this generic. A link whose class registers no method
-#' for it gets the base class's numerical one, which applies a single central
-#' stencil to the highest order that link does supply analytically, never a
-#' chain of lower-order differences. [link_fallback_orders()] says which
-#' orders of a given link are exact, and [check_link()] leaves a fallback
-#' order unchecked, since comparing it against a difference of itself would
-#' agree however wrong the link is.
+#' Every link has a method for this generic. If the class of a link registers
+#' no method for it, the numerical method of the base class is used: it
+#' applies a single central stencil to the highest order that the link
+#' supplies analytically, never a chain of lower-order differences.
+#' [link_fallback_orders()] reports which orders of a given link are exact,
+#' and [check_link()] leaves a fallback order unchecked, because comparing it
+#' with a finite difference of the order below would repeat the same
+#' computation and could not detect an error.
 #'
-#' Call this generic directly in a hot loop. [linkderiv()] and
+#' In code where speed matters, call this generic directly: [linkderiv()] and
 #' [linkinvderiv()] route by order and so dispatch twice, once on themselves
-#' and once here, which is about a third of the cost of the call.
+#' and once here, and on a short vector the routed call takes two to three
+#' times as long as the direct one.
 #' @param x An object of class `link`.
 #' @param theta A numeric vector of parameter values, inside
-#'   `x@link_bounds`. A value outside gives `NaN` or `NA` according to the
-#'   link, and nothing is thrown.
+#'   `x@link_bounds`. The domain is not checked: outside it the formula is
+#'   evaluated as written, so the result may be `NaN`, `NA` or an ordinary
+#'   number, and no error is signaled.
 #' @return A numeric vector of the same length as `theta`, missing wherever
 #'   `theta` is.
 #' @seealso [linkderiv()], which routes to this generic by order, and
@@ -186,25 +191,26 @@ d3linkfun <- S7::new_generic("d3linkfun", "x", fun = function(x, theta) S7::S7_d
 #' @title 4th Derivative of a Link Function
 #' @description
 #' The fourth derivative of the link \eqn{g(\theta)} with respect to the
-#' parameter, on the parameter scale. This is the direction a delta-method
-#' standard error is carried in, from a variance on \eqn{\theta} to one on
-#' \eqn{\eta}.
+#' parameter, on the parameter scale.
 #' @details
-#' Every link answers this generic. A link whose class registers no method
-#' for it gets the base class's numerical one, which applies a single central
-#' stencil to the highest order that link does supply analytically, never a
-#' chain of lower-order differences. [link_fallback_orders()] says which
-#' orders of a given link are exact, and [check_link()] leaves a fallback
-#' order unchecked, since comparing it against a difference of itself would
-#' agree however wrong the link is.
+#' Every link has a method for this generic. If the class of a link registers
+#' no method for it, the numerical method of the base class is used: it
+#' applies a single central stencil to the highest order that the link
+#' supplies analytically, never a chain of lower-order differences.
+#' [link_fallback_orders()] reports which orders of a given link are exact,
+#' and [check_link()] leaves a fallback order unchecked, because comparing it
+#' with a finite difference of the order below would repeat the same
+#' computation and could not detect an error.
 #'
-#' Call this generic directly in a hot loop. [linkderiv()] and
+#' In code where speed matters, call this generic directly: [linkderiv()] and
 #' [linkinvderiv()] route by order and so dispatch twice, once on themselves
-#' and once here, which is about a third of the cost of the call.
+#' and once here, and on a short vector the routed call takes two to three
+#' times as long as the direct one.
 #' @param x An object of class `link`.
 #' @param theta A numeric vector of parameter values, inside
-#'   `x@link_bounds`. A value outside gives `NaN` or `NA` according to the
-#'   link, and nothing is thrown.
+#'   `x@link_bounds`. The domain is not checked: outside it the formula is
+#'   evaluated as written, so the result may be `NaN`, `NA` or an ordinary
+#'   number, and no error is signaled.
 #' @return A numeric vector of the same length as `theta`, missing wherever
 #'   `theta` is.
 #' @seealso [linkderiv()], which routes to this generic by order, and
@@ -222,27 +228,29 @@ d4linkfun <- S7::new_generic("d4linkfun", "x", fun = function(x, theta) S7::S7_d
 #' The fifth derivative of the link \eqn{g(\theta)} with respect to the
 #' parameter, on the parameter scale.
 #' @details
-#' The fifth order exists for the same reason the fourth does, one step
-#' further along: each order of differentiating a filtered predictor through
-#' its own recursion draws in one more order of the link and of the family,
-#' because the score driving the recursion is read at the predictor the
-#' recursion produces.
+#' The fifth order is used by score-driven filters. Each order of
+#' differentiation of a filtered predictor through its recursion involves one
+#' more order of the link and of the family, because the score that drives the
+#' recursion is evaluated at the predictor that the recursion produces.
 #'
-#' Every link answers this generic. A link whose class registers no method
-#' for it gets the base class's numerical one, which applies a single central
-#' stencil to the highest order that link does supply analytically, never a
-#' chain of lower-order differences. [link_fallback_orders()] says which
-#' orders of a given link are exact, and [check_link()] leaves a fallback
-#' order unchecked, since comparing it against a difference of itself would
-#' agree however wrong the link is.
+#' Every link has a method for this generic. If the class of a link registers
+#' no method for it, the numerical method of the base class is used: it
+#' applies a single central stencil to the highest order that the link
+#' supplies analytically, never a chain of lower-order differences.
+#' [link_fallback_orders()] reports which orders of a given link are exact,
+#' and [check_link()] leaves a fallback order unchecked, because comparing it
+#' with a finite difference of the order below would repeat the same
+#' computation and could not detect an error.
 #'
-#' Call this generic directly in a hot loop. [linkderiv()] and
+#' In code where speed matters, call this generic directly: [linkderiv()] and
 #' [linkinvderiv()] route by order and so dispatch twice, once on themselves
-#' and once here, which is about a third of the cost of the call.
+#' and once here, and on a short vector the routed call takes two to three
+#' times as long as the direct one.
 #' @param x An object of class `link`.
 #' @param theta A numeric vector of parameter values, inside
-#'   `x@link_bounds`. A value outside gives `NaN` or `NA` according to the
-#'   link, and nothing is thrown.
+#'   `x@link_bounds`. The domain is not checked: outside it the formula is
+#'   evaluated as written, so the result may be `NaN`, `NA` or an ordinary
+#'   number, and no error is signaled.
 #' @return A numeric vector of the same length as `theta`, missing wherever
 #'   `theta` is.
 #' @seealso [linkderiv()], which routes to this generic by order, and
@@ -259,25 +267,27 @@ d5linkfun <- S7::new_generic("d5linkfun", "x", fun = function(x, theta) S7::S7_d
 #' @title 1st Derivative of an Inverse Link Function
 #' @description
 #' The first derivative of the inverse link \eqn{g^{-1}(\eta)} with respect to
-#' the linear predictor. This is the direction a modeling routine working on
-#' the unconstrained scale needs: it is the chain-rule factor that carries a
-#' derivative of the log-likelihood from \eqn{\theta} onto \eqn{\eta}.
+#' the linear predictor. A modeling routine that works on the unconstrained
+#' scale uses it as a chain-rule factor, which carries a derivative of the
+#' log-likelihood from \eqn{\theta} onto \eqn{\eta}.
 #' @details
-#' Every link answers this generic. A link whose class registers no method
-#' for it gets the base class's numerical one, which applies a single central
-#' stencil to the highest order that link does supply analytically, never a
-#' chain of lower-order differences. [link_fallback_orders()] says which
-#' orders of a given link are exact, and [check_link()] leaves a fallback
-#' order unchecked, since comparing it against a difference of itself would
-#' agree however wrong the link is.
+#' Every link has a method for this generic. If the class of a link registers
+#' no method for it, the numerical method of the base class is used: it
+#' applies a single central stencil to the highest order that the link
+#' supplies analytically, never a chain of lower-order differences.
+#' [link_fallback_orders()] reports which orders of a given link are exact,
+#' and [check_link()] leaves a fallback order unchecked, because comparing it
+#' with a finite difference of the order below would repeat the same
+#' computation and could not detect an error.
 #'
-#' Call this generic directly in a hot loop. [linkderiv()] and
+#' In code where speed matters, call this generic directly: [linkderiv()] and
 #' [linkinvderiv()] route by order and so dispatch twice, once on themselves
-#' and once here, which is about a third of the cost of the call.
+#' and once here, and on a short vector the routed call takes two to three
+#' times as long as the direct one.
 #' @param x An object of class `link`.
-#' @param eta A numeric vector of linear predictors. Any finite value is
-#'   admissible; the inverse link clamps its result strictly inside
-#'   `x@link_bounds` before this derivative is taken.
+#' @param eta A numeric vector of linear predictors, inside the range that
+#'   [eta_bounds()] returns for the link. The derivative is computed from
+#'   `eta` directly, without the clamp that [linkinv()] applies.
 #' @return A numeric vector of the same length as `eta`, missing wherever
 #'   `eta` is.
 #' @seealso [linkinvderiv()], which routes to this generic by order, and
@@ -297,25 +307,27 @@ dlinkinv <- S7::new_generic("dlinkinv", "x", fun = function(x, eta) S7::S7_dispa
 #' @title 2nd Derivative of an Inverse Link Function
 #' @description
 #' The second derivative of the inverse link \eqn{g^{-1}(\eta)} with respect to
-#' the linear predictor. This is the direction a modeling routine working on
-#' the unconstrained scale needs: it is the chain-rule factor that carries a
-#' derivative of the log-likelihood from \eqn{\theta} onto \eqn{\eta}.
+#' the linear predictor. It enters the chain rule (the formula of Faa di
+#' Bruno) that carries the higher derivatives of the log-likelihood from
+#' \eqn{\theta} onto \eqn{\eta}.
 #' @details
-#' Every link answers this generic. A link whose class registers no method
-#' for it gets the base class's numerical one, which applies a single central
-#' stencil to the highest order that link does supply analytically, never a
-#' chain of lower-order differences. [link_fallback_orders()] says which
-#' orders of a given link are exact, and [check_link()] leaves a fallback
-#' order unchecked, since comparing it against a difference of itself would
-#' agree however wrong the link is.
+#' Every link has a method for this generic. If the class of a link registers
+#' no method for it, the numerical method of the base class is used: it
+#' applies a single central stencil to the highest order that the link
+#' supplies analytically, never a chain of lower-order differences.
+#' [link_fallback_orders()] reports which orders of a given link are exact,
+#' and [check_link()] leaves a fallback order unchecked, because comparing it
+#' with a finite difference of the order below would repeat the same
+#' computation and could not detect an error.
 #'
-#' Call this generic directly in a hot loop. [linkderiv()] and
+#' In code where speed matters, call this generic directly: [linkderiv()] and
 #' [linkinvderiv()] route by order and so dispatch twice, once on themselves
-#' and once here, which is about a third of the cost of the call.
+#' and once here, and on a short vector the routed call takes two to three
+#' times as long as the direct one.
 #' @param x An object of class `link`.
-#' @param eta A numeric vector of linear predictors. Any finite value is
-#'   admissible; the inverse link clamps its result strictly inside
-#'   `x@link_bounds` before this derivative is taken.
+#' @param eta A numeric vector of linear predictors, inside the range that
+#'   [eta_bounds()] returns for the link. The derivative is computed from
+#'   `eta` directly, without the clamp that [linkinv()] applies.
 #' @return A numeric vector of the same length as `eta`, missing wherever
 #'   `eta` is.
 #' @seealso [linkinvderiv()], which routes to this generic by order, and
@@ -335,25 +347,27 @@ d2linkinv <- S7::new_generic("d2linkinv", "x", fun = function(x, eta) S7::S7_dis
 #' @title 3rd Derivative of an Inverse Link Function
 #' @description
 #' The third derivative of the inverse link \eqn{g^{-1}(\eta)} with respect to
-#' the linear predictor. This is the direction a modeling routine working on
-#' the unconstrained scale needs: it is the chain-rule factor that carries a
-#' derivative of the log-likelihood from \eqn{\theta} onto \eqn{\eta}.
+#' the linear predictor. It enters the chain rule (the formula of Faa di
+#' Bruno) that carries the higher derivatives of the log-likelihood from
+#' \eqn{\theta} onto \eqn{\eta}.
 #' @details
-#' Every link answers this generic. A link whose class registers no method
-#' for it gets the base class's numerical one, which applies a single central
-#' stencil to the highest order that link does supply analytically, never a
-#' chain of lower-order differences. [link_fallback_orders()] says which
-#' orders of a given link are exact, and [check_link()] leaves a fallback
-#' order unchecked, since comparing it against a difference of itself would
-#' agree however wrong the link is.
+#' Every link has a method for this generic. If the class of a link registers
+#' no method for it, the numerical method of the base class is used: it
+#' applies a single central stencil to the highest order that the link
+#' supplies analytically, never a chain of lower-order differences.
+#' [link_fallback_orders()] reports which orders of a given link are exact,
+#' and [check_link()] leaves a fallback order unchecked, because comparing it
+#' with a finite difference of the order below would repeat the same
+#' computation and could not detect an error.
 #'
-#' Call this generic directly in a hot loop. [linkderiv()] and
+#' In code where speed matters, call this generic directly: [linkderiv()] and
 #' [linkinvderiv()] route by order and so dispatch twice, once on themselves
-#' and once here, which is about a third of the cost of the call.
+#' and once here, and on a short vector the routed call takes two to three
+#' times as long as the direct one.
 #' @param x An object of class `link`.
-#' @param eta A numeric vector of linear predictors. Any finite value is
-#'   admissible; the inverse link clamps its result strictly inside
-#'   `x@link_bounds` before this derivative is taken.
+#' @param eta A numeric vector of linear predictors, inside the range that
+#'   [eta_bounds()] returns for the link. The derivative is computed from
+#'   `eta` directly, without the clamp that [linkinv()] applies.
 #' @return A numeric vector of the same length as `eta`, missing wherever
 #'   `eta` is.
 #' @seealso [linkinvderiv()], which routes to this generic by order, and
@@ -373,25 +387,27 @@ d3linkinv <- S7::new_generic("d3linkinv", "x", fun = function(x, eta) S7::S7_dis
 #' @title 4th Derivative of an Inverse Link Function
 #' @description
 #' The fourth derivative of the inverse link \eqn{g^{-1}(\eta)} with respect to
-#' the linear predictor. This is the direction a modeling routine working on
-#' the unconstrained scale needs: it is the chain-rule factor that carries a
-#' derivative of the log-likelihood from \eqn{\theta} onto \eqn{\eta}.
+#' the linear predictor. It enters the chain rule (the formula of Faa di
+#' Bruno) that carries the higher derivatives of the log-likelihood from
+#' \eqn{\theta} onto \eqn{\eta}.
 #' @details
-#' Every link answers this generic. A link whose class registers no method
-#' for it gets the base class's numerical one, which applies a single central
-#' stencil to the highest order that link does supply analytically, never a
-#' chain of lower-order differences. [link_fallback_orders()] says which
-#' orders of a given link are exact, and [check_link()] leaves a fallback
-#' order unchecked, since comparing it against a difference of itself would
-#' agree however wrong the link is.
+#' Every link has a method for this generic. If the class of a link registers
+#' no method for it, the numerical method of the base class is used: it
+#' applies a single central stencil to the highest order that the link
+#' supplies analytically, never a chain of lower-order differences.
+#' [link_fallback_orders()] reports which orders of a given link are exact,
+#' and [check_link()] leaves a fallback order unchecked, because comparing it
+#' with a finite difference of the order below would repeat the same
+#' computation and could not detect an error.
 #'
-#' Call this generic directly in a hot loop. [linkderiv()] and
+#' In code where speed matters, call this generic directly: [linkderiv()] and
 #' [linkinvderiv()] route by order and so dispatch twice, once on themselves
-#' and once here, which is about a third of the cost of the call.
+#' and once here, and on a short vector the routed call takes two to three
+#' times as long as the direct one.
 #' @param x An object of class `link`.
-#' @param eta A numeric vector of linear predictors. Any finite value is
-#'   admissible; the inverse link clamps its result strictly inside
-#'   `x@link_bounds` before this derivative is taken.
+#' @param eta A numeric vector of linear predictors, inside the range that
+#'   [eta_bounds()] returns for the link. The derivative is computed from
+#'   `eta` directly, without the clamp that [linkinv()] applies.
 #' @return A numeric vector of the same length as `eta`, missing wherever
 #'   `eta` is.
 #' @seealso [linkinvderiv()], which routes to this generic by order, and
@@ -412,28 +428,30 @@ d4linkinv <- S7::new_generic("d4linkinv", "x", fun = function(x, eta) S7::S7_dis
 #' The fifth derivative of the inverse link \eqn{g^{-1}(\eta)} with respect
 #' to the linear predictor.
 #' @details
-#' This is the order a score-driven filter's outer curvature reaches. The
+#' This order is reached by the outer curvature of a score-driven filter. The
 #' chain rule that carries a log-likelihood derivative of order \eqn{k} from
-#' \eqn{\theta} onto \eqn{\eta} contracts the family's components against
+#' \eqn{\theta} onto \eqn{\eta} combines the derivatives of the family with
 #' the partial Bell polynomials in \eqn{h', \ldots, h^{(k)}}, so an order-5
-#' quantity on the unconstrained scale needs the fifth derivative of the
-#' inverse link and nothing beyond it.
+#' quantity on the unconstrained scale requires the fifth derivative of the
+#' inverse link and no higher one.
 #'
-#' Every link answers this generic. A link whose class registers no method
-#' for it gets the base class's numerical one, which applies a single central
-#' stencil to the highest order that link does supply analytically, never a
-#' chain of lower-order differences. [link_fallback_orders()] says which
-#' orders of a given link are exact, and [check_link()] leaves a fallback
-#' order unchecked, since comparing it against a difference of itself would
-#' agree however wrong the link is.
+#' Every link has a method for this generic. If the class of a link registers
+#' no method for it, the numerical method of the base class is used: it
+#' applies a single central stencil to the highest order that the link
+#' supplies analytically, never a chain of lower-order differences.
+#' [link_fallback_orders()] reports which orders of a given link are exact,
+#' and [check_link()] leaves a fallback order unchecked, because comparing it
+#' with a finite difference of the order below would repeat the same
+#' computation and could not detect an error.
 #'
-#' Call this generic directly in a hot loop. [linkderiv()] and
+#' In code where speed matters, call this generic directly: [linkderiv()] and
 #' [linkinvderiv()] route by order and so dispatch twice, once on themselves
-#' and once here, which is about a third of the cost of the call.
+#' and once here, and on a short vector the routed call takes two to three
+#' times as long as the direct one.
 #' @param x An object of class `link`.
-#' @param eta A numeric vector of linear predictors. Any finite value is
-#'   admissible; the inverse link clamps its result strictly inside
-#'   `x@link_bounds` before this derivative is taken.
+#' @param eta A numeric vector of linear predictors, inside the range that
+#'   [eta_bounds()] returns for the link. The derivative is computed from
+#'   `eta` directly, without the clamp that [linkinv()] applies.
 #' @return A numeric vector of the same length as `eta`, missing wherever
 #'   `eta` is.
 #' @seealso [linkinvderiv()], which routes to this generic by order, and
@@ -451,11 +469,11 @@ d5linkinv <- S7::new_generic("d5linkinv", "x", fun = function(x, eta) S7::S7_dis
 
 #' @title Evaluate Derivative of Link Function by Order
 #' @description
-#' A convenience router over [linkfun()] and the four
+#' A convenience router over [linkfun()] and the five
 #' `d*linkfun` generics.
 #' @param x An object of class `link`.
 #' @param theta A numeric vector.
-#' @param order An integer specifying the derivative order (0 to 4). Order 0 is
+#' @param order An integer specifying the derivative order (0 to 5). Order 0 is
 #'   the link function itself.
 #' @return A numeric vector of the same length as `theta`: the requested
 #'   derivative of \eqn{g} evaluated there.
@@ -475,11 +493,11 @@ linkderiv <- S7::new_generic("linkderiv", "x", fun = function(x, theta, order = 
 
 #' @title Evaluate Derivative of Inverse Link Function by Order
 #' @description
-#' A convenience router over [linkinv()] and the four
+#' A convenience router over [linkinv()] and the five
 #' `d*linkinv` generics.
 #' @param x An object of class `link`.
 #' @param eta A numeric vector.
-#' @param order An integer specifying the derivative order (0 to 4). Order 0 is
+#' @param order An integer specifying the derivative order (0 to 5). Order 0 is
 #'   the inverse link itself.
 #' @return A numeric vector of the same length as `eta`: the requested
 #'   derivative of \eqn{g^{-1}} evaluated there.

@@ -10,8 +10,9 @@ d3linkfun(x, theta)
 \item{x}{An object of class \code{link}.}
 
 \item{theta}{A numeric vector of parameter values, inside
-\code{x@link_bounds}. A value outside gives \code{NaN} or \code{NA} according to the
-link, and nothing is thrown.}
+\code{x@link_bounds}. The domain is not checked: outside it the formula is
+evaluated as written, so the result may be \code{NaN}, \code{NA} or an ordinary
+number, and no error is signaled.}
 }
 \value{
 A numeric vector of the same length as \code{theta}, missing wherever
@@ -19,22 +20,22 @@ A numeric vector of the same length as \code{theta}, missing wherever
 }
 \description{
 The third derivative of the link \eqn{g(\theta)} with respect to the
-parameter, on the parameter scale. This is the direction a delta-method
-standard error is carried in, from a variance on \eqn{\theta} to one on
-\eqn{\eta}.
+parameter, on the parameter scale.
 }
 \details{
-Every link answers this generic. A link whose class registers no method
-for it gets the base class's numerical one, which applies a single central
-stencil to the highest order that link does supply analytically, never a
-chain of lower-order differences. \code{\link[=link_fallback_orders]{link_fallback_orders()}} says which
-orders of a given link are exact, and \code{\link[=check_link]{check_link()}} leaves a fallback
-order unchecked, since comparing it against a difference of itself would
-agree however wrong the link is.
+Every link has a method for this generic. If the class of a link registers
+no method for it, the numerical method of the base class is used: it
+applies a single central stencil to the highest order that the link
+supplies analytically, never a chain of lower-order differences.
+\code{\link[=link_fallback_orders]{link_fallback_orders()}} reports which orders of a given link are exact,
+and \code{\link[=check_link]{check_link()}} leaves a fallback order unchecked, because comparing it
+with a finite difference of the order below would repeat the same
+computation and could not detect an error.
 
-Call this generic directly in a hot loop. \code{\link[=linkderiv]{linkderiv()}} and
+In code where speed matters, call this generic directly: \code{\link[=linkderiv]{linkderiv()}} and
 \code{\link[=linkinvderiv]{linkinvderiv()}} route by order and so dispatch twice, once on themselves
-and once here, which is about a third of the cost of the call.
+and once here, and on a short vector the routed call takes two to three
+times as long as the direct one.
 }
 \examples{
 # The log link's forward derivatives are 2 / t^3, so at theta = 2:

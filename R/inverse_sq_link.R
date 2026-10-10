@@ -5,13 +5,13 @@
 #' \eqn{(0, \infty)}, with inverse \eqn{\theta = 1/\sqrt{\eta}}.
 #'
 #' It is the canonical link of the inverse Gaussian family. Its image is
-#' \eqn{(0, \infty)}, so a negative linear predictor has no parameter behind
-#' it, and like [inverse_link()] the map is decreasing.
+#' \eqn{(0, \infty)}, so the inverse link is defined only for a positive linear
+#' predictor, and like [inverse_link()] the map is decreasing.
 #'
 #' @param link_name A character string naming the link, set by the
 #'   constructor and shown by `print()`.
-#' @param link_bounds A length-two numeric vector, the open interval the
-#'   parameter lives in. Set by the constructor; see Value for this link's.
+#' @param link_bounds A length-two numeric vector, the open interval in
+#'   which the parameter lies. Set by the constructor; see Value for this link's.
 #' @param link_params A list of the link's own parameters, empty where it has
 #'   none. Set by the constructor.
 #'
@@ -25,8 +25,8 @@
 #' [d5linkfun()] going out and [dlinkinv()] through [d5linkinv()] coming
 #' back. The two directions are not the same map, \eqn{1/\theta^2} going
 #' forward and \eqn{\eta^{-1/2}} coming back, so the two sets of derivatives
-#' are written out separately: integer falling factorials one way,
-#' half-integer powers the other.
+#' are written out separately, with integer falling factorials in the forward
+#' direction and half-integer powers in the inverse one.
 #'
 #' @aliases linkfun.InverseSqLink
 #' @aliases linkinv.InverseSqLink
@@ -78,23 +78,20 @@ S7::method(d5linkinv, InverseSqLink) <- function(x, eta) -945 / (32 * eta^5.5)
 #' the canonical link of the inverse Gaussian family; its image is
 #' \eqn{(0, \infty)}.
 #' @details
-#' The Inverse Square link is defined mathematically as \eqn{\eta = 1 / \theta^2}.
-#' Consequently, the inverse link function is derived as \eqn{\theta = 1 / \sqrt{\eta}}.
+#' The inverse-square link is \eqn{\eta = 1/\theta^2}, with inverse
+#' \eqn{\theta = 1/\sqrt{\eta}}.
 #'
-#' This specific link function is predominantly utilized in Generalized Linear Models (GLMs)
-#' assuming an Inverse Gaussian response distribution. In such frameworks, the variance
-#' is proportional to the cube of the mean (\eqn{\text{Var}(Y) \propto \mu^3}).
+#' It is the canonical link of the inverse Gaussian family, whose variance is
+#' proportional to the cube of the mean.
 #'
-#' **Domain and Optimization Constraints:**
-#' Both the parameter \eqn{\theta} and the linear predictor \eqn{\eta} must be strictly
-#' positive. The valid mathematical domain for \eqn{\theta} is `c(0, Inf)`. During
-#' optimization routines (e.g., Fisher Scoring or Newton-Raphson), extreme care must be
-#' taken to ensure the linear predictor \eqn{\eta > 0}. Evaluating the inverse link or
-#' its derivatives at non-positive values of \eqn{\eta} will inevitably result in `NaN`s
-#' due to fractional powers and square root operations.
+#' The domain of \eqn{\theta} is \eqn{(0, \infty)}, and so is the image of
+#' the link. The inverse link and its derivatives return `NaN` for a negative
+#' \eqn{\eta}, so the linear predictor must stay positive during
+#' optimization; [eta_bounds()] returns this range.
 #'
-#' @return An S7 object of class `InverseSqLink` (inheriting from `link`) containing the transformation functions
-#' and their exact analytical derivatives up to the fourth order.
+#' @return An S7 object of class `InverseSqLink`, inheriting from [link()], whose
+#'   methods compute the link, its inverse and their derivatives to the fifth
+#'   order.
 #'
 #' @examples
 #' lk <- inverse_sq_link()

@@ -25,10 +25,10 @@ Invisibly, a named list of the check results: the four scalar logicals
 \code{invertibility_theta}, \code{invertibility_eta}, \code{monotonicity} and
 \code{inverse_theorem}, plus \code{link_derivatives} and
 \code{inverse_link_derivatives}, each a logical vector of length five named
-\code{order_1} to \code{order_5}. In those two, \code{TRUE} and \code{FALSE}
-mean what they say and \code{NA} means \strong{not checked}: the order is
-supplied by a numerical fallback, so the value and the reference would be
-the same arithmetic and would agree whatever the link did. The number of
+\code{order_1} to \code{order_5}. In those two, \code{NA} means that the order was not
+checked: it is supplied by a numerical fallback, so the value and the
+reference would come from the same computation and would agree even for
+a wrong link. The number of
 orders actually implemented is carried on the result as the attribute
 \code{"analytic_orders"}; see \code{\link[=link_fallback_orders]{link_fallback_orders()}}. A
 derivative that raises an error still counts as \code{FALSE}. Called mainly
@@ -41,19 +41,26 @@ directions on a grid, strict monotonicity, the inverse function theorem
 numerical differentiation of the analytic order below it.
 }
 \details{
-The function assumes the existence of S7 generics \code{linkfun}, \code{linkinv},
-\code{linkderiv}, and \code{linkinvderiv}. The method performs the following six diagnostic checks:
+The method performs six checks:
 \enumerate{
-\item \strong{Invertibility (\eqn{\theta} space):} Verifies \eqn{g^{-1}(g(\theta)) = \theta}. Ensures that mapping from the parameter space to the linear predictor and back is lossless.
-\item \strong{Invertibility (\eqn{\eta} space):} Verifies \eqn{g(g^{-1}(\eta)) = \eta}. Ensures that mapping from the linear predictor to the parameter space and back is lossless. Note that this test may fail intentionally and correctly for links that map to a restricted \eqn{\eta} domain (e.g., the square root link).
-\item \strong{Strict Monotonicity:} Checks if the first derivative \eqn{g'(\theta)} is strictly positive or strictly negative across the domain, guaranteeing a one-to-one mapping.
-\item \strong{Inverse Function Theorem:} Verifies the mathematical identity \eqn{g'(\theta) \cdot (g^{-1})'(\eta) = 1}, confirming the theoretical relationship between the link derivative and the inverse link derivative.
-\item \strong{Link Derivatives:} Validates the exact analytical forward derivatives of \eqn{g(\theta)} up to the 5th order by comparing them against numerical gradients.
-\item \strong{Inverse Link Derivatives:} Validates the exact analytical inverse derivatives of \eqn{g^{-1}(\eta)} up to the 5th order by comparing them against numerical gradients.
+\item \strong{Invertibility (\eqn{\theta} space):} verifies
+\eqn{g^{-1}(g(\theta)) = \theta} on a grid of parameter values.
+\item \strong{Invertibility (\eqn{\eta} space):} verifies
+\eqn{g(g^{-1}(\eta)) = \eta} on a grid spanning the linear predictors
+that the link produces from the parameter grid.
+\item \strong{Strict monotonicity:} checks that \eqn{g'(\theta)} has the same sign
+at every point of the grid, so that the map is one-to-one.
+\item \strong{Inverse function theorem:} verifies
+\eqn{g'(\theta) \cdot (g^{-1})'(\eta) = 1}.
+\item \strong{Link derivatives:} compares each analytic derivative of
+\eqn{g(\theta)}, up to the fifth order, with a numerical one.
+\item \strong{Inverse link derivatives:} compares each analytic derivative of
+\eqn{g^{-1}(\eta)}, up to the fifth order, with a numerical one.
 }
 
-Both forward and inverse derivative testing avoids compounding numerical errors by applying
-first-order numerical differentiation iteratively to the exact lower-order analytical derivatives.
+Each analytic derivative of order \eqn{k} is compared with one numerical
+differentiation of the analytic derivative of order \eqn{k - 1}, so the
+errors of successive numerical differentiations do not compound.
 }
 \examples{
 check_link(sqrt_link())

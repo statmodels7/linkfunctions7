@@ -210,3 +210,13 @@ test_that("plot.link executes without producing errors for all links", {
     )
   }
 })
+
+test_that("plot.link passes named graphical parameters to graphics::plot", {
+  pdf(file = NULL)
+  on.exit(dev.off())
+
+  expect_error(plot(logit_link(), col = "red", lwd = 1, main = "logit"), NA)
+  # An invalid value reaches graphics::plot(), so it is no longer ignored.
+  expect_error(plot(logit_link(), xlim = "a"))
+  expect_error(plot(logit_link(), "red"), "must be named")
+})

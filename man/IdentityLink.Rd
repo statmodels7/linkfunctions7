@@ -26,8 +26,8 @@ IdentityLink(
 \item{link_name}{A character string naming the link, set by the
 constructor and shown by \code{print()}.}
 
-\item{link_bounds}{A length-two numeric vector, the open interval the
-parameter lives in. Set by the constructor; see Value for this link's.}
+\item{link_bounds}{A length-two numeric vector, the open interval in
+which the parameter lies. Set by the constructor; see Value for this link's.}
 
 \item{link_params}{A list of the link's own parameters, empty where it has
 none. Set by the constructor.}
@@ -40,11 +40,11 @@ carrying its three properties \code{link_name}, \code{link_bounds} and
 \description{
 Carries the identity transformation \eqn{\eta = \theta} on the whole real
 line, for a parameter that needs no chart because it is already
-unconstrained. Every derivative is a constant: the first is one and the rest
-are zero, at both directions and every order.
+unconstrained. Every derivative is a constant: the first is one and the
+higher ones are zero, in both directions.
 
-\code{\link[=bounded_link]{bounded_link()}} returns an object of this class when it is given neither
-endpoint, there being nothing then to constrain.
+\code{\link[=bounded_link]{bounded_link()}} returns an object of this class when neither endpoint is
+given.
 }
 \section{Methods}{
 
@@ -53,9 +53,8 @@ and the five derivative orders in each direction, \code{\link[=dlinkfun]{dlinkfu
 \code{\link[=d5linkfun]{d5linkfun()}} going out and \code{\link[=dlinkinv]{dlinkinv()}} through \code{\link[=d5linkinv]{d5linkinv()}} coming
 back. \code{linkfun()} and \code{linkinv()} return their argument. The first
 derivative is one and every higher one is zero, each built by
-\code{\link[=const_like]{const_like()}} so that a missing value in the argument propagates to the
-result: a derivative that does not depend on \eqn{\theta} is still
-undefined where \eqn{\theta} is.
+\code{\link[=const_like]{const_like()}} so that the result is \code{NA} wherever the argument is \code{NA},
+although the derivative does not depend on it.
 }
 
 \seealso{

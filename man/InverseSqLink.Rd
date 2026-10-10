@@ -26,8 +26,8 @@ InverseSqLink(
 \item{link_name}{A character string naming the link, set by the
 constructor and shown by \code{print()}.}
 
-\item{link_bounds}{A length-two numeric vector, the open interval the
-parameter lives in. Set by the constructor; see Value for this link's.}
+\item{link_bounds}{A length-two numeric vector, the open interval in
+which the parameter lies. Set by the constructor; see Value for this link's.}
 
 \item{link_params}{A list of the link's own parameters, empty where it has
 none. Set by the constructor.}
@@ -42,8 +42,8 @@ Carries the inverse-square transformation \eqn{\eta = 1/\theta^2} on
 \eqn{(0, \infty)}, with inverse \eqn{\theta = 1/\sqrt{\eta}}.
 
 It is the canonical link of the inverse Gaussian family. Its image is
-\eqn{(0, \infty)}, so a negative linear predictor has no parameter behind
-it, and like \code{\link[=inverse_link]{inverse_link()}} the map is decreasing.
+\eqn{(0, \infty)}, so the inverse link is defined only for a positive linear
+predictor, and like \code{\link[=inverse_link]{inverse_link()}} the map is decreasing.
 }
 \section{Methods}{
 
@@ -52,8 +52,8 @@ and the five derivative orders in each direction, \code{\link[=dlinkfun]{dlinkfu
 \code{\link[=d5linkfun]{d5linkfun()}} going out and \code{\link[=dlinkinv]{dlinkinv()}} through \code{\link[=d5linkinv]{d5linkinv()}} coming
 back. The two directions are not the same map, \eqn{1/\theta^2} going
 forward and \eqn{\eta^{-1/2}} coming back, so the two sets of derivatives
-are written out separately: integer falling factorials one way,
-half-integer powers the other.
+are written out separately, with integer falling factorials in the forward
+direction and half-integer powers in the inverse one.
 }
 
 \seealso{

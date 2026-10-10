@@ -7,8 +7,9 @@
 inverse_link()
 }
 \value{
-An S7 object of class \code{InverseLink} (inheriting from \code{link}) containing the transformation functions
-and their exact analytical derivatives up to the fourth order.
+An S7 object of class \code{InverseLink}, inheriting from \code{\link[=link]{link()}}, whose
+methods compute the link, its inverse and their derivatives to the fifth
+order.
 }
 \description{
 The reciprocal link \eqn{\eta = 1/\theta} on \eqn{(0, \infty)}, the
@@ -16,16 +17,15 @@ canonical link of the Gamma family; its image is \eqn{(0, \infty)},
 not the whole real line.
 }
 \details{
-The Inverse link is defined as \eqn{\eta = 1/\theta}.
-The inverse link function is therefore perfectly symmetric: \eqn{\theta = 1/\eta}.
+The inverse link is \eqn{\eta = 1/\theta}, and it is its own inverse,
+\eqn{\theta = 1/\eta}.
 
-This link is typically used for modeling positive continuous data where the mean is
-inversely proportional to the linear predictor (e.g., in Gamma regression).
+It is the canonical link of the Gamma family, used when the mean is
+modeled as the reciprocal of a linear predictor.
 
-The domain of \eqn{\theta} is conventionally \code{c(0, Inf)}. Care must be taken
-to ensure the linear predictor \eqn{\eta} remains strictly positive (or strictly
-negative) during optimization to avoid division by zero or mapping to invalid
-negative parameter values.
+The domain of \eqn{\theta} is \eqn{(0, \infty)}, and so is the image of
+the link, so the linear predictor must stay positive during optimization;
+\code{\link[=eta_bounds]{eta_bounds()}} returns this range.
 }
 \examples{
 lk <- inverse_link()

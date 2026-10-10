@@ -15,18 +15,18 @@
 \code{x}, invisibly. Called for the printed output.
 }
 \description{
-Prints a link's name, the open interval its parameter lives in, and the link
-parameters it carries, if any. Three lines at most, and two for a link with
-no parameters of its own.
+Prints the name of a link, the open interval in which its parameter lies,
+and its link parameters, if it has any. The output has two lines, and a
+third for a link with parameters.
 }
 \details{
-The domain is shown as the open interval it is, so a probability link reads
-\verb{(0, 1)} and never \verb{[0, 1]}: no link ever returns an endpoint, and
-\code{\link[=link_bounds_clamp]{link_bounds_clamp()}} is what keeps that true in double precision.
+The domain is printed as an open interval, \verb{(0, 1)} for a probability
+link and never \verb{[0, 1]}, because a link never returns an endpoint;
+\code{\link[=link_bounds_clamp]{link_bounds_clamp()}} ensures this in double precision.
 
-The parameter line appears only for a link that has parameters, and names
-them, so \code{power(lambda=2)} and \code{bounded(lwr=0, upr=10)} report the values
-they were constructed with.
+The parameter line appears only for a link that has parameters. It names
+them, so \code{power(lambda=2)} and \code{bounded(lwr=0, upr=10)} show the values
+passed to the constructor.
 }
 \examples{
 print(logit_link())

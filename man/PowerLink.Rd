@@ -27,8 +27,8 @@ PowerLink(
 \item{link_name}{A character string naming the link, set by the
 constructor and shown by \code{print()}.}
 
-\item{link_bounds}{A length-two numeric vector, the open interval the
-parameter lives in. Set by the constructor; see Value for this link's.}
+\item{link_bounds}{A length-two numeric vector, the open interval in
+which the parameter lies. Set by the constructor; see Value for this link's.}
 
 \item{link_params}{A list of the link's own parameters, empty where it has
 none. Set by the constructor.}
@@ -46,17 +46,15 @@ Carries the power transformation \eqn{\eta = \theta^{\lambda}} on
 \eqn{\theta = \eta^{1/\lambda}}. The exponent is stored in \code{link_params}, so
 one class serves every \eqn{\lambda}.
 
-At \eqn{\lambda = 0} the constructor returns a \link{LogLink} instead, that being
-the limit of the family by continuity.
-At \code{lambda = 0} the power link is the log link by continuity, and
-\code{\link[=power_link]{power_link()}} returns a \code{\link[=LogLink]{LogLink()}} instead.
+At \eqn{\lambda = 0} the constructor returns a \link{LogLink} instead, the limit
+of the Box-Cox transformation \eqn{(\theta^\lambda - 1)/\lambda}.
 }
 \section{Methods}{
 
 Twelve methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
 and the five derivative orders in each direction, \code{\link[=dlinkfun]{dlinkfun()}} through
 \code{\link[=d5linkfun]{d5linkfun()}} going out and \code{\link[=dlinkinv]{dlinkinv()}} through \code{\link[=d5linkinv]{d5linkinv()}} coming
-back. Both directions are a power, so all eight derivatives are falling
+back. Both directions are a power, so all ten derivatives are falling
 factorials in the exponent. Each is wrapped in \code{\link[=na_from]{na_from()}} because \code{NA^0}
 is one in R, which would turn a missing parameter into a number as soon
 as an exponent reached zero.

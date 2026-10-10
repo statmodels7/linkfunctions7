@@ -3,18 +3,18 @@
 #' @include generics.R
 #' @include link_class.R
 #' @description
-#' Prints a link's name, the open interval its parameter lives in, and the link
-#' parameters it carries, if any. Three lines at most, and two for a link with
-#' no parameters of its own.
+#' Prints the name of a link, the open interval in which its parameter lies,
+#' and its link parameters, if it has any. The output has two lines, and a
+#' third for a link with parameters.
 #'
 #' @details
-#' The domain is shown as the open interval it is, so a probability link reads
-#' `(0, 1)` and never `[0, 1]`: no link ever returns an endpoint, and
-#' [link_bounds_clamp()] is what keeps that true in double precision.
+#' The domain is printed as an open interval, `(0, 1)` for a probability
+#' link and never `[0, 1]`, because a link never returns an endpoint;
+#' [link_bounds_clamp()] ensures this in double precision.
 #'
-#' The parameter line appears only for a link that has parameters, and names
-#' them, so `power(lambda=2)` and `bounded(lwr=0, upr=10)` report the values
-#' they were constructed with.
+#' The parameter line appears only for a link that has parameters. It names
+#' them, so `power(lambda=2)` and `bounded(lwr=0, upr=10)` show the values
+#' passed to the constructor.
 #'
 #' @param x An object of class `link`.
 #' @param ... Additional arguments passed to methods, currently unused.
@@ -60,12 +60,14 @@ S7::method(print, link) <- print.link
 #' 2. The inverse link function \eqn{\theta = g^{-1}(\eta)} over a standard range of linear predictors.
 #'
 #' @param x An object of class `link`.
-#' @param ... Additional graphical parameters passed to [graphics::plot()].
+#' @param ... Named graphical parameters passed to [graphics::plot()] for
+#'   both panels, where they replace the defaults (for example `col`, `lwd`
+#'   or `main`).
 #'
 #' @details
-#' The function automatically determines sensible plotting ranges based on whether the
-#' link bounds are finite or infinite. It temporarily modifies the graphical parameters
-#' (`par`) to create a side-by-side layout and restores the original settings upon exit.
+#' The plotting ranges depend on whether the link bounds are finite. The
+#' function sets the graphical parameters (`par`) for a side-by-side layout
+#' and restores the original settings on exit.
 #'
 #' @importFrom graphics par plot grid abline mtext
 #'
@@ -80,6 +82,16 @@ S7::method(print, link) <- print.link
 #' @aliases plot.link
 #' @export
 plot.link <- function(x, ...) {
+  dots <- list(...)
+  if (length(dots) && (is.null(names(dots)) || any(names(dots) == ""))) {
+    stop("Arguments passed through '...' must be named.", call. = FALSE)
+  }
+  # The caller's graphical parameters replace the defaults of each panel.
+  draw <- function(defaults) {
+    defaults[names(dots)] <- dots
+    do.call(graphics::plot, defaults)
+  }
+
   old_par <- graphics::par(no.readonly = TRUE)
   on.exit(graphics::par(old_par))
 
@@ -108,13 +120,13 @@ plot.link <- function(x, ...) {
 
   eta_vals <- linkfun(x, theta_seq)
 
-  graphics::plot(
-    theta_seq, eta_vals,
+  draw(list(
+    x = theta_seq, y = eta_vals,
     type = "l", lwd = 2, las = 1,
     xlab = expression(theta),
     ylab = expression(eta == g(theta)),
     main = "Link Function"
-  )
+  ))
   graphics::grid()
   graphics::abline(h = 0, v = 0, lty = 3, col = "darkgray")
 
@@ -153,13 +165,13 @@ plot.link <- function(x, ...) {
   # Suppress warnings gracefully in case evaluation hits undefined boundary areas
   theta_vals <- suppressWarnings(linkinv(x, eta_seq))
 
-  graphics::plot(
-    eta_seq, theta_vals,
+  draw(list(
+    x = eta_seq, y = theta_vals,
     type = "l", lwd = 2, las = 1,
     xlab = expression(eta),
     ylab = expression(theta == g^{-1} * (eta)),
     main = "Inverse Link Function"
-  )
+  ))
   graphics::grid()
   graphics::abline(h = 0, v = 0, lty = 3, col = "darkgray")
 
@@ -237,28 +249,35 @@ S7::method(linkinvderiv, link) <- linkinvderiv.link
 #' @param ... Additional arguments passed to methods.
 #'
 #' @details
-#' The function assumes the existence of S7 generics `linkfun`, `linkinv`,
-#' `linkderiv`, and `linkinvderiv`. The method performs the following six diagnostic checks:
+#' The method performs six checks:
 #'
-#' 1. **Invertibility (\eqn{\theta} space):** Verifies \eqn{g^{-1}(g(\theta)) = \theta}. Ensures that mapping from the parameter space to the linear predictor and back is lossless.
-#' 2. **Invertibility (\eqn{\eta} space):** Verifies \eqn{g(g^{-1}(\eta)) = \eta}. Ensures that mapping from the linear predictor to the parameter space and back is lossless. Note that this test may fail intentionally and correctly for links that map to a restricted \eqn{\eta} domain (e.g., the square root link).
-#' 3. **Strict Monotonicity:** Checks if the first derivative \eqn{g'(\theta)} is strictly positive or strictly negative across the domain, guaranteeing a one-to-one mapping.
-#' 4. **Inverse Function Theorem:** Verifies the mathematical identity \eqn{g'(\theta) \cdot (g^{-1})'(\eta) = 1}, confirming the theoretical relationship between the link derivative and the inverse link derivative.
-#' 5. **Link Derivatives:** Validates the exact analytical forward derivatives of \eqn{g(\theta)} up to the 5th order by comparing them against numerical gradients.
-#' 6. **Inverse Link Derivatives:** Validates the exact analytical inverse derivatives of \eqn{g^{-1}(\eta)} up to the 5th order by comparing them against numerical gradients.
+#' 1. **Invertibility (\eqn{\theta} space):** verifies
+#'    \eqn{g^{-1}(g(\theta)) = \theta} on a grid of parameter values.
+#' 2. **Invertibility (\eqn{\eta} space):** verifies
+#'    \eqn{g(g^{-1}(\eta)) = \eta} on a grid spanning the linear predictors
+#'    that the link produces from the parameter grid.
+#' 3. **Strict monotonicity:** checks that \eqn{g'(\theta)} has the same sign
+#'    at every point of the grid, so that the map is one-to-one.
+#' 4. **Inverse function theorem:** verifies
+#'    \eqn{g'(\theta) \cdot (g^{-1})'(\eta) = 1}.
+#' 5. **Link derivatives:** compares each analytic derivative of
+#'    \eqn{g(\theta)}, up to the fifth order, with a numerical one.
+#' 6. **Inverse link derivatives:** compares each analytic derivative of
+#'    \eqn{g^{-1}(\eta)}, up to the fifth order, with a numerical one.
 #'
-#' Both forward and inverse derivative testing avoids compounding numerical errors by applying
-#' first-order numerical differentiation iteratively to the exact lower-order analytical derivatives.
+#' Each analytic derivative of order \eqn{k} is compared with one numerical
+#' differentiation of the analytic derivative of order \eqn{k - 1}, so the
+#' errors of successive numerical differentiations do not compound.
 #'
 #' @importFrom numDeriv grad
 #' @return Invisibly, a named list of the check results: the four scalar logicals
 #'   `invertibility_theta`, `invertibility_eta`, `monotonicity` and
 #'   `inverse_theorem`, plus `link_derivatives` and
 #'   `inverse_link_derivatives`, each a logical vector of length five named
-#'   `order_1` to `order_5`. In those two, `TRUE` and `FALSE`
-#'   mean what they say and `NA` means **not checked**: the order is
-#'   supplied by a numerical fallback, so the value and the reference would be
-#'   the same arithmetic and would agree whatever the link did. The number of
+#'   `order_1` to `order_5`. In those two, `NA` means that the order was not
+#'   checked: it is supplied by a numerical fallback, so the value and the
+#'   reference would come from the same computation and would agree even for
+#'   a wrong link. The number of
 #'   orders actually implemented is carried on the result as the attribute
 #'   `"analytic_orders"`; see [link_fallback_orders()]. A
 #'   derivative that raises an error still counts as `FALSE`. Called mainly

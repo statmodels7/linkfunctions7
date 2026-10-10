@@ -22,8 +22,8 @@ LogLink(link_name = character(0), link_bounds = integer(0), link_params = NULL)
 \item{link_name}{A character string naming the link, set by the
 constructor and shown by \code{print()}.}
 
-\item{link_bounds}{A length-two numeric vector, the open interval the
-parameter lives in. Set by the constructor; see Value for this link's.}
+\item{link_bounds}{A length-two numeric vector, the open interval in
+which the parameter lies. Set by the constructor; see Value for this link's.}
 
 \item{link_params}{A list of the link's own parameters, empty where it has
 none. Set by the constructor.}
@@ -35,8 +35,8 @@ carrying its three properties \code{link_name}, \code{link_bounds} and
 }
 \description{
 Carries the log transformation \eqn{\eta = \log\theta} on \eqn{(0, \infty)},
-with inverse \eqn{\theta = e^{\eta}}. It is the canonical link for a positive
-parameter, and the one a scale or a rate is almost always fitted on.
+with inverse \eqn{\theta = e^{\eta}}. It is the standard link for a
+positive parameter such as a scale or a rate.
 
 The inverse is floored at \code{\link[=exp_floor]{exp_floor()}}, so a parameter reported by this link
 is never exactly zero and can be divided into.

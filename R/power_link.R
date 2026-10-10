@@ -6,15 +6,13 @@
 #' \eqn{\theta = \eta^{1/\lambda}}. The exponent is stored in `link_params`, so
 #' one class serves every \eqn{\lambda}.
 #'
-#' At \eqn{\lambda = 0} the constructor returns a [LogLink] instead, that being
-#' the limit of the family by continuity.
-#' At `lambda = 0` the power link is the log link by continuity, and
-#' [power_link()] returns a [LogLink()] instead.
+#' At \eqn{\lambda = 0} the constructor returns a [LogLink] instead, the limit
+#' of the Box-Cox transformation \eqn{(\theta^\lambda - 1)/\lambda}.
 #'
 #' @param link_name A character string naming the link, set by the
 #'   constructor and shown by `print()`.
-#' @param link_bounds A length-two numeric vector, the open interval the
-#'   parameter lives in. Set by the constructor; see Value for this link's.
+#' @param link_bounds A length-two numeric vector, the open interval in
+#'   which the parameter lies. Set by the constructor; see Value for this link's.
 #' @param link_params A list of the link's own parameters, empty where it has
 #'   none. Set by the constructor.
 #' @param lambda The exponent of the transformation.
@@ -27,7 +25,7 @@
 #' Twelve methods are registered on this class: [linkfun()] and [linkinv()],
 #' and the five derivative orders in each direction, [dlinkfun()] through
 #' [d5linkfun()] going out and [dlinkinv()] through [d5linkinv()] coming
-#' back. Both directions are a power, so all eight derivatives are falling
+#' back. Both directions are a power, so all ten derivatives are falling
 #' factorials in the exponent. Each is wrapped in [na_from()] because `NA^0`
 #' is one in R, which would turn a missing parameter into a number as soon
 #' as an exponent reached zero.
@@ -78,31 +76,33 @@ S7::method(d5linkinv, PowerLink) <- function(x, eta) { k <- 1 / x@lambda; na_fro
 #' @include link_class.R
 #' @description
 #' The power link \eqn{\eta = \theta^\lambda} on \eqn{(0, \infty)}; at
-#' \eqn{\lambda = 0} it returns the log link, its limit by continuity.
+#' \eqn{\lambda = 0} it returns the log link, the limit of the Box-Cox
+#' transformation.
 #' @param lambda A numeric value defining the power of the transformation. Defaults to 1.
 #'
 #' @details
-#' The Power link is defined mathematically as \eqn{\eta = \theta^\lambda}.
-#' Consequently, the inverse link is derived as \eqn{\theta = \eta^{1/\lambda}}.
+#' The power link is \eqn{\eta = \theta^\lambda}, with inverse
+#' \eqn{\theta = \eta^{1/\lambda}}.
 #'
-#' **Special Case (Box-Cox continuity):**
-#' If `lambda = 0`, the function mathematically approaches \eqn{\log(\theta)}. 
-#' In this scenario, the function automatically instantiates and returns a [log_link()] 
-#' object, modifying its internal state to reflect the `lambda = 0` parameter.
+#' As \eqn{\lambda \to 0} the Box-Cox transformation
+#' \eqn{(\theta^\lambda - 1)/\lambda} tends to \eqn{\log(\theta)}, so for
+#' `lambda = 0` the function returns a [log_link()] object whose
+#' `link_params` record `lambda = 0`.
 #'
-#' Common special cases include:
+#' Common special cases are
 #'
-#' - `lambda = 1`: Identity link.
-#' - `lambda = 0.5`: Square-root link.
-#' - `lambda = -1`: Inverse link.
-#' - `lambda = 0`: Log link.
+#' - `lambda = 1`: identity link;
+#' - `lambda = 0.5`: square-root link;
+#' - `lambda = -1`: inverse link;
+#' - `lambda = 0`: log link.
 #'
-#' The mathematical domain of \eqn{\theta} is `c(0, Inf)`. Depending on the value 
-#' of `lambda`, extreme care must be taken during numerical optimization to guarantee 
-#' that \eqn{\eta} remains strictly positive to avoid `NaN`s from fractional exponents.
+#' The domain of \eqn{\theta} is \eqn{(0, \infty)}. For every non-zero
+#' `lambda` the image of the link is also \eqn{(0, \infty)}, so the linear
+#' predictor must stay positive during optimization; [eta_bounds()] returns
+#' this range.
 #'
-#' @return An S7 object of class `PowerLink` (inheriting from `link`), 
-#' or an object of class `LogLink` if `lambda = 0`.
+#' @return An S7 object of class `PowerLink`, inheriting from [link()], or of
+#'   class `LogLink` when `lambda = 0`.
 #'
 #' @examples
 #' lk <- power_link(2)
@@ -118,7 +118,7 @@ S7::method(d5linkinv, PowerLink) <- function(x, eta) { k <- 1 / x@lambda; na_fro
 #' linkfun(power_link(0.5),  4)   # square root
 #' linkfun(power_link(-1),   4)   # inverse
 #'
-#' # lambda = 0 is the log link by continuity, and is returned as one
+#' # lambda = 0 returns the log link, the limit of the Box-Cox transformation
 #' power_link(0)
 #' linkfun(power_link(0), exp(1))
 #'

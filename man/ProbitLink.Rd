@@ -26,8 +26,8 @@ ProbitLink(
 \item{link_name}{A character string naming the link, set by the
 constructor and shown by \code{print()}.}
 
-\item{link_bounds}{A length-two numeric vector, the open interval the
-parameter lives in. Set by the constructor; see Value for this link's.}
+\item{link_bounds}{A length-two numeric vector, the open interval in
+which the parameter lies. Set by the constructor; see Value for this link's.}
 
 \item{link_params}{A list of the link's own parameters, empty where it has
 none. Set by the constructor.}
@@ -42,9 +42,9 @@ Carries the probit transformation \eqn{\eta = \Phi^{-1}(\theta)} on
 \eqn{(0, 1)}, with \eqn{\Phi} the standard normal distribution function and
 the inverse \eqn{\theta = \Phi(\eta)}.
 
-It is symmetric about \eqn{\theta = 1/2}, like the logit, and reaches its
-bounds faster: the same change in \eqn{\eta} moves a probability further in
-the tails.
+It is symmetric about \eqn{\theta = 1/2}, like the logit, and it reaches
+its bounds faster, because the tails of the normal distribution are lighter
+than those of the logistic.
 }
 \section{Methods}{
 
@@ -52,7 +52,7 @@ Twelve methods are registered on this class: \code{\link[=linkfun]{linkfun()}} a
 and the five derivative orders in each direction, \code{\link[=dlinkfun]{dlinkfun()}} through
 \code{\link[=d5linkfun]{d5linkfun()}} going out and \code{\link[=dlinkinv]{dlinkinv()}} through \code{\link[=d5linkinv]{d5linkinv()}} coming
 back. \code{linkfun()} and \code{linkinv()} delegate to \code{stats::qnorm()} and
-\code{stats::pnorm()}. The eight derivatives come from a compiled kernel, one
+\code{stats::pnorm()}. The ten derivatives come from a compiled kernel, one
 call per order and direction.
 }
 

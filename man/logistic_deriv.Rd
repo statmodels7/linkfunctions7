@@ -19,8 +19,7 @@ The \code{k}-th derivative of \eqn{\sigma(z) = 1/(1 + e^{-z})}, written as a
 polynomial in \eqn{p = \sigma(z)} itself.
 }
 \details{
-Three separate links need these same four polynomials, and each reaches
-them the same way:
+Three links use these polynomials:
 \itemize{
 \item \code{\link[=logit_link]{logit_link()}} uses them directly, \eqn{h^{(k)} = \sigma^{(k)}};
 \item \code{\link[=bounded_link]{bounded_link()}} with both endpoints scales them by the
@@ -29,19 +28,17 @@ interval width, \eqn{h^{(k)} = W \sigma^{(k)}};
 softplus is an antiderivative of the logistic: \eqn{h^{(k+1)} = a^k \sigma^{(k)}}.
 }
 
-What the three call is not this function but its transcription in
-\code{src/link_kernels.cpp}, the compiled kernels having replaced the R bodies
-when the transcendental links were compiled. This function is the R
-statement of the same five polynomials, and \code{test-logistic-twin.R} holds the
-two together at every order and checks that each of the three links reaches
-the polynomial its description names. \code{lk_logistic_poly_cpp()} reaches the
-compiled one directly.
+The three links call the transcription of these polynomials in
+\code{src/link_kernels.cpp}, which replaced the R bodies when the
+transcendental links were compiled. This function is the R statement of
+the same five polynomials. \code{test-logistic-twin.R} compares the two at
+every order and checks that each of the three links reaches the
+polynomial named in its description, and \code{lk_logistic_poly_cpp()} calls
+the compiled version directly.
 
-The twin comparison carries a tolerance rather than asking for identity.
-Both forms are Horner and so contain multiply-adds, which a compiler may
-contract into an FMA, dropping an intermediate rounding; measured here the
-two agree to the bit at every order, and that is a statement about one
-compiler rather than about the arithmetic.
+The comparison uses a tolerance instead of exact equality, because both
+forms are Horner evaluations that contain multiply-adds, and a compiler may
+fuse these into FMA instructions that skip an intermediate rounding.
 
 The polynomials are
 \deqn{\sigma' = p(1-p)}
@@ -49,9 +46,10 @@ The polynomials are
 \deqn{\sigma''' = p(1-p)(1 - 6p + 6p^2)}
 \deqn{\sigma'''' = p(1-p)(1 - 14p + 36p^2 - 24p^3)}
 \deqn{\sigma^{(5)} = p(1-p)(1 - 30p + 150p^2 - 240p^3 + 120p^4)}
-and are evaluated in Horner form, which is twice as fast at the fourth order
-and agrees with the expanded form to within one unit in the last place. Each
-follows from the one before it by \eqn{P_{k+1} = (1-2p)P_k + p(1-p)P_k'}, so
-an order beyond those written here is generated rather than transcribed.
+and are evaluated in Horner form, which is faster than the expanded form
+and agrees with it up to rounding error; near a root of a polynomial that
+error can be large relative to the value. Each polynomial
+follows from the one before by \eqn{P_{k+1} = (1-2p)P_k + p(1-p)P_k'}, so a
+higher order can be generated from the recurrence.
 }
 \keyword{internal}

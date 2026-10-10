@@ -4,13 +4,13 @@
 #' @description
 #' The base S7 class for link functions. It carries the name, the domain and
 #' any link parameters. The transformations themselves are methods that each
-#' subclass registers on the ten generics: the forward map, the inverse, and
-#' their analytical derivatives to fourth order in both directions.
+#' subclass registers on the generics for the forward map, the inverse, and
+#' their analytical derivatives to fifth order in both directions.
 #'
 #' @details
 #' Objects of class `link` are instantiated using the S7 object system.
 #'
-#' The object assumes the following mathematical notation:
+#' The documentation uses the following notation:
 #'
 #' - \eqn{\theta}: The response parameter (e.g., probability, mean, dispersion).
 #' - \eqn{\eta}: The linear predictor (unconstrained scale).
@@ -67,12 +67,12 @@ link <- S7::new_class(
 #' `v` is missing.
 #'
 #' @details
-#' A derivative that reduces to a constant must still report that it does not
-#' know the answer for an input it was not given. R makes this easy to get wrong:
-#' `NA^0` is `1`, so `theta^(lambda - 2)` silently turns a missing
-#' parameter into a number as soon as `lambda` is 2. Every derivative method
-#' that returns a constant (the identity link's, the square root link's third and
-#' fourth inverse derivatives) goes through this helper instead of `rep()`.
+#' A derivative that reduces to a constant must still return `NA` where its
+#' input is `NA`. This is easy to get wrong in R: `NA^0` is `1`, so
+#' `theta^(lambda - 2)` silently turns a missing parameter into a number as
+#' soon as `lambda` is 2. Every derivative method that returns a constant (the
+#' identity link's, and the square root link's second to fifth inverse
+#' derivatives) goes through this helper instead of `rep()`.
 #'
 #' @param v A numeric vector whose length and missingness pattern are copied.
 #' @param value The constant to repeat.
@@ -94,10 +94,10 @@ const_like <- function(v, value) {
 #' Sets `r` to `NA` wherever `v` is `NA`.
 #'
 #' @details
-#' Same hazard as [const_like()], one step further along: an expression
-#' whose exponent happens to vanish stops depending on its argument, and loses the
-#' argument's missingness along with it. The power link is the affected case,
-#' `theta^(lambda - 2)` being exactly `1` for a missing `theta`
+#' This handles the same problem as [const_like()] for a computed result: an
+#' expression whose exponent vanishes no longer depends on its argument, and
+#' loses the argument's missingness with it. The power link is the case in
+#' point, since `theta^(lambda - 2)` is exactly `1` for a missing `theta`
 #' once `lambda` is 2.
 #'
 #' @param r A numeric vector, the computed result.
@@ -119,8 +119,7 @@ na_from <- function(r, v) {
 #' polynomial in \eqn{p = \sigma(z)} itself.
 #'
 #' @details
-#' Three separate links need these same four polynomials, and each reaches
-#' them the same way:
+#' Three links use these polynomials:
 #'
 #' - [logit_link()] uses them directly, \eqn{h^{(k)} = \sigma^{(k)}};
 #' - [bounded_link()] with both endpoints scales them by the
@@ -128,19 +127,17 @@ na_from <- function(r, v) {
 #' - [softplus_link()] uses them shifted one order down, since the
 #'   softplus is an antiderivative of the logistic: \eqn{h^{(k+1)} = a^k \sigma^{(k)}}.
 #'
-#' What the three call is not this function but its transcription in
-#' `src/link_kernels.cpp`, the compiled kernels having replaced the R bodies
-#' when the transcendental links were compiled. This function is the R
-#' statement of the same five polynomials, and `test-logistic-twin.R` holds the
-#' two together at every order and checks that each of the three links reaches
-#' the polynomial its description names. `lk_logistic_poly_cpp()` reaches the
-#' compiled one directly.
+#' The three links call the transcription of these polynomials in
+#' `src/link_kernels.cpp`, which replaced the R bodies when the
+#' transcendental links were compiled. This function is the R statement of
+#' the same five polynomials. `test-logistic-twin.R` compares the two at
+#' every order and checks that each of the three links reaches the
+#' polynomial named in its description, and `lk_logistic_poly_cpp()` calls
+#' the compiled version directly.
 #'
-#' The twin comparison carries a tolerance rather than asking for identity.
-#' Both forms are Horner and so contain multiply-adds, which a compiler may
-#' contract into an FMA, dropping an intermediate rounding; measured here the
-#' two agree to the bit at every order, and that is a statement about one
-#' compiler rather than about the arithmetic.
+#' The comparison uses a tolerance instead of exact equality, because both
+#' forms are Horner evaluations that contain multiply-adds, and a compiler may
+#' fuse these into FMA instructions that skip an intermediate rounding.
 #'
 #' The polynomials are
 #' \deqn{\sigma' = p(1-p)}
@@ -148,10 +145,11 @@ na_from <- function(r, v) {
 #' \deqn{\sigma''' = p(1-p)(1 - 6p + 6p^2)}
 #' \deqn{\sigma'''' = p(1-p)(1 - 14p + 36p^2 - 24p^3)}
 #' \deqn{\sigma^{(5)} = p(1-p)(1 - 30p + 150p^2 - 240p^3 + 120p^4)}
-#' and are evaluated in Horner form, which is twice as fast at the fourth order
-#' and agrees with the expanded form to within one unit in the last place. Each
-#' follows from the one before it by \eqn{P_{k+1} = (1-2p)P_k + p(1-p)P_k'}, so
-#' an order beyond those written here is generated rather than transcribed.
+#' and are evaluated in Horner form, which is faster than the expanded form
+#' and agrees with it up to rounding error; near a root of a polynomial that
+#' error can be large relative to the value. Each polynomial
+#' follows from the one before by \eqn{P_{k+1} = (1-2p)P_k + p(1-p)P_k'}, so a
+#' higher order can be generated from the recurrence.
 #'
 #' @param p A numeric vector of logistic values, \eqn{p = \sigma(z)}.
 #' @param k The derivative order, an integer from 1 to 5.
@@ -170,7 +168,7 @@ logistic_deriv <- function(p, k) {
   )
 }
 
-#' The Smallest Parameter Value the Exponential Links Will Report
+#' The Floor of the Exponential Links
 #'
 #' @description
 #' The floor applied to `exp(eta)` by every link whose inverse is an
@@ -178,23 +176,18 @@ logistic_deriv <- function(p, k) {
 #' lower- and upper-bounded links).
 #'
 #' @details
-#' The floor exists so that a parameter reported as \eqn{\theta} can be divided
-#' into without producing `Inf`: the forward derivatives of these links are
-#' \eqn{1/\theta}, \eqn{-1/\theta^2}, \eqn{2/\theta^3} and \eqn{-6/\theta^4}, and
-#' the fourth is the binding one. Solving \eqn{6/\theta^4 \le} `double.xmax`
-#' and keeping a factor of four in hand gives
-#' `(24 / .Machine$double.xmax)^0.25`, about `1.9e-77`, at which
+#' The floor exists so that a parameter returned as \eqn{\theta} can be
+#' divided into without producing `Inf`: the forward derivatives of these
+#' links are \eqn{1/\theta}, \eqn{-1/\theta^2}, \eqn{2/\theta^3} and
+#' \eqn{-6/\theta^4}, and the fourth is the binding one. Solving
+#' \eqn{6/\theta^4 \le} `double.xmax` and keeping a factor of four in hand
+#' gives `(24 / .Machine$double.xmax)^0.25`, about `1.9e-77`, at which
 #' \eqn{-6/\theta^4} evaluates to `-4.5e307`.
 #'
-#' The point of choosing it this way is that the floor should be as *low* as
-#' that constraint allows, not as high as seems safe. It was previously
-#' `.Machine$double.eps`, which is 61 orders of magnitude higher than
-#' necessary and silently corrupted \eqn{\theta} for every \eqn{\eta < -36}:
-#' `linkinv(log_link(), -40)` returned `2.2e-16` instead of
-#' `4.2e-18`, and the round trip came back `-36.04` instead of
-#' `-40`. The present value keeps \eqn{\theta} exact down to
-#' \eqn{\eta \approx -177} while leaving every derivative just as finite as
-#' before.
+#' The floor is the lowest value that this constraint allows, and it keeps
+#' \eqn{\theta} exact down to \eqn{\eta \approx -176.7}. The fifth forward
+#' derivative, \eqn{24/\theta^5}, does not fit under it and is `Inf` for
+#' \eqn{\eta} below about \eqn{-141}.
 #'
 #' @format A length-one numeric vector.
 #' @return A length-one numeric vector, about `1.9e-77`, at which
@@ -208,15 +201,6 @@ exp_floor <- (24 / .Machine$double.xmax)^0.25
 #' @description
 #' `exp(eta)`, bounded below by [exp_floor()].
 #'
-#' @details
-#' A profile of a plain gaussian fit puts this `pmax` above the QR
-#' decomposition of the same fit, which invites replacing it with a
-#' `min()` reduction and an early return. Measured, that is not worth
-#' doing: it gains 7 to 11 per cent on the call itself and LOSES on the fit,
-#' because the reduction is a second pass over the same vector and the
-#' allocation it avoids was not what the profile was really charging for.
-#' The simple form is kept.
-#'
 #' @param eta A numeric vector of linear predictors.
 #'
 #' @return A numeric vector, never smaller than [exp_floor()].
@@ -228,35 +212,33 @@ exp_floored <- function(eta) pmax(exp(eta), exp_floor)
 #' Clamp a Parameter Strictly Inside Its Domain
 #'
 #' @description
-#' Moves a value that has reached or passed a bound to the nearest double
-#' strictly inside it, and a non-finite value to the largest finite double of
-#' that sign. Applied by [linkinv()] to every link.
+#' Moves a value that lies exactly on a finite bound to a double strictly
+#' inside it, one or two units in the last place away, and an infinite value
+#' to the largest finite double of that sign. Applied by [linkinv()] to every link.
 #'
 #' @details
-#' A link is documented as a bijection onto an **open** interval, and in
-#' exact arithmetic it is. In double precision it is not: `plogis(37)` is
-#' exactly 1, `2 + exp(-40)` is exactly 2, and `exp(800)` is infinite.
-#' A caller then receives a probability of exactly 1, or a variance of exactly
-#' 0, and the next thing they do is take its logarithm or divide by it.
+#' In exact arithmetic a link is a bijection onto an open interval, but in
+#' double precision the endpoints can be reached: `plogis(37)` is exactly 1,
+#' `2 + exp(-40)` is exactly 2, and `exp(800)` is infinite. A caller would then
+#' receive a probability of exactly 1 or a variance of exactly 0, and taking
+#' its logarithm or dividing by it fails.
 #'
-#' The correction is the smallest one that can work and it is derived, not
-#' chosen. What binds is "strictly inside, and finite",
-#' and its two extremes are the neighboring representable double and the
-#' largest finite one.
+#' The clamp moves such a value by the smallest amount that makes it strictly
+#' inside the interval and finite: to a neighboring representable double, or
+#' to the largest finite double.
 #'
-#' \subsection{The relative bump}{
-#' R has no `nextafter`, and the arithmetic substitute has to respect that
-#' **the spacing of doubles is absolute near a non-zero bound**. One ulp at
-#' 2 is about 4.4e-16 while one ulp at 1e-300 is about 1e-316, so a single
-#' additive constant cannot serve both. `b + |b| * eps` is one to two ulps
-#' from `b` at any magnitude, which is strictly inside and as close as
-#' arithmetic reliably gets.
+#' \subsection{The size of the step}{
+#' R has no `nextafter()`, so the step is computed arithmetically. Near a
+#' non-zero bound \eqn{b} the spacing of doubles is set by the magnitude of
+#' \eqn{b}: one ulp at 2 is about 4.4e-16, while one ulp at 1e-300 is about
+#' 1e-316, so no single additive constant serves both. The value
+#' `b + |b| * eps` lies one to two ulps from `b` at any magnitude, which is
+#' strictly inside the interval and as close to `b` as the arithmetic reliably
+#' allows.
 #'
-#' A bound at zero is the exception and needs no bump, since there the spacing
-#' is relative all the way down to 1e-308 and the exponential links already
-#' floor at [exp_floor()]. The clamp therefore leaves an exact zero
-#' bound to [exp_floor()] and uses the smallest positive normal only
-#' if something has still landed on it.
+#' A bound at zero needs no such step, because the exponential links already
+#' floor their result at [exp_floor()]. A value that still lands exactly on a
+#' zero bound is moved to the smallest positive normal double.
 #' }
 #'
 #' @param theta A numeric vector, as a method computed it.
@@ -264,9 +246,9 @@ exp_floored <- function(eta) pmax(exp(eta), exp_floor)
 #'
 #' @return `theta`, with any value that has landed exactly on a bound
 #'   moved just inside it and any infinity brought back to the largest finite
-#'   double. `NA` and `NaN` pass through untouched, as does a value
-#'   strictly outside by a real margin. Converting either would hide a
-#'   defect, which is the caller's to see.
+#'   double. `NA` and `NaN` pass through unchanged, as does a value outside
+#'   the bounds by more than rounding, since changing either would hide an
+#'   error in the calling code.
 #'
 #' @examples
 #' link_bounds_clamp(c(0, 0.5, 1), c(0, 1))

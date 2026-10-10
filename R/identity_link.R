@@ -3,16 +3,16 @@
 #' @description
 #' Carries the identity transformation \eqn{\eta = \theta} on the whole real
 #' line, for a parameter that needs no chart because it is already
-#' unconstrained. Every derivative is a constant: the first is one and the rest
-#' are zero, at both directions and every order.
+#' unconstrained. Every derivative is a constant: the first is one and the
+#' higher ones are zero, in both directions.
 #'
-#' [bounded_link()] returns an object of this class when it is given neither
-#' endpoint, there being nothing then to constrain.
+#' [bounded_link()] returns an object of this class when neither endpoint is
+#' given.
 #'
 #' @param link_name A character string naming the link, set by the
 #'   constructor and shown by `print()`.
-#' @param link_bounds A length-two numeric vector, the open interval the
-#'   parameter lives in. Set by the constructor; see Value for this link's.
+#' @param link_bounds A length-two numeric vector, the open interval in
+#'   which the parameter lies. Set by the constructor; see Value for this link's.
 #' @param link_params A list of the link's own parameters, empty where it has
 #'   none. Set by the constructor.
 #'
@@ -26,9 +26,8 @@
 #' [d5linkfun()] going out and [dlinkinv()] through [d5linkinv()] coming
 #' back. `linkfun()` and `linkinv()` return their argument. The first
 #' derivative is one and every higher one is zero, each built by
-#' [const_like()] so that a missing value in the argument propagates to the
-#' result: a derivative that does not depend on \eqn{\theta} is still
-#' undefined where \eqn{\theta} is.
+#' [const_like()] so that the result is `NA` wherever the argument is `NA`,
+#' although the derivative does not depend on it.
 #'
 #' @aliases linkfun.IdentityLink
 #' @aliases linkinv.IdentityLink
@@ -78,16 +77,17 @@ S7::method(d5linkinv, IdentityLink) <- function(x, eta) const_like(eta, 0)
 #' The identity link \eqn{\eta = \theta}, for a parameter that is already
 #' unconstrained.
 #' @details
-#' The Identity link is defined simply as \eqn{\eta = \theta}.
-#' Consequently, the inverse link is also \eqn{\theta = \eta}.
+#' The identity link is \eqn{\eta = \theta}, and its inverse is
+#' \eqn{\theta = \eta}.
 #'
-#' All first derivatives are constant (equal to 1), and all higher-order derivatives
-#' up to the fourth order are exactly zero.
+#' The first derivative is 1 in both directions, and every higher derivative
+#' is 0.
 #'
-#' The domain of \eqn{\theta} is unbounded, meaning the valid domain is `c(-Inf, Inf)`.
+#' The domain of \eqn{\theta} is the whole real line.
 #'
-#' @return An S7 object of class `IdentityLink` (inheriting from `link`) containing the transformation functions
-#' and their exact analytical derivatives up to the fourth order.
+#' @return An S7 object of class `IdentityLink`, inheriting from [link()], whose
+#'   methods compute the link, its inverse and their derivatives to the fifth
+#'   order.
 #'
 #' @examples
 #' lk <- identity_link()

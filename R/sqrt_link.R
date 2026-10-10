@@ -4,15 +4,14 @@
 #' Carries the square-root transformation \eqn{\eta = \sqrt{\theta}} on
 #' \eqn{(0, \infty)}, with inverse \eqn{\theta = \eta^2}.
 #'
-#' Its image is only \eqn{(0, \infty)}, so a negative linear predictor has no
-#' parameter behind it. That is a property of the link, and [check_link()]
-#' reports the failing invertibility check as expected for exactly this
-#' reason.
+#' Its image is \eqn{(0, \infty)}. On the whole real line the inverse link is
+#' not one-to-one, since \eqn{\eta} and \eqn{-\eta} give the same
+#' \eqn{\theta}; [eta_bounds()] returns the range on which it is.
 #'
 #' @param link_name A character string naming the link, set by the
 #'   constructor and shown by `print()`.
-#' @param link_bounds A length-two numeric vector, the open interval the
-#'   parameter lives in. Set by the constructor; see Value for this link's.
+#' @param link_bounds A length-two numeric vector, the open interval in
+#'   which the parameter lies. Set by the constructor; see Value for this link's.
 #' @param link_params A list of the link's own parameters, empty where it has
 #'   none. Set by the constructor.
 #'
@@ -26,8 +25,8 @@
 #' [d5linkfun()] going out and [dlinkinv()] through [d5linkinv()] coming
 #' back. The forward derivatives are half-integer falling factorials. The
 #' inverse map is \eqn{\eta^2}, so its derivatives terminate: the second is
-#' the constant two and the third and fourth are exactly zero, both built by
-#' [const_like()] so a missing value still propagates.
+#' the constant two and the third to fifth are exactly zero, all built by
+#' [const_like()] so that a missing value still propagates.
 #'
 #' @aliases linkfun.SqrtLink
 #' @aliases linkinv.SqrtLink
@@ -88,19 +87,19 @@ S7::method(d5linkinv, SqrtLink) <- function(x, eta) const_like(eta, 0)
 #' The square-root link \eqn{\eta = \sqrt{\theta}} on \eqn{(0, \infty)};
 #' its image is \eqn{(0, \infty)}.
 #' @details
-#' The Square Root link is mathematically defined as \eqn{\eta = \sqrt{\theta}}.
-#' Consequently, the inverse link is derived as \eqn{\theta = \eta^2}.
+#' The square-root link is \eqn{\eta = \sqrt{\theta}}, with inverse
+#' \eqn{\theta = \eta^2}.
 #'
-#' Unlike the Log link, this transformation allows \eqn{\theta} to reach 0 exactly.
-#' While the inverse function (\eqn{\eta^2}) is mathematically valid for negative 
-#' values of \eqn{\eta}, in the specific context of this link function, the linear 
-#' predictor \eqn{\eta} is typically constrained to be non-negative. This restriction 
-#' preserves a strictly one-to-one mapping with \eqn{\theta}.
+#' The inverse \eqn{\eta^2} is defined for a negative \eqn{\eta} as well, but
+#' there it is not one-to-one, since \eqn{\eta} and \eqn{-\eta} give the same
+#' \eqn{\theta}. The linear predictor is therefore meant to stay positive;
+#' [eta_bounds()] returns this range.
 #'
-#' The strict mathematical domain for \eqn{\theta} is `c(0, Inf)`.
+#' The domain of \eqn{\theta} is \eqn{(0, \infty)}.
 #'
-#' @return An S7 object of class `SqrtLink` (inheriting from `link`) containing the transformation functions
-#' and their exact analytical derivatives up to the fourth order.
+#' @return An S7 object of class `SqrtLink`, inheriting from [link()], whose
+#'   methods compute the link, its inverse and their derivatives to the fifth
+#'   order.
 #'
 #' @examples
 #' lk <- sqrt_link()

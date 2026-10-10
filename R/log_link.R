@@ -2,16 +2,16 @@
 #'
 #' @description
 #' Carries the log transformation \eqn{\eta = \log\theta} on \eqn{(0, \infty)},
-#' with inverse \eqn{\theta = e^{\eta}}. It is the canonical link for a positive
-#' parameter, and the one a scale or a rate is almost always fitted on.
+#' with inverse \eqn{\theta = e^{\eta}}. It is the standard link for a
+#' positive parameter such as a scale or a rate.
 #'
 #' The inverse is floored at [exp_floor()], so a parameter reported by this link
 #' is never exactly zero and can be divided into.
 #'
 #' @param link_name A character string naming the link, set by the
 #'   constructor and shown by `print()`.
-#' @param link_bounds A length-two numeric vector, the open interval the
-#'   parameter lives in. Set by the constructor; see Value for this link's.
+#' @param link_bounds A length-two numeric vector, the open interval in
+#'   which the parameter lies. Set by the constructor; see Value for this link's.
 #' @param link_params A list of the link's own parameters, empty where it has
 #'   none. Set by the constructor.
 #'
@@ -78,25 +78,25 @@ S7::method(d5linkinv, LogLink) <- function(x, eta) exp_floored(eta)
 #' inverse \eqn{\theta = e^\eta}; the canonical link for a positive
 #' parameter.
 #' @details
-#' The Log link is defined mathematically as \eqn{\eta = \log(\theta)}.
-#' The inverse link is the exponential function \eqn{\theta = \exp(\eta)}.
+#' The log link is \eqn{\eta = \log(\theta)}, and its inverse is the
+#' exponential function \eqn{\theta = \exp(\eta)}.
 #'
-#' The inverse function of this link is its 
-#' own derivative. Therefore, the parameter \eqn{\theta} and all its derivatives with 
-#' respect to \eqn{\eta} are equal to \eqn{\exp(\eta)}.
+#' The exponential is its own derivative, so every derivative of the inverse
+#' link with respect to \eqn{\eta} equals \eqn{\exp(\eta)}.
 #'
-#' The valid mathematical domain of \eqn{\theta} is `c(0, Inf)`. 
+#' The domain of \eqn{\theta} is \eqn{(0, \infty)}.
 #'
-#' **Numerical Stability:**
-#' The inverse link and its derivatives are bounded below by `exp_floor`,
-#' which is `.Machine$double.xmin^0.25`, about `1.2e-77`. This prevents
-#' underflow to exactly zero for large negative \eqn{\eta}, which would produce
-#' `Inf` when the forward derivatives divide by \eqn{\theta}; the fourth of
-#' them divides by \eqn{\theta^4}, and that is what sets the value. The floor is
-#' low enough that \eqn{\theta} is exact down to \eqn{\eta \approx -177}.
+#' The inverse link and its derivatives are bounded below by [exp_floor()],
+#' \eqn{(24/x_{\max})^{1/4} \approx 1.9 \times 10^{-77}}, where \eqn{x_{\max}}
+#' is the largest finite double. The floor prevents an underflow to exactly
+#' zero for a large negative \eqn{\eta}, which would make the forward
+#' derivatives infinite; its value is set by the fourth of them, which divides
+#' by \eqn{\theta^4}. The floor is low enough that \eqn{\theta} is exact down
+#' to \eqn{\eta \approx -176.7}.
 #'
-#' @return An S7 object of class `LogLink` (inheriting from `link`) containing the transformation functions
-#' and their exact analytical derivatives up to the fourth order.
+#' @return An S7 object of class `LogLink`, inheriting from [link()], whose
+#'   methods compute the link, its inverse and their derivatives to the fifth
+#'   order.
 #'
 #' @examples
 #' lk <- log_link()

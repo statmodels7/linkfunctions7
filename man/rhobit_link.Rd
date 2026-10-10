@@ -7,8 +7,9 @@
 rhobit_link()
 }
 \value{
-An S7 object of class \code{RhobitLink} (inheriting from \code{link}) containing the transformation functions
-and their exact analytical derivatives up to the fourth order.
+An S7 object of class \code{RhobitLink}, inheriting from \code{\link[=link]{link()}}, whose
+methods compute the link, its inverse and their derivatives to the fifth
+order.
 }
 \description{
 The rhobit link
@@ -16,13 +17,12 @@ The rhobit link
 on \eqn{(-1, 1)}, Fisher's z; the natural link for a correlation.
 }
 \details{
-The Rhobit link is defined mathematically using the inverse hyperbolic tangent function:
-\eqn{\eta = \text{arctanh}(\theta) = \frac{1}{2} \log\left(\frac{1 + \theta}{1 - \theta}\right)}.
-
-The inverse link is the hyperbolic tangent function:
+The rhobit link is the inverse hyperbolic tangent,
+\eqn{\eta = \text{arctanh}(\theta) = \frac{1}{2} \log\left(\frac{1 + \theta}{1 - \theta}\right)},
+and its inverse is the hyperbolic tangent,
 \eqn{\theta = \tanh(\eta) = \frac{\exp(2\eta) - 1}{\exp(2\eta) + 1}}.
 
-The valid mathematical domain of \eqn{\theta} is exactly \code{c(-1, 1)}.
+The domain of \eqn{\theta} is \eqn{(-1, 1)}.
 }
 \examples{
 lk <- rhobit_link()

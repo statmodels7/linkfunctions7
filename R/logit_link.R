@@ -10,8 +10,8 @@
 #'
 #' @param link_name A character string naming the link, set by the
 #'   constructor and shown by `print()`.
-#' @param link_bounds A length-two numeric vector, the open interval the
-#'   parameter lives in. Set by the constructor; see Value for this link's.
+#' @param link_bounds A length-two numeric vector, the open interval in
+#'   which the parameter lies. Set by the constructor; see Value for this link's.
 #' @param link_params A list of the link's own parameters, empty where it has
 #'   none. Set by the constructor.
 #'
@@ -81,19 +81,19 @@ S7::method(d5linkinv, LogitLink) <- function(x, eta) lk_logit_inv_cpp(eta, 5L)
 #' with inverse \eqn{\theta = 1/(1+e^{-\eta})}; the canonical link for a
 #' probability, whose linear predictor is the log-odds.
 #' @details
-#' The Logit link is defined mathematically as \eqn{\eta = \log(\frac{\theta}{1 - \theta})}.
-#' The inverse link is the standard logistic function (sigmoid):
-#' \eqn{\theta = \frac{1}{1 + \exp(-\eta)}}.
+#' The logit link is \eqn{\eta = \log(\theta/(1 - \theta))}, and its inverse
+#' is the logistic function \eqn{\theta = 1/(1 + \exp(-\eta))}.
 #'
-#' The link is symmetric about \eqn{\theta = 0.5}, where \eqn{\eta = 0}, and
-#' the linear predictor is the log-odds of the event probability. The domain of
-#' \eqn{\theta} is \eqn{(0, 1)}.
+#' The link is symmetric about \eqn{\theta = 1/2}, where \eqn{\eta = 0}, and
+#' the linear predictor is the log-odds of the event probability. The domain
+#' of \eqn{\theta} is \eqn{(0, 1)}.
 #'
-#' The implementation delegates to `stats::qlogis` and
-#' `stats::plogis`, which remain accurate near both boundaries.
+#' The implementation calls `stats::qlogis()` and `stats::plogis()`, which
+#' remain accurate near both boundaries.
 #'
-#' @return An S7 object of class `LogitLink` (inheriting from `link`) containing the transformation functions
-#' and their exact analytical derivatives up to the fourth order.
+#' @return An S7 object of class `LogitLink`, inheriting from [link()], whose
+#'   methods compute the link, its inverse and their derivatives to the fifth
+#'   order.
 #'
 #' @examples
 #' lk <- logit_link()

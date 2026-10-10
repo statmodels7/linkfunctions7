@@ -26,8 +26,8 @@ LogLogLink(
 \item{link_name}{A character string naming the link, set by the
 constructor and shown by \code{print()}.}
 
-\item{link_bounds}{A length-two numeric vector, the open interval the
-parameter lives in. Set by the constructor; see Value for this link's.}
+\item{link_bounds}{A length-two numeric vector, the open interval in
+which the parameter lies. Set by the constructor; see Value for this link's.}
 
 \item{link_params}{A list of the link's own parameters, empty where it has
 none. Set by the constructor.}
@@ -51,7 +51,7 @@ Twelve methods are registered on this class: \code{\link[=linkfun]{linkfun()}} a
 and the five derivative orders in each direction, \code{\link[=dlinkfun]{dlinkfun()}} through
 \code{\link[=d5linkfun]{d5linkfun()}} going out and \code{\link[=dlinkinv]{dlinkinv()}} through \code{\link[=d5linkinv]{d5linkinv()}} coming
 back. \code{linkfun()} and \code{linkinv()} are the elementary
-\eqn{-\log(-\log\theta)} and \eqn{\exp(-\exp(-\eta))}; the eight
+\eqn{-\log(-\log\theta)} and \eqn{\exp(-\exp(-\eta))}; the ten
 derivatives come from a compiled kernel.
 }
 

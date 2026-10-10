@@ -29,8 +29,8 @@ DoublyBoundedLink(
 \item{link_name}{A character string naming the link, set by the
 constructor and shown by \code{print()}.}
 
-\item{link_bounds}{A length-two numeric vector, the open interval the
-parameter lives in. Set by the constructor; see Value for this link's.}
+\item{link_bounds}{A length-two numeric vector, the open interval in
+which the parameter lies. Set by the constructor; see Value for this link's.}
 
 \item{link_params}{A list of the link's own parameters, empty where it has
 none. Set by the constructor.}
@@ -53,14 +53,11 @@ that position is carried by the logit, so
 
 Its derivatives are the logistic polynomials scaled by the width
 \eqn{u - l}, so a bounded link costs no more than a logit.
-It is the logit of \eqn{p = (\theta - \mathrm{lwr})/W}, the position of
-\eqn{\theta} within the interval.
 }
 \details{
-The interval width \eqn{W = \mathrm{upr} - \mathrm{lwr}} is stored as its own
-property rather than recomputed. Every method needs it, and reading two S7
-properties and subtracting cost about a third of a call to \code{dlinkinv()};
-the constructor is the only place it can change.
+The interval width \eqn{W = \mathrm{upr} - \mathrm{lwr}} is stored as its
+own property, set by the constructor, so that each method reads one
+property instead of two.
 }
 \section{Methods}{
 
@@ -69,10 +66,9 @@ and the five derivative orders in each direction, \code{\link[=dlinkfun]{dlinkfu
 \code{\link[=d5linkfun]{d5linkfun()}} going out and \code{\link[=dlinkinv]{dlinkinv()}} through \code{\link[=d5linkinv]{d5linkinv()}} coming
 back. The forward derivatives are the logit's divided by \eqn{W^k} and
 the inverse ones the logit's multiplied by \eqn{W}, because \eqn{p} is
-\eqn{\theta} rescaled by the width; the inverse set therefore calls the
-logit's own compiled kernel rather than transcribing four more
-polynomials, and the forward set is the logit's four expressions written
-in \eqn{p}.
+\eqn{\theta} rescaled by the width. The inverse set therefore calls the
+compiled kernel of the logit, and the forward set is the logit's
+expressions written in \eqn{p}.
 }
 
 \seealso{

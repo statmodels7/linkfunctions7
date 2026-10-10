@@ -9,7 +9,7 @@ analytic_order(x, inverse = FALSE)
 \arguments{
 \item{x}{An object of class \code{link}.}
 
-\item{inverse}{Logical; \code{TRUE} to ask about the inverse-link generics.}
+\item{inverse}{Logical; \code{TRUE} for the inverse-link generics.}
 }
 \value{
 An integer between 0 and 5.
@@ -20,17 +20,17 @@ for the order-\eqn{k} derivative generic; \code{0} when it registers none, so
 that only \code{\link[=linkfun]{linkfun()}} or \code{\link[=linkinv]{linkinv()}} is available.
 }
 \details{
-Detection uses the documented S7 property that a method records the class it
-was registered on in its \code{signature} attribute: a method inherited from
+Detection uses the documented S7 property that a method records, in its
+\code{signature} attribute, the class on which it was registered: a method inherited from
 the base \code{\link[=link]{link()}} class is a fallback, anything else is the link's
 own. Comparing method objects with \code{identical()} does not work for this,
 because S7 wraps them.
 
-The recorded class is compared by name and package, never with
-\code{identical()}: \code{identical()} on S7 class objects tests
-object identity and returns \code{FALSE} for a class re-created from the
-same definition, as happens when the package's code is re-evaluated under
-coverage instrumentation; identity is kept only as a fast path.
+The recorded class is compared by name and package. \code{identical()} on S7
+class objects tests object identity and returns \code{FALSE} for a class
+re-created from the same definition, as happens when the package's code is
+re-evaluated under coverage instrumentation, so identity serves only as a
+fast path.
 
 The search stops at the first missing order, so the answer always means
 that every order up to it is analytic.

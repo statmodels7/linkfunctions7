@@ -30,19 +30,22 @@ A numeric vector of the same length as \code{v}.
 }
 \description{
 Computes the order-\code{order} derivative of a link, in either direction, by
-differentiating once the highest order the link supplies analytically.
+one numerical differentiation of the highest order that the link supplies
+analytically.
 }
 \details{
-The whole design is in the two lines that pick \code{m} and \code{gap}: never
-differentiate numerically more than the number of orders actually missing.
-A link analytic to the second order asks for a first difference to reach the
-third, not three; a link supplying nothing but \code{\link[=linkfun]{linkfun()}} is the
-only case in which a fourth-order stencil is applied to the function itself.
+The function takes the highest analytic order \eqn{m} below the requested
+one and applies a single central stencil of order \code{order - m} to it, never
+a chain of lower-order stencils. For a link analytic to the second order,
+the third derivative is one first difference of the second; only for a link
+that supplies nothing but \code{\link[=linkfun]{linkfun()}} is a stencil of the full order
+applied to the function itself.
 
-Note the recursion is only apparent. The base function is fetched through
-\code{\link[=linkderiv]{linkderiv()}}, which dispatches to the link's own method for an
-order it implements, so the chain always terminates on analytic code, and
-never on another fallback.
+The recursion is only apparent. The base function is obtained through
+\code{\link[=linkderiv]{linkderiv()}} or \code{\link[=linkinvderiv]{linkinvderiv()}}, which dispatch to the link's own method
+for an order that
+the link implements, so the chain always ends on analytic code and never on
+another fallback.
 }
 \section{Methods}{
 
@@ -50,10 +53,11 @@ The ten registrations on the base class \code{\link[=link]{link()}} have this fu
 their whole body: \code{dlinkfun()} through \code{d5linkfun()} going out and
 \code{dlinkinv()} through \code{d5linkinv()} coming back, each passing its order and
 its direction. A link inherits them for the orders it does not implement
-itself, so a link defined with nothing but \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}} can
-still answer every derivative generic. S7 requires a method's formals to
-match the generic's, and the two directions name their argument
-differently, so the eight wrappers are written out rather than generated.
+itself, so a link defined with nothing but \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}}
+still has a method for every derivative generic. S7 requires the formals of
+a method to match those of the generic, and the two directions name their
+argument differently, so the ten wrappers are written out instead of
+generated.
 }
 
 \keyword{internal}

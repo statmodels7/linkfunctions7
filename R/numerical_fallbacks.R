@@ -27,23 +27,23 @@ NULL
 #' that only [linkfun()] or [linkinv()] is available.
 #'
 #' @details
-#' Detection uses the documented S7 property that a method records the class it
-#' was registered on in its `signature` attribute: a method inherited from
+#' Detection uses the documented S7 property that a method records, in its
+#' `signature` attribute, the class on which it was registered: a method inherited from
 #' the base [link()] class is a fallback, anything else is the link's
 #' own. Comparing method objects with `identical()` does not work for this,
 #' because S7 wraps them.
 #'
-#' The recorded class is compared by name and package, never with
-#' `identical()`: `identical()` on S7 class objects tests
-#' object identity and returns `FALSE` for a class re-created from the
-#' same definition, as happens when the package's code is re-evaluated under
-#' coverage instrumentation; identity is kept only as a fast path.
+#' The recorded class is compared by name and package. `identical()` on S7
+#' class objects tests object identity and returns `FALSE` for a class
+#' re-created from the same definition, as happens when the package's code is
+#' re-evaluated under coverage instrumentation, so identity serves only as a
+#' fast path.
 #'
 #' The search stops at the first missing order, so the answer always means
 #' that every order up to it is analytic.
 #'
 #' @param x An object of class `link`.
-#' @param inverse Logical; `TRUE` to ask about the inverse-link generics.
+#' @param inverse Logical; `TRUE` for the inverse-link generics.
 #'
 #' @return An integer between 0 and 5.
 #'
@@ -71,8 +71,8 @@ analytic_order <- function(x, inverse = FALSE) {
 #' Is a Class the Base Link Class
 #'
 #' @description
-#' Answers whether an S7 class is this package's own [link()] class,
-#' which is how a method inherited from the base class is told from one a link
+#' Returns whether an S7 class is this package's own [link()] class. It is
+#' used to tell a method inherited from the base class from one that a link
 #' registered for itself.
 #'
 #' @details
@@ -81,10 +81,10 @@ analytic_order <- function(x, inverse = FALSE) {
 #' comparison is the one that makes the answer reliable. `identical()` on an
 #' S7 class is object identity, so it is false for a class re-created from the
 #' same definition, which happens whenever a package's code is evaluated
-#' instead of loaded, as it is under coverage instrumentation. A base fallback
-#' mistaken for an analytic
-#' method makes every fallback differentiate the order below it, which is the
-#' nested differencing the design exists to forbid.
+#' instead of loaded, as it is under coverage instrumentation. If a base
+#' fallback were mistaken for an analytic method, every fallback would
+#' differentiate the order below it, which is the nested differencing that the
+#' fallbacks are written to avoid.
 #'
 #' @param cls An S7 class.
 #'
@@ -122,7 +122,7 @@ is_base_link_class <- function(cls) {
 #' @param x A numeric vector of evaluation points.
 #' @param order The derivative order, 1 to 5.
 #' @param bounds An optional length-2 numeric vector, the open interval
-#'   `x` must stay inside.
+#'   inside which `x` must stay.
 #'
 #' @return A numeric vector of steps, the same length as `x`.
 #'
@@ -141,18 +141,18 @@ fd_step <- function(x, order, bounds = NULL) {
 #' applied in a single step rather than by composing lower-order differences.
 #'
 #' @details
-#' The four stencils are
+#' The stencils of orders one to four are
 #' \deqn{f' \approx \frac{f(x+h) - f(x-h)}{2h}, \qquad
 #'       f'' \approx \frac{f(x+h) - 2f(x) + f(x-h)}{h^{2}},}
 #' \deqn{f''' \approx \frac{f(x+2h) - 2f(x+h) + 2f(x-h) - f(x-2h)}{2h^{3}}, \qquad
 #'       f'''' \approx \frac{f(x+2h) - 4f(x+h) + 6f(x) - 4f(x-h) + f(x-2h)}{h^{4}}.}
 #'
-#' Applying one stencil of order \eqn{k} is not the same as applying \eqn{k}
-#' stencils of order one, and the difference is the whole reason this function
-#' exists: each numerical differentiation multiplies the error of the one before
-#' it, so a fourth derivative reached by four nested first differences is noise.
-#' The identity link shows the failure at its plainest. Its third derivative is
-#' exactly zero, and nested differentiation returns a number of order one.
+#' Applying one stencil of order \eqn{k} differs from applying \eqn{k}
+#' stencils of order one, and this function exists because of the difference:
+#' each numerical differentiation amplifies the error of the one before it, so
+#' a fourth derivative computed by four nested first differences is dominated
+#' by rounding error. For the identity link, whose third derivative is exactly
+#' zero, nested differentiation returns non-zero values.
 #'
 #' @param f A vectorized function of one numeric argument.
 #' @param x A numeric vector of evaluation points.
@@ -173,34 +173,34 @@ stencil_deriv <- function(f, x, order, h) {
 #' The Range of Predictors a Link Admits
 #'
 #' @description
-#' The image of the link's parameter bounds under [linkfun()], which is the set
-#' of predictors the inverse link is defined on. Where a link maps onto the
-#' whole real line the answer is `c(-Inf, Inf)`; where it does not, the two
-#' finite ends are the boundary of what a caller may hand to [linkinv()].
+#' The image of the link's parameter bounds under [linkfun()], which is the
+#' set of predictors on which the inverse link is defined. Where a link maps
+#' onto the whole real line the result is `c(-Inf, Inf)`; otherwise its finite
+#' end or ends bound the values that a caller may pass to [linkinv()].
 #'
 #' @details
 #' A link need not map onto the whole real line: the square root reaches only
 #' the positive half, and so do [inverse_link()], [inverse_sq_link()] and
-#' [power_link()] at a positive exponent. The bounds are returned sorted, since
+#' [power_link()] at any non-zero exponent. The bounds are returned sorted, since
 #' a decreasing link reverses them, and are infinite in the directions where
 #' they cannot be established.
 #'
-#' # Why a caller outside this package asks
+#' # Use outside the package
 #'
-#' The internal use is to keep a finite-difference grid inside the set the
-#' inverse link is defined on, a stencil straying outside returning `NaN` and
-#' so making a numerical derivative missing rather than inaccurate. The use
-#' from outside is a different question with the same answer:
-#' [link_bounds()][link] says what a link maps **onto**, and a consumer that
-#' carries an unconstrained vector needs to know what it maps **from**.
+#' Inside the package the function keeps a finite-difference grid within the
+#' set on which the inverse link is defined, since a stencil point outside it
+#' returns `NaN` and makes a numerical derivative missing. Outside the package
+#' it serves a related purpose: [link_bounds()][link] gives the set that a link
+#' maps **onto**, and a consumer that carries an unconstrained vector needs the
+#' set that it maps **from**.
 #'
-#' Both ends matter, and only together. A family that reads a free vector in
-#' \eqn{\mathbb{R}^d} and applies an inverse link to each coordinate needs
-#' the map to be defined and injective there, and a link with finite eta bounds
-#' is neither: [linkinv()] of a square root link is even, so `-2` and `2` both
-#' give 4 and the round trip returns the absolute value. Asking
-#' `all(is.infinite(eta_bounds(link)))` is how such a family rejects one at
-#' construction, where the message can name the link.
+#' A family that reads a free vector in \eqn{\mathbb{R}^d} and applies an
+#' inverse link to each coordinate needs the map to be defined and injective
+#' on the whole real line, which fails for a link with finite eta bounds:
+#' [linkinv()] of a square root link is even, so `-2` and `2` both give 4 and
+#' the round trip returns the absolute value. Such a family can reject the
+#' link at construction by testing `all(is.infinite(eta_bounds(link)))`, and
+#' its error message can then name the link.
 #'
 #' @param x A [link()] object.
 #'
@@ -235,19 +235,22 @@ eta_bounds <- function(x) {
 #'
 #' @description
 #' Computes the order-`order` derivative of a link, in either direction, by
-#' differentiating once the highest order the link supplies analytically.
+#' one numerical differentiation of the highest order that the link supplies
+#' analytically.
 #'
 #' @details
-#' The whole design is in the two lines that pick `m` and `gap`: never
-#' differentiate numerically more than the number of orders actually missing.
-#' A link analytic to the second order asks for a first difference to reach the
-#' third, not three; a link supplying nothing but [linkfun()] is the
-#' only case in which a fourth-order stencil is applied to the function itself.
+#' The function takes the highest analytic order \eqn{m} below the requested
+#' one and applies a single central stencil of order `order - m` to it, never
+#' a chain of lower-order stencils. For a link analytic to the second order,
+#' the third derivative is one first difference of the second; only for a link
+#' that supplies nothing but [linkfun()] is a stencil of the full order
+#' applied to the function itself.
 #'
-#' Note the recursion is only apparent. The base function is fetched through
-#' [linkderiv()], which dispatches to the link's own method for an
-#' order it implements, so the chain always terminates on analytic code, and
-#' never on another fallback.
+#' The recursion is only apparent. The base function is obtained through
+#' [linkderiv()] or [linkinvderiv()], which dispatch to the link's own method
+#' for an order that
+#' the link implements, so the chain always ends on analytic code and never on
+#' another fallback.
 #'
 #' @param x An object of class `link`.
 #' @param v A numeric vector: \eqn{\theta} going forward, \eqn{\eta} coming back.
@@ -261,10 +264,11 @@ eta_bounds <- function(x) {
 #' their whole body: `dlinkfun()` through `d5linkfun()` going out and
 #' `dlinkinv()` through `d5linkinv()` coming back, each passing its order and
 #' its direction. A link inherits them for the orders it does not implement
-#' itself, so a link defined with nothing but [linkfun()] and [linkinv()] can
-#' still answer every derivative generic. S7 requires a method's formals to
-#' match the generic's, and the two directions name their argument
-#' differently, so the eight wrappers are written out rather than generated.
+#' itself, so a link defined with nothing but [linkfun()] and [linkinv()]
+#' still has a method for every derivative generic. S7 requires the formals of
+#' a method to match those of the generic, and the two directions name their
+#' argument differently, so the ten wrappers are written out instead of
+#' generated.
 #'
 #' @aliases dlinkfun.link
 #' @aliases d2linkfun.link
@@ -317,11 +321,11 @@ S7::method(d5linkinv, link) <- function(x, eta) fallback_deriv(x, eta, 5L, TRUE)
 #' analytically and which are therefore obtained by finite differences.
 #'
 #' @details
-#' Every link can answer every derivative generic, because the base class
-#' supplies numerical fallbacks for the orders a link does not implement. That
-#' convenience requires a way of asking which is which. A fallback is correct
-#' but not exact, and that is why [check_link()] reports such orders
-#' separately instead of passing them.
+#' Every link has a method for every derivative generic, because the base
+#' class supplies numerical fallbacks for the orders that a link does not
+#' implement. This function reports which orders are analytic. A fallback is
+#' accurate only to the precision of a finite difference, so [check_link()]
+#' reports such orders separately instead of counting them as passed.
 #'
 #' @param x An object of class `link`.
 #'
@@ -329,7 +333,7 @@ S7::method(d5linkinv, link) <- function(x, eta) fallback_deriv(x, eta, 5L, TRUE)
 #'   number of leading orders implemented analytically, from 0 to 5.
 #'
 #' @examples
-#' # everything the package ships is exact to fourth order
+#' # everything the package ships is exact to fifth order
 #' link_fallback_orders(logit_link())
 #'
 #' @seealso [check_link()]

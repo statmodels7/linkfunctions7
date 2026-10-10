@@ -9,9 +9,9 @@ d5linkinv(x, eta)
 \arguments{
 \item{x}{An object of class \code{link}.}
 
-\item{eta}{A numeric vector of linear predictors. Any finite value is
-admissible; the inverse link clamps its result strictly inside
-\code{x@link_bounds} before this derivative is taken.}
+\item{eta}{A numeric vector of linear predictors, inside the range that
+\code{\link[=eta_bounds]{eta_bounds()}} returns for the link. The derivative is computed from
+\code{eta} directly, without the clamp that \code{\link[=linkinv]{linkinv()}} applies.}
 }
 \value{
 A numeric vector of the same length as \code{eta}, missing wherever
@@ -22,24 +22,26 @@ The fifth derivative of the inverse link \eqn{g^{-1}(\eta)} with respect
 to the linear predictor.
 }
 \details{
-This is the order a score-driven filter's outer curvature reaches. The
+This order is reached by the outer curvature of a score-driven filter. The
 chain rule that carries a log-likelihood derivative of order \eqn{k} from
-\eqn{\theta} onto \eqn{\eta} contracts the family's components against
+\eqn{\theta} onto \eqn{\eta} combines the derivatives of the family with
 the partial Bell polynomials in \eqn{h', \ldots, h^{(k)}}, so an order-5
-quantity on the unconstrained scale needs the fifth derivative of the
-inverse link and nothing beyond it.
+quantity on the unconstrained scale requires the fifth derivative of the
+inverse link and no higher one.
 
-Every link answers this generic. A link whose class registers no method
-for it gets the base class's numerical one, which applies a single central
-stencil to the highest order that link does supply analytically, never a
-chain of lower-order differences. \code{\link[=link_fallback_orders]{link_fallback_orders()}} says which
-orders of a given link are exact, and \code{\link[=check_link]{check_link()}} leaves a fallback
-order unchecked, since comparing it against a difference of itself would
-agree however wrong the link is.
+Every link has a method for this generic. If the class of a link registers
+no method for it, the numerical method of the base class is used: it
+applies a single central stencil to the highest order that the link
+supplies analytically, never a chain of lower-order differences.
+\code{\link[=link_fallback_orders]{link_fallback_orders()}} reports which orders of a given link are exact,
+and \code{\link[=check_link]{check_link()}} leaves a fallback order unchecked, because comparing it
+with a finite difference of the order below would repeat the same
+computation and could not detect an error.
 
-Call this generic directly in a hot loop. \code{\link[=linkderiv]{linkderiv()}} and
+In code where speed matters, call this generic directly: \code{\link[=linkderiv]{linkderiv()}} and
 \code{\link[=linkinvderiv]{linkinvderiv()}} route by order and so dispatch twice, once on themselves
-and once here, which is about a third of the cost of the call.
+and once here, and on a short vector the routed call takes two to three
+times as long as the direct one.
 }
 \examples{
 # Every derivative of exp is exp, so the log link's inverse gives the

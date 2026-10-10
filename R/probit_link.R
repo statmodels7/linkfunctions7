@@ -5,14 +5,14 @@
 #' \eqn{(0, 1)}, with \eqn{\Phi} the standard normal distribution function and
 #' the inverse \eqn{\theta = \Phi(\eta)}.
 #'
-#' It is symmetric about \eqn{\theta = 1/2}, like the logit, and reaches its
-#' bounds faster: the same change in \eqn{\eta} moves a probability further in
-#' the tails.
+#' It is symmetric about \eqn{\theta = 1/2}, like the logit, and it reaches
+#' its bounds faster, because the tails of the normal distribution are lighter
+#' than those of the logistic.
 #'
 #' @param link_name A character string naming the link, set by the
 #'   constructor and shown by `print()`.
-#' @param link_bounds A length-two numeric vector, the open interval the
-#'   parameter lives in. Set by the constructor; see Value for this link's.
+#' @param link_bounds A length-two numeric vector, the open interval in
+#'   which the parameter lies. Set by the constructor; see Value for this link's.
 #' @param link_params A list of the link's own parameters, empty where it has
 #'   none. Set by the constructor.
 #'
@@ -25,7 +25,7 @@
 #' and the five derivative orders in each direction, [dlinkfun()] through
 #' [d5linkfun()] going out and [dlinkinv()] through [d5linkinv()] coming
 #' back. `linkfun()` and `linkinv()` delegate to `stats::qnorm()` and
-#' `stats::pnorm()`. The eight derivatives come from a compiled kernel, one
+#' `stats::pnorm()`. The ten derivatives come from a compiled kernel, one
 #' call per order and direction.
 #'
 #' @aliases linkfun.ProbitLink
@@ -78,18 +78,21 @@ S7::method(d5linkinv, ProbitLink) <- function(x, eta) lk_probit_inv_cpp(eta, 5L)
 #' The probit link \eqn{\eta = \Phi^{-1}(\theta)} on \eqn{(0, 1)}, with
 #' \eqn{\Phi} the standard normal distribution function.
 #' @details
-#' The Probit link is mathematically defined as \eqn{\eta = \Phi^{-1}(\theta)}, where 
-#' \eqn{\Phi^{-1}} is the quantile function of the standard normal distribution (`qnorm`).
-#' The inverse link is \eqn{\theta = \Phi(\eta)}, the standard normal CDF (`pnorm`).
+#' The probit link is \eqn{\eta = \Phi^{-1}(\theta)}, where \eqn{\Phi^{-1}}
+#' is the quantile function of the standard normal distribution (`qnorm()`).
+#' The inverse link is the standard normal distribution function,
+#' \eqn{\theta = \Phi(\eta)} (`pnorm()`).
 #'
-#' Similarly to the `logit` link, the Probit is symmetric around \eqn{\theta = 0.5} 
-#' (where \eqn{\eta = 0}). However, the tails of the Normal distribution approach 0 
-#' and 1 faster than the Logistic distribution.
+#' Like the logit, the probit link is symmetric about \eqn{\theta = 1/2},
+#' where \eqn{\eta = 0}. The tails of the normal distribution are lighter than
+#' those of the logistic, so \eqn{\theta} approaches 0 and 1 faster than under
+#' the logit link.
 #'
-#' The strictly mathematical domain of \eqn{\theta} is `c(0, 1)`.
+#' The domain of \eqn{\theta} is \eqn{(0, 1)}.
 #'
-#' @return An S7 object of class `ProbitLink` (inheriting from `link`) containing the transformation functions
-#' and their exact analytical derivatives up to the fourth order.
+#' @return An S7 object of class `ProbitLink`, inheriting from [link()], whose
+#'   methods compute the link, its inverse and their derivatives to the fifth
+#'   order.
 #'
 #' @examples
 #' lk <- probit_link()
