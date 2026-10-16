@@ -21,7 +21,7 @@ link_params, so one class serves every \(a\)."><meta property="og:image" content
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -83,12 +83,13 @@ constructor and shown by <code><a href="https://rdrr.io/r/base/print.html" class
 
 <dt id="arg-link-bounds">link_bounds<a class="anchor" aria-label="anchor" href="#arg-link-bounds"></a></dt>
 <dd><p>A length-two numeric vector, the open interval in
-which the parameter lies. Set by the constructor; see Value for this link's.</p></dd>
+which the parameter lies. The constructor sets it, and the Value section
+gives its value for this link.</p></dd>
 
 
 <dt id="arg-link-params">link_params<a class="anchor" aria-label="anchor" href="#arg-link-params"></a></dt>
 <dd><p>A list of the link's own parameters, empty where it has
-none. Set by the constructor.</p></dd>
+none. The constructor sets it.</p></dd>
 
 
 <dt id="arg-a">a<a class="anchor" aria-label="anchor" href="#arg-a"></a></dt>
@@ -106,18 +107,18 @@ carrying its three properties <code>link_name</code>, <code>link_bounds</code> a
 
 
 <p>Twelve methods are registered on this class: <code><a href="linkfun.html">linkfun()</a></code> and <code><a href="linkinv.html">linkinv()</a></code>,
-and the five derivative orders in each direction, <code><a href="dlinkfun.html">dlinkfun()</a></code> through
-<code><a href="d5linkfun.html">d5linkfun()</a></code> going out and <code><a href="dlinkinv.html">dlinkinv()</a></code> through <code><a href="d5linkinv.html">d5linkinv()</a></code> coming
-back. The softplus is an antiderivative of the logistic, so its
+the five derivatives of the link, <code><a href="dlinkfun.html">dlinkfun()</a></code> through <code><a href="d5linkfun.html">d5linkfun()</a></code>, and
+the five derivatives of the inverse link, <code><a href="dlinkinv.html">dlinkinv()</a></code> through
+<code><a href="d5linkinv.html">d5linkinv()</a></code>. The softplus is an antiderivative of the logistic, so its
 inverse-link derivatives are the logistic ones shifted a place,
 \(h^{(k+1)} = a^k \sigma^{(k)}\), and they reuse the same polynomials
-the logit does. The forward set comes from a compiled kernel written in
+as the logit. The forward set comes from a compiled kernel written in
 \(u = -\mathrm{expm1}(-a\theta)\), which is finite where the
 \(\mathrm{expm1}(a\theta)\) form overflows.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="softplus_link.html">softplus_link()</a></code>, the constructor users call.</p></div>
+    <div class="dont-index"><p><code><a href="softplus_link.html">softplus_link()</a></code>, the constructor that users call.</p></div>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

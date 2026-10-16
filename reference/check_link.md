@@ -30,7 +30,8 @@ check_link.link(x, tolerance = 1e-05, ...)
 ## Value
 
 Invisibly, a named list of check results; see `check_link.link()` for
-its shape. Called mainly for the summary printed to the console.
+its shape. The function is called mainly for the summary that it prints
+to the console.
 
 Invisibly, a named list of the check results: the four scalar logicals
 `invertibility_theta`, `invertibility_eta`, `monotonicity` and
@@ -42,30 +43,30 @@ reference would come from the same computation and would agree even for
 a wrong link. The number of orders actually implemented is carried on
 the result as the attribute `"analytic_orders"`; see
 [`link_fallback_orders()`](https://statmodels7.github.io/linkfunctions7/reference/link_fallback_orders.md).
-A derivative that raises an error still counts as `FALSE`. Called mainly
-for the summary printed to the console.
+A derivative that raises an error still counts as `FALSE`. The function
+is called mainly for the summary that it prints to the console.
 
 ## Details
 
 The method performs six checks:
 
-1.  **Invertibility (\\\theta\\ space):** verifies \\g^{-1}(g(\theta)) =
+1.  Invertibility (\\\theta\\ space): verifies \\g^{-1}(g(\theta)) =
     \theta\\ on a grid of parameter values.
 
-2.  **Invertibility (\\\eta\\ space):** verifies \\g(g^{-1}(\eta)) =
-    \eta\\ on a grid spanning the linear predictors that the link
-    produces from the parameter grid.
+2.  Invertibility (\\\eta\\ space): verifies \\g(g^{-1}(\eta)) = \eta\\
+    on a grid spanning the linear predictors that the link produces from
+    the parameter grid.
 
-3.  **Strict monotonicity:** checks that \\g'(\theta)\\ has the same
-    sign at every point of the grid, so that the map is one-to-one.
+3.  Strict monotonicity: checks that \\g'(\theta)\\ has the same sign at
+    every point of the grid, so that the map is one-to-one.
 
-4.  **Inverse function theorem:** verifies \\g'(\theta) \cdot
+4.  Inverse function theorem: verifies \\g'(\theta) \cdot
     (g^{-1})'(\eta) = 1\\.
 
-5.  **Link derivatives:** compares each analytic derivative of
+5.  Link derivatives: compares each analytic derivative of
     \\g(\theta)\\, up to the fifth order, with a numerical one.
 
-6.  **Inverse link derivatives:** compares each analytic derivative of
+6.  Inverse link derivatives: compares each analytic derivative of
     \\g^{-1}(\eta)\\, up to the fifth order, with a numerical one.
 
 Each analytic derivative of order \\k\\ is compared with one numerical
@@ -115,7 +116,7 @@ res$link_derivatives
 res$inverse_theorem
 #> [1] TRUE
 
-# the checks are what a user-defined link should be held to as well
+# a user-defined link should pass the same checks
 all(unlist(check_link(bounded_link(0, 10))))
 #> Checking S7 Link Object: bounded(lwr=0, upr=10) 
 #>   [1] Invertibility (Theta space): [PASSED] 

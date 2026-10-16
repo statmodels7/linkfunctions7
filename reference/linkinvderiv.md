@@ -1,8 +1,8 @@
 # Evaluate Derivative of Inverse Link Function by Order
 
-A convenience router over
+Routes a call, by derivative order, to
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md)
-and the five `d*linkinv` generics.
+or to one of the five `d*linkinv` generics.
 
 Routes to the correct inverse derivative generic based on order.
 

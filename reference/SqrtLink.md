@@ -28,12 +28,13 @@ SqrtLink(
 - link_bounds:
 
   A length-two numeric vector, the open interval in which the parameter
-  lies. Set by the constructor; see Value for this link's.
+  lies. The constructor sets it, and the Value section gives its value
+  for this link.
 
 - link_params:
 
-  A list of the link's own parameters, empty where it has none. Set by
-  the constructor.
+  A list of the link's own parameters, empty where it has none. The
+  constructor sets it.
 
 ## Value
 
@@ -49,22 +50,21 @@ Twelve methods are registered on this class:
 [`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md)
 and
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md),
-and the five derivative orders in each direction,
+the five derivatives of the link,
 [`dlinkfun()`](https://statmodels7.github.io/linkfunctions7/reference/dlinkfun.md)
 through
-[`d5linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkfun.md)
-going out and
+[`d5linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkfun.md),
+and the five derivatives of the inverse link,
 [`dlinkinv()`](https://statmodels7.github.io/linkfunctions7/reference/dlinkinv.md)
 through
-[`d5linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkinv.md)
-coming back. The forward derivatives are half-integer falling
-factorials. The inverse map is \\\eta^2\\, so its derivatives terminate:
-the second is the constant two and the third to fifth are exactly zero,
-all built by
+[`d5linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkinv.md).
+The forward derivatives are half-integer falling factorials. The inverse
+map is \\\eta^2\\, so its derivatives terminate: the second is the
+constant two and the third to fifth are exactly zero.
 [`const_like()`](https://statmodels7.github.io/linkfunctions7/reference/const_like.md)
-so that a missing value still propagates.
+builds all of them, so that a missing value still propagates.
 
 ## See also
 
 [`sqrt_link()`](https://statmodels7.github.io/linkfunctions7/reference/sqrt_link.md),
-the constructor users call.
+the constructor that users call.

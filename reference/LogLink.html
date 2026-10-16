@@ -3,11 +3,11 @@
 with inverse \(\theta = e^{\eta}\). It is the standard link for a
 positive parameter such as a scale or a rate.
 The inverse is floored at exp_floor(), so a parameter reported by this link
-is never exactly zero and can be divided into."><meta property="og:description" content="Carries the log transformation \(\eta = \log\theta\) on \((0, \infty)\),
+is never exactly zero and can be used as a divisor."><meta property="og:description" content="Carries the log transformation \(\eta = \log\theta\) on \((0, \infty)\),
 with inverse \(\theta = e^{\eta}\). It is the standard link for a
 positive parameter such as a scale or a rate.
 The inverse is floored at exp_floor(), so a parameter reported by this link
-is never exactly zero and can be divided into."><meta property="og:image" content="https://statmodels7.github.io/linkfunctions7/logo.png"></head><body>
+is never exactly zero and can be used as a divisor."><meta property="og:image" content="https://statmodels7.github.io/linkfunctions7/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -15,7 +15,7 @@ is never exactly zero and can be divided into."><meta property="og:image" conten
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,7 +50,7 @@ is never exactly zero and can be divided into."><meta property="og:image" conten
 with inverse \(\theta = e^{\eta}\). It is the standard link for a
 positive parameter such as a scale or a rate.</p>
 <p>The inverse is floored at <code><a href="exp_floor.html">exp_floor()</a></code>, so a parameter reported by this link
-is never exactly zero and can be divided into.</p>
+is never exactly zero and can be used as a divisor.</p>
     </div>
 
     <div class="section level2">
@@ -69,12 +69,13 @@ constructor and shown by <code><a href="https://rdrr.io/r/base/print.html" class
 
 <dt id="arg-link-bounds">link_bounds<a class="anchor" aria-label="anchor" href="#arg-link-bounds"></a></dt>
 <dd><p>A length-two numeric vector, the open interval in
-which the parameter lies. Set by the constructor; see Value for this link's.</p></dd>
+which the parameter lies. The constructor sets it, and the Value section
+gives its value for this link.</p></dd>
 
 
 <dt id="arg-link-params">link_params<a class="anchor" aria-label="anchor" href="#arg-link-params"></a></dt>
 <dd><p>A list of the link's own parameters, empty where it has
-none. Set by the constructor.</p></dd>
+none. The constructor sets it.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -88,16 +89,16 @@ carrying its three properties <code>link_name</code>, <code>link_bounds</code> a
 
 
 <p>Twelve methods are registered on this class: <code><a href="linkfun.html">linkfun()</a></code> and <code><a href="linkinv.html">linkinv()</a></code>,
-and the five derivative orders in each direction, <code><a href="dlinkfun.html">dlinkfun()</a></code> through
-<code><a href="d5linkfun.html">d5linkfun()</a></code> going out and <code><a href="dlinkinv.html">dlinkinv()</a></code> through <code><a href="d5linkinv.html">d5linkinv()</a></code> coming
-back. The forward derivatives are \((-1)^{k-1}(k-1)!\,\theta^{-k}\),
+the five derivatives of the link, <code><a href="dlinkfun.html">dlinkfun()</a></code> through <code><a href="d5linkfun.html">d5linkfun()</a></code>, and
+the five derivatives of the inverse link, <code><a href="dlinkinv.html">dlinkinv()</a></code> through
+<code><a href="d5linkinv.html">d5linkinv()</a></code>. The forward derivatives are \((-1)^{k-1}(k-1)!\,\theta^{-k}\),
 written out. Every inverse derivative is <code><a href="exp_floored.html">exp_floored()</a></code> of \(\eta\),
-the exponential being its own derivative to every order, and the floor is
-what keeps \(\theta\) strictly inside \((0, \infty)\).</p>
+because the exponential is its own derivative to every order, and the floor
+keeps \(\theta\) strictly inside \((0, \infty)\).</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="log_link.html">log_link()</a></code>, the constructor users call.</p></div>
+    <div class="dont-index"><p><code><a href="log_link.html">log_link()</a></code>, the constructor that users call.</p></div>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

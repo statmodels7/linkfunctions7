@@ -32,12 +32,13 @@ UpperBoundedLink(
 - link_bounds:
 
   A length-two numeric vector, the open interval in which the parameter
-  lies. Set by the constructor; see Value for this link's.
+  lies. The constructor sets it, and the Value section gives its value
+  for this link.
 
 - link_params:
 
-  A list of the link's own parameters, empty where it has none. Set by
-  the constructor.
+  A list of the link's own parameters, empty where it has none. The
+  constructor sets it.
 
 - upr:
 
@@ -57,16 +58,16 @@ Twelve methods are registered on this class:
 [`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md)
 and
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md),
-and the five derivative orders in each direction,
+the five derivatives of the link,
 [`dlinkfun()`](https://statmodels7.github.io/linkfunctions7/reference/dlinkfun.md)
 through
-[`d5linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkfun.md)
-going out and
+[`d5linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkfun.md),
+and the five derivatives of the inverse link,
 [`dlinkinv()`](https://statmodels7.github.io/linkfunctions7/reference/dlinkinv.md)
 through
-[`d5linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkinv.md)
-coming back. The reflection makes the map decreasing, so every inverse
-derivative is the negative of
+[`d5linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkinv.md).
+The reflection makes the map decreasing, so every inverse derivative is
+the negative of
 [`exp_floored()`](https://statmodels7.github.io/linkfunctions7/reference/exp_floored.md)
 of \\\eta\\, and the forward ones are the log's read at \\\mathrm{upr} -
 \theta\\, with the change of sign that the reflection introduces at the
@@ -75,4 +76,4 @@ odd orders.
 ## See also
 
 [`bounded_link()`](https://statmodels7.github.io/linkfunctions7/reference/bounded_link.md),
-the constructor users call.
+the constructor that users call.

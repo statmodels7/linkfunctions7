@@ -1,5 +1,17 @@
 # Changelog
 
+## linkfunctions7 0.5.3
+
+- Documentation and messages: relative clauses without a relative
+  pronoun, stranded prepositions, absolute constructions, sentences
+  without a verb, emphasis in bold and personified descriptions of the
+  code rewritten as plain clauses. The error of
+  [`linkderiv()`](https://statmodels7.github.io/linkfunctions7/reference/linkderiv.md)
+  and
+  [`linkinvderiv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinvderiv.md)
+  for an order outside 0 to 5 now states the admissible range. No change
+  to the code.
+
 ## linkfunctions7 0.5.2
 
 - The inverse derivatives of

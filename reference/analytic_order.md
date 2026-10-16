@@ -1,8 +1,8 @@
 # Highest Analytically Implemented Derivative Order
 
-The largest \\k \le 5\\ for which the link's own class registers a
-method for the order-\\k\\ derivative generic; `0` when it registers
-none, so that only
+Returns the largest \\k \le 5\\ for which the link's own class registers
+a method for the order-\\k\\ derivative generic, and `0` when it
+registers none, so that only
 [`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md)
 or
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md)
@@ -30,9 +30,9 @@ An integer between 0 and 5.
 
 ## Details
 
-Detection uses the documented S7 property that a method records, in its
-`signature` attribute, the class on which it was registered: a method
-inherited from the base
+The function relies on the documented S7 property that a method records,
+in its `signature` attribute, the class on which it was registered: a
+method inherited from the base
 [`link()`](https://statmodels7.github.io/linkfunctions7/reference/link.md)
 class is a fallback, anything else is the link's own. Comparing method
 objects with [`identical()`](https://rdrr.io/r/base/identical.html) does

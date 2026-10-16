@@ -23,7 +23,7 @@ print(x, ...)
 
 ## Value
 
-`x`, invisibly. Called for the printed output.
+`x`, invisibly. The function is called for its printed output.
 
 ## Details
 

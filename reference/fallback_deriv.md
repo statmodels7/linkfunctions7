@@ -18,11 +18,12 @@ fallback_deriv(x, v, order, inverse)
 
 - v:
 
-  A numeric vector: \\\theta\\ going forward, \\\eta\\ coming back.
+  A numeric vector: \\\theta\\ in the forward direction, \\\eta\\ in the
+  inverse one.
 
 - order:
 
-  The derivative order wanted, 1 to 5.
+  The derivative order, from 1 to 5.
 
 - inverse:
 
@@ -42,13 +43,13 @@ for a link that supplies nothing but
 [`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md)
 is a stencil of the full order applied to the function itself.
 
-The recursion is only apparent. The base function is obtained through
+The function does not recurse into another fallback. The base function
+is obtained through
 [`linkderiv()`](https://statmodels7.github.io/linkfunctions7/reference/linkderiv.md)
 or
 [`linkinvderiv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinvderiv.md),
 which dispatch to the link's own method for an order that the link
-implements, so the chain always ends on analytic code and never on
-another fallback.
+implements, so the chain always ends on analytic code.
 
 ## Methods
 
@@ -58,13 +59,13 @@ have this function as their whole body:
 [`dlinkfun()`](https://statmodels7.github.io/linkfunctions7/reference/dlinkfun.md)
 through
 [`d5linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkfun.md)
-going out and
+for the link and
 [`dlinkinv()`](https://statmodels7.github.io/linkfunctions7/reference/dlinkinv.md)
 through
 [`d5linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkinv.md)
-coming back, each passing its order and its direction. A link inherits
-them for the orders it does not implement itself, so a link defined with
-nothing but
+for the inverse link. Each of them passes its order and its direction. A
+link inherits them for the orders it does not implement itself, so a
+link defined with nothing but
 [`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md)
 and
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md)

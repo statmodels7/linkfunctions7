@@ -1,8 +1,8 @@
 # The Complementary Log-Log (ClogLog) Link Function
 
-The complementary log-log link \\\eta = \log(-\log(1-\theta))\\ on \\(0,
-1)\\, with inverse \\\theta = 1 - \exp(-e^\eta)\\; asymmetric about
-\\\theta = 1/2\\.
+Returns the complementary log-log link \\\eta = \log(-\log(1-\theta))\\
+on \\(0, 1)\\, with inverse \\\theta = 1 - \exp(-e^\eta)\\. The link is
+asymmetric about \\\theta = 1/2\\.
 
 ## Usage
 

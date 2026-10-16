@@ -1,8 +1,8 @@
 # The Inverse Square Link Function
 
-The inverse-square link \\\eta = 1/\theta^2\\ on \\(0, \infty)\\, the
-canonical link of the inverse Gaussian family; its image is \\(0,
-\infty)\\.
+Returns the inverse-square link \\\eta = 1/\theta^2\\ on \\(0,
+\infty)\\, the canonical link of the inverse Gaussian family. Its image
+is \\(0, \infty)\\.
 
 ## Usage
 

@@ -70,7 +70,7 @@ or to a density that validates against open intervals.
 - [`link_bounds_clamp()`](https://statmodels7.github.io/linkfunctions7/reference/link_bounds_clamp.md)
   : Clamp a Parameter Strictly Inside Its Domain
 - [`eta_bounds()`](https://statmodels7.github.io/linkfunctions7/reference/eta_bounds.md)
-  : The Range of Predictors a Link Admits
+  : The Range of Linear Predictors That a Link Admits
 
 ## Compiled entry points
 

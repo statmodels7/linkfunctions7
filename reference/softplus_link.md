@@ -1,8 +1,8 @@
 # The Softplus Link Function
 
-The softplus link with scale \\a\\: the inverse is \\\theta = \log(1 +
-e^{a\eta})/a\\, a smooth approximation of \\\max(0, \eta)\\ that
-sharpens as \\a\\ grows.
+Returns the softplus link with scale \\a\\. Its inverse is \\\theta =
+\log(1 + e^{a\eta})/a\\, a smooth approximation of \\\max(0, \eta)\\
+that sharpens as \\a\\ grows.
 
 ## Usage
 
@@ -37,12 +37,12 @@ For a large negative \\\eta\\, \\\theta \approx 0\\. For a large
 positive \\\eta\\, \\\theta \approx \eta\\, which grows linearly where
 the inverse of a log link would grow as \\\exp(\eta)\\.
 
-Both directions are written so that no intermediate quantity grows with
-\\a\theta\\ or \\a\eta\\. The inverse link uses the log-sum-exp form,
-and the forward link and its derivatives are expressed in \\u = 1 -
-e^{-a\theta}\\ instead of \\e^{a\theta} - 1\\. The latter overflows once
-\\a\theta\\ exceeds about 709, and earlier at the higher orders, because
-the derivatives divide by a power of it.
+Both directions are written so that the intermediate quantities do not
+grow with \\a\theta\\ or \\a\eta\\. The inverse link uses the
+log-sum-exp form, and the forward link and its derivatives are expressed
+in \\u = 1 - e^{-a\theta}\\ instead of \\e^{a\theta} - 1\\. The latter
+overflows once \\a\theta\\ exceeds about 709, and earlier at the higher
+orders, because the derivatives divide by a power of it.
 
 The domain of \\\theta\\ is \\(0, \infty)\\.
 

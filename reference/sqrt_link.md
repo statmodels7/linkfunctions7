@@ -1,7 +1,7 @@
 # The Square Root Link Function
 
-The square-root link \\\eta = \sqrt{\theta}\\ on \\(0, \infty)\\; its
-image is \\(0, \infty)\\.
+Returns the square-root link \\\eta = \sqrt{\theta}\\ on \\(0,
+\infty)\\. Its image is \\(0, \infty)\\.
 
 ## Usage
 
@@ -23,7 +23,8 @@ The square-root link is \\\eta = \sqrt{\theta}\\, with inverse \\\theta
 
 The inverse \\\eta^2\\ is defined for a negative \\\eta\\ as well, but
 there it is not one-to-one, since \\\eta\\ and \\-\eta\\ give the same
-\\\theta\\. The linear predictor is therefore meant to stay positive;
+\\\theta\\. The linear predictor of this link therefore has to stay
+positive, and
 [`eta_bounds()`](https://statmodels7.github.io/linkfunctions7/reference/eta_bounds.md)
 returns this range.
 

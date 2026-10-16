@@ -1,6 +1,6 @@
 # One Central Stencil, Never Nested
 
-The order-`order` central finite difference of `f` at `x`, applied in a
+Computes the order-`order` central finite difference of `f` at `x` in a
 single step rather than by composing lower-order differences.
 
 ## Usage

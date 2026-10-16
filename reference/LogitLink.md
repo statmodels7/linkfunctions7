@@ -5,8 +5,8 @@ Carries the logit transformation \\\eta = \log(\theta/(1-\theta))\\ on
 canonical link for a probability, and its linear predictor is the
 log-odds.
 
-Every inverse derivative is a polynomial in \\\theta\\ itself, the first
-being \\\theta(1-\theta)\\, the variance of a Bernoulli.
+Every inverse derivative is a polynomial in \\\theta\\ itself. The first
+is \\\theta(1-\theta)\\, the variance of a Bernoulli.
 
 ## Usage
 
@@ -28,12 +28,13 @@ LogitLink(
 - link_bounds:
 
   A length-two numeric vector, the open interval in which the parameter
-  lies. Set by the constructor; see Value for this link's.
+  lies. The constructor sets it, and the Value section gives its value
+  for this link.
 
 - link_params:
 
-  A list of the link's own parameters, empty where it has none. Set by
-  the constructor.
+  A list of the link's own parameters, empty where it has none. The
+  constructor sets it.
 
 ## Value
 
@@ -49,15 +50,14 @@ Twelve methods are registered on this class:
 [`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md)
 and
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md),
-and the five derivative orders in each direction,
+the five derivatives of the link,
 [`dlinkfun()`](https://statmodels7.github.io/linkfunctions7/reference/dlinkfun.md)
 through
-[`d5linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkfun.md)
-going out and
+[`d5linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkfun.md),
+and the five derivatives of the inverse link,
 [`dlinkinv()`](https://statmodels7.github.io/linkfunctions7/reference/dlinkinv.md)
 through
-[`d5linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkinv.md)
-coming back.
+[`d5linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkinv.md).
 [`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md)
 and
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md)
@@ -66,10 +66,10 @@ and [`stats::plogis()`](https://rdrr.io/r/stats/Logistic.html), which
 remain accurate near both boundaries. The ten derivatives come from a
 compiled kernel, one call per order and direction. The inverse
 derivatives are evaluated in \\\theta\\, \\1 - \theta\\ and their
-product, each computed from \\\eta\\, so that they keep their relative
-accuracy in both tails.
+product, and each of these is computed from \\\eta\\, so that the
+derivatives keep their relative accuracy in both tails.
 
 ## See also
 
 [`logit_link()`](https://statmodels7.github.io/linkfunctions7/reference/logit_link.md),
-the constructor users call.
+the constructor that users call.

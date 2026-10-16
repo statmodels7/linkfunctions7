@@ -1,9 +1,9 @@
 # 2nd Derivative of an Inverse Link Function
 
-The second derivative of the inverse link \\g^{-1}(\eta)\\ with respect
-to the linear predictor. It enters the chain rule (the formula of Faa di
-Bruno) that carries the higher derivatives of the log-likelihood from
-\\\theta\\ onto \\\eta\\.
+Computes the second derivative of the inverse link \\g^{-1}(\eta)\\ with
+respect to the linear predictor. It enters the chain rule (the formula
+of Faa di Bruno) that carries the higher derivatives of the
+log-likelihood from \\\theta\\ onto \\\eta\\.
 
 ## Usage
 

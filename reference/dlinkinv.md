@@ -1,7 +1,7 @@
 # 1st Derivative of an Inverse Link Function
 
-The first derivative of the inverse link \\g^{-1}(\eta)\\ with respect
-to the linear predictor. A modeling routine that works on the
+Computes the first derivative of the inverse link \\g^{-1}(\eta)\\ with
+respect to the linear predictor. A modeling routine that works on the
 unconstrained scale uses it as a chain-rule factor, which carries a
 derivative of the log-likelihood from \\\theta\\ onto \\\eta\\.
 

@@ -2,9 +2,9 @@
 
 Moves a value that lies exactly on a finite bound to a double strictly
 inside it, one or two units in the last place away, and an infinite
-value to the largest finite double of that sign. Applied by
+value to the largest finite double of that sign.
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md)
-to every link.
+applies it to every link.
 
 ## Usage
 
@@ -24,11 +24,11 @@ link_bounds_clamp(theta, bounds)
 
 ## Value
 
-`theta`, with any value that has landed exactly on a bound moved just
-inside it and any infinity brought back to the largest finite double.
-`NA` and `NaN` pass through unchanged, as does a value outside the
-bounds by more than rounding, since changing either would hide an error
-in the calling code.
+`theta`, in which any value that has landed exactly on a bound is moved
+just inside it and any infinity is brought back to the largest finite
+double. `NA` and `NaN` pass through unchanged, as does a value outside
+the bounds by more than rounding, since changing either would hide an
+error in the calling code.
 
 ## Details
 
@@ -47,7 +47,7 @@ double, or to the largest finite double.
 R has no `nextafter()`, so the step is computed arithmetically. Near a
 non-zero bound \\b\\ the spacing of doubles is set by the magnitude of
 \\b\\: one ulp at 2 is about 4.4e-16, while one ulp at 1e-300 is about
-1e-316, so no single additive constant serves both. The value
+1e-316, so a single additive constant cannot serve both. The value
 `b + |b| * eps` lies one to two ulps from `b` at any magnitude, which is
 strictly inside the interval and as close to `b` as the arithmetic
 reliably allows.

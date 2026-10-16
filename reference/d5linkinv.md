@@ -1,7 +1,7 @@
 # 5th Derivative of an Inverse Link Function
 
-The fifth derivative of the inverse link \\g^{-1}(\eta)\\ with respect
-to the linear predictor.
+Computes the fifth derivative of the inverse link \\g^{-1}(\eta)\\ with
+respect to the linear predictor.
 
 ## Usage
 

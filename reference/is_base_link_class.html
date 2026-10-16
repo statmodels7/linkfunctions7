@@ -11,7 +11,7 @@ registered for itself."><meta property="og:image" content="https://statmodels7.g
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,7 +68,7 @@ registered for itself.</p>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Object identity is tried first, since it is the usual case and costs
 nothing, and the class name and package are compared after. The second
-comparison is the one that makes the answer reliable. <code><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical()</a></code> on an
+comparison makes the answer reliable. <code><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical()</a></code> on an
 S7 class is object identity, so it is false for a class re-created from the
 same definition, which happens whenever a package's code is evaluated
 instead of loaded, as it is under coverage instrumentation. If a base

@@ -1,7 +1,7 @@
 # 5th Derivative of a Link Function
 
-The fifth derivative of the link \\g(\theta)\\ with respect to the
-parameter, on the parameter scale.
+Computes the fifth derivative of the link \\g(\theta)\\ with respect to
+the parameter, on the parameter scale.
 
 ## Usage
 
@@ -19,8 +19,8 @@ d5linkfun(x, theta)
 
   A numeric vector of parameter values, inside `x@link_bounds`. The
   domain is not checked: outside it the formula is evaluated as written,
-  so the result may be `NaN`, `NA` or an ordinary number, and no error
-  is signaled.
+  so the result may be `NaN`, `NA` or an ordinary number, and the
+  function does not signal an error.
 
 ## Value
 

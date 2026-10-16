@@ -1,10 +1,10 @@
 # S7 Class for Statistical Link Functions
 
-The base S7 class for link functions. It carries the name, the domain
-and any link parameters. The transformations themselves are methods that
-each subclass registers on the generics for the forward map, the
-inverse, and their analytical derivatives to fifth order in both
-directions.
+`link` is the base S7 class for link functions. It carries the name, the
+domain and any link parameters. The transformations themselves are
+methods that each subclass registers on the generics for the forward
+map, the inverse, and their analytical derivatives to fifth order in
+both directions.
 
 ## Usage
 
@@ -34,8 +34,7 @@ An S7 object of class `link`. In practice this class is not instantiated
 directly: each link is a subclass created by one of the constructors
 ([`logit_link()`](https://statmodels7.github.io/linkfunctions7/reference/logit_link.md),
 [`power_link()`](https://statmodels7.github.io/linkfunctions7/reference/power_link.md),
-...), and `link` is what they all inherit from and what methods dispatch
-on.
+...). Every subclass inherits from `link`, and methods dispatch on it.
 
 ## Details
 

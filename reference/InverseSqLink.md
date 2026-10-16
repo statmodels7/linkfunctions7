@@ -29,12 +29,13 @@ InverseSqLink(
 - link_bounds:
 
   A length-two numeric vector, the open interval in which the parameter
-  lies. Set by the constructor; see Value for this link's.
+  lies. The constructor sets it, and the Value section gives its value
+  for this link.
 
 - link_params:
 
-  A list of the link's own parameters, empty where it has none. Set by
-  the constructor.
+  A list of the link's own parameters, empty where it has none. The
+  constructor sets it.
 
 ## Value
 
@@ -50,20 +51,20 @@ Twelve methods are registered on this class:
 [`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md)
 and
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md),
-and the five derivative orders in each direction,
+the five derivatives of the link,
 [`dlinkfun()`](https://statmodels7.github.io/linkfunctions7/reference/dlinkfun.md)
 through
-[`d5linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkfun.md)
-going out and
+[`d5linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkfun.md),
+and the five derivatives of the inverse link,
 [`dlinkinv()`](https://statmodels7.github.io/linkfunctions7/reference/dlinkinv.md)
 through
-[`d5linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkinv.md)
-coming back. The two directions are not the same map, \\1/\theta^2\\
-going forward and \\\eta^{-1/2}\\ coming back, so the two sets of
+[`d5linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkinv.md).
+The two directions are not the same map (\\1/\theta^2\\ in the forward
+direction and \\\eta^{-1/2}\\ in the inverse one), so the two sets of
 derivatives are written out separately, with integer falling factorials
 in the forward direction and half-integer powers in the inverse one.
 
 ## See also
 
 [`inverse_sq_link()`](https://statmodels7.github.io/linkfunctions7/reference/inverse_sq_link.md),
-the constructor users call.
+the constructor that users call.

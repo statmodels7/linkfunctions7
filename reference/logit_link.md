@@ -1,8 +1,8 @@
 # The Logit Link Function
 
-The logit link \\\eta = \log(\theta/(1-\theta))\\ on \\(0, 1)\\, with
-inverse \\\theta = 1/(1+e^{-\eta})\\; the canonical link for a
-probability, whose linear predictor is the log-odds.
+Returns the logit link \\\eta = \log(\theta/(1-\theta))\\ on \\(0, 1)\\,
+with inverse \\\theta = 1/(1+e^{-\eta})\\. It is the canonical link for
+a probability, and its linear predictor is the log-odds.
 
 ## Usage
 

@@ -1,6 +1,6 @@
 # Visualize Link Functions
 
-Plot method for `link` objects. It generates a panel with two plots:
+The plot method for `link` objects generates a panel with two plots:
 
 1.  The link function \\\eta = g(\theta)\\ over its valid domain.
 

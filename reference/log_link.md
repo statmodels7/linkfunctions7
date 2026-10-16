@@ -1,7 +1,8 @@
 # The Logarithmic Link Function
 
-The log link \\\eta = \log\theta\\ on \\(0, \infty)\\, with inverse
-\\\theta = e^\eta\\; the canonical link for a positive parameter.
+Returns the log link \\\eta = \log\theta\\ on \\(0, \infty)\\, with
+inverse \\\theta = e^\eta\\. It is the canonical link for a positive
+parameter.
 
 ## Usage
 

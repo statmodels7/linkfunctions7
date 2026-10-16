@@ -1,8 +1,8 @@
 # The Rhobit (Fisher's z) Link Function
 
-The rhobit link \\\eta = \mathrm{atanh}(\theta) =
-\log((1+\theta)/(1-\theta))/2\\ on \\(-1, 1)\\, Fisher's z; the natural
-link for a correlation.
+Returns the rhobit link \\\eta = \mathrm{atanh}(\theta) =
+\log((1+\theta)/(1-\theta))/2\\ on \\(-1, 1)\\, Fisher's z. It is the
+natural link for a correlation.
 
 ## Usage
 

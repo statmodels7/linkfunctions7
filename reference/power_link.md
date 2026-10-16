@@ -1,6 +1,6 @@
 # The Power Link Function
 
-The power link \\\eta = \theta^\lambda\\ on \\(0, \infty)\\; at
+Returns the power link \\\eta = \theta^\lambda\\ on \\(0, \infty)\\; at
 \\\lambda = 0\\ it returns the log link, the limit of the Box-Cox
 transformation.
 

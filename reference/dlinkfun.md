@@ -1,7 +1,7 @@
 # 1st Derivative of a Link Function
 
-The first derivative of the link \\g(\theta)\\ with respect to the
-parameter, on the parameter scale. A delta-method standard error is
+Computes the first derivative of the link \\g(\theta)\\ with respect to
+the parameter, on the parameter scale. A delta-method standard error is
 carried in this direction, from a variance on \\\theta\\ to one on
 \\\eta\\.
 
@@ -21,8 +21,8 @@ dlinkfun(x, theta)
 
   A numeric vector of parameter values, inside `x@link_bounds`. The
   domain is not checked: outside it the formula is evaluated as written,
-  so the result may be `NaN`, `NA` or an ordinary number, and no error
-  is signaled.
+  so the result may be `NaN`, `NA` or an ordinary number, and the
+  function does not signal an error.
 
 ## Value
 

@@ -1,7 +1,7 @@
 # The Identity Link Function
 
-The identity link \\\eta = \theta\\, for a parameter that is already
-unconstrained.
+Returns the identity link \\\eta = \theta\\, for a parameter that is
+already unconstrained.
 
 ## Usage
 

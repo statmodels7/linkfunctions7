@@ -1,6 +1,6 @@
-# The Range of Predictors a Link Admits
+# The Range of Linear Predictors That a Link Admits
 
-The image of the link's parameter bounds under
+Returns the image of the link's parameter bounds under
 [`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md),
 which is the set of predictors on which the inverse link is defined.
 Where a link maps onto the whole real line the result is `c(-Inf, Inf)`;
@@ -46,8 +46,8 @@ the set on which the inverse link is defined, since a stencil point
 outside it returns `NaN` and makes a numerical derivative missing.
 Outside the package it serves a related purpose:
 [link_bounds()](https://statmodels7.github.io/linkfunctions7/reference/link.md)
-gives the set that a link maps **onto**, and a consumer that carries an
-unconstrained vector needs the set that it maps **from**.
+gives the set onto which a link maps, and a consumer that carries an
+unconstrained vector needs the set from which it maps.
 
 A family that reads a free vector in \\\mathbb{R}^d\\ and applies an
 inverse link to each coordinate needs the map to be defined and
@@ -82,7 +82,8 @@ eta_bounds(sqrt_link())
 linkfun(sqrt_link(), linkinv(sqrt_link(), -2))
 #> [1] 2
 
-# Which is the question a consumer carrying an unconstrained vector asks.
+# A consumer that carries an unconstrained vector checks whether the
+# predictors are unbounded in both directions.
 links <- list(log_link(), softplus_link(), logit_link(), sqrt_link(),
               inverse_link(), inverse_sq_link(), power_link(0.5))
 vapply(links, function(l) all(is.infinite(eta_bounds(l))), logical(1))

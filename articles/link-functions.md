@@ -13,9 +13,9 @@ the optimization onto the whole real line and map the result back.
 
 Unlike a pair of [`log()`](https://rdrr.io/r/base/Log.html) and
 [`plogis()`](https://rdrr.io/r/stats/Logistic.html) calls, every link in
-**linkfunctions7** carries its **exact analytical derivatives up to
-fifth order**, in both directions, together with a diagnostic that
-verifies them. A modeling package needs these derivatives: a Newton or
+linkfunctions7 carries its exact analytical derivatives up to fifth
+order, in both directions, together with a diagnostic that verifies
+them. A modeling routine uses these derivatives: a Newton or
 Fisher-scoring step uses the derivative of the inverse link, and a
 higher-order correction uses the orders above it. The fifth order is
 needed by models whose predictor is defined by a recursion, since each
@@ -106,7 +106,7 @@ link is therefore `Inf` below about $`\eta = -141`$, while the fourth
 remains finite to $`\eta = -200`$. Raising the floor to cover the fifth
 would clamp $`\theta`$ over a range where
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md)
-is now exact, so the floor is left where it is. In the lower tail the
+is now exact, so the floor stays where it is. In the lower tail the
 inverse direction, which a chain rule onto the link scale uses, is
 finite at every order.
 
@@ -123,9 +123,9 @@ plot(logit_link())
 
 ![](link-functions_files/figure-html/unnamed-chunk-7-1.png)
 
-The **softplus** link illustrates the differences between positivity
-links. Like the log it keeps $`\theta`$ positive, but for large $`\eta`$
-it grows linearly instead of exponentially, so a large linear predictor
+The softplus link illustrates the differences between positivity links.
+Like the log it keeps $`\theta`$ positive, but for large $`\eta`$ it
+grows linearly instead of exponentially, so a large linear predictor
 does not produce an extremely large parameter:
 
 ``` r
@@ -214,8 +214,8 @@ and
 are compulsory: the base class supplies every derivative that a link
 does not implement, by one stencil applied to the highest order that the
 link does implement. The example below writes four orders in each
-direction and leaves the fifth to that fallback. It is the **negative
-log-log** link, $`\eta = -\log(-\log\theta)`$ on $`(0, 1)`$.
+direction and leaves the fifth to that fallback. It is the negative
+log-log link, $`\eta = -\log(-\log\theta)`$ on $`(0, 1)`$.
 
 ``` r
 
@@ -263,8 +263,8 @@ invisible(check_link(neglog))
 #>   [6] Inverse Link Derivatives:    [PASSED to order 4, 1 numerical]
 ```
 
-Both derivative rows report that they passed to order four, with one
-order numerical. The fifth order comes from the fallback and is not
+Both derivative rows report that they passed to order four and that one
+order is numerical. The fifth order comes from the fallback and is not
 checked, since it would be compared with a numerical differentiation of
 the order below it; the two would be the same computation and would
 agree even for a wrong link.

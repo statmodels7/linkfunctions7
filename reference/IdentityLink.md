@@ -28,12 +28,13 @@ IdentityLink(
 - link_bounds:
 
   A length-two numeric vector, the open interval in which the parameter
-  lies. Set by the constructor; see Value for this link's.
+  lies. The constructor sets it, and the Value section gives its value
+  for this link.
 
 - link_params:
 
-  A list of the link's own parameters, empty where it has none. Set by
-  the constructor.
+  A list of the link's own parameters, empty where it has none. The
+  constructor sets it.
 
 ## Value
 
@@ -49,25 +50,24 @@ Twelve methods are registered on this class:
 [`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md)
 and
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md),
-and the five derivative orders in each direction,
+the five derivatives of the link,
 [`dlinkfun()`](https://statmodels7.github.io/linkfunctions7/reference/dlinkfun.md)
 through
-[`d5linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkfun.md)
-going out and
+[`d5linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkfun.md),
+and the five derivatives of the inverse link,
 [`dlinkinv()`](https://statmodels7.github.io/linkfunctions7/reference/dlinkinv.md)
 through
-[`d5linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkinv.md)
-coming back.
+[`d5linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkinv.md).
 [`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md)
 and
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md)
 return their argument. The first derivative is one and every higher one
-is zero, each built by
+is zero.
 [`const_like()`](https://statmodels7.github.io/linkfunctions7/reference/const_like.md)
-so that the result is `NA` wherever the argument is `NA`, although the
-derivative does not depend on it.
+builds each of them, so that the result is `NA` wherever the argument is
+`NA`, although the derivative does not depend on it.
 
 ## See also
 
 [`identity_link()`](https://statmodels7.github.io/linkfunctions7/reference/identity_link.md),
-the constructor users call.
+the constructor that users call.

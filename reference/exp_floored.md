@@ -1,6 +1,6 @@
 # A Floored Exponential
 
-`exp(eta)`, bounded below by
+Computes `exp(eta)`, bounded below by
 [`exp_floor()`](https://statmodels7.github.io/linkfunctions7/reference/exp_floor.md).
 
 ## Usage

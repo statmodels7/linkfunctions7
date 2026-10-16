@@ -1,7 +1,7 @@
 # The Log-Log Link Function
 
-The log-log link \\\eta = -\log(-\log\theta)\\ on \\(0, 1)\\, with
-inverse \\\theta = \exp(-e^{-\eta})\\; the mirror image of
+Returns the log-log link \\\eta = -\log(-\log\theta)\\ on \\(0, 1)\\,
+with inverse \\\theta = \exp(-e^{-\eta})\\. It is the mirror image of
 [`cloglog_link()`](https://statmodels7.github.io/linkfunctions7/reference/cloglog_link.md).
 
 ## Usage

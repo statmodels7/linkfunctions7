@@ -1,6 +1,6 @@
 # The Probit Link Function
 
-The probit link \\\eta = \Phi^{-1}(\theta)\\ on \\(0, 1)\\, with
+Returns the probit link \\\eta = \Phi^{-1}(\theta)\\ on \\(0, 1)\\, with
 \\\Phi\\ the standard normal distribution function.
 
 ## Usage

@@ -16,7 +16,7 @@ na_from(r, v)
 
 - v:
 
-  The numeric vector the result was computed from.
+  The numeric vector from which the result was computed.
 
 ## Value
 

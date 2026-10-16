@@ -1,7 +1,8 @@
 # The Cauchit Link Function
 
-The cauchit link \\\eta = \tan(\pi(\theta - 1/2))\\ on \\(0, 1)\\, the
-Cauchy quantile function; heavier-tailed than the logit or the probit.
+Returns the cauchit link \\\eta = \tan(\pi(\theta - 1/2))\\ on \\(0,
+1)\\, the Cauchy quantile function, which has heavier tails than the
+logit or the probit.
 
 ## Usage
 

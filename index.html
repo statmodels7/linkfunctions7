@@ -32,7 +32,7 @@
 
     <a class="navbar-brand me-2" href="index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -70,8 +70,8 @@
 </h1>
 </div>
 <p>In most R modeling packages a link function is a character string passed to a fitting routine, which turns it internally into a few closures. Code outside that package cannot use those closures, compute their higher derivatives, or extend them without editing the package source.</p>
-<p><a href="https://statmodels7.github.io/linkfunctions7/">linkfunctions7</a> makes a link an object. Each constructor in the package returns a link with <strong>exact analytical derivatives up to fifth order in both directions</strong>, forward and inverse, and a diagnostic verifies those derivatives against numerical ones.</p>
-<p>It is part of <a href="https://statmodels7.github.io" class="external-link">statmodels7</a>, an S7 toolkit for statistical modeling, and is what <a href="https://statmodels7.github.io/distributions7/" class="external-link">distributions7</a> uses to move between a constrained parameter and the unconstrained scale a fitting routine works on. The mathematics behind the formulas, and the derivations the derivatives come from, is worked out in <a href="https://statmodels7.github.io/book/" class="external-link">the statmodels7 book</a>.</p>
+<p><a href="https://statmodels7.github.io/linkfunctions7/">linkfunctions7</a> makes a link an object. Each constructor in the package returns a link with exact analytical derivatives up to fifth order in both directions, forward and inverse, and a diagnostic verifies those derivatives against numerical ones.</p>
+<p>It is part of <a href="https://statmodels7.github.io" class="external-link">statmodels7</a>, an S7 toolkit for statistical modeling, and <a href="https://statmodels7.github.io/distributions7/" class="external-link">distributions7</a> uses it to move between a constrained parameter and the unconstrained scale on which a fitting routine works. The mathematics behind the formulas, and the derivations from which the derivatives come, is worked out in <a href="https://statmodels7.github.io/book/" class="external-link">the statmodels7 book</a>.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -94,7 +94,7 @@
 <span><span class="co">#&gt;   - Link parameters: a = 1</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="reference/softplus_link.html">softplus_link</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-4-1.png" alt="" width="100%"></p>
-<p>A parameter confined to an interval gets <code><a href="reference/bounded_link.html">bounded_link()</a></code>, which maps the interval onto the whole real line and accepts a lower bound, an upper bound, or both. For every link in the package the derivatives are closed-form expressions, not finite differences, and they go to fifth order in both directions:</p>
+<p>For a parameter confined to an interval, <code><a href="reference/bounded_link.html">bounded_link()</a></code> maps the interval onto the whole real line and accepts a lower bound, an upper bound, or both. For every link in the package the derivatives are closed-form expressions, not finite differences, and they go to fifth order in both directions:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">link</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bounded_link.html">bounded_link</a></span><span class="op">(</span>lwr <span class="op">=</span> <span class="op">-</span><span class="fl">3</span>, upr <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="va">theta</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/linkinv.html">linkinv</a></span><span class="op">(</span><span class="va">link</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span>, length.out <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>

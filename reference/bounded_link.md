@@ -1,9 +1,10 @@
 # The General Bounded Link Function
 
-The link for a parameter confined to \\(lwr, upr)\\: a scaled logit when
-both endpoints are finite, a shifted log \\\eta = \log(\theta - lwr)\\
-when only the lower is, its mirror image \\\eta = \log(upr - \theta)\\
-when only the upper is, and the identity when neither is given.
+Returns the link for a parameter confined to \\(lwr, upr)\\: a scaled
+logit when both endpoints are finite, a shifted log \\\eta =
+\log(\theta - lwr)\\ when only the lower is, its mirror image \\\eta =
+\log(upr - \theta)\\ when only the upper is, and the identity when both
+are `NULL`.
 
 ## Usage
 
@@ -15,11 +16,11 @@ bounded_link(lwr = NULL, upr = NULL)
 
 - lwr:
 
-  Numeric or `NULL`. The lower bound of the interval.
+  The lower bound of the interval, a number or `NULL`.
 
 - upr:
 
-  Numeric or `NULL`. The upper bound of the interval.
+  The upper bound of the interval, a number or `NULL`.
 
 ## Value
 

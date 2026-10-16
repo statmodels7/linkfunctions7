@@ -1,7 +1,7 @@
 # Derivatives of the Standard Logistic Function
 
-The `k`-th derivative of \\\sigma(z) = 1/(1 + e^{-z})\\, written as a
-polynomial in \\p = \sigma(z)\\ itself.
+Computes the `k`-th derivative of \\\sigma(z) = 1/(1 + e^{-z})\\,
+written as a polynomial in \\p = \sigma(z)\\ itself.
 
 ## Usage
 
@@ -39,9 +39,9 @@ Three links use these polynomials:
   antiderivative of the logistic: \\h^{(k+1)} = a^k \sigma^{(k)}\\.
 
 The three links evaluate these polynomials in compiled code, written in
-\\p\\, \\q = 1 - p\\ and \\pq\\ with \\q\\ computed from \\z\\ and not
-as \\1 - p\\, so that the derivatives keep their relative accuracy as
-\\p\\ approaches 1: \\\sigma' = pq\\, \\\sigma'' = pq(q - p)\\,
+\\p\\, \\q = 1 - p\\ and \\pq\\. The code computes \\q\\ from \\z\\ and
+not as \\1 - p\\, so that the derivatives keep their relative accuracy
+as \\p\\ approaches 1: \\\sigma' = pq\\, \\\sigma'' = pq(q - p)\\,
 \\\sigma''' = pq(1 - 6pq)\\, \\\sigma'''' = pq(q - p)(1 - 12pq)\\ and
 \\\sigma^{(5)} = pq(1 - 30pq + 120p^2q^2)\\. The transcription of the
 polynomials in \\p\\ alone is kept in `src/link_points.h` and reached

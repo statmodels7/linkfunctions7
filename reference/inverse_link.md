@@ -1,7 +1,7 @@
 # The Inverse (Reciprocal) Link Function
 
-The reciprocal link \\\eta = 1/\theta\\ on \\(0, \infty)\\, the
-canonical link of the Gamma family; its image is \\(0, \infty)\\, not
+Returns the reciprocal link \\\eta = 1/\theta\\ on \\(0, \infty)\\, the
+canonical link of the Gamma family. Its image is \\(0, \infty)\\, not
 the whole real line.
 
 ## Usage

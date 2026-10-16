@@ -1,8 +1,8 @@
 # Evaluate Derivative of Link Function by Order
 
-A convenience router over
+Routes a call, by derivative order, to
 [`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md)
-and the five `d*linkfun` generics.
+or to one of the five `d*linkfun` generics.
 
 Routes to the correct forward derivative generic based on order.
 

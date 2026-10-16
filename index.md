@@ -7,17 +7,17 @@ higher derivatives, or extend them without editing the package source.
 
 [linkfunctions7](https://statmodels7.github.io/linkfunctions7/) makes a
 link an object. Each constructor in the package returns a link with
-**exact analytical derivatives up to fifth order in both directions**,
+exact analytical derivatives up to fifth order in both directions,
 forward and inverse, and a diagnostic verifies those derivatives against
 numerical ones.
 
 It is part of [statmodels7](https://statmodels7.github.io), an S7
-toolkit for statistical modeling, and is what
-[distributions7](https://statmodels7.github.io/distributions7/) uses to
-move between a constrained parameter and the unconstrained scale a
-fitting routine works on. The mathematics behind the formulas, and the
-derivations the derivatives come from, is worked out in [the statmodels7
-book](https://statmodels7.github.io/book/).
+toolkit for statistical modeling, and
+[distributions7](https://statmodels7.github.io/distributions7/) uses it
+to move between a constrained parameter and the unconstrained scale on
+which a fitting routine works. The mathematics behind the formulas, and
+the derivations from which the derivatives come, is worked out in [the
+statmodels7 book](https://statmodels7.github.io/book/).
 
 ## Installation
 
@@ -58,12 +58,12 @@ plot(softplus_link(a = 1))
 
 ![](reference/figures/README-unnamed-chunk-4-1.png)
 
-A parameter confined to an interval gets
-[`bounded_link()`](https://statmodels7.github.io/linkfunctions7/reference/bounded_link.md),
-which maps the interval onto the whole real line and accepts a lower
-bound, an upper bound, or both. For every link in the package the
-derivatives are closed-form expressions, not finite differences, and
-they go to fifth order in both directions:
+For a parameter confined to an interval,
+[`bounded_link()`](https://statmodels7.github.io/linkfunctions7/reference/bounded_link.md)
+maps the interval onto the whole real line and accepts a lower bound, an
+upper bound, or both. For every link in the package the derivatives are
+closed-form expressions, not finite differences, and they go to fifth
+order in both directions:
 
 ``` r
 

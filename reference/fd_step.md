@@ -1,8 +1,8 @@
 # A Finite-Difference Step for a Given Order
 
-The step for a central stencil of order `order`, scaled by the magnitude
-of the evaluation point and, when bounds are supplied, shrunk so that
-the whole stencil stays strictly inside them.
+Returns the step for a central stencil of order `order`, scaled by the
+magnitude of the evaluation point and, when bounds are supplied, shrunk
+so that the whole stencil stays strictly inside them.
 
 ## Usage
 
@@ -39,5 +39,5 @@ need a larger one.
 The clamp matters because a link's domain is open. Differentiating the
 log link at \\\theta = 10^{-8}\\ with a step chosen from the magnitude
 alone would evaluate \\\log\\ at a negative number; the stencil for
-order 3 and 4 reaches \\2h\\, so it is that reach, not \\h\\, that must
-fit.
+order 3 and 4 reaches \\2h\\, so the reach \\2h\\, and not \\h\\, must
+fit inside the domain.
