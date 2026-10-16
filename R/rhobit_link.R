@@ -12,9 +12,10 @@
 #' @param link_name A character string naming the link, set by the
 #'   constructor and shown by `print()`.
 #' @param link_bounds A length-two numeric vector, the open interval in
-#'   which the parameter lies. Set by the constructor; see Value for this link's.
+#'   which the parameter lies. The constructor sets it, and the Value section
+#'   gives its value for this link.
 #' @param link_params A list of the link's own parameters, empty where it has
-#'   none. Set by the constructor.
+#'   none. The constructor sets it.
 #'
 #' @return An S7 object of class `RhobitLink`, inheriting from [link()] and
 #'   carrying its three properties `link_name`, `link_bounds` and
@@ -22,14 +23,14 @@
 #'
 #' @section Methods:
 #' Twelve methods are registered on this class: [linkfun()] and [linkinv()],
-#' and the five derivative orders in each direction, [dlinkfun()] through
-#' [d5linkfun()] going out and [dlinkinv()] through [d5linkinv()] coming
-#' back. `linkfun()` and `linkinv()` are `atanh()` and `tanh()`. The ten
+#' the five derivatives of the link, [dlinkfun()] through [d5linkfun()], and
+#' the five derivatives of the inverse link, [dlinkinv()] through
+#' [d5linkinv()]. `linkfun()` and `linkinv()` are `atanh()` and `tanh()`. The ten
 #' derivatives come from a compiled kernel, one call per order and
 #' direction. The inverse derivatives are written in \eqn{\tanh\eta} and
-#' \eqn{\mathrm{sech}^2\eta}, the latter computed from \eqn{e^{-2|\eta|}}
-#' and not as \eqn{1 - \tanh^2\eta}, so that they keep their relative
-#' accuracy for large \eqn{|\eta|}.
+#' \eqn{\mathrm{sech}^2\eta}. The second is computed from \eqn{e^{-2|\eta|}}
+#' and not as \eqn{1 - \tanh^2\eta}, so that the derivatives keep their
+#' relative accuracy for large \eqn{|\eta|}.
 #'
 #' @aliases linkfun.RhobitLink
 #' @aliases linkinv.RhobitLink
@@ -44,7 +45,7 @@
 #' @aliases d4linkinv.RhobitLink
 #' @aliases d5linkinv.RhobitLink
 #'
-#' @seealso [rhobit_link()], the constructor users call.
+#' @seealso [rhobit_link()], the constructor that users call.
 #' @keywords internal
 RhobitLink <- S7::new_class(
   name = "RhobitLink",
@@ -77,9 +78,9 @@ S7::method(d5linkinv, RhobitLink) <- function(x, eta) lk_rhobit_inv_cpp(eta, 5L)
 #' @include generics.R
 #' @include link_class.R
 #' @description
-#' The rhobit link
+#' Returns the rhobit link
 #' \eqn{\eta = \mathrm{atanh}(\theta) = \log((1+\theta)/(1-\theta))/2}
-#' on \eqn{(-1, 1)}, Fisher's z; the natural link for a correlation.
+#' on \eqn{(-1, 1)}, Fisher's z. It is the natural link for a correlation.
 #' @details
 #' The rhobit link is the inverse hyperbolic tangent,
 #' \eqn{\eta = \text{arctanh}(\theta) = \frac{1}{2} \log\left(\frac{1 + \theta}{1 - \theta}\right)},

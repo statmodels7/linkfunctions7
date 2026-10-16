@@ -20,7 +20,7 @@ registered for itself.
 \details{
 Object identity is tried first, since it is the usual case and costs
 nothing, and the class name and package are compared after. The second
-comparison is the one that makes the answer reliable. \code{identical()} on an
+comparison makes the answer reliable. \code{identical()} on an
 S7 class is object identity, so it is false for a class re-created from the
 same definition, which happens whenever a package's code is evaluated
 instead of loaded, as it is under coverage instrumentation. If a base

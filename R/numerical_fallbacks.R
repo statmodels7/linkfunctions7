@@ -22,12 +22,12 @@ NULL
 #' Highest Analytically Implemented Derivative Order
 #'
 #' @description
-#' The largest \eqn{k \le 5} for which the link's own class registers a method
-#' for the order-\eqn{k} derivative generic; `0` when it registers none, so
-#' that only [linkfun()] or [linkinv()] is available.
+#' Returns the largest \eqn{k \le 5} for which the link's own class registers
+#' a method for the order-\eqn{k} derivative generic, and `0` when it registers
+#' none, so that only [linkfun()] or [linkinv()] is available.
 #'
 #' @details
-#' Detection uses the documented S7 property that a method records, in its
+#' The function relies on the documented S7 property that a method records, in its
 #' `signature` attribute, the class on which it was registered: a method inherited from
 #' the base [link()] class is a fallback, anything else is the link's
 #' own. Comparing method objects with `identical()` does not work for this,
@@ -78,7 +78,7 @@ analytic_order <- function(x, inverse = FALSE) {
 #' @details
 #' Object identity is tried first, since it is the usual case and costs
 #' nothing, and the class name and package are compared after. The second
-#' comparison is the one that makes the answer reliable. `identical()` on an
+#' comparison makes the answer reliable. `identical()` on an
 #' S7 class is object identity, so it is false for a class re-created from the
 #' same definition, which happens whenever a package's code is evaluated
 #' instead of loaded, as it is under coverage instrumentation. If a base
@@ -104,7 +104,7 @@ is_base_link_class <- function(cls) {
 #' A Finite-Difference Step for a Given Order
 #'
 #' @description
-#' The step for a central stencil of order `order`, scaled by the magnitude
+#' Returns the step for a central stencil of order `order`, scaled by the magnitude
 #' of the evaluation point and, when bounds are supplied, shrunk so that the
 #' whole stencil stays strictly inside them.
 #'
@@ -117,7 +117,8 @@ is_base_link_class <- function(cls) {
 #' The clamp matters because a link's domain is open. Differentiating the log
 #' link at \eqn{\theta = 10^{-8}} with a step chosen from the magnitude alone
 #' would evaluate \eqn{\log} at a negative number; the stencil for order 3 and 4
-#' reaches \eqn{2h}, so it is that reach, not \eqn{h}, that must fit.
+#' reaches \eqn{2h}, so the reach \eqn{2h}, and not \eqn{h}, must fit inside
+#' the domain.
 #'
 #' @param x A numeric vector of evaluation points.
 #' @param order The derivative order, 1 to 5.
@@ -137,8 +138,8 @@ fd_step <- function(x, order, bounds = NULL) {
 #' One Central Stencil, Never Nested
 #'
 #' @description
-#' The order-`order` central finite difference of `f` at `x`,
-#' applied in a single step rather than by composing lower-order differences.
+#' Computes the order-`order` central finite difference of `f` at `x` in a
+#' single step rather than by composing lower-order differences.
 #'
 #' @details
 #' The stencils of orders one to four are
@@ -170,10 +171,10 @@ stencil_deriv <- function(f, x, order, h) {
 }
 
 
-#' The Range of Predictors a Link Admits
+#' The Range of Linear Predictors That a Link Admits
 #'
 #' @description
-#' The image of the link's parameter bounds under [linkfun()], which is the
+#' Returns the image of the link's parameter bounds under [linkfun()], which is the
 #' set of predictors on which the inverse link is defined. Where a link maps
 #' onto the whole real line the result is `c(-Inf, Inf)`; otherwise its finite
 #' end or ends bound the values that a caller may pass to [linkinv()].
@@ -190,9 +191,9 @@ stencil_deriv <- function(f, x, order, h) {
 #' Inside the package the function keeps a finite-difference grid within the
 #' set on which the inverse link is defined, since a stencil point outside it
 #' returns `NaN` and makes a numerical derivative missing. Outside the package
-#' it serves a related purpose: [link_bounds()][link] gives the set that a link
-#' maps **onto**, and a consumer that carries an unconstrained vector needs the
-#' set that it maps **from**.
+#' it serves a related purpose: [link_bounds()][link] gives the set onto which
+#' a link maps, and a consumer that carries an unconstrained vector needs the
+#' set from which it maps.
 #'
 #' A family that reads a free vector in \eqn{\mathbb{R}^d} and applies an
 #' inverse link to each coordinate needs the map to be defined and injective
@@ -219,7 +220,8 @@ stencil_deriv <- function(f, x, order, h) {
 #' eta_bounds(sqrt_link())
 #' linkfun(sqrt_link(), linkinv(sqrt_link(), -2))
 #'
-#' # Which is the question a consumer carrying an unconstrained vector asks.
+#' # A consumer that carries an unconstrained vector checks whether the
+#' # predictors are unbounded in both directions.
 #' links <- list(log_link(), softplus_link(), logit_link(), sqrt_link(),
 #'               inverse_link(), inverse_sq_link(), power_link(0.5))
 #' vapply(links, function(l) all(is.infinite(eta_bounds(l))), logical(1))
@@ -246,24 +248,24 @@ eta_bounds <- function(x) {
 #' that supplies nothing but [linkfun()] is a stencil of the full order
 #' applied to the function itself.
 #'
-#' The recursion is only apparent. The base function is obtained through
-#' [linkderiv()] or [linkinvderiv()], which dispatch to the link's own method
-#' for an order that
-#' the link implements, so the chain always ends on analytic code and never on
-#' another fallback.
+#' The function does not recurse into another fallback. The base function is
+#' obtained through [linkderiv()] or [linkinvderiv()], which dispatch to the
+#' link's own method for an order that the link implements, so the chain always
+#' ends on analytic code.
 #'
 #' @param x An object of class `link`.
-#' @param v A numeric vector: \eqn{\theta} going forward, \eqn{\eta} coming back.
-#' @param order The derivative order wanted, 1 to 5.
+#' @param v A numeric vector: \eqn{\theta} in the forward direction, \eqn{\eta}
+#'   in the inverse one.
+#' @param order The derivative order, from 1 to 5.
 #' @param inverse Logical; `TRUE` for the inverse-link direction.
 #'
 #' @return A numeric vector of the same length as `v`.
 #'
 #' @section Methods:
 #' The ten registrations on the base class [link()] have this function as
-#' their whole body: `dlinkfun()` through `d5linkfun()` going out and
-#' `dlinkinv()` through `d5linkinv()` coming back, each passing its order and
-#' its direction. A link inherits them for the orders it does not implement
+#' their whole body: `dlinkfun()` through `d5linkfun()` for the link and
+#' `dlinkinv()` through `d5linkinv()` for the inverse link. Each of them passes
+#' its order and its direction. A link inherits them for the orders it does not implement
 #' itself, so a link defined with nothing but [linkfun()] and [linkinv()]
 #' still has a method for every derivative generic. S7 requires the formals of
 #' a method to match those of the generic, and the two directions name their

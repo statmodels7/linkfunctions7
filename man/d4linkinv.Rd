@@ -18,7 +18,7 @@ A numeric vector of the same length as \code{eta}, missing wherever
 \code{eta} is.
 }
 \description{
-The fourth derivative of the inverse link \eqn{g^{-1}(\eta)} with respect to
+Computes the fourth derivative of the inverse link \eqn{g^{-1}(\eta)} with respect to
 the linear predictor. It enters the chain rule (the formula of Faa di
 Bruno) that carries the higher derivatives of the log-likelihood from
 \eqn{\theta} onto \eqn{\eta}.

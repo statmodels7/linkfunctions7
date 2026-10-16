@@ -12,9 +12,10 @@
 #' @param link_name A character string naming the link, set by the
 #'   constructor and shown by `print()`.
 #' @param link_bounds A length-two numeric vector, the open interval in
-#'   which the parameter lies. Set by the constructor; see Value for this link's.
+#'   which the parameter lies. The constructor sets it, and the Value section
+#'   gives its value for this link.
 #' @param link_params A list of the link's own parameters, empty where it has
-#'   none. Set by the constructor.
+#'   none. The constructor sets it.
 #'
 #' @return An S7 object of class `CauchitLink`, inheriting from [link()] and
 #'   carrying its three properties `link_name`, `link_bounds` and
@@ -22,9 +23,9 @@
 #'
 #' @section Methods:
 #' Twelve methods are registered on this class: [linkfun()] and [linkinv()],
-#' and the five derivative orders in each direction, [dlinkfun()] through
-#' [d5linkfun()] going out and [dlinkinv()] through [d5linkinv()] coming
-#' back. `linkfun()` and `linkinv()` delegate to `stats::qcauchy()` and
+#' the five derivatives of the link, [dlinkfun()] through [d5linkfun()], and
+#' the five derivatives of the inverse link, [dlinkinv()] through
+#' [d5linkinv()]. `linkfun()` and `linkinv()` delegate to `stats::qcauchy()` and
 #' `stats::pcauchy()`, which stay accurate in both tails. The ten
 #' derivatives come from a compiled kernel, one call per order and
 #' direction.
@@ -42,7 +43,7 @@
 #' @aliases d4linkinv.CauchitLink
 #' @aliases d5linkinv.CauchitLink
 #'
-#' @seealso [cauchit_link()], the constructor users call.
+#' @seealso [cauchit_link()], the constructor that users call.
 #' @keywords internal
 CauchitLink <- S7::new_class(
   name = "CauchitLink",
@@ -77,9 +78,9 @@ S7::method(d5linkinv, CauchitLink) <- function(x, eta) lk_cauchit_inv_cpp(eta, 5
 #' @include generics.R
 #' @include link_class.R
 #' @description
-#' The cauchit link \eqn{\eta = \tan(\pi(\theta - 1/2))} on
-#' \eqn{(0, 1)}, the Cauchy quantile function; heavier-tailed than the
-#' logit or the probit.
+#' Returns the cauchit link \eqn{\eta = \tan(\pi(\theta - 1/2))} on
+#' \eqn{(0, 1)}, the Cauchy quantile function, which has heavier tails than
+#' the logit or the probit.
 #' @details
 #' The cauchit link is \eqn{\eta = \tan(\pi(\theta - 1/2))}, computed as
 #' `qcauchy(theta)`. The inverse link is the standard Cauchy distribution

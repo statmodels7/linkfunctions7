@@ -18,7 +18,7 @@ parameters).
 \description{
 Returns how the package's compiled scalar entry points address a link: the
 class name that the C function \code{lf7_class_id()} recognizes, and the link's
-own parameters in the order \code{lf7_inv12p()} reads them. A consumer that
+own parameters in the order in which \code{lf7_inv12p()} reads them. A consumer that
 resolves the entry points with \code{R_GetCCallable()} uses the name to obtain
 the link's identifier once and passes the parameters at every evaluation.
 }

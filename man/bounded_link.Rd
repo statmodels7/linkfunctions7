@@ -7,9 +7,9 @@
 bounded_link(lwr = NULL, upr = NULL)
 }
 \arguments{
-\item{lwr}{Numeric or \code{NULL}. The lower bound of the interval.}
+\item{lwr}{The lower bound of the interval, a number or \code{NULL}.}
 
-\item{upr}{Numeric or \code{NULL}. The upper bound of the interval.}
+\item{upr}{The upper bound of the interval, a number or \code{NULL}.}
 }
 \value{
 An S7 object inheriting from \code{\link[=link]{link()}}, whose methods compute the
@@ -19,10 +19,10 @@ depends on the endpoints given: \code{\link[=DoublyBoundedLink]{DoublyBoundedLin
 neither endpoint is supplied.
 }
 \description{
-The link for a parameter confined to \eqn{(lwr, upr)}: a scaled logit when
+Returns the link for a parameter confined to \eqn{(lwr, upr)}: a scaled logit when
 both endpoints are finite, a shifted log \eqn{\eta = \log(\theta - lwr)}
 when only the lower is, its mirror image \eqn{\eta = \log(upr - \theta)}
-when only the upper is, and the identity when neither is given.
+when only the upper is, and the identity when both are \code{NULL}.
 }
 \details{
 The link depends on which endpoints are given:

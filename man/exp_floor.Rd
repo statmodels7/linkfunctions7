@@ -15,13 +15,13 @@ A length-one numeric vector, about \code{1.9e-77}, at which
 \eqn{-6/\theta^4} evaluates to \code{-4.5e307}.
 }
 \description{
-The floor applied to \code{exp(eta)} by every link whose inverse is an
-exponential (\code{\link[=log_link]{log_link()}}, \code{\link[=cloglog_link]{cloglog_link()}}, and the
-lower- and upper-bounded links).
+Every link whose inverse is an exponential (\code{\link[=log_link]{log_link()}},
+\code{\link[=cloglog_link]{cloglog_link()}}, and the lower- and upper-bounded links) applies this
+floor to \code{exp(eta)}.
 }
 \details{
-The floor exists so that a parameter returned as \eqn{\theta} can be
-divided into without producing \code{Inf}: the forward derivatives of these
+The floor exists so that a parameter returned as \eqn{\theta} can be used
+as a divisor without producing \code{Inf}: the forward derivatives of these
 links are \eqn{1/\theta}, \eqn{-1/\theta^2}, \eqn{2/\theta^3} and
 \eqn{-6/\theta^4}, and the fourth is the binding one. Solving
 \eqn{6/\theta^4 \le} \code{double.xmax} and keeping a factor of four in hand

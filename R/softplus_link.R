@@ -14,9 +14,10 @@
 #' @param link_name A character string naming the link, set by the
 #'   constructor and shown by `print()`.
 #' @param link_bounds A length-two numeric vector, the open interval in
-#'   which the parameter lies. Set by the constructor; see Value for this link's.
+#'   which the parameter lies. The constructor sets it, and the Value section
+#'   gives its value for this link.
 #' @param link_params A list of the link's own parameters, empty where it has
-#'   none. Set by the constructor.
+#'   none. The constructor sets it.
 #' @param a The scale parameter, strictly positive.
 #'
 #' @return An S7 object of class `SoftplusLink`, inheriting from [link()] and
@@ -25,12 +26,12 @@
 #'
 #' @section Methods:
 #' Twelve methods are registered on this class: [linkfun()] and [linkinv()],
-#' and the five derivative orders in each direction, [dlinkfun()] through
-#' [d5linkfun()] going out and [dlinkinv()] through [d5linkinv()] coming
-#' back. The softplus is an antiderivative of the logistic, so its
+#' the five derivatives of the link, [dlinkfun()] through [d5linkfun()], and
+#' the five derivatives of the inverse link, [dlinkinv()] through
+#' [d5linkinv()]. The softplus is an antiderivative of the logistic, so its
 #' inverse-link derivatives are the logistic ones shifted a place,
 #' \eqn{h^{(k+1)} = a^k \sigma^{(k)}}, and they reuse the same polynomials
-#' the logit does. The forward set comes from a compiled kernel written in
+#' as the logit. The forward set comes from a compiled kernel written in
 #' \eqn{u = -\mathrm{expm1}(-a\theta)}, which is finite where the
 #' \eqn{\mathrm{expm1}(a\theta)} form overflows.
 #'
@@ -47,7 +48,7 @@
 #' @aliases d4linkinv.SoftplusLink
 #' @aliases d5linkinv.SoftplusLink
 #'
-#' @seealso [softplus_link()], the constructor users call.
+#' @seealso [softplus_link()], the constructor that users call.
 #' @keywords internal
 SoftplusLink <- S7::new_class(
   name = "SoftplusLink",
@@ -124,7 +125,7 @@ S7::method(d5linkinv, SoftplusLink) <- function(x, eta) {
 #' @include generics.R
 #' @include link_class.R
 #' @description
-#' The softplus link with scale \eqn{a}: the inverse is
+#' Returns the softplus link with scale \eqn{a}. Its inverse is
 #' \eqn{\theta = \log(1 + e^{a\eta})/a}, a smooth approximation of
 #' \eqn{\max(0, \eta)} that sharpens as \eqn{a} grows.
 #' @param a The scale parameter, which sets the steepness: a single number
@@ -141,8 +142,8 @@ S7::method(d5linkinv, SoftplusLink) <- function(x, eta) {
 #' positive \eqn{\eta}, \eqn{\theta \approx \eta}, which grows linearly where
 #' the inverse of a log link would grow as \eqn{\exp(\eta)}.
 #'
-#' Both directions are written so that no intermediate quantity grows with
-#' \eqn{a\theta} or \eqn{a\eta}. The inverse link uses the log-sum-exp form,
+#' Both directions are written so that the intermediate quantities do not grow
+#' with \eqn{a\theta} or \eqn{a\eta}. The inverse link uses the log-sum-exp form,
 #' and the forward link and its derivatives are expressed in
 #' \eqn{u = 1 - e^{-a\theta}} instead of \eqn{e^{a\theta} - 1}. The latter
 #' overflows once \eqn{a\theta} exceeds about 709, and earlier at the higher

@@ -12,9 +12,9 @@ methods compute the link, its inverse and their derivatives to the fifth
 order.
 }
 \description{
-The logit link \eqn{\eta = \log(\theta/(1-\theta))} on \eqn{(0, 1)},
-with inverse \eqn{\theta = 1/(1+e^{-\eta})}; the canonical link for a
-probability, whose linear predictor is the log-odds.
+Returns the logit link \eqn{\eta = \log(\theta/(1-\theta))} on
+\eqn{(0, 1)}, with inverse \eqn{\theta = 1/(1+e^{-\eta})}. It is the
+canonical link for a probability, and its linear predictor is the log-odds.
 }
 \details{
 The logit link is \eqn{\eta = \log(\theta/(1 - \theta))}, and its inverse

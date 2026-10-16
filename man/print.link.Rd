@@ -12,7 +12,7 @@
 \item{...}{Additional arguments passed to methods, currently unused.}
 }
 \value{
-\code{x}, invisibly. Called for the printed output.
+\code{x}, invisibly. The function is called for its printed output.
 }
 \description{
 Prints the name of a link, the open interval in which its parameter lies,

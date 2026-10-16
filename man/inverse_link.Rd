@@ -12,8 +12,8 @@ methods compute the link, its inverse and their derivatives to the fifth
 order.
 }
 \description{
-The reciprocal link \eqn{\eta = 1/\theta} on \eqn{(0, \infty)}, the
-canonical link of the Gamma family; its image is \eqn{(0, \infty)},
+Returns the reciprocal link \eqn{\eta = 1/\theta} on \eqn{(0, \infty)},
+the canonical link of the Gamma family. Its image is \eqn{(0, \infty)},
 not the whole real line.
 }
 \details{

@@ -18,7 +18,7 @@ A numeric vector of the same length as \code{eta}, missing wherever
 \code{eta} is.
 }
 \description{
-The fifth derivative of the inverse link \eqn{g^{-1}(\eta)} with respect
+Computes the fifth derivative of the inverse link \eqn{g^{-1}(\eta)} with respect
 to the linear predictor.
 }
 \details{

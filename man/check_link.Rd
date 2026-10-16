@@ -18,8 +18,8 @@ check_link.link(x, tolerance = 1e-05, ...)
 }
 \value{
 Invisibly, a named list of check results; see
-\code{\link[=check_link.link]{check_link.link()}} for its shape. Called mainly for the summary
-printed to the console.
+\code{\link[=check_link.link]{check_link.link()}} for its shape. The function is called mainly for
+the summary that it prints to the console.
 
 Invisibly, a named list of the check results: the four scalar logicals
 \code{invertibility_theta}, \code{invertibility_eta}, \code{monotonicity} and
@@ -31,8 +31,8 @@ reference would come from the same computation and would agree even for
 a wrong link. The number of
 orders actually implemented is carried on the result as the attribute
 \code{"analytic_orders"}; see \code{\link[=link_fallback_orders]{link_fallback_orders()}}. A
-derivative that raises an error still counts as \code{FALSE}. Called mainly
-for the summary printed to the console.
+derivative that raises an error still counts as \code{FALSE}. The function is
+called mainly for the summary that it prints to the console.
 }
 \description{
 Validates a \code{link} object numerically: invertibility in both
@@ -43,18 +43,18 @@ numerical differentiation of the analytic order below it.
 \details{
 The method performs six checks:
 \enumerate{
-\item \strong{Invertibility (\eqn{\theta} space):} verifies
+\item Invertibility (\eqn{\theta} space): verifies
 \eqn{g^{-1}(g(\theta)) = \theta} on a grid of parameter values.
-\item \strong{Invertibility (\eqn{\eta} space):} verifies
+\item Invertibility (\eqn{\eta} space): verifies
 \eqn{g(g^{-1}(\eta)) = \eta} on a grid spanning the linear predictors
 that the link produces from the parameter grid.
-\item \strong{Strict monotonicity:} checks that \eqn{g'(\theta)} has the same sign
+\item Strict monotonicity: checks that \eqn{g'(\theta)} has the same sign
 at every point of the grid, so that the map is one-to-one.
-\item \strong{Inverse function theorem:} verifies
+\item Inverse function theorem: verifies
 \eqn{g'(\theta) \cdot (g^{-1})'(\eta) = 1}.
-\item \strong{Link derivatives:} compares each analytic derivative of
+\item Link derivatives: compares each analytic derivative of
 \eqn{g(\theta)}, up to the fifth order, with a numerical one.
-\item \strong{Inverse link derivatives:} compares each analytic derivative of
+\item Inverse link derivatives: compares each analytic derivative of
 \eqn{g^{-1}(\eta)}, up to the fifth order, with a numerical one.
 }
 
@@ -71,7 +71,7 @@ res <- check_link(power_link(2))
 res$link_derivatives
 res$inverse_theorem
 
-# the checks are what a user-defined link should be held to as well
+# a user-defined link should pass the same checks
 all(unlist(check_link(bounded_link(0, 10))))
 
 }

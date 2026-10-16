@@ -81,7 +81,7 @@ linkinv <- S7::new_generic("linkinv", "x", fun = function(x, eta) {
 
 #' @title 1st Derivative of a Link Function
 #' @description
-#' The first derivative of the link \eqn{g(\theta)} with respect to the
+#' Computes the first derivative of the link \eqn{g(\theta)} with respect to the
 #' parameter, on the parameter scale. A delta-method standard error is carried
 #' in this direction, from a variance on \eqn{\theta} to one on \eqn{\eta}.
 #' @details
@@ -102,7 +102,7 @@ linkinv <- S7::new_generic("linkinv", "x", fun = function(x, eta) {
 #' @param theta A numeric vector of parameter values, inside
 #'   `x@link_bounds`. The domain is not checked: outside it the formula is
 #'   evaluated as written, so the result may be `NaN`, `NA` or an ordinary
-#'   number, and no error is signaled.
+#'   number, and the function does not signal an error.
 #' @return A numeric vector of the same length as `theta`, missing wherever
 #'   `theta` is.
 #' @seealso [linkderiv()], which routes to this generic by order, and
@@ -118,7 +118,7 @@ dlinkfun <- S7::new_generic("dlinkfun", "x", fun = function(x, theta) S7::S7_dis
 
 #' @title 2nd Derivative of a Link Function
 #' @description
-#' The second derivative of the link \eqn{g(\theta)} with respect to the
+#' Computes the second derivative of the link \eqn{g(\theta)} with respect to the
 #' parameter, on the parameter scale.
 #' @details
 #' Every link has a method for this generic. If the class of a link registers
@@ -138,7 +138,7 @@ dlinkfun <- S7::new_generic("dlinkfun", "x", fun = function(x, theta) S7::S7_dis
 #' @param theta A numeric vector of parameter values, inside
 #'   `x@link_bounds`. The domain is not checked: outside it the formula is
 #'   evaluated as written, so the result may be `NaN`, `NA` or an ordinary
-#'   number, and no error is signaled.
+#'   number, and the function does not signal an error.
 #' @return A numeric vector of the same length as `theta`, missing wherever
 #'   `theta` is.
 #' @seealso [linkderiv()], which routes to this generic by order, and
@@ -154,7 +154,7 @@ d2linkfun <- S7::new_generic("d2linkfun", "x", fun = function(x, theta) S7::S7_d
 
 #' @title 3rd Derivative of a Link Function
 #' @description
-#' The third derivative of the link \eqn{g(\theta)} with respect to the
+#' Computes the third derivative of the link \eqn{g(\theta)} with respect to the
 #' parameter, on the parameter scale.
 #' @details
 #' Every link has a method for this generic. If the class of a link registers
@@ -174,7 +174,7 @@ d2linkfun <- S7::new_generic("d2linkfun", "x", fun = function(x, theta) S7::S7_d
 #' @param theta A numeric vector of parameter values, inside
 #'   `x@link_bounds`. The domain is not checked: outside it the formula is
 #'   evaluated as written, so the result may be `NaN`, `NA` or an ordinary
-#'   number, and no error is signaled.
+#'   number, and the function does not signal an error.
 #' @return A numeric vector of the same length as `theta`, missing wherever
 #'   `theta` is.
 #' @seealso [linkderiv()], which routes to this generic by order, and
@@ -190,7 +190,7 @@ d3linkfun <- S7::new_generic("d3linkfun", "x", fun = function(x, theta) S7::S7_d
 
 #' @title 4th Derivative of a Link Function
 #' @description
-#' The fourth derivative of the link \eqn{g(\theta)} with respect to the
+#' Computes the fourth derivative of the link \eqn{g(\theta)} with respect to the
 #' parameter, on the parameter scale.
 #' @details
 #' Every link has a method for this generic. If the class of a link registers
@@ -210,7 +210,7 @@ d3linkfun <- S7::new_generic("d3linkfun", "x", fun = function(x, theta) S7::S7_d
 #' @param theta A numeric vector of parameter values, inside
 #'   `x@link_bounds`. The domain is not checked: outside it the formula is
 #'   evaluated as written, so the result may be `NaN`, `NA` or an ordinary
-#'   number, and no error is signaled.
+#'   number, and the function does not signal an error.
 #' @return A numeric vector of the same length as `theta`, missing wherever
 #'   `theta` is.
 #' @seealso [linkderiv()], which routes to this generic by order, and
@@ -225,7 +225,7 @@ d3linkfun <- S7::new_generic("d3linkfun", "x", fun = function(x, theta) S7::S7_d
 d4linkfun <- S7::new_generic("d4linkfun", "x", fun = function(x, theta) S7::S7_dispatch())
 #' @title 5th Derivative of a Link Function
 #' @description
-#' The fifth derivative of the link \eqn{g(\theta)} with respect to the
+#' Computes the fifth derivative of the link \eqn{g(\theta)} with respect to the
 #' parameter, on the parameter scale.
 #' @details
 #' The fifth order is used by score-driven filters. Each order of
@@ -250,7 +250,7 @@ d4linkfun <- S7::new_generic("d4linkfun", "x", fun = function(x, theta) S7::S7_d
 #' @param theta A numeric vector of parameter values, inside
 #'   `x@link_bounds`. The domain is not checked: outside it the formula is
 #'   evaluated as written, so the result may be `NaN`, `NA` or an ordinary
-#'   number, and no error is signaled.
+#'   number, and the function does not signal an error.
 #' @return A numeric vector of the same length as `theta`, missing wherever
 #'   `theta` is.
 #' @seealso [linkderiv()], which routes to this generic by order, and
@@ -266,7 +266,7 @@ d5linkfun <- S7::new_generic("d5linkfun", "x", fun = function(x, theta) S7::S7_d
 
 #' @title 1st Derivative of an Inverse Link Function
 #' @description
-#' The first derivative of the inverse link \eqn{g^{-1}(\eta)} with respect to
+#' Computes the first derivative of the inverse link \eqn{g^{-1}(\eta)} with respect to
 #' the linear predictor. A modeling routine that works on the unconstrained
 #' scale uses it as a chain-rule factor, which carries a derivative of the
 #' log-likelihood from \eqn{\theta} onto \eqn{\eta}.
@@ -306,7 +306,7 @@ dlinkinv <- S7::new_generic("dlinkinv", "x", fun = function(x, eta) S7::S7_dispa
 
 #' @title 2nd Derivative of an Inverse Link Function
 #' @description
-#' The second derivative of the inverse link \eqn{g^{-1}(\eta)} with respect to
+#' Computes the second derivative of the inverse link \eqn{g^{-1}(\eta)} with respect to
 #' the linear predictor. It enters the chain rule (the formula of Faa di
 #' Bruno) that carries the higher derivatives of the log-likelihood from
 #' \eqn{\theta} onto \eqn{\eta}.
@@ -346,7 +346,7 @@ d2linkinv <- S7::new_generic("d2linkinv", "x", fun = function(x, eta) S7::S7_dis
 
 #' @title 3rd Derivative of an Inverse Link Function
 #' @description
-#' The third derivative of the inverse link \eqn{g^{-1}(\eta)} with respect to
+#' Computes the third derivative of the inverse link \eqn{g^{-1}(\eta)} with respect to
 #' the linear predictor. It enters the chain rule (the formula of Faa di
 #' Bruno) that carries the higher derivatives of the log-likelihood from
 #' \eqn{\theta} onto \eqn{\eta}.
@@ -386,7 +386,7 @@ d3linkinv <- S7::new_generic("d3linkinv", "x", fun = function(x, eta) S7::S7_dis
 
 #' @title 4th Derivative of an Inverse Link Function
 #' @description
-#' The fourth derivative of the inverse link \eqn{g^{-1}(\eta)} with respect to
+#' Computes the fourth derivative of the inverse link \eqn{g^{-1}(\eta)} with respect to
 #' the linear predictor. It enters the chain rule (the formula of Faa di
 #' Bruno) that carries the higher derivatives of the log-likelihood from
 #' \eqn{\theta} onto \eqn{\eta}.
@@ -425,7 +425,7 @@ d3linkinv <- S7::new_generic("d3linkinv", "x", fun = function(x, eta) S7::S7_dis
 d4linkinv <- S7::new_generic("d4linkinv", "x", fun = function(x, eta) S7::S7_dispatch())
 #' @title 5th Derivative of an Inverse Link Function
 #' @description
-#' The fifth derivative of the inverse link \eqn{g^{-1}(\eta)} with respect
+#' Computes the fifth derivative of the inverse link \eqn{g^{-1}(\eta)} with respect
 #' to the linear predictor.
 #' @details
 #' This order is reached by the outer curvature of a score-driven filter. The
@@ -469,7 +469,7 @@ d5linkinv <- S7::new_generic("d5linkinv", "x", fun = function(x, eta) S7::S7_dis
 
 #' @title Evaluate Derivative of Link Function by Order
 #' @description
-#' A convenience router over [linkfun()] and the five
+#' Routes a call, by derivative order, to [linkfun()] or to one of the five
 #' `d*linkfun` generics.
 #' @param x An object of class `link`.
 #' @param theta A numeric vector.
@@ -493,7 +493,7 @@ linkderiv <- S7::new_generic("linkderiv", "x", fun = function(x, theta, order = 
 
 #' @title Evaluate Derivative of Inverse Link Function by Order
 #' @description
-#' A convenience router over [linkinv()] and the five
+#' Routes a call, by derivative order, to [linkinv()] or to one of the five
 #' `d*linkinv` generics.
 #' @param x An object of class `link`.
 #' @param eta A numeric vector.
@@ -519,8 +519,8 @@ linkinvderiv <- S7::new_generic("linkinvderiv", "x", fun = function(x, eta, orde
 #' @param tolerance Numeric tolerance for floating-point comparisons.
 #' @param ... Additional arguments passed to methods.
 #' @return Invisibly, a named list of check results; see
-#'   [check_link.link()] for its shape. Called mainly for the summary
-#'   printed to the console.
+#'   [check_link.link()] for its shape. The function is called mainly for
+#'   the summary that it prints to the console.
 #' @examples
 #' check_link(sqrt_link())
 #' @seealso [linkfun()], [linkinv()], [linkderiv()], [linkinvderiv()], [link()]

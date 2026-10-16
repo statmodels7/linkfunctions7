@@ -11,9 +11,10 @@
 #' @param link_name A character string naming the link, set by the
 #'   constructor and shown by `print()`.
 #' @param link_bounds A length-two numeric vector, the open interval in
-#'   which the parameter lies. Set by the constructor; see Value for this link's.
+#'   which the parameter lies. The constructor sets it, and the Value section
+#'   gives its value for this link.
 #' @param link_params A list of the link's own parameters, empty where it has
-#'   none. Set by the constructor.
+#'   none. The constructor sets it.
 #'
 #' @return An S7 object of class `SqrtLink`, inheriting from [link()] and
 #'   carrying its three properties `link_name`, `link_bounds` and
@@ -21,12 +22,12 @@
 #'
 #' @section Methods:
 #' Twelve methods are registered on this class: [linkfun()] and [linkinv()],
-#' and the five derivative orders in each direction, [dlinkfun()] through
-#' [d5linkfun()] going out and [dlinkinv()] through [d5linkinv()] coming
-#' back. The forward derivatives are half-integer falling factorials. The
+#' the five derivatives of the link, [dlinkfun()] through [d5linkfun()], and
+#' the five derivatives of the inverse link, [dlinkinv()] through
+#' [d5linkinv()]. The forward derivatives are half-integer falling factorials. The
 #' inverse map is \eqn{\eta^2}, so its derivatives terminate: the second is
-#' the constant two and the third to fifth are exactly zero, all built by
-#' [const_like()] so that a missing value still propagates.
+#' the constant two and the third to fifth are exactly zero. [const_like()]
+#' builds all of them, so that a missing value still propagates.
 #'
 #' @aliases linkfun.SqrtLink
 #' @aliases linkinv.SqrtLink
@@ -41,7 +42,7 @@
 #' @aliases d4linkinv.SqrtLink
 #' @aliases d5linkinv.SqrtLink
 #'
-#' @seealso [sqrt_link()], the constructor users call.
+#' @seealso [sqrt_link()], the constructor that users call.
 #' @keywords internal
 SqrtLink <- S7::new_class(
   name = "SqrtLink",
@@ -84,16 +85,16 @@ S7::method(d5linkinv, SqrtLink) <- function(x, eta) const_like(eta, 0)
 #' @include generics.R
 #' @include link_class.R
 #' @description
-#' The square-root link \eqn{\eta = \sqrt{\theta}} on \eqn{(0, \infty)};
-#' its image is \eqn{(0, \infty)}.
+#' Returns the square-root link \eqn{\eta = \sqrt{\theta}} on
+#' \eqn{(0, \infty)}. Its image is \eqn{(0, \infty)}.
 #' @details
 #' The square-root link is \eqn{\eta = \sqrt{\theta}}, with inverse
 #' \eqn{\theta = \eta^2}.
 #'
 #' The inverse \eqn{\eta^2} is defined for a negative \eqn{\eta} as well, but
 #' there it is not one-to-one, since \eqn{\eta} and \eqn{-\eta} give the same
-#' \eqn{\theta}. The linear predictor is therefore meant to stay positive;
-#' [eta_bounds()] returns this range.
+#' \eqn{\theta}. The linear predictor of this link therefore has to stay
+#' positive, and [eta_bounds()] returns this range.
 #'
 #' The domain of \eqn{\theta} is \eqn{(0, \infty)}.
 #'

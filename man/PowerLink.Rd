@@ -28,10 +28,11 @@ PowerLink(
 constructor and shown by \code{print()}.}
 
 \item{link_bounds}{A length-two numeric vector, the open interval in
-which the parameter lies. Set by the constructor; see Value for this link's.}
+which the parameter lies. The constructor sets it, and the Value section
+gives its value for this link.}
 
 \item{link_params}{A list of the link's own parameters, empty where it has
-none. Set by the constructor.}
+none. The constructor sets it.}
 
 \item{lambda}{The exponent of the transformation.}
 }
@@ -52,15 +53,15 @@ of the Box-Cox transformation \eqn{(\theta^\lambda - 1)/\lambda}.
 \section{Methods}{
 
 Twelve methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
-and the five derivative orders in each direction, \code{\link[=dlinkfun]{dlinkfun()}} through
-\code{\link[=d5linkfun]{d5linkfun()}} going out and \code{\link[=dlinkinv]{dlinkinv()}} through \code{\link[=d5linkinv]{d5linkinv()}} coming
-back. Both directions are a power, so all ten derivatives are falling
+the five derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d5linkfun]{d5linkfun()}}, and
+the five derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
+\code{\link[=d5linkinv]{d5linkinv()}}. Both directions are a power, so all ten derivatives are falling
 factorials in the exponent. Each is wrapped in \code{\link[=na_from]{na_from()}} because \code{NA^0}
 is one in R, which would turn a missing parameter into a number as soon
 as an exponent reached zero.
 }
 
 \seealso{
-\code{\link[=power_link]{power_link()}}, the constructor users call.
+\code{\link[=power_link]{power_link()}}, the constructor that users call.
 }
 \keyword{internal}

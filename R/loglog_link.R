@@ -11,9 +11,10 @@
 #' @param link_name A character string naming the link, set by the
 #'   constructor and shown by `print()`.
 #' @param link_bounds A length-two numeric vector, the open interval in
-#'   which the parameter lies. Set by the constructor; see Value for this link's.
+#'   which the parameter lies. The constructor sets it, and the Value section
+#'   gives its value for this link.
 #' @param link_params A list of the link's own parameters, empty where it has
-#'   none. Set by the constructor.
+#'   none. The constructor sets it.
 #'
 #' @return An S7 object of class `LogLogLink`, inheriting from [link()] and
 #'   carrying its three properties `link_name`, `link_bounds` and
@@ -21,9 +22,9 @@
 #'
 #' @section Methods:
 #' Twelve methods are registered on this class: [linkfun()] and [linkinv()],
-#' and the five derivative orders in each direction, [dlinkfun()] through
-#' [d5linkfun()] going out and [dlinkinv()] through [d5linkinv()] coming
-#' back. `linkfun()` and `linkinv()` are the elementary
+#' the five derivatives of the link, [dlinkfun()] through [d5linkfun()], and
+#' the five derivatives of the inverse link, [dlinkinv()] through
+#' [d5linkinv()]. `linkfun()` and `linkinv()` are the elementary
 #' \eqn{-\log(-\log\theta)} and \eqn{\exp(-\exp(-\eta))}; the ten
 #' derivatives come from a compiled kernel.
 #'
@@ -40,7 +41,7 @@
 #' @aliases d4linkinv.LogLogLink
 #' @aliases d5linkinv.LogLogLink
 #'
-#' @seealso [loglog_link()], the constructor users call.
+#' @seealso [loglog_link()], the constructor that users call.
 #' @keywords internal
 LogLogLink <- S7::new_class(
   name = "LogLogLink",
@@ -74,8 +75,8 @@ S7::method(d5linkinv, LogLogLink) <- function(x, eta) lk_loglog_inv_cpp(eta, 5L)
 #' @include generics.R
 #' @include link_class.R
 #' @description
-#' The log-log link \eqn{\eta = -\log(-\log\theta)} on \eqn{(0, 1)},
-#' with inverse \eqn{\theta = \exp(-e^{-\eta})}; the mirror image of
+#' Returns the log-log link \eqn{\eta = -\log(-\log\theta)} on \eqn{(0, 1)},
+#' with inverse \eqn{\theta = \exp(-e^{-\eta})}. It is the mirror image of
 #' [cloglog_link()].
 #' @details
 #' The log-log link is \eqn{\eta = -\log(-\log\theta)}, with inverse

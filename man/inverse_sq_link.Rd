@@ -12,9 +12,9 @@ methods compute the link, its inverse and their derivatives to the fifth
 order.
 }
 \description{
-The inverse-square link \eqn{\eta = 1/\theta^2} on \eqn{(0, \infty)},
-the canonical link of the inverse Gaussian family; its image is
-\eqn{(0, \infty)}.
+Returns the inverse-square link \eqn{\eta = 1/\theta^2} on
+\eqn{(0, \infty)}, the canonical link of the inverse Gaussian family. Its
+image is \eqn{(0, \infty)}.
 }
 \details{
 The inverse-square link is \eqn{\eta = 1/\theta^2}, with inverse

@@ -19,8 +19,8 @@ stencil_deriv(f, x, order, h)
 A numeric vector of the same length as \code{x}.
 }
 \description{
-The order-\code{order} central finite difference of \code{f} at \code{x},
-applied in a single step rather than by composing lower-order differences.
+Computes the order-\code{order} central finite difference of \code{f} at \code{x} in a
+single step rather than by composing lower-order differences.
 }
 \details{
 The stencils of orders one to four are

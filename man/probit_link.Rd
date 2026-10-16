@@ -12,7 +12,7 @@ methods compute the link, its inverse and their derivatives to the fifth
 order.
 }
 \description{
-The probit link \eqn{\eta = \Phi^{-1}(\theta)} on \eqn{(0, 1)}, with
+Returns the probit link \eqn{\eta = \Phi^{-1}(\theta)} on \eqn{(0, 1)}, with
 \eqn{\Phi} the standard normal distribution function.
 }
 \details{

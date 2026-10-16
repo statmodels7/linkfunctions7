@@ -9,7 +9,7 @@ na_from(r, v)
 \arguments{
 \item{r}{A numeric vector, the computed result.}
 
-\item{v}{The numeric vector the result was computed from.}
+\item{v}{The numeric vector from which the result was computed.}
 }
 \value{
 \code{r}, with \code{NA} in every position where \code{v} is \code{NA}.

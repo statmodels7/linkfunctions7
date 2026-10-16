@@ -16,11 +16,11 @@ link(link_name = character(0), link_bounds = integer(0), link_params = NULL)
 \value{
 An S7 object of class \code{link}. In practice this class is not
 instantiated directly: each link is a subclass created by one of the
-constructors (\code{\link[=logit_link]{logit_link()}}, \code{\link[=power_link]{power_link()}}, ...), and
-\code{link} is what they all inherit from and what methods dispatch on.
+constructors (\code{\link[=logit_link]{logit_link()}}, \code{\link[=power_link]{power_link()}}, ...). Every subclass
+inherits from \code{link}, and methods dispatch on it.
 }
 \description{
-The base S7 class for link functions. It carries the name, the domain and
+\code{link} is the base S7 class for link functions. It carries the name, the domain and
 any link parameters. The transformations themselves are methods that each
 subclass registers on the generics for the forward map, the inverse, and
 their analytical derivatives to fifth order in both directions.

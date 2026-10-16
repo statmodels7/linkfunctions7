@@ -12,9 +12,10 @@
 #' @param link_name A character string naming the link, set by the
 #'   constructor and shown by `print()`.
 #' @param link_bounds A length-two numeric vector, the open interval in
-#'   which the parameter lies. Set by the constructor; see Value for this link's.
+#'   which the parameter lies. The constructor sets it, and the Value section
+#'   gives its value for this link.
 #' @param link_params A list of the link's own parameters, empty where it has
-#'   none. Set by the constructor.
+#'   none. The constructor sets it.
 #'
 #' @return An S7 object of class `IdentityLink`, inheriting from [link()] and
 #'   carrying its three properties `link_name`, `link_bounds` and
@@ -22,12 +23,12 @@
 #'
 #' @section Methods:
 #' Twelve methods are registered on this class: [linkfun()] and [linkinv()],
-#' and the five derivative orders in each direction, [dlinkfun()] through
-#' [d5linkfun()] going out and [dlinkinv()] through [d5linkinv()] coming
-#' back. `linkfun()` and `linkinv()` return their argument. The first
-#' derivative is one and every higher one is zero, each built by
-#' [const_like()] so that the result is `NA` wherever the argument is `NA`,
-#' although the derivative does not depend on it.
+#' the five derivatives of the link, [dlinkfun()] through [d5linkfun()], and
+#' the five derivatives of the inverse link, [dlinkinv()] through
+#' [d5linkinv()]. `linkfun()` and `linkinv()` return their argument. The first
+#' derivative is one and every higher one is zero. [const_like()] builds each
+#' of them, so that the result is `NA` wherever the argument is `NA`, although
+#' the derivative does not depend on it.
 #'
 #' @aliases linkfun.IdentityLink
 #' @aliases linkinv.IdentityLink
@@ -42,7 +43,7 @@
 #' @aliases d4linkinv.IdentityLink
 #' @aliases d5linkinv.IdentityLink
 #'
-#' @seealso [identity_link()], the constructor users call.
+#' @seealso [identity_link()], the constructor that users call.
 #' @keywords internal
 IdentityLink <- S7::new_class(
   name = "IdentityLink",
@@ -74,8 +75,8 @@ S7::method(d5linkinv, IdentityLink) <- function(x, eta) const_like(eta, 0)
 #' @include generics.R
 #' @include link_class.R
 #' @description
-#' The identity link \eqn{\eta = \theta}, for a parameter that is already
-#' unconstrained.
+#' Returns the identity link \eqn{\eta = \theta}, for a parameter that is
+#' already unconstrained.
 #' @details
 #' The identity link is \eqn{\eta = \theta}, and its inverse is
 #' \eqn{\theta = \eta}.

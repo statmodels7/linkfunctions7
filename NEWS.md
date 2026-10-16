@@ -1,3 +1,12 @@
+# linkfunctions7 0.5.3
+
+* Documentation and messages: relative clauses without a relative pronoun,
+  stranded prepositions, absolute constructions, sentences without a verb,
+  emphasis in bold and personified descriptions of the code rewritten as
+  plain clauses. The error of `linkderiv()` and `linkinvderiv()` for an
+  order outside 0 to 5 now states the admissible range. No change to the
+  code.
+
 # linkfunctions7 0.5.2
 
 * The inverse derivatives of `logit_link()`, and through the same kernel

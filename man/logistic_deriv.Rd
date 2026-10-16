@@ -15,8 +15,8 @@ logistic_deriv(p, k)
 A numeric vector of the same length as \code{p}.
 }
 \description{
-The \code{k}-th derivative of \eqn{\sigma(z) = 1/(1 + e^{-z})}, written as a
-polynomial in \eqn{p = \sigma(z)} itself.
+Computes the \code{k}-th derivative of \eqn{\sigma(z) = 1/(1 + e^{-z})}, written
+as a polynomial in \eqn{p = \sigma(z)} itself.
 }
 \details{
 Three links use these polynomials:
@@ -29,8 +29,8 @@ softplus is an antiderivative of the logistic: \eqn{h^{(k+1)} = a^k \sigma^{(k)}
 }
 
 The three links evaluate these polynomials in compiled code, written in
-\eqn{p}, \eqn{q = 1 - p} and \eqn{pq} with \eqn{q} computed from \eqn{z}
-and not as \eqn{1 - p}, so that the derivatives keep their relative
+\eqn{p}, \eqn{q = 1 - p} and \eqn{pq}. The code computes \eqn{q} from
+\eqn{z} and not as \eqn{1 - p}, so that the derivatives keep their relative
 accuracy as \eqn{p} approaches 1: \eqn{\sigma' = pq},
 \eqn{\sigma'' = pq(q - p)}, \eqn{\sigma''' = pq(1 - 6pq)},
 \eqn{\sigma'''' = pq(q - p)(1 - 12pq)} and

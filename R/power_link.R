@@ -12,9 +12,10 @@
 #' @param link_name A character string naming the link, set by the
 #'   constructor and shown by `print()`.
 #' @param link_bounds A length-two numeric vector, the open interval in
-#'   which the parameter lies. Set by the constructor; see Value for this link's.
+#'   which the parameter lies. The constructor sets it, and the Value section
+#'   gives its value for this link.
 #' @param link_params A list of the link's own parameters, empty where it has
-#'   none. Set by the constructor.
+#'   none. The constructor sets it.
 #' @param lambda The exponent of the transformation.
 #'
 #' @return An S7 object of class `PowerLink`, inheriting from [link()] and
@@ -23,9 +24,9 @@
 #'
 #' @section Methods:
 #' Twelve methods are registered on this class: [linkfun()] and [linkinv()],
-#' and the five derivative orders in each direction, [dlinkfun()] through
-#' [d5linkfun()] going out and [dlinkinv()] through [d5linkinv()] coming
-#' back. Both directions are a power, so all ten derivatives are falling
+#' the five derivatives of the link, [dlinkfun()] through [d5linkfun()], and
+#' the five derivatives of the inverse link, [dlinkinv()] through
+#' [d5linkinv()]. Both directions are a power, so all ten derivatives are falling
 #' factorials in the exponent. Each is wrapped in [na_from()] because `NA^0`
 #' is one in R, which would turn a missing parameter into a number as soon
 #' as an exponent reached zero.
@@ -43,7 +44,7 @@
 #' @aliases d4linkinv.PowerLink
 #' @aliases d5linkinv.PowerLink
 #'
-#' @seealso [power_link()], the constructor users call.
+#' @seealso [power_link()], the constructor that users call.
 #' @keywords internal
 PowerLink <- S7::new_class(
   name = "PowerLink",
@@ -75,7 +76,7 @@ S7::method(d5linkinv, PowerLink) <- function(x, eta) { k <- 1 / x@lambda; na_fro
 #' @include generics.R
 #' @include link_class.R
 #' @description
-#' The power link \eqn{\eta = \theta^\lambda} on \eqn{(0, \infty)}; at
+#' Returns the power link \eqn{\eta = \theta^\lambda} on \eqn{(0, \infty)}; at
 #' \eqn{\lambda = 0} it returns the log link, the limit of the Box-Cox
 #' transformation.
 #' @param lambda A numeric value defining the power of the transformation. Defaults to 1.

@@ -30,10 +30,11 @@ DoublyBoundedLink(
 constructor and shown by \code{print()}.}
 
 \item{link_bounds}{A length-two numeric vector, the open interval in
-which the parameter lies. Set by the constructor; see Value for this link's.}
+which the parameter lies. The constructor sets it, and the Value section
+gives its value for this link.}
 
 \item{link_params}{A list of the link's own parameters, empty where it has
-none. Set by the constructor.}
+none. The constructor sets it.}
 
 \item{lwr, upr}{The interval endpoints.}
 
@@ -62,9 +63,9 @@ property instead of two.
 \section{Methods}{
 
 Twelve methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
-and the five derivative orders in each direction, \code{\link[=dlinkfun]{dlinkfun()}} through
-\code{\link[=d5linkfun]{d5linkfun()}} going out and \code{\link[=dlinkinv]{dlinkinv()}} through \code{\link[=d5linkinv]{d5linkinv()}} coming
-back. The forward derivatives are the logit's divided by \eqn{W^k} and
+the five derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d5linkfun]{d5linkfun()}}, and
+the five derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
+\code{\link[=d5linkinv]{d5linkinv()}}. The forward derivatives are the logit's divided by \eqn{W^k} and
 the inverse ones the logit's multiplied by \eqn{W}, because \eqn{p} is
 \eqn{\theta} rescaled by the width. The inverse set therefore calls the
 compiled kernel of the logit, and the forward set is the logit's
@@ -72,6 +73,6 @@ expressions written in \eqn{p}.
 }
 
 \seealso{
-\code{\link[=bounded_link]{bounded_link()}}, the constructor users call.
+\code{\link[=bounded_link]{bounded_link()}}, the constructor that users call.
 }
 \keyword{internal}

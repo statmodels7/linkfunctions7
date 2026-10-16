@@ -14,7 +14,7 @@ An S7 object of class \code{PowerLink}, inheriting from \code{\link[=link]{link(
 class \code{LogLink} when \code{lambda = 0}.
 }
 \description{
-The power link \eqn{\eta = \theta^\lambda} on \eqn{(0, \infty)}; at
+Returns the power link \eqn{\eta = \theta^\lambda} on \eqn{(0, \infty)}; at
 \eqn{\lambda = 0} it returns the log link, the limit of the Box-Cox
 transformation.
 }

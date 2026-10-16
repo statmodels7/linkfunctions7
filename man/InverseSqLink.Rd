@@ -27,10 +27,11 @@ InverseSqLink(
 constructor and shown by \code{print()}.}
 
 \item{link_bounds}{A length-two numeric vector, the open interval in
-which the parameter lies. Set by the constructor; see Value for this link's.}
+which the parameter lies. The constructor sets it, and the Value section
+gives its value for this link.}
 
 \item{link_params}{A list of the link's own parameters, empty where it has
-none. Set by the constructor.}
+none. The constructor sets it.}
 }
 \value{
 An S7 object of class \code{InverseSqLink}, inheriting from \code{\link[=link]{link()}} and
@@ -48,15 +49,15 @@ predictor, and like \code{\link[=inverse_link]{inverse_link()}} the map is decre
 \section{Methods}{
 
 Twelve methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
-and the five derivative orders in each direction, \code{\link[=dlinkfun]{dlinkfun()}} through
-\code{\link[=d5linkfun]{d5linkfun()}} going out and \code{\link[=dlinkinv]{dlinkinv()}} through \code{\link[=d5linkinv]{d5linkinv()}} coming
-back. The two directions are not the same map, \eqn{1/\theta^2} going
-forward and \eqn{\eta^{-1/2}} coming back, so the two sets of derivatives
+the five derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d5linkfun]{d5linkfun()}}, and
+the five derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
+\code{\link[=d5linkinv]{d5linkinv()}}. The two directions are not the same map (\eqn{1/\theta^2} in the
+forward direction and \eqn{\eta^{-1/2}} in the inverse one), so the two sets of derivatives
 are written out separately, with integer falling factorials in the forward
 direction and half-integer powers in the inverse one.
 }
 
 \seealso{
-\code{\link[=inverse_sq_link]{inverse_sq_link()}}, the constructor users call.
+\code{\link[=inverse_sq_link]{inverse_sq_link()}}, the constructor that users call.
 }
 \keyword{internal}

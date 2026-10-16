@@ -6,14 +6,15 @@
 #' positive parameter such as a scale or a rate.
 #'
 #' The inverse is floored at [exp_floor()], so a parameter reported by this link
-#' is never exactly zero and can be divided into.
+#' is never exactly zero and can be used as a divisor.
 #'
 #' @param link_name A character string naming the link, set by the
 #'   constructor and shown by `print()`.
 #' @param link_bounds A length-two numeric vector, the open interval in
-#'   which the parameter lies. Set by the constructor; see Value for this link's.
+#'   which the parameter lies. The constructor sets it, and the Value section
+#'   gives its value for this link.
 #' @param link_params A list of the link's own parameters, empty where it has
-#'   none. Set by the constructor.
+#'   none. The constructor sets it.
 #'
 #' @return An S7 object of class `LogLink`, inheriting from [link()] and
 #'   carrying its three properties `link_name`, `link_bounds` and
@@ -21,12 +22,12 @@
 #'
 #' @section Methods:
 #' Twelve methods are registered on this class: [linkfun()] and [linkinv()],
-#' and the five derivative orders in each direction, [dlinkfun()] through
-#' [d5linkfun()] going out and [dlinkinv()] through [d5linkinv()] coming
-#' back. The forward derivatives are \eqn{(-1)^{k-1}(k-1)!\,\theta^{-k}},
+#' the five derivatives of the link, [dlinkfun()] through [d5linkfun()], and
+#' the five derivatives of the inverse link, [dlinkinv()] through
+#' [d5linkinv()]. The forward derivatives are \eqn{(-1)^{k-1}(k-1)!\,\theta^{-k}},
 #' written out. Every inverse derivative is [exp_floored()] of \eqn{\eta},
-#' the exponential being its own derivative to every order, and the floor is
-#' what keeps \eqn{\theta} strictly inside \eqn{(0, \infty)}.
+#' because the exponential is its own derivative to every order, and the floor
+#' keeps \eqn{\theta} strictly inside \eqn{(0, \infty)}.
 #'
 #' @aliases linkfun.LogLink
 #' @aliases linkinv.LogLink
@@ -41,7 +42,7 @@
 #' @aliases d4linkinv.LogLink
 #' @aliases d5linkinv.LogLink
 #'
-#' @seealso [log_link()], the constructor users call.
+#' @seealso [log_link()], the constructor that users call.
 #' @keywords internal
 LogLink <- S7::new_class(
   name = "LogLink",
@@ -74,8 +75,8 @@ S7::method(d5linkinv, LogLink) <- function(x, eta) exp_floored(eta)
 #' @include generics.R
 #' @include link_class.R
 #' @description
-#' The log link \eqn{\eta = \log\theta} on \eqn{(0, \infty)}, with
-#' inverse \eqn{\theta = e^\eta}; the canonical link for a positive
+#' Returns the log link \eqn{\eta = \log\theta} on \eqn{(0, \infty)}, with
+#' inverse \eqn{\theta = e^\eta}. It is the canonical link for a positive
 #' parameter.
 #' @details
 #' The log link is \eqn{\eta = \log(\theta)}, and its inverse is the

@@ -11,9 +11,10 @@
 #' @param link_name A character string naming the link, set by the
 #'   constructor and shown by `print()`.
 #' @param link_bounds A length-two numeric vector, the open interval in
-#'   which the parameter lies. Set by the constructor; see Value for this link's.
+#'   which the parameter lies. The constructor sets it, and the Value section
+#'   gives its value for this link.
 #' @param link_params A list of the link's own parameters, empty where it has
-#'   none. Set by the constructor.
+#'   none. The constructor sets it.
 #'
 #' @return An S7 object of class `InverseSqLink`, inheriting from [link()] and
 #'   carrying its three properties `link_name`, `link_bounds` and
@@ -21,10 +22,10 @@
 #'
 #' @section Methods:
 #' Twelve methods are registered on this class: [linkfun()] and [linkinv()],
-#' and the five derivative orders in each direction, [dlinkfun()] through
-#' [d5linkfun()] going out and [dlinkinv()] through [d5linkinv()] coming
-#' back. The two directions are not the same map, \eqn{1/\theta^2} going
-#' forward and \eqn{\eta^{-1/2}} coming back, so the two sets of derivatives
+#' the five derivatives of the link, [dlinkfun()] through [d5linkfun()], and
+#' the five derivatives of the inverse link, [dlinkinv()] through
+#' [d5linkinv()]. The two directions are not the same map (\eqn{1/\theta^2} in the
+#' forward direction and \eqn{\eta^{-1/2}} in the inverse one), so the two sets of derivatives
 #' are written out separately, with integer falling factorials in the forward
 #' direction and half-integer powers in the inverse one.
 #'
@@ -41,7 +42,7 @@
 #' @aliases d4linkinv.InverseSqLink
 #' @aliases d5linkinv.InverseSqLink
 #'
-#' @seealso [inverse_sq_link()], the constructor users call.
+#' @seealso [inverse_sq_link()], the constructor that users call.
 #' @keywords internal
 InverseSqLink <- S7::new_class(
   name = "InverseSqLink",
@@ -74,9 +75,9 @@ S7::method(d5linkinv, InverseSqLink) <- function(x, eta) -945 / (32 * eta^5.5)
 #' @include generics.R
 #' @include link_class.R
 #' @description
-#' The inverse-square link \eqn{\eta = 1/\theta^2} on \eqn{(0, \infty)},
-#' the canonical link of the inverse Gaussian family; its image is
-#' \eqn{(0, \infty)}.
+#' Returns the inverse-square link \eqn{\eta = 1/\theta^2} on
+#' \eqn{(0, \infty)}, the canonical link of the inverse Gaussian family. Its
+#' image is \eqn{(0, \infty)}.
 #' @details
 #' The inverse-square link is \eqn{\eta = 1/\theta^2}, with inverse
 #' \eqn{\theta = 1/\sqrt{\eta}}.

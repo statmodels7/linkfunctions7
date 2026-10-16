@@ -12,14 +12,14 @@ d3linkfun(x, theta)
 \item{theta}{A numeric vector of parameter values, inside
 \code{x@link_bounds}. The domain is not checked: outside it the formula is
 evaluated as written, so the result may be \code{NaN}, \code{NA} or an ordinary
-number, and no error is signaled.}
+number, and the function does not signal an error.}
 }
 \value{
 A numeric vector of the same length as \code{theta}, missing wherever
 \code{theta} is.
 }
 \description{
-The third derivative of the link \eqn{g(\theta)} with respect to the
+Computes the third derivative of the link \eqn{g(\theta)} with respect to the
 parameter, on the parameter scale.
 }
 \details{

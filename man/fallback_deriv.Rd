@@ -19,9 +19,10 @@ fallback_deriv(x, v, order, inverse)
 \arguments{
 \item{x}{An object of class \code{link}.}
 
-\item{v}{A numeric vector: \eqn{\theta} going forward, \eqn{\eta} coming back.}
+\item{v}{A numeric vector: \eqn{\theta} in the forward direction, \eqn{\eta}
+in the inverse one.}
 
-\item{order}{The derivative order wanted, 1 to 5.}
+\item{order}{The derivative order, from 1 to 5.}
 
 \item{inverse}{Logical; \code{TRUE} for the inverse-link direction.}
 }
@@ -41,18 +42,17 @@ the third derivative is one first difference of the second; only for a link
 that supplies nothing but \code{\link[=linkfun]{linkfun()}} is a stencil of the full order
 applied to the function itself.
 
-The recursion is only apparent. The base function is obtained through
-\code{\link[=linkderiv]{linkderiv()}} or \code{\link[=linkinvderiv]{linkinvderiv()}}, which dispatch to the link's own method
-for an order that
-the link implements, so the chain always ends on analytic code and never on
-another fallback.
+The function does not recurse into another fallback. The base function is
+obtained through \code{\link[=linkderiv]{linkderiv()}} or \code{\link[=linkinvderiv]{linkinvderiv()}}, which dispatch to the
+link's own method for an order that the link implements, so the chain always
+ends on analytic code.
 }
 \section{Methods}{
 
 The ten registrations on the base class \code{\link[=link]{link()}} have this function as
-their whole body: \code{dlinkfun()} through \code{d5linkfun()} going out and
-\code{dlinkinv()} through \code{d5linkinv()} coming back, each passing its order and
-its direction. A link inherits them for the orders it does not implement
+their whole body: \code{dlinkfun()} through \code{d5linkfun()} for the link and
+\code{dlinkinv()} through \code{d5linkinv()} for the inverse link. Each of them passes
+its order and its direction. A link inherits them for the orders it does not implement
 itself, so a link defined with nothing but \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}}
 still has a method for every derivative generic. S7 requires the formals of
 a method to match those of the generic, and the two directions name their

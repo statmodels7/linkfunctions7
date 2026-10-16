@@ -12,9 +12,10 @@
 #' @param link_name A character string naming the link, set by the
 #'   constructor and shown by `print()`.
 #' @param link_bounds A length-two numeric vector, the open interval in
-#'   which the parameter lies. Set by the constructor; see Value for this link's.
+#'   which the parameter lies. The constructor sets it, and the Value section
+#'   gives its value for this link.
 #' @param link_params A list of the link's own parameters, empty where it has
-#'   none. Set by the constructor.
+#'   none. The constructor sets it.
 #'
 #' @return An S7 object of class `ClogLogLink`, inheriting from [link()] and
 #'   carrying its three properties `link_name`, `link_bounds` and
@@ -22,9 +23,9 @@
 #'
 #' @section Methods:
 #' Twelve methods are registered on this class: [linkfun()] and [linkinv()],
-#' and the five derivative orders in each direction, [dlinkfun()] through
-#' [d5linkfun()] going out and [dlinkinv()] through [d5linkinv()] coming
-#' back. `linkfun()` is written through `log1p()` rather than as
+#' the five derivatives of the link, [dlinkfun()] through [d5linkfun()], and
+#' the five derivatives of the inverse link, [dlinkinv()] through
+#' [d5linkinv()]. `linkfun()` is written through `log1p()` rather than as
 #' \eqn{\log(-\log(1 - \theta))}, which rounds to \eqn{-\infty} for a small
 #' \eqn{\theta} where the true value is finite and representable. The ten
 #' derivatives come from a compiled kernel.
@@ -42,7 +43,7 @@
 #' @aliases d4linkinv.ClogLogLink
 #' @aliases d5linkinv.ClogLogLink
 #'
-#' @seealso [cloglog_link()], the constructor users call.
+#' @seealso [cloglog_link()], the constructor that users call.
 #' @keywords internal
 ClogLogLink <- S7::new_class(
   name = "ClogLogLink",
@@ -93,8 +94,8 @@ S7::method(d5linkinv, ClogLogLink) <- function(x, eta) lk_cloglog_inv_cpp(eta, 5
 #' @include generics.R
 #' @include link_class.R
 #' @description
-#' The complementary log-log link \eqn{\eta = \log(-\log(1-\theta))} on
-#' \eqn{(0, 1)}, with inverse \eqn{\theta = 1 - \exp(-e^\eta)};
+#' Returns the complementary log-log link \eqn{\eta = \log(-\log(1-\theta))}
+#' on \eqn{(0, 1)}, with inverse \eqn{\theta = 1 - \exp(-e^\eta)}. The link is
 #' asymmetric about \eqn{\theta = 1/2}.
 #' @details
 #' The complementary log-log link is \eqn{\eta = \log(-\log(1 - \theta))},

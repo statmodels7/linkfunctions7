@@ -12,9 +12,9 @@ methods compute the link, its inverse and their derivatives to the fifth
 order.
 }
 \description{
-The cauchit link \eqn{\eta = \tan(\pi(\theta - 1/2))} on
-\eqn{(0, 1)}, the Cauchy quantile function; heavier-tailed than the
-logit or the probit.
+Returns the cauchit link \eqn{\eta = \tan(\pi(\theta - 1/2))} on
+\eqn{(0, 1)}, the Cauchy quantile function, which has heavier tails than
+the logit or the probit.
 }
 \details{
 The cauchit link is \eqn{\eta = \tan(\pi(\theta - 1/2))}, computed as

@@ -18,7 +18,7 @@ inside which \code{x} must stay.}
 A numeric vector of steps, the same length as \code{x}.
 }
 \description{
-The step for a central stencil of order \code{order}, scaled by the magnitude
+Returns the step for a central stencil of order \code{order}, scaled by the magnitude
 of the evaluation point and, when bounds are supplied, shrunk so that the
 whole stencil stays strictly inside them.
 }
@@ -31,6 +31,7 @@ larger one.
 The clamp matters because a link's domain is open. Differentiating the log
 link at \eqn{\theta = 10^{-8}} with a step chosen from the magnitude alone
 would evaluate \eqn{\log} at a negative number; the stencil for order 3 and 4
-reaches \eqn{2h}, so it is that reach, not \eqn{h}, that must fit.
+reaches \eqn{2h}, so the reach \eqn{2h}, and not \eqn{h}, must fit inside
+the domain.
 }
 \keyword{internal}

@@ -19,7 +19,7 @@
 #' @param x An object of class `link`.
 #' @param ... Additional arguments passed to methods, currently unused.
 #'
-#' @return `x`, invisibly. Called for the printed output.
+#' @return `x`, invisibly. The function is called for its printed output.
 #'
 #' @examples
 #' print(logit_link())
@@ -53,8 +53,7 @@ S7::method(print, link) <- print.link
 #' @title Visualize Link Functions
 #'
 #' @description
-#' Plot method for `link` objects.
-#' It generates a panel with two plots:
+#' The plot method for `link` objects generates a panel with two plots:
 #'
 #' 1. The link function \eqn{\eta = g(\theta)} over its valid domain.
 #' 2. The inverse link function \eqn{\theta = g^{-1}(\eta)} over a standard range of linear predictors.
@@ -200,7 +199,7 @@ linkderiv.link <- function(x, theta, order = 1) {
   # more than the branch it selects, on a function called once per parameter per
   # order by anything that works on the link scale.
   if (length(order) != 1L || is.na(order) || order < 0 || order > 5) {
-    stop("Forward derivative order not supported.", call. = FALSE)
+    stop("The forward derivative order is not supported: it must be one of 0 to 5.", call. = FALSE)
   }
   switch(as.integer(order) + 1L,
          linkfun(x, theta),
@@ -223,7 +222,7 @@ S7::method(linkderiv, link) <- linkderiv.link
 #' @keywords internal
 linkinvderiv.link <- function(x, eta, order = 1) {
   if (length(order) != 1L || is.na(order) || order < 0 || order > 5) {
-    stop("Inverse derivative order not supported.", call. = FALSE)
+    stop("The inverse derivative order is not supported: it must be one of 0 to 5.", call. = FALSE)
   }
   switch(as.integer(order) + 1L,
          linkinv(x, eta),
@@ -251,18 +250,18 @@ S7::method(linkinvderiv, link) <- linkinvderiv.link
 #' @details
 #' The method performs six checks:
 #'
-#' 1. **Invertibility (\eqn{\theta} space):** verifies
+#' 1. Invertibility (\eqn{\theta} space): verifies
 #'    \eqn{g^{-1}(g(\theta)) = \theta} on a grid of parameter values.
-#' 2. **Invertibility (\eqn{\eta} space):** verifies
+#' 2. Invertibility (\eqn{\eta} space): verifies
 #'    \eqn{g(g^{-1}(\eta)) = \eta} on a grid spanning the linear predictors
 #'    that the link produces from the parameter grid.
-#' 3. **Strict monotonicity:** checks that \eqn{g'(\theta)} has the same sign
+#' 3. Strict monotonicity: checks that \eqn{g'(\theta)} has the same sign
 #'    at every point of the grid, so that the map is one-to-one.
-#' 4. **Inverse function theorem:** verifies
+#' 4. Inverse function theorem: verifies
 #'    \eqn{g'(\theta) \cdot (g^{-1})'(\eta) = 1}.
-#' 5. **Link derivatives:** compares each analytic derivative of
+#' 5. Link derivatives: compares each analytic derivative of
 #'    \eqn{g(\theta)}, up to the fifth order, with a numerical one.
-#' 6. **Inverse link derivatives:** compares each analytic derivative of
+#' 6. Inverse link derivatives: compares each analytic derivative of
 #'    \eqn{g^{-1}(\eta)}, up to the fifth order, with a numerical one.
 #'
 #' Each analytic derivative of order \eqn{k} is compared with one numerical
@@ -280,8 +279,8 @@ S7::method(linkinvderiv, link) <- linkinvderiv.link
 #'   a wrong link. The number of
 #'   orders actually implemented is carried on the result as the attribute
 #'   `"analytic_orders"`; see [link_fallback_orders()]. A
-#'   derivative that raises an error still counts as `FALSE`. Called mainly
-#'   for the summary printed to the console.
+#'   derivative that raises an error still counts as `FALSE`. The function is
+#'   called mainly for the summary that it prints to the console.
 #'
 #' @examples
 #' # every link the package ships passes all six checks
@@ -291,7 +290,7 @@ S7::method(linkinvderiv, link) <- linkinvderiv.link
 #' res$link_derivatives
 #' res$inverse_theorem
 #'
-#' # the checks are what a user-defined link should be held to as well
+#' # a user-defined link should pass the same checks
 #' all(unlist(check_link(bounded_link(0, 10))))
 #'
 #' @rdname check_link

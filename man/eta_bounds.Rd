@@ -2,7 +2,7 @@
 % Please edit documentation in R/numerical_fallbacks.R
 \name{eta_bounds}
 \alias{eta_bounds}
-\title{The Range of Predictors a Link Admits}
+\title{The Range of Linear Predictors That a Link Admits}
 \usage{
 eta_bounds(x)
 }
@@ -14,7 +14,7 @@ A numeric vector of length two, sorted, with \code{-Inf} or \code{Inf} in
 either position where that end is unbounded.
 }
 \description{
-The image of the link's parameter bounds under \code{\link[=linkfun]{linkfun()}}, which is the
+Returns the image of the link's parameter bounds under \code{\link[=linkfun]{linkfun()}}, which is the
 set of predictors on which the inverse link is defined. Where a link maps
 onto the whole real line the result is \code{c(-Inf, Inf)}; otherwise its finite
 end or ends bound the values that a caller may pass to \code{\link[=linkinv]{linkinv()}}.
@@ -30,9 +30,9 @@ they cannot be established.
 Inside the package the function keeps a finite-difference grid within the
 set on which the inverse link is defined, since a stencil point outside it
 returns \code{NaN} and makes a numerical derivative missing. Outside the package
-it serves a related purpose: \link[=link]{link_bounds()} gives the set that a link
-maps \strong{onto}, and a consumer that carries an unconstrained vector needs the
-set that it maps \strong{from}.
+it serves a related purpose: \link[=link]{link_bounds()} gives the set onto which
+a link maps, and a consumer that carries an unconstrained vector needs the
+set from which it maps.
 
 A family that reads a free vector in \eqn{\mathbb{R}^d} and applies an
 inverse link to each coordinate needs the map to be defined and injective
@@ -52,7 +52,8 @@ eta_bounds(log_link())
 eta_bounds(sqrt_link())
 linkfun(sqrt_link(), linkinv(sqrt_link(), -2))
 
-# Which is the question a consumer carrying an unconstrained vector asks.
+# A consumer that carries an unconstrained vector checks whether the
+# predictors are unbounded in both directions.
 links <- list(log_link(), softplus_link(), logit_link(), sqrt_link(),
               inverse_link(), inverse_sq_link(), power_link(0.5))
 vapply(links, function(l) all(is.infinite(eta_bounds(l))), logical(1))

@@ -12,8 +12,8 @@ methods compute the link, its inverse and their derivatives to the fifth
 order.
 }
 \description{
-The identity link \eqn{\eta = \theta}, for a parameter that is already
-unconstrained.
+Returns the identity link \eqn{\eta = \theta}, for a parameter that is
+already unconstrained.
 }
 \details{
 The identity link is \eqn{\eta = \theta}, and its inverse is

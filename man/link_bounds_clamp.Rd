@@ -12,16 +12,16 @@ link_bounds_clamp(theta, bounds)
 \item{bounds}{The link's \code{link_bounds}, a length-2 numeric vector.}
 }
 \value{
-\code{theta}, with any value that has landed exactly on a bound
-moved just inside it and any infinity brought back to the largest finite
-double. \code{NA} and \code{NaN} pass through unchanged, as does a value outside
+\code{theta}, in which any value that has landed exactly on a bound is
+moved just inside it and any infinity is brought back to the largest
+finite double. \code{NA} and \code{NaN} pass through unchanged, as does a value outside
 the bounds by more than rounding, since changing either would hide an
 error in the calling code.
 }
 \description{
 Moves a value that lies exactly on a finite bound to a double strictly
 inside it, one or two units in the last place away, and an infinite value
-to the largest finite double of that sign. Applied by \code{\link[=linkinv]{linkinv()}} to every link.
+to the largest finite double of that sign. \code{\link[=linkinv]{linkinv()}} applies it to every link.
 }
 \details{
 In exact arithmetic a link is a bijection onto an open interval, but in
@@ -38,7 +38,7 @@ to the largest finite double.
 R has no \code{nextafter()}, so the step is computed arithmetically. Near a
 non-zero bound \eqn{b} the spacing of doubles is set by the magnitude of
 \eqn{b}: one ulp at 2 is about 4.4e-16, while one ulp at 1e-300 is about
-1e-316, so no single additive constant serves both. The value
+1e-316, so a single additive constant cannot serve both. The value
 \verb{b + |b| * eps} lies one to two ulps from \code{b} at any magnitude, which is
 strictly inside the interval and as close to \code{b} as the arithmetic reliably
 allows.

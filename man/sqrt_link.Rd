@@ -12,8 +12,8 @@ methods compute the link, its inverse and their derivatives to the fifth
 order.
 }
 \description{
-The square-root link \eqn{\eta = \sqrt{\theta}} on \eqn{(0, \infty)};
-its image is \eqn{(0, \infty)}.
+Returns the square-root link \eqn{\eta = \sqrt{\theta}} on
+\eqn{(0, \infty)}. Its image is \eqn{(0, \infty)}.
 }
 \details{
 The square-root link is \eqn{\eta = \sqrt{\theta}}, with inverse
@@ -21,8 +21,8 @@ The square-root link is \eqn{\eta = \sqrt{\theta}}, with inverse
 
 The inverse \eqn{\eta^2} is defined for a negative \eqn{\eta} as well, but
 there it is not one-to-one, since \eqn{\eta} and \eqn{-\eta} give the same
-\eqn{\theta}. The linear predictor is therefore meant to stay positive;
-\code{\link[=eta_bounds]{eta_bounds()}} returns this range.
+\eqn{\theta}. The linear predictor of this link therefore has to stay
+positive, and \code{\link[=eta_bounds]{eta_bounds()}} returns this range.
 
 The domain of \eqn{\theta} is \eqn{(0, \infty)}.
 }

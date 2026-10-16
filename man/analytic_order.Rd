@@ -15,12 +15,12 @@ analytic_order(x, inverse = FALSE)
 An integer between 0 and 5.
 }
 \description{
-The largest \eqn{k \le 5} for which the link's own class registers a method
-for the order-\eqn{k} derivative generic; \code{0} when it registers none, so
-that only \code{\link[=linkfun]{linkfun()}} or \code{\link[=linkinv]{linkinv()}} is available.
+Returns the largest \eqn{k \le 5} for which the link's own class registers
+a method for the order-\eqn{k} derivative generic, and \code{0} when it registers
+none, so that only \code{\link[=linkfun]{linkfun()}} or \code{\link[=linkinv]{linkinv()}} is available.
 }
 \details{
-Detection uses the documented S7 property that a method records, in its
+The function relies on the documented S7 property that a method records, in its
 \code{signature} attribute, the class on which it was registered: a method inherited from
 the base \code{\link[=link]{link()}} class is a fallback, anything else is the link's
 own. Comparing method objects with \code{identical()} does not work for this,

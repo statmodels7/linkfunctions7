@@ -18,7 +18,7 @@ A numeric vector of the same length as \code{eta}, missing wherever
 \code{eta} is.
 }
 \description{
-The first derivative of the inverse link \eqn{g^{-1}(\eta)} with respect to
+Computes the first derivative of the inverse link \eqn{g^{-1}(\eta)} with respect to
 the linear predictor. A modeling routine that works on the unconstrained
 scale uses it as a chain-rule factor, which carries a derivative of the
 log-likelihood from \eqn{\theta} onto \eqn{\eta}.

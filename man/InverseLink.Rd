@@ -27,10 +27,11 @@ InverseLink(
 constructor and shown by \code{print()}.}
 
 \item{link_bounds}{A length-two numeric vector, the open interval in
-which the parameter lies. Set by the constructor; see Value for this link's.}
+which the parameter lies. The constructor sets it, and the Value section
+gives its value for this link.}
 
 \item{link_params}{A list of the link's own parameters, empty where it has
-none. Set by the constructor.}
+none. The constructor sets it.}
 }
 \value{
 An S7 object of class \code{InverseLink}, inheriting from \code{\link[=link]{link()}} and
@@ -49,14 +50,14 @@ predictor, and the map is decreasing: a larger parameter gives a smaller
 \section{Methods}{
 
 Twelve methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
-and the five derivative orders in each direction, \code{\link[=dlinkfun]{dlinkfun()}} through
-\code{\link[=d5linkfun]{d5linkfun()}} going out and \code{\link[=dlinkinv]{dlinkinv()}} through \code{\link[=d5linkinv]{d5linkinv()}} coming
-back. The link is its own inverse, so the two directions carry the same
-expressions: \eqn{1/\theta} and \eqn{1/\eta}, with the five derivatives
-\eqn{(-1)^k k!\,z^{-(k+1)}} written out in both.
+the five derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d5linkfun]{d5linkfun()}}, and
+the five derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
+\code{\link[=d5linkinv]{d5linkinv()}}. The link is its own inverse, so the two directions carry the same
+expressions, \eqn{1/\theta} and \eqn{1/\eta}, and the five derivatives
+\eqn{(-1)^k k!\,z^{-(k+1)}} are written out in both.
 }
 
 \seealso{
-\code{\link[=inverse_link]{inverse_link()}}, the constructor users call.
+\code{\link[=inverse_link]{inverse_link()}}, the constructor that users call.
 }
 \keyword{internal}

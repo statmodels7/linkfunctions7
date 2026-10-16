@@ -5,15 +5,16 @@
 #' \eqn{(0, 1)}, with inverse \eqn{\theta = 1/(1+e^{-\eta})}. It is the
 #' canonical link for a probability, and its linear predictor is the log-odds.
 #'
-#' Every inverse derivative is a polynomial in \eqn{\theta} itself, the first
-#' being \eqn{\theta(1-\theta)}, the variance of a Bernoulli.
+#' Every inverse derivative is a polynomial in \eqn{\theta} itself. The first
+#' is \eqn{\theta(1-\theta)}, the variance of a Bernoulli.
 #'
 #' @param link_name A character string naming the link, set by the
 #'   constructor and shown by `print()`.
 #' @param link_bounds A length-two numeric vector, the open interval in
-#'   which the parameter lies. Set by the constructor; see Value for this link's.
+#'   which the parameter lies. The constructor sets it, and the Value section
+#'   gives its value for this link.
 #' @param link_params A list of the link's own parameters, empty where it has
-#'   none. Set by the constructor.
+#'   none. The constructor sets it.
 #'
 #' @return An S7 object of class `LogitLink`, inheriting from [link()] and
 #'   carrying its three properties `link_name`, `link_bounds` and
@@ -21,14 +22,15 @@
 #'
 #' @section Methods:
 #' Twelve methods are registered on this class: [linkfun()] and [linkinv()],
-#' and the five derivative orders in each direction, [dlinkfun()] through
-#' [d5linkfun()] going out and [dlinkinv()] through [d5linkinv()] coming
-#' back. `linkfun()` and `linkinv()` delegate to `stats::qlogis()` and
+#' the five derivatives of the link, [dlinkfun()] through [d5linkfun()], and
+#' the five derivatives of the inverse link, [dlinkinv()] through
+#' [d5linkinv()]. `linkfun()` and `linkinv()` delegate to `stats::qlogis()` and
 #' `stats::plogis()`, which remain accurate near both boundaries. The ten
 #' derivatives come from a compiled kernel, one call per order and
 #' direction. The inverse derivatives are evaluated in \eqn{\theta},
-#' \eqn{1 - \theta} and their product, each computed from \eqn{\eta}, so
-#' that they keep their relative accuracy in both tails.
+#' \eqn{1 - \theta} and their product, and each of these is computed from
+#' \eqn{\eta}, so that the derivatives keep their relative accuracy in both
+#' tails.
 #'
 #' @aliases linkfun.LogitLink
 #' @aliases linkinv.LogitLink
@@ -43,7 +45,7 @@
 #' @aliases d4linkinv.LogitLink
 #' @aliases d5linkinv.LogitLink
 #'
-#' @seealso [logit_link()], the constructor users call.
+#' @seealso [logit_link()], the constructor that users call.
 #' @keywords internal
 LogitLink <- S7::new_class(
   name = "LogitLink",
@@ -79,9 +81,9 @@ S7::method(d5linkinv, LogitLink) <- function(x, eta) lk_logit_inv_cpp(eta, 5L)
 #' @include generics.R
 #' @include link_class.R
 #' @description
-#' The logit link \eqn{\eta = \log(\theta/(1-\theta))} on \eqn{(0, 1)},
-#' with inverse \eqn{\theta = 1/(1+e^{-\eta})}; the canonical link for a
-#' probability, whose linear predictor is the log-odds.
+#' Returns the logit link \eqn{\eta = \log(\theta/(1-\theta))} on
+#' \eqn{(0, 1)}, with inverse \eqn{\theta = 1/(1+e^{-\eta})}. It is the
+#' canonical link for a probability, and its linear predictor is the log-odds.
 #' @details
 #' The logit link is \eqn{\eta = \log(\theta/(1 - \theta))}, and its inverse
 #' is the logistic function \eqn{\theta = 1/(1 + \exp(-\eta))}.

@@ -12,9 +12,9 @@ methods compute the link, its inverse and their derivatives to the fifth
 order.
 }
 \description{
-The rhobit link
+Returns the rhobit link
 \eqn{\eta = \mathrm{atanh}(\theta) = \log((1+\theta)/(1-\theta))/2}
-on \eqn{(-1, 1)}, Fisher's z; the natural link for a correlation.
+on \eqn{(-1, 1)}, Fisher's z. It is the natural link for a correlation.
 }
 \details{
 The rhobit link is the inverse hyperbolic tangent,

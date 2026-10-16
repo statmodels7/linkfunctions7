@@ -17,8 +17,7 @@ or \code{main}).}
 No return value, called for side effects (plotting).
 }
 \description{
-Plot method for \code{link} objects.
-It generates a panel with two plots:
+The plot method for \code{link} objects generates a panel with two plots:
 \enumerate{
 \item The link function \eqn{\eta = g(\theta)} over its valid domain.
 \item The inverse link function \eqn{\theta = g^{-1}(\eta)} over a standard range of linear predictors.

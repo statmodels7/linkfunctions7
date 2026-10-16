@@ -12,8 +12,8 @@ methods compute the link, its inverse and their derivatives to the fifth
 order.
 }
 \description{
-The complementary log-log link \eqn{\eta = \log(-\log(1-\theta))} on
-\eqn{(0, 1)}, with inverse \eqn{\theta = 1 - \exp(-e^\eta)};
+Returns the complementary log-log link \eqn{\eta = \log(-\log(1-\theta))}
+on \eqn{(0, 1)}, with inverse \eqn{\theta = 1 - \exp(-e^\eta)}. The link is
 asymmetric about \eqn{\theta = 1/2}.
 }
 \details{

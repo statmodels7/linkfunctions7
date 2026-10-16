@@ -18,9 +18,10 @@
 #' @param link_name A character string naming the link, set by the
 #'   constructor and shown by `print()`.
 #' @param link_bounds A length-two numeric vector, the open interval in
-#'   which the parameter lies. Set by the constructor; see Value for this link's.
+#'   which the parameter lies. The constructor sets it, and the Value section
+#'   gives its value for this link.
 #' @param link_params A list of the link's own parameters, empty where it has
-#'   none. Set by the constructor.
+#'   none. The constructor sets it.
 #' @param width The interval width, `upr - lwr`, set by the constructor.
 #'
 #' @return An S7 object of class `DoublyBoundedLink`, inheriting from [link()] and
@@ -30,9 +31,9 @@
 #'
 #' @section Methods:
 #' Twelve methods are registered on this class: [linkfun()] and [linkinv()],
-#' and the five derivative orders in each direction, [dlinkfun()] through
-#' [d5linkfun()] going out and [dlinkinv()] through [d5linkinv()] coming
-#' back. The forward derivatives are the logit's divided by \eqn{W^k} and
+#' the five derivatives of the link, [dlinkfun()] through [d5linkfun()], and
+#' the five derivatives of the inverse link, [dlinkinv()] through
+#' [d5linkinv()]. The forward derivatives are the logit's divided by \eqn{W^k} and
 #' the inverse ones the logit's multiplied by \eqn{W}, because \eqn{p} is
 #' \eqn{\theta} rescaled by the width. The inverse set therefore calls the
 #' compiled kernel of the logit, and the forward set is the logit's
@@ -51,7 +52,7 @@
 #' @aliases d4linkinv.DoublyBoundedLink
 #' @aliases d5linkinv.DoublyBoundedLink
 #'
-#' @seealso [bounded_link()], the constructor users call.
+#' @seealso [bounded_link()], the constructor that users call.
 #' @keywords internal
 DoublyBoundedLink <- S7::new_class(
   name = "DoublyBoundedLink",
@@ -74,16 +75,17 @@ DoublyBoundedLink <- S7::new_class(
 #' Carries the shifted log on \eqn{(l, \infty)}: \eqn{\eta = \log(\theta - l)},
 #' with inverse \eqn{\theta = l + e^{\eta}}.
 #'
-#' Every derivative is the log link's, the shift being a constant that
+#' Every derivative is the log link's, because the shift is a constant that
 #' differentiates away, and the exponential is floored at [exp_floor()] so the
 #' parameter never reaches the bound exactly.
 #'
 #' @param link_name A character string naming the link, set by the
 #'   constructor and shown by `print()`.
 #' @param link_bounds A length-two numeric vector, the open interval in
-#'   which the parameter lies. Set by the constructor; see Value for this link's.
+#'   which the parameter lies. The constructor sets it, and the Value section
+#'   gives its value for this link.
 #' @param link_params A list of the link's own parameters, empty where it has
-#'   none. Set by the constructor.
+#'   none. The constructor sets it.
 #' @param lwr The lower endpoint.
 #'
 #' @return An S7 object of class `LowerBoundedLink`, inheriting from [link()] and
@@ -92,12 +94,12 @@ DoublyBoundedLink <- S7::new_class(
 #'
 #' @section Methods:
 #' Twelve methods are registered on this class: [linkfun()] and [linkinv()],
-#' and the five derivative orders in each direction, [dlinkfun()] through
-#' [d5linkfun()] going out and [dlinkinv()] through [d5linkinv()] coming
-#' back. The forward derivatives are the log link's read at \eqn{\theta -
-#' \mathrm{lwr}}, the shift being a constant that differentiates away. Every
-#' inverse derivative is [exp_floored()] of \eqn{\eta} itself, the
-#' exponential being its own derivative to every order.
+#' the five derivatives of the link, [dlinkfun()] through [d5linkfun()], and
+#' the five derivatives of the inverse link, [dlinkinv()] through
+#' [d5linkinv()]. The forward derivatives are the log link's read at \eqn{\theta -
+#' \mathrm{lwr}}, because the shift is a constant that differentiates away.
+#' Every inverse derivative is [exp_floored()] of \eqn{\eta} itself, because
+#' the exponential is its own derivative to every order.
 #'
 #' @aliases linkfun.LowerBoundedLink
 #' @aliases linkinv.LowerBoundedLink
@@ -112,7 +114,7 @@ DoublyBoundedLink <- S7::new_class(
 #' @aliases d4linkinv.LowerBoundedLink
 #' @aliases d5linkinv.LowerBoundedLink
 #'
-#' @seealso [bounded_link()], the constructor users call.
+#' @seealso [bounded_link()], the constructor that users call.
 #' @keywords internal
 LowerBoundedLink <- S7::new_class(
   name = "LowerBoundedLink",
@@ -136,9 +138,10 @@ LowerBoundedLink <- S7::new_class(
 #' @param link_name A character string naming the link, set by the
 #'   constructor and shown by `print()`.
 #' @param link_bounds A length-two numeric vector, the open interval in
-#'   which the parameter lies. Set by the constructor; see Value for this link's.
+#'   which the parameter lies. The constructor sets it, and the Value section
+#'   gives its value for this link.
 #' @param link_params A list of the link's own parameters, empty where it has
-#'   none. Set by the constructor.
+#'   none. The constructor sets it.
 #' @param upr The upper endpoint.
 #'
 #' @return An S7 object of class `UpperBoundedLink`, inheriting from [link()] and
@@ -147,9 +150,9 @@ LowerBoundedLink <- S7::new_class(
 #'
 #' @section Methods:
 #' Twelve methods are registered on this class: [linkfun()] and [linkinv()],
-#' and the five derivative orders in each direction, [dlinkfun()] through
-#' [d5linkfun()] going out and [dlinkinv()] through [d5linkinv()] coming
-#' back. The reflection makes the map decreasing, so every inverse
+#' the five derivatives of the link, [dlinkfun()] through [d5linkfun()], and
+#' the five derivatives of the inverse link, [dlinkinv()] through
+#' [d5linkinv()]. The reflection makes the map decreasing, so every inverse
 #' derivative is the negative of [exp_floored()] of \eqn{\eta}, and the
 #' forward ones
 #' are the log's read at \eqn{\mathrm{upr} - \theta}, with the change of sign
@@ -168,7 +171,7 @@ LowerBoundedLink <- S7::new_class(
 #' @aliases d4linkinv.UpperBoundedLink
 #' @aliases d5linkinv.UpperBoundedLink
 #'
-#' @seealso [bounded_link()], the constructor users call.
+#' @seealso [bounded_link()], the constructor that users call.
 #' @keywords internal
 UpperBoundedLink <- S7::new_class(
   name = "UpperBoundedLink",
@@ -274,13 +277,13 @@ S7::method(d5linkinv, UpperBoundedLink) <- function(x, eta) -exp_floored(eta)
 #' @include generics.R
 #' @include link_class.R
 #' @description
-#' The link for a parameter confined to \eqn{(lwr, upr)}: a scaled logit when
+#' Returns the link for a parameter confined to \eqn{(lwr, upr)}: a scaled logit when
 #' both endpoints are finite, a shifted log \eqn{\eta = \log(\theta - lwr)}
 #' when only the lower is, its mirror image \eqn{\eta = \log(upr - \theta)}
-#' when only the upper is, and the identity when neither is given.
+#' when only the upper is, and the identity when both are `NULL`.
 #'
-#' @param lwr Numeric or `NULL`. The lower bound of the interval.
-#' @param upr Numeric or `NULL`. The upper bound of the interval.
+#' @param lwr The lower bound of the interval, a number or `NULL`.
+#' @param upr The upper bound of the interval, a number or `NULL`.
 #'
 #' @details
 #' The link depends on which endpoints are given:

@@ -12,8 +12,8 @@ methods compute the link, its inverse and their derivatives to the fifth
 order.
 }
 \description{
-The log-log link \eqn{\eta = -\log(-\log\theta)} on \eqn{(0, 1)},
-with inverse \eqn{\theta = \exp(-e^{-\eta})}; the mirror image of
+Returns the log-log link \eqn{\eta = -\log(-\log\theta)} on \eqn{(0, 1)},
+with inverse \eqn{\theta = \exp(-e^{-\eta})}. It is the mirror image of
 \code{\link[=cloglog_link]{cloglog_link()}}.
 }
 \details{

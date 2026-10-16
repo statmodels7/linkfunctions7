@@ -12,9 +12,10 @@
 #' @param link_name A character string naming the link, set by the
 #'   constructor and shown by `print()`.
 #' @param link_bounds A length-two numeric vector, the open interval in
-#'   which the parameter lies. Set by the constructor; see Value for this link's.
+#'   which the parameter lies. The constructor sets it, and the Value section
+#'   gives its value for this link.
 #' @param link_params A list of the link's own parameters, empty where it has
-#'   none. Set by the constructor.
+#'   none. The constructor sets it.
 #'
 #' @return An S7 object of class `InverseLink`, inheriting from [link()] and
 #'   carrying its three properties `link_name`, `link_bounds` and
@@ -22,11 +23,11 @@
 #'
 #' @section Methods:
 #' Twelve methods are registered on this class: [linkfun()] and [linkinv()],
-#' and the five derivative orders in each direction, [dlinkfun()] through
-#' [d5linkfun()] going out and [dlinkinv()] through [d5linkinv()] coming
-#' back. The link is its own inverse, so the two directions carry the same
-#' expressions: \eqn{1/\theta} and \eqn{1/\eta}, with the five derivatives
-#' \eqn{(-1)^k k!\,z^{-(k+1)}} written out in both.
+#' the five derivatives of the link, [dlinkfun()] through [d5linkfun()], and
+#' the five derivatives of the inverse link, [dlinkinv()] through
+#' [d5linkinv()]. The link is its own inverse, so the two directions carry the same
+#' expressions, \eqn{1/\theta} and \eqn{1/\eta}, and the five derivatives
+#' \eqn{(-1)^k k!\,z^{-(k+1)}} are written out in both.
 #'
 #' @aliases linkfun.InverseLink
 #' @aliases linkinv.InverseLink
@@ -41,7 +42,7 @@
 #' @aliases d4linkinv.InverseLink
 #' @aliases d5linkinv.InverseLink
 #'
-#' @seealso [inverse_link()], the constructor users call.
+#' @seealso [inverse_link()], the constructor that users call.
 #' @keywords internal
 InverseLink <- S7::new_class(
   name = "InverseLink",
@@ -75,8 +76,8 @@ S7::method(d5linkinv, InverseLink) <- function(x, eta) -120 / (eta^6)
 #' @include generics.R
 #' @include link_class.R
 #' @description
-#' The reciprocal link \eqn{\eta = 1/\theta} on \eqn{(0, \infty)}, the
-#' canonical link of the Gamma family; its image is \eqn{(0, \infty)},
+#' Returns the reciprocal link \eqn{\eta = 1/\theta} on \eqn{(0, \infty)},
+#' the canonical link of the Gamma family. Its image is \eqn{(0, \infty)},
 #' not the whole real line.
 #' @details
 #' The inverse link is \eqn{\eta = 1/\theta}, and it is its own inverse,

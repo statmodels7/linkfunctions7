@@ -27,10 +27,11 @@ IdentityLink(
 constructor and shown by \code{print()}.}
 
 \item{link_bounds}{A length-two numeric vector, the open interval in
-which the parameter lies. Set by the constructor; see Value for this link's.}
+which the parameter lies. The constructor sets it, and the Value section
+gives its value for this link.}
 
 \item{link_params}{A list of the link's own parameters, empty where it has
-none. Set by the constructor.}
+none. The constructor sets it.}
 }
 \value{
 An S7 object of class \code{IdentityLink}, inheriting from \code{\link[=link]{link()}} and
@@ -49,15 +50,15 @@ given.
 \section{Methods}{
 
 Twelve methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
-and the five derivative orders in each direction, \code{\link[=dlinkfun]{dlinkfun()}} through
-\code{\link[=d5linkfun]{d5linkfun()}} going out and \code{\link[=dlinkinv]{dlinkinv()}} through \code{\link[=d5linkinv]{d5linkinv()}} coming
-back. \code{linkfun()} and \code{linkinv()} return their argument. The first
-derivative is one and every higher one is zero, each built by
-\code{\link[=const_like]{const_like()}} so that the result is \code{NA} wherever the argument is \code{NA},
-although the derivative does not depend on it.
+the five derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d5linkfun]{d5linkfun()}}, and
+the five derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
+\code{\link[=d5linkinv]{d5linkinv()}}. \code{linkfun()} and \code{linkinv()} return their argument. The first
+derivative is one and every higher one is zero. \code{\link[=const_like]{const_like()}} builds each
+of them, so that the result is \code{NA} wherever the argument is \code{NA}, although
+the derivative does not depend on it.
 }
 
 \seealso{
-\code{\link[=identity_link]{identity_link()}}, the constructor users call.
+\code{\link[=identity_link]{identity_link()}}, the constructor that users call.
 }
 \keyword{internal}

@@ -27,10 +27,11 @@ ClogLogLink(
 constructor and shown by \code{print()}.}
 
 \item{link_bounds}{A length-two numeric vector, the open interval in
-which the parameter lies. Set by the constructor; see Value for this link's.}
+which the parameter lies. The constructor sets it, and the Value section
+gives its value for this link.}
 
 \item{link_params}{A list of the link's own parameters, empty where it has
-none. Set by the constructor.}
+none. The constructor sets it.}
 }
 \value{
 An S7 object of class \code{ClogLogLink}, inheriting from \code{\link[=link]{link()}} and
@@ -49,15 +50,15 @@ proportional-hazards model for a binary outcome.
 \section{Methods}{
 
 Twelve methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
-and the five derivative orders in each direction, \code{\link[=dlinkfun]{dlinkfun()}} through
-\code{\link[=d5linkfun]{d5linkfun()}} going out and \code{\link[=dlinkinv]{dlinkinv()}} through \code{\link[=d5linkinv]{d5linkinv()}} coming
-back. \code{linkfun()} is written through \code{log1p()} rather than as
+the five derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d5linkfun]{d5linkfun()}}, and
+the five derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
+\code{\link[=d5linkinv]{d5linkinv()}}. \code{linkfun()} is written through \code{log1p()} rather than as
 \eqn{\log(-\log(1 - \theta))}, which rounds to \eqn{-\infty} for a small
 \eqn{\theta} where the true value is finite and representable. The ten
 derivatives come from a compiled kernel.
 }
 
 \seealso{
-\code{\link[=cloglog_link]{cloglog_link()}}, the constructor users call.
+\code{\link[=cloglog_link]{cloglog_link()}}, the constructor that users call.
 }
 \keyword{internal}

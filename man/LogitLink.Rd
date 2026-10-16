@@ -27,10 +27,11 @@ LogitLink(
 constructor and shown by \code{print()}.}
 
 \item{link_bounds}{A length-two numeric vector, the open interval in
-which the parameter lies. Set by the constructor; see Value for this link's.}
+which the parameter lies. The constructor sets it, and the Value section
+gives its value for this link.}
 
 \item{link_params}{A list of the link's own parameters, empty where it has
-none. Set by the constructor.}
+none. The constructor sets it.}
 }
 \value{
 An S7 object of class \code{LogitLink}, inheriting from \code{\link[=link]{link()}} and
@@ -42,23 +43,24 @@ Carries the logit transformation \eqn{\eta = \log(\theta/(1-\theta))} on
 \eqn{(0, 1)}, with inverse \eqn{\theta = 1/(1+e^{-\eta})}. It is the
 canonical link for a probability, and its linear predictor is the log-odds.
 
-Every inverse derivative is a polynomial in \eqn{\theta} itself, the first
-being \eqn{\theta(1-\theta)}, the variance of a Bernoulli.
+Every inverse derivative is a polynomial in \eqn{\theta} itself. The first
+is \eqn{\theta(1-\theta)}, the variance of a Bernoulli.
 }
 \section{Methods}{
 
 Twelve methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
-and the five derivative orders in each direction, \code{\link[=dlinkfun]{dlinkfun()}} through
-\code{\link[=d5linkfun]{d5linkfun()}} going out and \code{\link[=dlinkinv]{dlinkinv()}} through \code{\link[=d5linkinv]{d5linkinv()}} coming
-back. \code{linkfun()} and \code{linkinv()} delegate to \code{stats::qlogis()} and
+the five derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d5linkfun]{d5linkfun()}}, and
+the five derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
+\code{\link[=d5linkinv]{d5linkinv()}}. \code{linkfun()} and \code{linkinv()} delegate to \code{stats::qlogis()} and
 \code{stats::plogis()}, which remain accurate near both boundaries. The ten
 derivatives come from a compiled kernel, one call per order and
 direction. The inverse derivatives are evaluated in \eqn{\theta},
-\eqn{1 - \theta} and their product, each computed from \eqn{\eta}, so
-that they keep their relative accuracy in both tails.
+\eqn{1 - \theta} and their product, and each of these is computed from
+\eqn{\eta}, so that the derivatives keep their relative accuracy in both
+tails.
 }
 
 \seealso{
-\code{\link[=logit_link]{logit_link()}}, the constructor users call.
+\code{\link[=logit_link]{logit_link()}}, the constructor that users call.
 }
 \keyword{internal}

@@ -6,7 +6,7 @@ NULL
 #' @description
 #' Returns how the package's compiled scalar entry points address a link: the
 #' class name that the C function `lf7_class_id()` recognizes, and the link's
-#' own parameters in the order `lf7_inv12p()` reads them. A consumer that
+#' own parameters in the order in which `lf7_inv12p()` reads them. A consumer that
 #' resolves the entry points with `R_GetCCallable()` uses the name to obtain
 #' the link's identifier once and passes the parameters at every evaluation.
 #'

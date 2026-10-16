@@ -13,6 +13,6 @@ exp_floored(eta)
 A numeric vector, never smaller than \code{\link[=exp_floor]{exp_floor()}}.
 }
 \description{
-\code{exp(eta)}, bounded below by \code{\link[=exp_floor]{exp_floor()}}.
+Computes \code{exp(eta)}, bounded below by \code{\link[=exp_floor]{exp_floor()}}.
 }
 \keyword{internal}

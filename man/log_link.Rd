@@ -12,8 +12,8 @@ methods compute the link, its inverse and their derivatives to the fifth
 order.
 }
 \description{
-The log link \eqn{\eta = \log\theta} on \eqn{(0, \infty)}, with
-inverse \eqn{\theta = e^\eta}; the canonical link for a positive
+Returns the log link \eqn{\eta = \log\theta} on \eqn{(0, \infty)}, with
+inverse \eqn{\theta = e^\eta}. It is the canonical link for a positive
 parameter.
 }
 \details{

@@ -23,7 +23,7 @@ derivative of \eqn{g} evaluated there.
 A numeric vector of the same length as \code{theta}.
 }
 \description{
-A convenience router over \code{\link[=linkfun]{linkfun()}} and the five
+Routes a call, by derivative order, to \code{\link[=linkfun]{linkfun()}} or to one of the five
 \code{d*linkfun} generics.
 
 Routes to the correct forward derivative generic based on order.

@@ -16,7 +16,7 @@ whose methods compute the link, its inverse and their derivatives to the
 fifth order; its \code{link_params} holds \code{a}.
 }
 \description{
-The softplus link with scale \eqn{a}: the inverse is
+Returns the softplus link with scale \eqn{a}. Its inverse is
 \eqn{\theta = \log(1 + e^{a\eta})/a}, a smooth approximation of
 \eqn{\max(0, \eta)} that sharpens as \eqn{a} grows.
 }
@@ -32,8 +32,8 @@ For a large negative \eqn{\eta}, \eqn{\theta \approx 0}. For a large
 positive \eqn{\eta}, \eqn{\theta \approx \eta}, which grows linearly where
 the inverse of a log link would grow as \eqn{\exp(\eta)}.
 
-Both directions are written so that no intermediate quantity grows with
-\eqn{a\theta} or \eqn{a\eta}. The inverse link uses the log-sum-exp form,
+Both directions are written so that the intermediate quantities do not grow
+with \eqn{a\theta} or \eqn{a\eta}. The inverse link uses the log-sum-exp form,
 and the forward link and its derivatives are expressed in
 \eqn{u = 1 - e^{-a\theta}} instead of \eqn{e^{a\theta} - 1}. The latter
 overflows once \eqn{a\theta} exceeds about 709, and earlier at the higher

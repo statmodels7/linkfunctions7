@@ -2,7 +2,7 @@
 #'
 #' @import S7
 #' @description
-#' The base S7 class for link functions. It carries the name, the domain and
+#' `link` is the base S7 class for link functions. It carries the name, the domain and
 #' any link parameters. The transformations themselves are methods that each
 #' subclass registers on the generics for the forward map, the inverse, and
 #' their analytical derivatives to fifth order in both directions.
@@ -24,8 +24,8 @@
 #'
 #' @return An S7 object of class `link`. In practice this class is not
 #'   instantiated directly: each link is a subclass created by one of the
-#'   constructors ([logit_link()], [power_link()], ...), and
-#'   `link` is what they all inherit from and what methods dispatch on.
+#'   constructors ([logit_link()], [power_link()], ...). Every subclass
+#'   inherits from `link`, and methods dispatch on it.
 #'
 #' @examples
 #' # every constructor returns an object inheriting from `link`
@@ -101,7 +101,7 @@ const_like <- function(v, value) {
 #' once `lambda` is 2.
 #'
 #' @param r A numeric vector, the computed result.
-#' @param v The numeric vector the result was computed from.
+#' @param v The numeric vector from which the result was computed.
 #'
 #' @return `r`, with `NA` in every position where `v` is `NA`.
 #'
@@ -115,8 +115,8 @@ na_from <- function(r, v) {
 #' Derivatives of the Standard Logistic Function
 #'
 #' @description
-#' The `k`-th derivative of \eqn{\sigma(z) = 1/(1 + e^{-z})}, written as a
-#' polynomial in \eqn{p = \sigma(z)} itself.
+#' Computes the `k`-th derivative of \eqn{\sigma(z) = 1/(1 + e^{-z})}, written
+#' as a polynomial in \eqn{p = \sigma(z)} itself.
 #'
 #' @details
 #' Three links use these polynomials:
@@ -128,8 +128,8 @@ na_from <- function(r, v) {
 #'   softplus is an antiderivative of the logistic: \eqn{h^{(k+1)} = a^k \sigma^{(k)}}.
 #'
 #' The three links evaluate these polynomials in compiled code, written in
-#' \eqn{p}, \eqn{q = 1 - p} and \eqn{pq} with \eqn{q} computed from \eqn{z}
-#' and not as \eqn{1 - p}, so that the derivatives keep their relative
+#' \eqn{p}, \eqn{q = 1 - p} and \eqn{pq}. The code computes \eqn{q} from
+#' \eqn{z} and not as \eqn{1 - p}, so that the derivatives keep their relative
 #' accuracy as \eqn{p} approaches 1: \eqn{\sigma' = pq},
 #' \eqn{\sigma'' = pq(q - p)}, \eqn{\sigma''' = pq(1 - 6pq)},
 #' \eqn{\sigma'''' = pq(q - p)(1 - 12pq)} and
@@ -176,13 +176,13 @@ logistic_deriv <- function(p, k) {
 #' The Floor of the Exponential Links
 #'
 #' @description
-#' The floor applied to `exp(eta)` by every link whose inverse is an
-#' exponential ([log_link()], [cloglog_link()], and the
-#' lower- and upper-bounded links).
+#' Every link whose inverse is an exponential ([log_link()],
+#' [cloglog_link()], and the lower- and upper-bounded links) applies this
+#' floor to `exp(eta)`.
 #'
 #' @details
-#' The floor exists so that a parameter returned as \eqn{\theta} can be
-#' divided into without producing `Inf`: the forward derivatives of these
+#' The floor exists so that a parameter returned as \eqn{\theta} can be used
+#' as a divisor without producing `Inf`: the forward derivatives of these
 #' links are \eqn{1/\theta}, \eqn{-1/\theta^2}, \eqn{2/\theta^3} and
 #' \eqn{-6/\theta^4}, and the fourth is the binding one. Solving
 #' \eqn{6/\theta^4 \le} `double.xmax` and keeping a factor of four in hand
@@ -204,7 +204,7 @@ exp_floor <- (24 / .Machine$double.xmax)^0.25
 #' A Floored Exponential
 #'
 #' @description
-#' `exp(eta)`, bounded below by [exp_floor()].
+#' Computes `exp(eta)`, bounded below by [exp_floor()].
 #'
 #' @param eta A numeric vector of linear predictors.
 #'
@@ -219,7 +219,7 @@ exp_floored <- function(eta) pmax(exp(eta), exp_floor)
 #' @description
 #' Moves a value that lies exactly on a finite bound to a double strictly
 #' inside it, one or two units in the last place away, and an infinite value
-#' to the largest finite double of that sign. Applied by [linkinv()] to every link.
+#' to the largest finite double of that sign. [linkinv()] applies it to every link.
 #'
 #' @details
 #' In exact arithmetic a link is a bijection onto an open interval, but in
@@ -236,7 +236,7 @@ exp_floored <- function(eta) pmax(exp(eta), exp_floor)
 #' R has no `nextafter()`, so the step is computed arithmetically. Near a
 #' non-zero bound \eqn{b} the spacing of doubles is set by the magnitude of
 #' \eqn{b}: one ulp at 2 is about 4.4e-16, while one ulp at 1e-300 is about
-#' 1e-316, so no single additive constant serves both. The value
+#' 1e-316, so a single additive constant cannot serve both. The value
 #' `b + |b| * eps` lies one to two ulps from `b` at any magnitude, which is
 #' strictly inside the interval and as close to `b` as the arithmetic reliably
 #' allows.
@@ -249,9 +249,9 @@ exp_floored <- function(eta) pmax(exp(eta), exp_floor)
 #' @param theta A numeric vector, as a method computed it.
 #' @param bounds The link's `link_bounds`, a length-2 numeric vector.
 #'
-#' @return `theta`, with any value that has landed exactly on a bound
-#'   moved just inside it and any infinity brought back to the largest finite
-#'   double. `NA` and `NaN` pass through unchanged, as does a value outside
+#' @return `theta`, in which any value that has landed exactly on a bound is
+#'   moved just inside it and any infinity is brought back to the largest
+#'   finite double. `NA` and `NaN` pass through unchanged, as does a value outside
 #'   the bounds by more than rounding, since changing either would hide an
 #'   error in the calling code.
 #'
