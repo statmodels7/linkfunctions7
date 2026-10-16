@@ -11,7 +11,7 @@ Routes to the correct forward derivative generic based on order."><meta property
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -94,7 +94,7 @@ Where that matters, call <code><a href="dlinkfun.html">dlinkfun()</a></code> and
 <span class="r-in"><span><span class="fu">linkderiv</span><span class="op">(</span><span class="va">lk</span>, <span class="fl">0.5</span>, order <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># every order at once</span></span></span>
+<span class="r-in"><span><span class="co"># the example computes every order at once</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">vapply</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">4</span>, <span class="kw">function</span><span class="op">(</span><span class="va">k</span><span class="op">)</span> <span class="fu">linkderiv</span><span class="op">(</span><span class="va">lk</span>, <span class="fl">0.25</span>, order <span class="op">=</span> <span class="va">k</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]    -1.098612     5.333333   -14.222222   132.740741 -1517.037037</span>
 </code></pre></div>

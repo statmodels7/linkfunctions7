@@ -39,7 +39,8 @@ lk
 #> S7 Link Object: rhobit
 #>   - Parameter domain (theta): (-1, 1)
 
-# built for parameters constrained to (-1, 1), such as a correlation
+# the link is built for parameters constrained to (-1, 1), such as a
+# correlation
 rho <- c(-0.9, 0, 0.9)
 eta <- linkfun(lk, rho)    # Fisher's z
 eta

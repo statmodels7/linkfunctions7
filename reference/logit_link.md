@@ -57,7 +57,7 @@ linkinv(lk, eta)
 dlinkinv(lk, 0)
 #> [1] 0.25
 
-# all four orders at once
+# the example computes all four orders at once
 vapply(1:4, function(k) linkinvderiv(lk, 0, order = k), numeric(1))
 #> [1]  0.250  0.000 -0.125  0.000
 

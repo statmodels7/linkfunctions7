@@ -68,7 +68,7 @@ eta
 linkinv(lk, eta)          # back to theta
 #> [1] 0.5 1.0 5.0
 
-# derivatives of either direction, to fourth order
+# the example computes derivatives of either direction to fourth order
 dlinkfun(lk, theta)
 #> [1] 1.581977 1.156518 1.000045
 d4linkinv(lk, eta)

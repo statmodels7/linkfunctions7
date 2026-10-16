@@ -51,7 +51,8 @@ eta
 linkinv(lk, eta)
 #> [1] 0.1 0.5 0.9
 
-# asymmetric: it reaches 1 sharply and 0 slowly, the mirror of loglog
+# the link is asymmetric: it reaches 1 sharply and 0 slowly, the mirror of
+# loglog
 linkinv(cloglog_link(), c(-2, 2))
 #> [1] 0.126577 0.999382
 linkinv(loglog_link(),  c(-2, 2))

@@ -71,7 +71,8 @@ the map whose image this is.
 ## Examples
 
 ``` r
-# A link from the whole real line onto the positive half of the theta axis.
+# The log link maps the positive half of the theta axis onto the whole real
+# line.
 eta_bounds(log_link())
 #> [1] -Inf  Inf
 

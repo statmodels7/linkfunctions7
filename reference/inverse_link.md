@@ -53,7 +53,7 @@ linkinv(lk, eta)           # the map is its own inverse
 dlinkfun(lk, theta)
 #> [1] -4.00 -1.00 -0.25
 
-# the canonical link for a Gamma mean; note eta must keep one sign
+# this is the canonical link for a Gamma mean; eta must keep one sign
 linkinv(lk, c(0.5, 2))
 #> [1] 2.0 0.5
 ```

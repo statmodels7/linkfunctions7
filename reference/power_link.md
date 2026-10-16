@@ -72,7 +72,7 @@ eta
 linkinv(lk, eta)
 #> [1] 1 2 3
 
-# special cases of the family
+# the family contains these special cases
 linkfun(power_link(1),    5)   # identity
 #> [1] 5
 linkfun(power_link(0.5),  4)   # square root

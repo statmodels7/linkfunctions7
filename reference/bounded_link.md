@@ -61,7 +61,7 @@ The link depends on which endpoints are given:
 ## Examples
 
 ``` r
-# a parameter known to lie in (0, 10)
+# the parameter is known to lie in (0, 10)
 lk <- bounded_link(lwr = 0, upr = 10)
 lk
 #> S7 Link Object: bounded(lwr=0, upr=10)
@@ -72,18 +72,18 @@ linkinv(lk, c(-2, 0, 2))     # always inside the interval
 linkfun(lk, c(1, 5, 9))
 #> [1] -2.197225  0.000000  2.197225
 
-# one-sided: a variance component bounded below by zero
+# a one-sided link suits a variance component bounded below by zero
 bounded_link(lwr = 0)
 #> S7 Link Object: lower_bounded(lwr=0)
 #>   - Parameter domain (theta): (0, Inf)
 #>   - Link parameters: lwr = 0
 
-# no endpoints at all is the identity
+# without endpoints the link is the identity
 bounded_link()
 #> S7 Link Object: identity
 #>   - Parameter domain (theta): (-Inf, Inf)
 
-# derivatives, as for any other link
+# the derivatives work as for any other link
 dlinkinv(lk, 0)
 #> [1] 2.5
 ```

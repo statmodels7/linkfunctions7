@@ -52,7 +52,7 @@ eta
 linkinv(lk, eta)
 #> [1] 0.5 1.0 2.0
 
-# the canonical link of the inverse Gaussian; eta must stay positive
+# this is the canonical link of the inverse Gaussian; eta must stay positive
 dlinkinv(lk, c(0.5, 1, 4))
 #> [1] -1.414214 -0.500000 -0.062500
 ```

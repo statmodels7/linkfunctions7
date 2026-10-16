@@ -48,7 +48,7 @@ eta
 linkinv(lk, eta)
 #> [1] 0.1 0.5 0.9
 
-# the mirror image of the cloglog link
+# the link is the mirror image of the cloglog link
 linkinv(loglog_link(), 1)
 #> [1] 0.6922006
 1 - linkinv(cloglog_link(), -1)

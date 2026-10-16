@@ -62,7 +62,7 @@ dlinkinv(lk, eta)
 d4linkinv(lk, eta)
 #> [1]  0.5  1.0 10.0
 
-# forward derivatives to fourth order
+# the example computes the forward derivatives to fourth order
 linkderiv(lk, theta, order = 4)
 #> [1] -96.0000  -6.0000  -0.0006
 ```

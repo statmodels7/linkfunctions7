@@ -65,8 +65,8 @@ linkinv(logit_link(), c(-1, 0, 1))
 linkinv(log_link(), c(0, 1))
 #> [1] 1.000000 2.718282
 
-# far out, where the arithmetic saturates: strictly inside (0, 1) rather
-# than exactly 1, so the round trip still returns a number
+# far out, where the arithmetic saturates, the result is strictly inside
+# (0, 1) rather than exactly 1, so the round trip still returns a number
 linkinv(logit_link(), 40) < 1
 #> [1] TRUE
 linkfun(logit_link(), linkinv(logit_link(), 40))
