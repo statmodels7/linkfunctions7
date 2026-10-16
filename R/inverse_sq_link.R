@@ -103,7 +103,7 @@ S7::method(d5linkinv, InverseSqLink) <- function(x, eta) -945 / (32 * eta^5.5)
 #' eta
 #' linkinv(lk, eta)
 #'
-#' # the canonical link of the inverse Gaussian; eta must stay positive
+#' # this is the canonical link of the inverse Gaussian; eta must stay positive
 #' dlinkinv(lk, c(0.5, 1, 4))
 #'
 #' @seealso [link()], [inverse_link()]

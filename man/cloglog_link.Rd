@@ -37,7 +37,8 @@ eta <- linkfun(lk, p)
 eta
 linkinv(lk, eta)
 
-# asymmetric: it reaches 1 sharply and 0 slowly, the mirror of loglog
+# the link is asymmetric: it reaches 1 sharply and 0 slowly, the mirror of
+# loglog
 linkinv(cloglog_link(), c(-2, 2))
 linkinv(loglog_link(),  c(-2, 2))
 

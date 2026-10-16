@@ -304,19 +304,19 @@ S7::method(d5linkinv, UpperBoundedLink) <- function(x, eta) -exp_floored(eta)
 #'   neither endpoint is supplied.
 #'
 #' @examples
-#' # a parameter known to lie in (0, 10)
+#' # the parameter is known to lie in (0, 10)
 #' lk <- bounded_link(lwr = 0, upr = 10)
 #' lk
 #' linkinv(lk, c(-2, 0, 2))     # always inside the interval
 #' linkfun(lk, c(1, 5, 9))
 #'
-#' # one-sided: a variance component bounded below by zero
+#' # a one-sided link suits a variance component bounded below by zero
 #' bounded_link(lwr = 0)
 #'
-#' # no endpoints at all is the identity
+#' # without endpoints the link is the identity
 #' bounded_link()
 #'
-#' # derivatives, as for any other link
+#' # the derivatives work as for any other link
 #' dlinkinv(lk, 0)
 #'
 #' @seealso [link()], [logit_link()], [log_link()]

@@ -40,7 +40,7 @@ linkinv(lk, eta)
 # of a Bernoulli, p(1 - p)
 dlinkinv(lk, 0)
 
-# all four orders at once
+# the example computes all four orders at once
 vapply(1:4, function(k) linkinvderiv(lk, 0, order = k), numeric(1))
 
 # every mathematical property is checkable

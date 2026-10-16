@@ -38,7 +38,7 @@ eta <- linkfun(lk, p)
 eta
 linkinv(lk, eta)
 
-# heavy tails: the same eta is far less extreme than under a logit
+# the tails are heavy: the same eta is far less extreme than under a logit
 linkinv(cauchit_link(), 5)
 linkinv(logit_link(), 5)
 

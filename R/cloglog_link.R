@@ -122,7 +122,8 @@ S7::method(d5linkinv, ClogLogLink) <- function(x, eta) lk_cloglog_inv_cpp(eta, 5
 #' eta
 #' linkinv(lk, eta)
 #'
-#' # asymmetric: it reaches 1 sharply and 0 slowly, the mirror of loglog
+#' # the link is asymmetric: it reaches 1 sharply and 0 slowly, the mirror of
+#' # loglog
 #' linkinv(cloglog_link(), c(-2, 2))
 #' linkinv(loglog_link(),  c(-2, 2))
 #'

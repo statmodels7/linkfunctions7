@@ -63,8 +63,8 @@ linkfun <- S7::new_generic("linkfun", "x", fun = function(x, theta) S7::S7_dispa
 #' linkinv(logit_link(), c(-1, 0, 1))
 #' linkinv(log_link(), c(0, 1))
 #'
-#' # far out, where the arithmetic saturates: strictly inside (0, 1) rather
-#' # than exactly 1, so the round trip still returns a number
+#' # far out, where the arithmetic saturates, the result is strictly inside
+#' # (0, 1) rather than exactly 1, so the round trip still returns a number
 #' linkinv(logit_link(), 40) < 1
 #' linkfun(logit_link(), linkinv(logit_link(), 40))
 #'
@@ -485,7 +485,7 @@ d5linkinv <- S7::new_generic("d5linkinv", "x", fun = function(x, eta) S7::S7_dis
 #' linkderiv(lk, 0.5, order = 0)   # the link itself
 #' linkderiv(lk, 0.5, order = 1)
 #'
-#' # every order at once
+#' # the example computes every order at once
 #' vapply(0:4, function(k) linkderiv(lk, 0.25, order = k), numeric(1))
 #' @seealso [linkfun()], [linkinv()], [linkinvderiv()], [check_link()], [link()]
 #' @export

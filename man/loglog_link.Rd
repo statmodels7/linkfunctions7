@@ -33,7 +33,7 @@ eta <- linkfun(lk, p)
 eta
 linkinv(lk, eta)
 
-# the mirror image of the cloglog link
+# the link is the mirror image of the cloglog link
 linkinv(loglog_link(), 1)
 1 - linkinv(cloglog_link(), -1)
 

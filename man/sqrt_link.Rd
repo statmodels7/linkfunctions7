@@ -39,7 +39,7 @@ linkinv(lk, eta)
 d2linkinv(lk, c(1, 2))
 d3linkinv(lk, c(1, 2))
 
-# the same link as the power family at lambda = 1/2
+# this is the same link as the power family at lambda = 1/2
 linkfun(power_link(0.5), 4)
 
 }

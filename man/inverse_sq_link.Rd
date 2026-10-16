@@ -37,7 +37,7 @@ eta <- linkfun(lk, theta)  # 1 / theta^2
 eta
 linkinv(lk, eta)
 
-# the canonical link of the inverse Gaussian; eta must stay positive
+# this is the canonical link of the inverse Gaussian; eta must stay positive
 dlinkinv(lk, c(0.5, 1, 4))
 
 }

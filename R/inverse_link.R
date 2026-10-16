@@ -105,7 +105,7 @@ S7::method(d5linkinv, InverseLink) <- function(x, eta) -120 / (eta^6)
 #'
 #' dlinkfun(lk, theta)
 #'
-#' # the canonical link for a Gamma mean; note eta must keep one sign
+#' # this is the canonical link for a Gamma mean; eta must keep one sign
 #' linkinv(lk, c(0.5, 2))
 #'
 #' @seealso [link()], [identity_link()]

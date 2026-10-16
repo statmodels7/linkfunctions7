@@ -99,7 +99,7 @@ S7::method(d5linkinv, LogLogLink) <- function(x, eta) lk_loglog_inv_cpp(eta, 5L)
 #' eta
 #' linkinv(lk, eta)
 #'
-#' # the mirror image of the cloglog link
+#' # the link is the mirror image of the cloglog link
 #' linkinv(loglog_link(), 1)
 #' 1 - linkinv(cloglog_link(), -1)
 #'

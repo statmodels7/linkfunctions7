@@ -44,7 +44,8 @@ its error message can then name the link.
 }
 
 \examples{
-# A link from the whole real line onto the positive half of the theta axis.
+# The log link maps the positive half of the theta axis onto the whole real
+# line.
 eta_bounds(log_link())
 
 # The square root reaches only the positive half of the eta axis, so its

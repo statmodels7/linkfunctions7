@@ -112,7 +112,7 @@ S7::method(d5linkinv, LogLink) <- function(x, eta) exp_floored(eta)
 #' dlinkinv(lk, eta)
 #' d4linkinv(lk, eta)
 #'
-#' # forward derivatives to fourth order
+#' # the example computes the forward derivatives to fourth order
 #' linkderiv(lk, theta, order = 4)
 #'
 #' @seealso [link()], [inverse_link()]

@@ -1,3 +1,8 @@
+# linkfunctions7 0.5.4
+
+* Comments of the examples: captions without a verb rewritten as plain
+  clauses. No change to the code.
+
 # linkfunctions7 0.5.3
 
 * Documentation and messages: relative clauses without a relative pronoun,

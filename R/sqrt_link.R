@@ -115,7 +115,7 @@ S7::method(d5linkinv, SqrtLink) <- function(x, eta) const_like(eta, 0)
 #' d2linkinv(lk, c(1, 2))
 #' d3linkinv(lk, c(1, 2))
 #'
-#' # the same link as the power family at lambda = 1/2
+#' # this is the same link as the power family at lambda = 1/2
 #' linkfun(power_link(0.5), 4)
 #'
 #' @seealso [link()], [power_link()], [log_link()]

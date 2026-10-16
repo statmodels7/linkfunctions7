@@ -107,7 +107,7 @@ S7::method(d5linkinv, CauchitLink) <- function(x, eta) lk_cauchit_inv_cpp(eta, 5
 #' eta
 #' linkinv(lk, eta)
 #'
-#' # heavy tails: the same eta is far less extreme than under a logit
+#' # the tails are heavy: the same eta is far less extreme than under a logit
 #' linkinv(cauchit_link(), 5)
 #' linkinv(logit_link(), 5)
 #'

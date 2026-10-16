@@ -49,7 +49,7 @@ eta <- linkfun(lk, theta)
 eta
 linkinv(lk, eta)
 
-# special cases of the family
+# the family contains these special cases
 linkfun(power_link(1),    5)   # identity
 linkfun(power_link(0.5),  4)   # square root
 linkfun(power_link(-1),   4)   # inverse

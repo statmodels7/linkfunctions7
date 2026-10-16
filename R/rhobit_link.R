@@ -97,7 +97,8 @@ S7::method(d5linkinv, RhobitLink) <- function(x, eta) lk_rhobit_inv_cpp(eta, 5L)
 #' lk <- rhobit_link()
 #' lk
 #'
-#' # built for parameters constrained to (-1, 1), such as a correlation
+#' # the link is built for parameters constrained to (-1, 1), such as a
+#' # correlation
 #' rho <- c(-0.9, 0, 0.9)
 #' eta <- linkfun(lk, rho)    # Fisher's z
 #' eta

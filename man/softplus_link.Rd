@@ -50,7 +50,7 @@ eta <- linkfun(lk, theta)
 eta
 linkinv(lk, eta)          # back to theta
 
-# derivatives of either direction, to fourth order
+# the example computes derivatives of either direction to fourth order
 dlinkfun(lk, theta)
 d4linkinv(lk, eta)
 
