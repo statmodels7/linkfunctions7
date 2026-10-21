@@ -78,6 +78,50 @@ d5linkfun(link, theta)   # ... down to the fifth order
 #> [1] 32009.92634    38.03412     0.49152    38.03412 32009.92634
 ```
 
+## A user-defined link
+
+A link that the package does not ship is a subclass of
+[`link()`](https://statmodels7.github.io/linkfunctions7/reference/link.md)
+with two methods,
+[`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md)
+and
+[`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md).
+The base class supplies the eight derivative generics by finite
+differences. Each fallback applies one central stencil to the highest
+order that the link implements analytically, and never a chain of first
+differences. The asymmetric family of Aranda-Ordaz (1981), which
+contains the logit at $`\alpha = 1`$, needs only the two maps:
+
+``` r
+
+ArandaOrdaz <- S7::new_class("ArandaOrdaz", parent = linkfunctions7::link)
+S7::method(linkfun, ArandaOrdaz) <- function(x, theta) {
+  a <- x@link_params$alpha
+  log(((1 - theta)^(-a) - 1) / a)
+}
+S7::method(linkinv, ArandaOrdaz) <- function(x, eta) {
+  a <- x@link_params$alpha
+  1 - (1 + a * exp(eta))^(-1 / a)
+}
+ao_link <- function(alpha) {
+  ArandaOrdaz(link_name = sprintf("aranda-ordaz(%g)", alpha),
+              link_bounds = c(0, 1), link_params = list(alpha = alpha))
+}
+link_fallback_orders(ao_link(0.5))   # no analytic order in either direction
+#> $forward
+#> [1] 0
+#> 
+#> $inverse
+#> [1] 0
+d2linkinv(ao_link(0.5), c(-1, 0, 1))
+#> [1]  1.183551e-01 -1.490116e-08 -1.507903e-01
+```
+
+A method for any of the ten derivative generics replaces its fallback,
+and the orders above it are then differenced from that analytic order.
+[`link_fallback_orders()`](https://statmodels7.github.io/linkfunctions7/reference/link_fallback_orders.md)
+reports the highest analytic order in each direction.
+
 ## Validating a link
 
 The derivatives are hand-written, so the package ships the tool that
@@ -99,4 +143,20 @@ check_link(log_link())
 #>   [4] Inverse Function Theorem:    [PASSED] 
 #>   [5] Link Derivatives:            [PASSED] 
 #>   [6] Inverse Link Derivatives:    [PASSED]
+```
+
+An order that comes from a fallback is reported as numerical and is not
+checked, because the check would then compare a finite difference with
+another finite difference of the same function:
+
+``` r
+
+check_link(ao_link(0.5))
+#> Checking S7 Link Object: aranda-ordaz(0.5) 
+#>   [1] Invertibility (Theta space): [PASSED] 
+#>   [2] Invertibility (Eta space):   [PASSED] 
+#>   [3] Strict Monotonicity:         [PASSED] 
+#>   [4] Inverse Function Theorem:    [PASSED] 
+#>   [5] Link Derivatives:            [numerical] 
+#>   [6] Inverse Link Derivatives:    [numerical]
 ```

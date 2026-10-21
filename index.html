@@ -32,7 +32,7 @@
 
     <a class="navbar-brand me-2" href="index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -107,10 +107,38 @@
 <span><span class="co">#&gt; [1] 32009.92634    38.03412     0.49152    38.03412 32009.92634</span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="a-user-defined-link">A user-defined link<a class="anchor" aria-label="anchor" href="#a-user-defined-link"></a>
+</h2>
+<p>A link that the package does not ship is a subclass of <code><a href="reference/link.html">link()</a></code> with two methods, <code><a href="reference/linkfun.html">linkfun()</a></code> and <code><a href="reference/linkinv.html">linkinv()</a></code>. The base class supplies the eight derivative generics by finite differences. Each fallback applies one central stencil to the highest order that the link implements analytically, and never a chain of first differences. The asymmetric family of Aranda-Ordaz (1981), which contains the logit at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\alpha = 1</annotation></semantics></math>, needs only the two maps:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ArandaOrdaz</span> <span class="op">&lt;-</span> <span class="fu">S7</span><span class="fu">::</span><span class="fu"><a href="https://rconsortium.github.io/S7/reference/new_class.html" class="external-link">new_class</a></span><span class="op">(</span><span class="st">"ArandaOrdaz"</span>, parent <span class="op">=</span> <span class="fu">linkfunctions7</span><span class="fu">::</span><span class="va"><a href="reference/link.html">link</a></span><span class="op">)</span></span>
+<span><span class="fu">S7</span><span class="fu">::</span><span class="fu"><a href="https://rconsortium.github.io/S7/reference/method.html" class="external-link">method</a></span><span class="op">(</span><span class="va">linkfun</span>, <span class="va">ArandaOrdaz</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">theta</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">a</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">@</span><span class="va">link_params</span><span class="op">$</span><span class="va">alpha</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">theta</span><span class="op">)</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="va">a</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="va">a</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu">S7</span><span class="fu">::</span><span class="fu"><a href="https://rconsortium.github.io/S7/reference/method.html" class="external-link">method</a></span><span class="op">(</span><span class="va">linkinv</span>, <span class="va">ArandaOrdaz</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">eta</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">a</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">@</span><span class="va">link_params</span><span class="op">$</span><span class="va">alpha</span></span>
+<span>  <span class="fl">1</span> <span class="op">-</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">a</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">eta</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fl">1</span> <span class="op">/</span> <span class="va">a</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="va">ao_link</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">alpha</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">ArandaOrdaz</span><span class="op">(</span>link_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"aranda-ordaz(%g)"</span>, <span class="va">alpha</span><span class="op">)</span>,</span>
+<span>              link_bounds <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, link_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="va">alpha</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu"><a href="reference/link_fallback_orders.html">link_fallback_orders</a></span><span class="op">(</span><span class="fu">ao_link</span><span class="op">(</span><span class="fl">0.5</span><span class="op">)</span><span class="op">)</span>   <span class="co"># no analytic order in either direction</span></span>
+<span><span class="co">#&gt; $forward</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $inverse</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="fu"><a href="reference/d2linkinv.html">d2linkinv</a></span><span class="op">(</span><span class="fu">ao_link</span><span class="op">(</span><span class="fl">0.5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1]  1.183551e-01 -1.490116e-08 -1.507903e-01</span></span></code></pre></div>
+<p>A method for any of the ten derivative generics replaces its fallback, and the orders above it are then differenced from that analytic order. <code><a href="reference/link_fallback_orders.html">link_fallback_orders()</a></code> reports the highest analytic order in each direction.</p>
+</div>
+<div class="section level2">
 <h2 id="validating-a-link">Validating a link<a class="anchor" aria-label="anchor" href="#validating-a-link"></a>
 </h2>
 <p>The derivatives are hand-written, so the package ships the tool that checks them. <code><a href="reference/check_link.html">check_link()</a></code> confirms that a link inverts cleanly in both directions, that it is strictly monotone, that the inverse function theorem <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>g</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">(</mo><msup><mi>g</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><msup><mo stretchy="false" form="postfix">)</mo><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">g'(\theta)\,(g^{-1})'(\eta) = 1</annotation></semantics></math> holds, and that every analytical derivative agrees with a numerical one. It accepts any link and is most useful for a newly written one:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/check_link.html">check_link</a></span><span class="op">(</span><span class="fu"><a href="reference/log_link.html">log_link</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Checking S7 Link Object: log </span></span>
 <span><span class="co">#&gt;   [1] Invertibility (Theta space): [PASSED] </span></span>
@@ -119,6 +147,16 @@
 <span><span class="co">#&gt;   [4] Inverse Function Theorem:    [PASSED] </span></span>
 <span><span class="co">#&gt;   [5] Link Derivatives:            [PASSED] </span></span>
 <span><span class="co">#&gt;   [6] Inverse Link Derivatives:    [PASSED]</span></span></code></pre></div>
+<p>An order that comes from a fallback is reported as numerical and is not checked, because the check would then compare a finite difference with another finite difference of the same function:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/check_link.html">check_link</a></span><span class="op">(</span><span class="fu">ao_link</span><span class="op">(</span><span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Checking S7 Link Object: aranda-ordaz(0.5) </span></span>
+<span><span class="co">#&gt;   [1] Invertibility (Theta space): [PASSED] </span></span>
+<span><span class="co">#&gt;   [2] Invertibility (Eta space):   [PASSED] </span></span>
+<span><span class="co">#&gt;   [3] Strict Monotonicity:         [PASSED] </span></span>
+<span><span class="co">#&gt;   [4] Inverse Function Theorem:    [PASSED] </span></span>
+<span><span class="co">#&gt;   [5] Link Derivatives:            [numerical] </span></span>
+<span><span class="co">#&gt;   [6] Inverse Link Derivatives:    [numerical]</span></span></code></pre></div>
 </div>
 </div>
 

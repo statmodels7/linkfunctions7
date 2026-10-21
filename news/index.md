@@ -1,5 +1,17 @@
 # Changelog
 
+## linkfunctions7 0.5.6
+
+- The README describes a user-defined link: a subclass of
+  [`link()`](https://statmodels7.github.io/linkfunctions7/reference/link.md)
+  with
+  [`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md)
+  and
+  [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md)
+  only, whose derivatives come from the fallbacks, and how
+  [`check_link()`](https://statmodels7.github.io/linkfunctions7/reference/check_link.md)
+  reports the orders that are numerical.
+
 ## linkfunctions7 0.5.5
 
 - The package description is rewritten: it now describes the numerical
