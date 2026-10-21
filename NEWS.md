@@ -1,3 +1,9 @@
+# linkfunctions7 0.5.6
+
+* The README describes a user-defined link: a subclass of `link()` with
+  `linkfun()` and `linkinv()` only, whose derivatives come from the
+  fallbacks, and how `check_link()` reports the orders that are numerical.
+
 # linkfunctions7 0.5.5
 
 * The package description is rewritten: it now describes the numerical
