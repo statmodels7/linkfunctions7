@@ -29,9 +29,9 @@ It is part of [statmodels7](https://statmodels7.github.io), an S7
 toolkit for statistical modeling, and
 [distributions7](https://statmodels7.github.io/distributions7/) uses it
 to move between a constrained parameter and the unconstrained scale on
-which a fitting routine works. The mathematics behind the formulas, and
-the derivations from which the derivatives come, is worked out in [the
-statmodels7 book](https://statmodels7.github.io/book/).
+which a fitting routine works. The mathematics behind the formulas and
+the derivations of the derivatives are worked out in [the statmodels7
+book](https://statmodels7.github.io/book/).
 
 ## Installation
 

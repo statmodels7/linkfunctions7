@@ -1,3 +1,10 @@
+# linkfunctions7 0.5.5
+
+* The package description is rewritten: it now describes the numerical
+  derivatives of a user-defined link and everything that the validator
+  checks. The README corrects a sentence with a compound subject and a
+  singular verb.
+
 # linkfunctions7 0.5.4
 
 * Comments of the examples: captions without a verb rewritten as plain
