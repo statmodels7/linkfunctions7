@@ -63,3 +63,4 @@ VignetteBuilder: knitr
 Remotes:
     statmodels7/numericals7
 Config/testthat/edition: 3
+Config/testthat/parallel: true
