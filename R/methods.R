@@ -235,6 +235,29 @@ linkinvderiv.link <- function(x, eta, order = 1) {
 }
 S7::method(linkinvderiv, link) <- linkinvderiv.link
 
+#' @title Inverse Link Derivatives from the Order-Specific Generics
+#' @description Evaluates [dlinkinv()] and the higher generics up to `order`
+#'   and returns them as a list. It is the method of [linkinv_derivs()] for
+#'   the base class.
+#' @param x An object of class `link`.
+#' @param eta A numeric vector.
+#' @param order A whole number from 1 to 5.
+#' @return A list of `order` numeric vectors of the same length as `eta`.
+#' @rdname linkinv_derivs.link
+#' @keywords internal
+linkinv_derivs.link <- function(x, eta, order) {
+  switch(as.integer(order),
+         list(dlinkinv(x, eta)),
+         list(dlinkinv(x, eta), d2linkinv(x, eta)),
+         list(dlinkinv(x, eta), d2linkinv(x, eta), d3linkinv(x, eta)),
+         list(dlinkinv(x, eta), d2linkinv(x, eta), d3linkinv(x, eta),
+              d4linkinv(x, eta)),
+         list(dlinkinv(x, eta), d2linkinv(x, eta), d3linkinv(x, eta),
+              d4linkinv(x, eta), d5linkinv(x, eta))
+  )
+}
+S7::method(linkinv_derivs, link) <- linkinv_derivs.link
+
 #' @title Validate and Check a Link Object
 #'
 #' @description

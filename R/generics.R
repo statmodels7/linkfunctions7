@@ -514,6 +514,43 @@ linkderiv <- S7::new_generic("linkderiv", "x", fun = function(x, theta, order = 
 #' @export
 linkinvderiv <- S7::new_generic("linkinvderiv", "x", fun = function(x, eta, order = 1) S7::S7_dispatch())
 
+#' @title Derivatives of an Inverse Link up to an Order
+#' @description
+#' Computes the derivatives of the inverse link \eqn{g^{-1}(\eta)} of orders
+#' one to `order` at the same linear predictors, as a list.
+#' @details
+#' The method of the base class calls [dlinkinv()], [d2linkinv()] and the
+#' higher generics in turn, so the numerical fallbacks of a link apply here
+#' as they do there. A class whose derivatives share their work may register
+#' its own method: the log link computes \eqn{e^\eta} once and returns that
+#' vector at every order, which gives the same values as the five generics
+#' at a fifth of the cost. A class that inherits from the log link and
+#' overrides one of its derivatives is evaluated through the generics.
+#' @param x An object of class `link`.
+#' @param eta A numeric vector of linear predictors, as for [dlinkinv()].
+#' @param order The highest derivative order, a single whole number from 1
+#'   to 5.
+#' @return A list of length `order` whose element `k` is the `k`-th
+#'   derivative of \eqn{g^{-1}} at `eta`, a numeric vector of the same length
+#'   as `eta`.
+#' @seealso [dlinkinv()] and its siblings for one order at a time,
+#'   [linkinvderiv()] for one order chosen at run time.
+#' @examples
+#' # the four derivatives of exp at 0 are all equal to 1
+#' linkinv_derivs(log_link(), 0, order = 4)
+#'
+#' # the logistic's first two derivatives at eta = 0
+#' linkinv_derivs(logit_link(), 0, order = 2)
+#' @export
+linkinv_derivs <- S7::new_generic("linkinv_derivs", "x", fun = function(x, eta, order) {
+  if (length(order) != 1L || !is.numeric(order) || is.na(order) ||
+      order < 1 || order > 5 || order != round(order)) {
+    stop("The inverse derivative order is not supported: it must be one of 1 to 5.",
+         call. = FALSE)
+  }
+  S7::S7_dispatch()
+})
+
 #' @title Validate and Check a Link Object
 #' @param x An object of class `link`.
 #' @param tolerance Numeric tolerance for floating-point comparisons.

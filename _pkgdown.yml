@@ -82,6 +82,7 @@ reference:
   desc: >
     The order-specific generics. `linkderiv()` and `linkinvderiv()` route to
     these; call them directly where the extra dispatch matters.
+    `linkinv_derivs()` returns the inverse derivatives up to an order at once.
   contents:
   - dlinkfun
   - d2linkfun
@@ -93,6 +94,7 @@ reference:
   - d3linkinv
   - d4linkinv
   - d5linkinv
+  - linkinv_derivs
 
 - title: Methods
   contents:

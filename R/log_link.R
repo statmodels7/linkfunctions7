@@ -70,6 +70,15 @@ S7::method(d3linkinv, LogLink) <- function(x, eta) exp_floored(eta)
 S7::method(d4linkinv, LogLink) <- function(x, eta) exp_floored(eta)
 S7::method(d5linkinv, LogLink) <- function(x, eta) exp_floored(eta)
 
+# every order is the same exp_floored(eta), so it is computed once; a subclass
+# may override one of the five methods above, and is then read through them
+S7::method(linkinv_derivs, LogLink) <- function(x, eta, order) {
+  if (!identical(class(x)[[1L]], "linkfunctions7::LogLink")) {
+    return(linkinv_derivs.link(x, eta, order))
+  }
+  rep(list(exp_floored(eta)), as.integer(order))
+}
+
 #' @title The Logarithmic Link Function
 #'
 #' @include generics.R
