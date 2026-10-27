@@ -87,6 +87,8 @@ The order-specific generics.
 and
 [`linkinvderiv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinvderiv.md)
 route to these; call them directly where the extra dispatch matters.
+[`linkinv_derivs()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv_derivs.md)
+returns the inverse derivatives up to an order at once.
 
 - [`dlinkfun()`](https://statmodels7.github.io/linkfunctions7/reference/dlinkfun.md)
   : 1st Derivative of a Link Function
@@ -108,6 +110,8 @@ route to these; call them directly where the extra dispatch matters.
   : 4th Derivative of an Inverse Link Function
 - [`d5linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkinv.md)
   : 5th Derivative of an Inverse Link Function
+- [`linkinv_derivs()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv_derivs.md)
+  : Derivatives of an Inverse Link up to an Order
 
 ## Methods
 
@@ -166,6 +170,8 @@ route to these; call them directly where the extra dispatch matters.
 - [`linkfunctions7`](https://statmodels7.github.io/linkfunctions7/reference/linkfunctions7-package.md)
   [`linkfunctions7-package`](https://statmodels7.github.io/linkfunctions7/reference/linkfunctions7-package.md)
   : linkfunctions7: An S7 Framework for Link Functions
+- [`linkinv_derivs.link()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv_derivs.link.md)
+  : Inverse Link Derivatives from the Order-Specific Generics
 - [`linkinvderiv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinvderiv.md)
   [`linkinvderiv.link()`](https://statmodels7.github.io/linkfunctions7/reference/linkinvderiv.md)
   : Evaluate Derivative of Inverse Link Function by Order

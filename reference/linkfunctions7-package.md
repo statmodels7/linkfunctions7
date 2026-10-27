@@ -1,9 +1,14 @@
 # linkfunctions7: An S7 Framework for Link Functions
 
-Implements link functions using the S7 object-oriented system. Includes
-forward and inverse transformations with exact analytical derivatives up
-to the fifth order, along with diagnostic tools to verify basic
-mathematical properties like invertibility and monotonicity.
+Link functions as objects, built on the S7 object system. Each link
+provides the forward and inverse maps and their exact analytical
+derivatives up to the fifth order in both directions. A user-defined
+link needs only the two maps, and the package computes the missing
+derivatives numerically from the highest analytical derivative that the
+link supplies. A validator checks invertibility, monotonicity, the
+inverse function theorem and every analytical derivative against a
+numerical one, and reports which orders are numerical. Part of the
+'statmodels7' toolkit.
 
 ## See also
 

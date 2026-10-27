@@ -1,5 +1,13 @@
 # Changelog
 
+## linkfunctions7 0.6.0
+
+- New generic `linkinv_derivs(x, eta, order)`, which returns the
+  derivatives of the inverse link of orders one to `order` as a list.
+  The method of the base class calls the order-specific generics; the
+  log link computes `exp(eta)` once and returns the same values at a
+  fifth of the cost.
+
 ## linkfunctions7 0.5.6
 
 - The README describes a user-defined link: a subclass of
