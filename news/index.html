@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,6 +36,10 @@
       <small>Source: <a href="https://github.com/statmodels7/linkfunctions7/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.7.0" id="linkfunctions7-070">linkfunctions7 0.7.0<a class="anchor" aria-label="anchor" href="#linkfunctions7-070"></a></h2>
+<ul><li>The graph of a link is drawn with ggplot2 and its two panels are joined with patchwork, both suggested. <code><a href="../reference/autoplot.html">autoplot()</a></code> returns the graph and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> prints it and returns it invisibly, where it returned <code>NULL</code>. The graphical arguments that <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> passed to <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">graphics::plot()</a></code> are removed; the returned object is modified instead. <code>graphics</code> is no longer imported.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.6.0" id="linkfunctions7-060">linkfunctions7 0.6.0<a class="anchor" aria-label="anchor" href="#linkfunctions7-060"></a></h2>
 <ul><li>New generic <code>linkinv_derivs(x, eta, order)</code>, which returns the derivatives of the inverse link of orders one to <code>order</code> as a list. The method of the base class calls the order-specific generics; the log link computes <code>exp(eta)</code> once and returns the same values at a fifth of the cost.</li>

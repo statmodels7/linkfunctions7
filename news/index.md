@@ -1,5 +1,19 @@
 # Changelog
 
+## linkfunctions7 0.7.0
+
+- The graph of a link is drawn with ggplot2 and its two panels are
+  joined with patchwork, both suggested.
+  [`autoplot()`](https://statmodels7.github.io/linkfunctions7/reference/autoplot.md)
+  returns the graph and
+  [`plot()`](https://rdrr.io/r/graphics/plot.default.html) prints it and
+  returns it invisibly, where it returned `NULL`. The graphical
+  arguments that
+  [`plot()`](https://rdrr.io/r/graphics/plot.default.html) passed to
+  [`graphics::plot()`](https://rdrr.io/r/graphics/plot.default.html) are
+  removed; the returned object is modified instead. `graphics` is no
+  longer imported.
+
 ## linkfunctions7 0.6.0
 
 - New generic `linkinv_derivs(x, eta, order)`, which returns the

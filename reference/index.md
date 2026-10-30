@@ -149,6 +149,8 @@ returns the inverse derivatives up to an order at once.
   : S7 Class for an Upper Bounded Link
 - [`analytic_order()`](https://statmodels7.github.io/linkfunctions7/reference/analytic_order.md)
   : Highest Analytically Implemented Derivative Order
+- [`autoplot`](https://statmodels7.github.io/linkfunctions7/reference/autoplot.md)
+  : The autoplot() Generic of ggplot2
 - [`check_link()`](https://statmodels7.github.io/linkfunctions7/reference/check_link.md)
   [`check_link.link()`](https://statmodels7.github.io/linkfunctions7/reference/check_link.md)
   : Validate and Check a Link Object
@@ -179,9 +181,12 @@ returns the inverse derivatives up to an order at once.
   : Derivatives of the Standard Logistic Function
 - [`na_from()`](https://statmodels7.github.io/linkfunctions7/reference/na_from.md)
   : Carry Missingness From an Input Over to a Result
+- [`need_ggplot()`](https://statmodels7.github.io/linkfunctions7/reference/need_ggplot.md)
+  : The Packages That a Graph Requires
 - [`stencil_deriv()`](https://statmodels7.github.io/linkfunctions7/reference/stencil_deriv.md)
   : One Central Stencil, Never Nested
 - [`print(`*`<link>`*`)`](https://statmodels7.github.io/linkfunctions7/reference/print.link.md)
   : Print Method for S7 Link Objects
 - [`plot(`*`<link>`*`)`](https://statmodels7.github.io/linkfunctions7/reference/plot.link.md)
+  [`autoplot.link()`](https://statmodels7.github.io/linkfunctions7/reference/plot.link.md)
   : Visualize Link Functions
