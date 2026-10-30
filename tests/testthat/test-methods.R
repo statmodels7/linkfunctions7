@@ -194,29 +194,32 @@ test_that("print.link outputs correct information for all links", {
   }
 })
 
-test_that("plot.link executes without producing errors for all links", {
-  # Suppress actual graphic generation to speed up automated testing
+test_that("plot.link draws every link and returns the graph", {
+  skip_if_not_installed("ggplot2")
+  skip_if_not_installed("patchwork")
   pdf(file = NULL)
   on.exit(dev.off())
 
   for (name in names(all_links)) {
-    link_obj <- all_links[[name]]
-
-    # Expect no errors when plotting within the defined mathematical boundaries
-    expect_error(
-      plot(link_obj),
-      NA,
-      info = paste("plot method failed for link:", name)
-    )
+    p <- plot(all_links[[name]])
+    expect_s3_class(p, "patchwork")
+    # both panels are built, with no layer dropping its data
+    expect_no_warning(ggplot2::ggplot_build(p[[1]]), message = name)
+    expect_no_warning(ggplot2::ggplot_build(p[[2]]), message = name)
   }
 })
 
-test_that("plot.link passes named graphical parameters to graphics::plot", {
-  pdf(file = NULL)
-  on.exit(dev.off())
-
-  expect_error(plot(logit_link(), col = "red", lwd = 1, main = "logit"), NA)
-  # An invalid value reaches graphics::plot(), so it is no longer ignored.
-  expect_error(plot(logit_link(), xlim = "a"))
-  expect_error(plot(logit_link(), "red"), "must be named")
+test_that("autoplot.link returns the two panels and rejects extra arguments", {
+  skip_if_not_installed("ggplot2")
+  skip_if_not_installed("patchwork")
+  p <- ggplot2::autoplot(logit_link())
+  expect_s3_class(p, "patchwork")
+  expect_identical(p[[1]]$labels$title, "link function")
+  expect_identical(p[[2]]$labels$title, "inverse link function")
+  expect_identical(p$patches$annotation$title, "Link: logit")
+  # the curve of the first panel is the link evaluated on its grid
+  d <- p[[1]]$data
+  expect_equal(d$v, linkfun(logit_link(), d$h))
+  expect_error(plot(logit_link(), col = "red"), "no further arguments")
+  expect_error(ggplot2::autoplot(logit_link(), "red"), "no further arguments")
 })

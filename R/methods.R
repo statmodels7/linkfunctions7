@@ -53,54 +53,57 @@ S7::method(print, link) <- print.link
 #' @title Visualize Link Functions
 #'
 #' @description
-#' The plot method for `link` objects generates a panel with two plots:
+#' `autoplot()` returns a graph of a `link` object in two panels, and `plot()`
+#' prints that graph:
 #'
-#' 1. The link function \eqn{\eta = g(\theta)} over its valid domain.
-#' 2. The inverse link function \eqn{\theta = g^{-1}(\eta)} over a standard range of linear predictors.
+#' 1. the link function \eqn{\eta = g(\theta)} over its valid domain;
+#' 2. the inverse link function \eqn{\theta = g^{-1}(\eta)} over a standard
+#'    range of linear predictors.
 #'
-#' @param x An object of class `link`.
-#' @param ... Named graphical parameters passed to [graphics::plot()] for
-#'   both panels, where they replace the defaults (for example `col`, `lwd`
-#'   or `main`).
+#' Dotted grey lines mark zero on both axes of each panel.
 #'
 #' @details
-#' The plotting ranges depend on whether the link bounds are finite. The
-#' function sets the graphical parameters (`par`) for a side-by-side layout
-#' and restores the original settings on exit.
+#' The plotting ranges depend on whether the link bounds are finite. A
+#' bounded domain is drawn up to a distance of `1e-4` from each finite bound,
+#' and an unbounded side extends five units past the other bound (or from
+#' \eqn{-5} to \eqn{5} when neither bound is finite). The inverse is drawn
+#' over the values of \eqn{\eta} reached in the first panel, restricted to
+#' \eqn{[-6, 6]} when the two ranges overlap.
 #'
-#' @importFrom graphics par plot grid abline mtext
+#' The graph is drawn with \pkg{ggplot2} and its two panels are joined with
+#' \pkg{patchwork}; both packages are suggested, and the methods signal an
+#' error that names them when they are not installed. The returned object
+#' can be modified like any other, for instance with
+#' `+ patchwork::plot_annotation(title = "my title")`.
 #'
-#' @return No return value, called for side effects (plotting).
+#' @param x,object An object of class `link`.
+#' @param ... Unused; an argument passed here signals an error.
 #'
-#' @examples
+#' @return `autoplot()` returns a patchwork object holding the two ggplot2
+#'   panels; `plot()` prints the same object and returns it invisibly.
+#'
+#' @examplesIf requireNamespace("ggplot2", quietly = TRUE) && requireNamespace("patchwork", quietly = TRUE)
 #' plot(logit_link())
 #' plot(softplus_link(2))
 #'
 #' @rdname plot.link
 #' @usage \method{plot}{link}(x, ...)
-#' @aliases plot.link
+#' @aliases plot.link autoplot.link
 #' @export
 plot.link <- function(x, ...) {
-  dots <- list(...)
-  if (length(dots) && (is.null(names(dots)) || any(names(dots) == ""))) {
-    stop("Arguments passed through '...' must be named.", call. = FALSE)
+  p <- autoplot.link(x, ...)
+  print(p)
+  invisible(p)
+}
+
+#' @rdname plot.link
+autoplot.link <- function(object, ...) {
+  if (...length()) {
+    stop("The graph of a link takes no further arguments; modify the ",
+         "returned object instead.", call. = FALSE)
   }
-  # The caller's graphical parameters replace the defaults of each panel.
-  draw <- function(defaults) {
-    defaults[names(dots)] <- dots
-    do.call(graphics::plot, defaults)
-  }
-
-  old_par <- graphics::par(no.readonly = TRUE)
-  on.exit(graphics::par(old_par))
-
-  graphics::par(
-    mfrow = c(1, 2),
-    mar = c(5, 5, 3.5, 1) + 0.1,
-    oma = c(0, 0, 2.5, 0)
-  )
-
-  # --- Plot 1: Link function (eta vs. theta) ---
+  need_ggplot(patchwork = TRUE)
+  x <- object
 
   lb <- x@link_bounds[1]
   ub <- x@link_bounds[2]
@@ -118,18 +121,6 @@ plot.link <- function(x, ...) {
   }
 
   eta_vals <- linkfun(x, theta_seq)
-
-  draw(list(
-    x = theta_seq, y = eta_vals,
-    type = "l", lwd = 2, las = 1,
-    xlab = expression(theta),
-    ylab = expression(eta == g(theta)),
-    main = "Link Function"
-  ))
-  graphics::grid()
-  graphics::abline(h = 0, v = 0, lty = 3, col = "darkgray")
-
-  # --- Plot 2: Inverse link function (theta vs. eta) ---
 
   # Determine a sensible range for eta based on the link function's output
   # to avoid NaNs for links with restricted eta domains (e.g., inverse_sq_link)
@@ -164,27 +155,27 @@ plot.link <- function(x, ...) {
   # Suppress warnings gracefully in case evaluation hits undefined boundary areas
   theta_vals <- suppressWarnings(linkinv(x, eta_seq))
 
-  draw(list(
-    x = eta_seq, y = theta_vals,
-    type = "l", lwd = 2, las = 1,
-    xlab = expression(eta),
-    ylab = expression(theta == g^{-1} * (eta)),
-    main = "Inverse Link Function"
-  ))
-  graphics::grid()
-  graphics::abline(h = 0, v = 0, lty = 3, col = "darkgray")
-
-  graphics::mtext(
-    text = paste("Link:", x@link_name),
-    side = 3,
-    line = 0.5,
-    outer = TRUE,
-    cex = 1.3,
-    font = 2
-  )
+  panel <- function(h, v, title, xlab, ylab) {
+    d <- data.frame(h = h, v = v)
+    d <- d[is.finite(d$h) & is.finite(d$v), , drop = FALSE]
+    ggplot2::ggplot(d, ggplot2::aes(x = .data$h, y = .data$v)) +
+      ggplot2::geom_hline(yintercept = 0, colour = "grey50") +
+      ggplot2::geom_vline(xintercept = 0, colour = "grey50") +
+      ggplot2::geom_line(colour = "#1f5fa8", linewidth = 0.9) +
+      ggplot2::labs(title = title, x = xlab, y = ylab) +
+      ggplot2::theme_bw()
+  }
+  .data <- ggplot2::.data
+  p1 <- panel(theta_seq, eta_vals, "link function",
+              expression(theta), expression(eta == g(theta)))
+  p2 <- panel(eta_seq, theta_vals, "inverse link function",
+              expression(eta), expression(theta == g^{-1} * (eta)))
+  patchwork::wrap_plots(p1, p2, nrow = 1L) +
+    patchwork::plot_annotation(title = paste("Link:", x@link_name))
 }
 
 S7::method(plot, link) <- plot.link
+S7::method(autoplot, link) <- autoplot.link
 
 #' @title Link Derivative Wrapper
 #' @description Routes to the correct forward derivative generic based on order.

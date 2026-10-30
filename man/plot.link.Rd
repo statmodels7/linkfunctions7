@@ -2,34 +2,50 @@
 % Please edit documentation in R/methods.R
 \name{plot.link}
 \alias{plot.link}
+\alias{autoplot.link}
 \title{Visualize Link Functions}
 \usage{
 \method{plot}{link}(x, ...)
+
+autoplot.link(object, ...)
 }
 \arguments{
-\item{x}{An object of class \code{link}.}
+\item{x, object}{An object of class \code{link}.}
 
-\item{...}{Named graphical parameters passed to \code{\link[graphics:plot.default]{graphics::plot()}} for
-both panels, where they replace the defaults (for example \code{col}, \code{lwd}
-or \code{main}).}
+\item{...}{Unused; an argument passed here signals an error.}
 }
 \value{
-No return value, called for side effects (plotting).
+\code{autoplot()} returns a patchwork object holding the two ggplot2
+panels; \code{plot()} prints the same object and returns it invisibly.
 }
 \description{
-The plot method for \code{link} objects generates a panel with two plots:
+\code{autoplot()} returns a graph of a \code{link} object in two panels, and \code{plot()}
+prints that graph:
 \enumerate{
-\item The link function \eqn{\eta = g(\theta)} over its valid domain.
-\item The inverse link function \eqn{\theta = g^{-1}(\eta)} over a standard range of linear predictors.
+\item the link function \eqn{\eta = g(\theta)} over its valid domain;
+\item the inverse link function \eqn{\theta = g^{-1}(\eta)} over a standard
+range of linear predictors.
 }
+
+Dotted grey lines mark zero on both axes of each panel.
 }
 \details{
-The plotting ranges depend on whether the link bounds are finite. The
-function sets the graphical parameters (\code{par}) for a side-by-side layout
-and restores the original settings on exit.
+The plotting ranges depend on whether the link bounds are finite. A
+bounded domain is drawn up to a distance of \code{1e-4} from each finite bound,
+and an unbounded side extends five units past the other bound (or from
+\eqn{-5} to \eqn{5} when neither bound is finite). The inverse is drawn
+over the values of \eqn{\eta} reached in the first panel, restricted to
+\eqn{[-6, 6]} when the two ranges overlap.
+
+The graph is drawn with \pkg{ggplot2} and its two panels are joined with
+\pkg{patchwork}; both packages are suggested, and the methods signal an
+error that names them when they are not installed. The returned object
+can be modified like any other, for instance with
+\code{+ patchwork::plot_annotation(title = "my title")}.
 }
 \examples{
+\dontshow{if (requireNamespace("ggplot2", quietly = TRUE) && requireNamespace("patchwork", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 plot(logit_link())
 plot(softplus_link(2))
-
+\dontshow{\}) # examplesIf}
 }

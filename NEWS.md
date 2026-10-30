@@ -1,3 +1,12 @@
+# linkfunctions7 0.7.0
+
+* The graph of a link is drawn with ggplot2 and its two panels are joined
+  with patchwork, both suggested. `autoplot()` returns the graph and
+  `plot()` prints it and returns it invisibly, where it returned `NULL`.
+  The graphical arguments that `plot()` passed to `graphics::plot()` are
+  removed; the returned object is modified instead. `graphics` is no longer
+  imported.
+
 # linkfunctions7 0.6.0
 
 * New generic `linkinv_derivs(x, eta, order)`, which returns the derivatives

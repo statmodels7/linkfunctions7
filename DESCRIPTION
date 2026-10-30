@@ -1,6 +1,6 @@
 Package: linkfunctions7
 Title: An S7 Framework for Link Functions
-Version: 0.6.0
+Version: 0.7.0
 Authors@R: 
     person("Giovanni", "Tinervia", , "giovannitinervia9@gmail.com", role = c("aut", "cre"))
 Description: Link functions as objects, built on the S7 object system. Each
@@ -27,6 +27,7 @@ Collate:
     'bounded_link.R'
     'cauchit_link.R'
     'cloglog_link.R'
+    'ggplot.R'
     'identity_link.R'
     'inverse_link.R'
     'inverse_sq_link.R'
@@ -45,7 +46,6 @@ Collate:
     'zzz.R'
 Imports:
     Rcpp,
-    graphics,
     numDeriv,
     numericals7 (>= 0.2.0),
     S7,
@@ -55,6 +55,8 @@ RoxygenNote: 7.3.3
 LinkingTo:
     Rcpp
 Suggests:
+    ggplot2 (>= 3.5.0),
+    patchwork,
     pkgdown,
     testthat (>= 3.0.0),
     knitr,
