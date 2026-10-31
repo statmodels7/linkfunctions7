@@ -1,3 +1,10 @@
+# linkfunctions7 0.8.1
+
+* Tests only: the arguments of the range tests are written as hexadecimal
+  literals, which every platform parses to the same double; on arm64 macOS a
+  17-digit decimal literal next to the edge of a domain could parse to the
+  neighbouring double.
+
 # linkfunctions7 0.8.0
 
 * New generics `d6linkfun()` and `d6linkinv()`: the sixth derivative of every

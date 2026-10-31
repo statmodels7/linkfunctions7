@@ -1,6 +1,6 @@
 Package: linkfunctions7
 Title: An S7 Framework for Link Functions
-Version: 0.8.0
+Version: 0.8.1
 Authors@R: 
     person("Giovanni", "Tinervia", , "giovannitinervia9@gmail.com", role = c("aut", "cre"))
 Description: Link functions as objects, built on the S7 object system. Each
