@@ -7,11 +7,13 @@
 \alias{d3linkfun.link}
 \alias{d4linkfun.link}
 \alias{d5linkfun.link}
+\alias{d6linkfun.link}
 \alias{dlinkinv.link}
 \alias{d2linkinv.link}
 \alias{d3linkinv.link}
 \alias{d4linkinv.link}
 \alias{d5linkinv.link}
+\alias{d6linkinv.link}
 \title{The Body Shared by Every Numerical Fallback}
 \usage{
 fallback_deriv(x, v, order, inverse)
@@ -22,7 +24,7 @@ fallback_deriv(x, v, order, inverse)
 \item{v}{A numeric vector: \eqn{\theta} in the forward direction, \eqn{\eta}
 in the inverse one.}
 
-\item{order}{The derivative order, from 1 to 5.}
+\item{order}{The derivative order, from 1 to 6.}
 
 \item{inverse}{Logical; \code{TRUE} for the inverse-link direction.}
 }
@@ -49,14 +51,14 @@ ends on analytic code.
 }
 \section{Methods}{
 
-The ten registrations on the base class \code{\link[=link]{link()}} have this function as
-their whole body: \code{dlinkfun()} through \code{d5linkfun()} for the link and
-\code{dlinkinv()} through \code{d5linkinv()} for the inverse link. Each of them passes
+The twelve registrations on the base class \code{\link[=link]{link()}} have this function as
+their whole body: \code{dlinkfun()} through \code{d6linkfun()} for the link and
+\code{dlinkinv()} through \code{d6linkinv()} for the inverse link. Each of them passes
 its order and its direction. A link inherits them for the orders it does not implement
 itself, so a link defined with nothing but \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}}
 still has a method for every derivative generic. S7 requires the formals of
 a method to match those of the generic, and the two directions name their
-argument differently, so the ten wrappers are written out instead of
+argument differently, so the twelve wrappers are written out instead of
 generated.
 }
 

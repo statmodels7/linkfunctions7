@@ -264,6 +264,47 @@ d4linkfun <- S7::new_generic("d4linkfun", "x", fun = function(x, theta) S7::S7_d
 #' @export
 d5linkfun <- S7::new_generic("d5linkfun", "x", fun = function(x, theta) S7::S7_dispatch())
 
+#' @title 6th Derivative of a Link Function
+#' @description
+#' Computes the sixth derivative of the link \eqn{g(\theta)} with respect to the
+#' parameter, on the parameter scale.
+#' @details
+#' The sixth order is reached by the link-scale sixth derivative of a
+#' log-likelihood, which combines the derivatives of the family with the
+#' partial Bell polynomials in the derivatives of the inverse link up to the
+#' sixth.
+#'
+#' Every link has a method for this generic. If the class of a link registers
+#' no method for it, the numerical method of the base class is used: it
+#' applies a single central stencil to the highest order that the link
+#' supplies analytically, never a chain of lower-order differences.
+#' [link_fallback_orders()] reports which orders of a given link are exact,
+#' and [check_link()] leaves a fallback order unchecked, because comparing it
+#' with a finite difference of the order below would repeat the same
+#' computation and could not detect an error.
+#'
+#' In code where speed matters, call this generic directly: [linkderiv()] and
+#' [linkinvderiv()] route by order and so dispatch twice, once on themselves
+#' and once here, and on a short vector the routed call takes two to three
+#' times as long as the direct one.
+#' @param x An object of class `link`.
+#' @param theta A numeric vector of parameter values, inside
+#'   `x@link_bounds`. The domain is not checked: outside it the formula is
+#'   evaluated as written, so the result may be `NaN`, `NA` or an ordinary
+#'   number, and the function does not signal an error.
+#' @return A numeric vector of the same length as `theta`, missing wherever
+#'   `theta` is.
+#' @seealso [linkderiv()], which routes to this generic by order, and
+#'   [d6linkinv()] for the same order in the other direction.
+#' @examples
+#' # The log link's sixth derivative is -120 / t^6, so at theta = 2:
+#' d6linkfun(log_link(), 2) - (-120 / 2^6)
+#'
+#' # Missingness propagates instead of being filled in.
+#' d6linkfun(logit_link(), c(0.5, NA))
+#' @export
+d6linkfun <- S7::new_generic("d6linkfun", "x", fun = function(x, theta) S7::S7_dispatch())
+
 #' @title 1st Derivative of an Inverse Link Function
 #' @description
 #' Computes the first derivative of the inverse link \eqn{g^{-1}(\eta)} with respect to
@@ -467,13 +508,56 @@ d4linkinv <- S7::new_generic("d4linkinv", "x", fun = function(x, eta) S7::S7_dis
 #' @export
 d5linkinv <- S7::new_generic("d5linkinv", "x", fun = function(x, eta) S7::S7_dispatch())
 
+#' @title 6th Derivative of an Inverse Link Function
+#' @description
+#' Computes the sixth derivative of the inverse link \eqn{g^{-1}(\eta)} with respect
+#' to the linear predictor.
+#' @details
+#' The chain rule that carries a log-likelihood derivative of order \eqn{k} from
+#' \eqn{\theta} onto \eqn{\eta} combines the derivatives of the family with
+#' the partial Bell polynomials in \eqn{h', \ldots, h^{(k)}}, so an order-6
+#' quantity on the unconstrained scale requires the sixth derivative of the
+#' inverse link and no higher one.
+#'
+#' Every link has a method for this generic. If the class of a link registers
+#' no method for it, the numerical method of the base class is used: it
+#' applies a single central stencil to the highest order that the link
+#' supplies analytically, never a chain of lower-order differences.
+#' [link_fallback_orders()] reports which orders of a given link are exact,
+#' and [check_link()] leaves a fallback order unchecked, because comparing it
+#' with a finite difference of the order below would repeat the same
+#' computation and could not detect an error.
+#'
+#' In code where speed matters, call this generic directly: [linkderiv()] and
+#' [linkinvderiv()] route by order and so dispatch twice, once on themselves
+#' and once here, and on a short vector the routed call takes two to three
+#' times as long as the direct one.
+#' @param x An object of class `link`.
+#' @param eta A numeric vector of linear predictors, inside the range that
+#'   [eta_bounds()] returns for the link. The derivative is computed from
+#'   `eta` directly, without the clamp that [linkinv()] applies.
+#' @return A numeric vector of the same length as `eta`, missing wherever
+#'   `eta` is.
+#' @seealso [linkinvderiv()], which routes to this generic by order, and
+#'   [d6linkfun()] for the same order in the other direction.
+#' @examples
+#' # Every derivative of exp is exp, so the log link's inverse gives the
+#' # same number at every order.
+#' d6linkinv(log_link(), 1) - exp(1)
+#'
+#' # At eta = 0 the logistic is symmetric about 1/2, so its even-order
+#' # derivatives vanish there.
+#' d6linkinv(logit_link(), 0)
+#' @export
+d6linkinv <- S7::new_generic("d6linkinv", "x", fun = function(x, eta) S7::S7_dispatch())
+
 #' @title Evaluate Derivative of Link Function by Order
 #' @description
-#' Routes a call, by derivative order, to [linkfun()] or to one of the five
+#' Routes a call, by derivative order, to [linkfun()] or to one of the six
 #' `d*linkfun` generics.
 #' @param x An object of class `link`.
 #' @param theta A numeric vector.
-#' @param order An integer specifying the derivative order (0 to 5). Order 0 is
+#' @param order An integer specifying the derivative order (0 to 6). Order 0 is
 #'   the link function itself.
 #' @return A numeric vector of the same length as `theta`: the requested
 #'   derivative of \eqn{g} evaluated there.
@@ -493,11 +577,11 @@ linkderiv <- S7::new_generic("linkderiv", "x", fun = function(x, theta, order = 
 
 #' @title Evaluate Derivative of Inverse Link Function by Order
 #' @description
-#' Routes a call, by derivative order, to [linkinv()] or to one of the five
+#' Routes a call, by derivative order, to [linkinv()] or to one of the six
 #' `d*linkinv` generics.
 #' @param x An object of class `link`.
 #' @param eta A numeric vector.
-#' @param order An integer specifying the derivative order (0 to 5). Order 0 is
+#' @param order An integer specifying the derivative order (0 to 6). Order 0 is
 #'   the inverse link itself.
 #' @return A numeric vector of the same length as `eta`: the requested
 #'   derivative of \eqn{g^{-1}} evaluated there.
@@ -523,13 +607,13 @@ linkinvderiv <- S7::new_generic("linkinvderiv", "x", fun = function(x, eta, orde
 #' higher generics in turn, so the numerical fallbacks of a link apply here
 #' as they do there. A class whose derivatives share their work may register
 #' its own method: the log link computes \eqn{e^\eta} once and returns that
-#' vector at every order, which gives the same values as the five generics
-#' at a fifth of the cost. A class that inherits from the log link and
+#' vector at every order, which gives the same values as the six generics
+#' at a sixth of the cost. A class that inherits from the log link and
 #' overrides one of its derivatives is evaluated through the generics.
 #' @param x An object of class `link`.
 #' @param eta A numeric vector of linear predictors, as for [dlinkinv()].
 #' @param order The highest derivative order, a single whole number from 1
-#'   to 5.
+#'   to 6.
 #' @return A list of length `order` whose element `k` is the `k`-th
 #'   derivative of \eqn{g^{-1}} at `eta`, a numeric vector of the same length
 #'   as `eta`.
@@ -544,8 +628,8 @@ linkinvderiv <- S7::new_generic("linkinvderiv", "x", fun = function(x, eta, orde
 #' @export
 linkinv_derivs <- S7::new_generic("linkinv_derivs", "x", fun = function(x, eta, order) {
   if (length(order) != 1L || !is.numeric(order) || is.na(order) ||
-      order < 1 || order > 5 || order != round(order)) {
-    stop("The inverse derivative order is not supported: it must be one of 1 to 5.",
+      order < 1 || order > 6 || order != round(order)) {
+    stop("The inverse derivative order is not supported: it must be one of 1 to 6.",
          call. = FALSE)
   }
   S7::S7_dispatch()

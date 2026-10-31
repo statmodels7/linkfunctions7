@@ -25,6 +25,7 @@ inline double logistic_poly(double p, int k) {
     // and the orders above it are generated rather than transcribed.
     case 5: return pq * (1.0 + p * (-30.0 + p * (150.0 +
                                     p * (-240.0 + 120.0 * p))));
+    case 6: return NA_REAL;  // stage 2: closed form
     default: return NA_REAL;
     }
 }
@@ -43,6 +44,7 @@ inline double logit_inv(double eta, int k) {
     case 3: return pq * (1.0 - 6.0 * pq);
     case 4: return pq * (q - p) * (1.0 - 12.0 * pq);
     case 5: return pq * (1.0 + pq * (-30.0 + 120.0 * pq));
+    case 6: return NA_REAL;  // stage 2: closed form
     default: return NA_REAL;
     }
 }
@@ -58,6 +60,7 @@ inline double probit_inv(double e, int k) {
         double e2 = e * e;
         return (e2 * e2 - 6.0 * e2 + 3.0) * phi;
     }
+    case 6: return NA_REAL;  // stage 2: closed form
     default: return NA_REAL;
     }
 }
@@ -71,6 +74,7 @@ inline double cloglog_inv(double eta, int k) {
     case 3: return E * (1.0 + w * (-3.0 + w));
     case 4: return E * (1.0 + w * (-7.0 + w * (6.0 - w)));
     case 5: return E * (1.0 + w * (-15.0 + w * (25.0 + w * (-10.0 + w))));
+    case 6: return NA_REAL;  // stage 2: closed form
     default: return NA_REAL;
     }
 }
@@ -84,6 +88,7 @@ inline double loglog_inv(double eta, int k) {
     case 3: return E * z * (1.0 + z * (-3.0 + z));
     case 4: return E * z * (-1.0 + z * (7.0 + z * (-6.0 + z)));
     case 5: return E * z * (1.0 + z * (-15.0 + z * (25.0 + z * (-10.0 + z))));
+    case 6: return NA_REAL;  // stage 2: closed form
     default: return NA_REAL;
     }
 }
@@ -99,6 +104,7 @@ inline double cauchit_inv(double e, int k) {
         double u2 = u * u, e2 = e * e;
         return 24.0 * (1.0 - 10.0 * e2 + 5.0 * e2 * e2) / (M_PI * u2 * u2 * u);
     }
+    case 6: return NA_REAL;  // stage 2: closed form
     default: return NA_REAL;
     }
 }
@@ -117,6 +123,7 @@ inline double rhobit_inv(double eta, int k) {
     case 3: return u * (4.0 * t2 - 2.0 * u);
     case 4: return 8.0 * t * u * (2.0 * u - t2);
     case 5: return u * (16.0 * u * u - 88.0 * t2 * u + 16.0 * t2 * t2);
+    case 6: return NA_REAL;  // stage 2: closed form
     default: return NA_REAL;
     }
 }

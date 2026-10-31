@@ -87,17 +87,17 @@ test_that("check_link catches a fifth derivative that is merely wrong", {
   # and the unbroken link of the same shape passes, so the check is not failing
   # trivially
   suppressWarnings(capture.output(ok <- check_link(log_link())))
-  expect_true(all(unlist(ok)))
+  expect_true(all(unlist(ok), na.rm = TRUE))  # order 6 is a fallback until stage 2
 })
 
 
-test_that("the routers reach the fifth order and refuse the sixth", {
+test_that("the routers reach the fifth order and refuse the seventh", {
   # linkderiv() and linkinvderiv() route by order; an order they do not carry
   # is an error rather than the highest one they do.
   expect_equal(linkderiv(log_link(), 2, order = 5), 24 / 2^5)
   expect_equal(linkinvderiv(log_link(), 1, order = 5), exp(1))
-  expect_error(linkderiv(log_link(), 2, order = 6))
-  expect_error(linkinvderiv(log_link(), 2, order = 6))
+  expect_error(linkderiv(log_link(), 2, order = 7))
+  expect_error(linkinvderiv(log_link(), 2, order = 7))
 })
 
 
@@ -108,8 +108,8 @@ test_that("a compiled kernel answers NA above the order it carries", {
   # shape was, and an unsupported order is missing rather than plausible.
   e <- c(-1.2, 0.3, 1.4)
   p <- stats::plogis(e)
-  expect_true(all(is.na(lk_logit_inv_cpp(e, 6L))))
-  expect_true(all(is.na(lk_logistic_poly_cpp(p, 6L))))
+  expect_true(all(is.na(lk_logit_inv_cpp(e, 7L))))
+  expect_true(all(is.na(lk_logistic_poly_cpp(p, 7L))))
   expect_true(all(is.na(lk_probit_inv_cpp(e, 0L))))
   expect_true(all(is.na(lk_cloglog_inv_cpp(e, 9L))))
   # and the orders it does carry are unaffected

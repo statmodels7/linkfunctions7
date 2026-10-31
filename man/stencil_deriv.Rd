@@ -11,7 +11,7 @@ stencil_deriv(f, x, order, h)
 
 \item{x}{A numeric vector of evaluation points.}
 
-\item{order}{The derivative order, 1 to 5.}
+\item{order}{The derivative order, 1 to 6.}
 
 \item{h}{A numeric vector of steps, from \code{\link[=fd_step]{fd_step()}}.}
 }

@@ -48,6 +48,7 @@ NumericVector lk_logit_fwd_cpp(NumericVector theta, int k) {
             out[i] = 24.0 / t5 + 24.0 / q5;
             break;
         }
+        case 6: out[i] = NA_REAL; break;  // stage 2: closed form
         default: out[i] = NA_REAL;
         }
     }
@@ -72,6 +73,7 @@ NumericVector lk_probit_fwd_cpp(NumericVector theta, int k) {
             out[i] = (7.0 + 46.0 * e2 + 24.0 * e2 * e2) / (p2 * p2 * phi);
             break;
         }
+        case 6: out[i] = NA_REAL; break;  // stage 2: closed form
         default: out[i] = NA_REAL;
         }
     }
@@ -108,6 +110,7 @@ NumericVector lk_cloglog_fwd_cpp(NumericVector theta, int k) {
                        60.0 * L + 24.0) / (v2 * v2 * v * L2 * L2 * L);
             break;
         }
+        case 6: out[i] = NA_REAL; break;  // stage 2: closed form
         default: out[i] = NA_REAL;
         }
     }
@@ -144,6 +147,7 @@ NumericVector lk_loglog_fwd_cpp(NumericVector theta, int k) {
                        24.0 * l2 * l2) / (t2 * t2 * t * l2 * l2 * l);
             break;
         }
+        case 6: out[i] = NA_REAL; break;  // stage 2: closed form
         default: out[i] = NA_REAL;
         }
     }
@@ -176,6 +180,7 @@ NumericVector lk_cauchit_fwd_cpp(NumericVector theta, int k) {
             out[i] = 8.0 * p2 * p2 * M_PI * u * (2.0 + 15.0 * e2 + 15.0 * e2 * e2);
             break;
         }
+        case 6: out[i] = NA_REAL; break;  // stage 2: closed form
         default: out[i] = NA_REAL;
         }
     }
@@ -206,6 +211,7 @@ NumericVector lk_rhobit_fwd_cpp(NumericVector theta, int k) {
             out[i] = (24.0 + 240.0 * t2 + 120.0 * t2 * t2) / (u2 * u2 * u);
             break;
         }
+        case 6: out[i] = NA_REAL; break;  // stage 2: closed form
         default: out[i] = NA_REAL;
         }
     }
@@ -238,6 +244,7 @@ NumericVector lk_softplus_fwd_cpp(NumericVector theta, double a, int k) {
             out[i] = a2 * a2 * e * (1.0 + e * (11.0 + e * (11.0 + e))) / (u2 * u2 * u);
             break;
         }
+        case 6: out[i] = NA_REAL; break;  // stage 2: closed form
         default: out[i] = NA_REAL;
         }
     }

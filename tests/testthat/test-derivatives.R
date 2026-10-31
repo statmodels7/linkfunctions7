@@ -89,7 +89,7 @@ test_that("derivatives are vectorized and preserve missing values", {
 
 test_that("an unsupported derivative order is rejected", {
   lk <- log_link()
-  expect_error(linkderiv(lk, 1, order = 6), "not supported")
+  expect_error(linkderiv(lk, 1, order = 7), "not supported")
   expect_error(linkinvderiv(lk, 1, order = -1), "not supported")
   expect_error(linkderiv(lk, 1, order = NA), "not supported")
 })

@@ -89,11 +89,13 @@ reference:
   - d3linkfun
   - d4linkfun
   - d5linkfun
+  - d6linkfun
   - dlinkinv
   - d2linkinv
   - d3linkinv
   - d4linkinv
   - d5linkinv
+  - d6linkinv
   - linkinv_derivs
 
 - title: Methods

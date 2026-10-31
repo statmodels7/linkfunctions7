@@ -14,7 +14,7 @@ linkderiv.link(x, theta, order = 1)
 
 \item{theta}{A numeric vector.}
 
-\item{order}{An integer (0 to 5).}
+\item{order}{An integer (0 to 6).}
 }
 \value{
 A numeric vector of the same length as \code{theta}: the requested
@@ -23,7 +23,7 @@ derivative of \eqn{g} evaluated there.
 A numeric vector of the same length as \code{theta}.
 }
 \description{
-Routes a call, by derivative order, to \code{\link[=linkfun]{linkfun()}} or to one of the five
+Routes a call, by derivative order, to \code{\link[=linkfun]{linkfun()}} or to one of the six
 \code{d*linkfun} generics.
 
 Routes to the correct forward derivative generic based on order.

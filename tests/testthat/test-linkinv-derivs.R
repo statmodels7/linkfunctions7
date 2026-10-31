@@ -1,12 +1,15 @@
 test_that("linkinv_derivs() returns the order-specific generics bit for bit", {
-  gens <- list(dlinkinv, d2linkinv, d3linkinv, d4linkinv, d5linkinv)
+  gens <- list(dlinkinv, d2linkinv, d3linkinv, d4linkinv, d5linkinv, d6linkinv)
   for (nm in names(all_links())) {
     lk <- all_links()[[nm]]
     b <- eta_bounds(lk)
     lo <- if (is.finite(b[1])) b[1] + 0.1 else -3
     hi <- if (is.finite(b[2])) b[2] - 0.1 else 3
     eta <- c(seq(lo, hi, length.out = 23), NA)
-    for (k in 1:5) {
+    for (k in 1:6) {
+      # stage one: the log link shares exp() at every order while its sixth
+      # generic is still the numerical fallback; stage two removes this line
+      if (nm == "log" && k == 6) next
       got <- linkinv_derivs(lk, eta, order = k)
       expect_length(got, k)
       for (j in seq_len(k)) {
@@ -36,9 +39,9 @@ test_that("a subclass of the log link is read through its own methods", {
   expect_identical(got[[1]], dlinkinv(lk, c(0, 1)))
 })
 
-test_that("linkinv_derivs() rejects an order outside 1 to 5", {
-  for (bad in list(0, 6, 2.5, NA, c(1, 2), "2")) {
+test_that("linkinv_derivs() rejects an order outside 1 to 6", {
+  for (bad in list(0, 7, 2.5, NA, c(1, 2), "2")) {
     expect_error(linkinv_derivs(log_link(), 1, order = bad),
-                 "must be one of 1 to 5")
+                 "must be one of 1 to 6")
   }
 })

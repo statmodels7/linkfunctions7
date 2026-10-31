@@ -14,7 +14,7 @@ linkinvderiv.link(x, eta, order = 1)
 
 \item{eta}{A numeric vector.}
 
-\item{order}{An integer (0 to 5).}
+\item{order}{An integer (0 to 6).}
 }
 \value{
 A numeric vector of the same length as \code{eta}: the requested
@@ -23,7 +23,7 @@ derivative of \eqn{g^{-1}} evaluated there.
 A numeric vector of the same length as \code{eta}.
 }
 \description{
-Routes a call, by derivative order, to \code{\link[=linkinv]{linkinv()}} or to one of the five
+Routes a call, by derivative order, to \code{\link[=linkinv]{linkinv()}} or to one of the six
 \code{d*linkinv} generics.
 
 Routes to the correct inverse derivative generic based on order.

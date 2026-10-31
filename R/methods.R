@@ -181,7 +181,7 @@ S7::method(autoplot, link) <- autoplot.link
 #' @description Routes to the correct forward derivative generic based on order.
 #' @param x An object of class `link`.
 #' @param theta A numeric vector.
-#' @param order An integer (0 to 5).
+#' @param order An integer (0 to 6).
 #' @return A numeric vector of the same length as `theta`.
 #' @rdname linkderiv
 #' @keywords internal
@@ -189,8 +189,8 @@ linkderiv.link <- function(x, theta, order = 1) {
   # switch() on the integer directly: converting it to a character first costs
   # more than the branch it selects, on a function called once per parameter per
   # order by anything that works on the link scale.
-  if (length(order) != 1L || is.na(order) || order < 0 || order > 5) {
-    stop("The forward derivative order is not supported: it must be one of 0 to 5.", call. = FALSE)
+  if (length(order) != 1L || is.na(order) || order < 0 || order > 6) {
+    stop("The forward derivative order is not supported: it must be one of 0 to 6.", call. = FALSE)
   }
   switch(as.integer(order) + 1L,
          linkfun(x, theta),
@@ -198,7 +198,8 @@ linkderiv.link <- function(x, theta, order = 1) {
          d2linkfun(x, theta),
          d3linkfun(x, theta),
          d4linkfun(x, theta),
-         d5linkfun(x, theta)
+         d5linkfun(x, theta),
+         d6linkfun(x, theta)
   )
 }
 S7::method(linkderiv, link) <- linkderiv.link
@@ -207,13 +208,13 @@ S7::method(linkderiv, link) <- linkderiv.link
 #' @description Routes to the correct inverse derivative generic based on order.
 #' @param x An object of class `link`.
 #' @param eta A numeric vector.
-#' @param order An integer (0 to 5).
+#' @param order An integer (0 to 6).
 #' @return A numeric vector of the same length as `eta`.
 #' @rdname linkinvderiv
 #' @keywords internal
 linkinvderiv.link <- function(x, eta, order = 1) {
-  if (length(order) != 1L || is.na(order) || order < 0 || order > 5) {
-    stop("The inverse derivative order is not supported: it must be one of 0 to 5.", call. = FALSE)
+  if (length(order) != 1L || is.na(order) || order < 0 || order > 6) {
+    stop("The inverse derivative order is not supported: it must be one of 0 to 6.", call. = FALSE)
   }
   switch(as.integer(order) + 1L,
          linkinv(x, eta),
@@ -221,7 +222,8 @@ linkinvderiv.link <- function(x, eta, order = 1) {
          d2linkinv(x, eta),
          d3linkinv(x, eta),
          d4linkinv(x, eta),
-         d5linkinv(x, eta)
+         d5linkinv(x, eta),
+         d6linkinv(x, eta)
   )
 }
 S7::method(linkinvderiv, link) <- linkinvderiv.link
@@ -232,7 +234,7 @@ S7::method(linkinvderiv, link) <- linkinvderiv.link
 #'   the base class.
 #' @param x An object of class `link`.
 #' @param eta A numeric vector.
-#' @param order A whole number from 1 to 5.
+#' @param order A whole number from 1 to 6.
 #' @return A list of `order` numeric vectors of the same length as `eta`.
 #' @rdname linkinv_derivs.link
 #' @keywords internal
@@ -244,7 +246,9 @@ linkinv_derivs.link <- function(x, eta, order) {
          list(dlinkinv(x, eta), d2linkinv(x, eta), d3linkinv(x, eta),
               d4linkinv(x, eta)),
          list(dlinkinv(x, eta), d2linkinv(x, eta), d3linkinv(x, eta),
-              d4linkinv(x, eta), d5linkinv(x, eta))
+              d4linkinv(x, eta), d5linkinv(x, eta)),
+         list(dlinkinv(x, eta), d2linkinv(x, eta), d3linkinv(x, eta),
+              d4linkinv(x, eta), d5linkinv(x, eta), d6linkinv(x, eta))
   )
 }
 S7::method(linkinv_derivs, link) <- linkinv_derivs.link
@@ -274,9 +278,9 @@ S7::method(linkinv_derivs, link) <- linkinv_derivs.link
 #' 4. Inverse function theorem: verifies
 #'    \eqn{g'(\theta) \cdot (g^{-1})'(\eta) = 1}.
 #' 5. Link derivatives: compares each analytic derivative of
-#'    \eqn{g(\theta)}, up to the fifth order, with a numerical one.
+#'    \eqn{g(\theta)}, up to the sixth order, with a numerical one.
 #' 6. Inverse link derivatives: compares each analytic derivative of
-#'    \eqn{g^{-1}(\eta)}, up to the fifth order, with a numerical one.
+#'    \eqn{g^{-1}(\eta)}, up to the sixth order, with a numerical one.
 #'
 #' Each analytic derivative of order \eqn{k} is compared with one numerical
 #' differentiation of the analytic derivative of order \eqn{k - 1}, so the
@@ -286,8 +290,8 @@ S7::method(linkinv_derivs, link) <- linkinv_derivs.link
 #' @return Invisibly, a named list of the check results: the four scalar logicals
 #'   `invertibility_theta`, `invertibility_eta`, `monotonicity` and
 #'   `inverse_theorem`, plus `link_derivatives` and
-#'   `inverse_link_derivatives`, each a logical vector of length five named
-#'   `order_1` to `order_5`. In those two, `NA` means that the order was not
+#'   `inverse_link_derivatives`, each a logical vector of length six named
+#'   `order_1` to `order_6`. In those two, `NA` means that the order was not
 #'   checked: it is supplied by a numerical fallback, so the value and the
 #'   reference would come from the same computation and would agree even for
 #'   a wrong link. The number of
@@ -365,7 +369,7 @@ check_link.link <- function(x, tolerance = 1e-5, ...) {
   inv_thm_pass <- !is.na(inv_thm_error) && inv_thm_error <= tolerance
 
   # Generic function to test a chain of derivatives
-  test_derivative_chain <- function(eval_seq, deriv_fn, max_order = 5,
+  test_derivative_chain <- function(eval_seq, deriv_fn, max_order = 6,
                                     n_exact = max_order) {
     results <- rep(NA, max_order)
     names(results) <- paste0("order_", 1:max_order)
@@ -422,11 +426,11 @@ check_link.link <- function(x, tolerance = 1e-5, ...) {
 
   # 6. Test Link Derivatives (Chained)
   exact <- link_fallback_orders(x)
-  link_deriv_pass <- test_derivative_chain(theta_seq, linkderiv, max_order = 5,
+  link_deriv_pass <- test_derivative_chain(theta_seq, linkderiv, max_order = 6,
                                            n_exact = exact$forward)
 
   # 7. Test Inverse Link Derivatives (Chained)
-  inv_deriv_pass <- test_derivative_chain(eta_vals, linkinvderiv, max_order = 5,
+  inv_deriv_pass <- test_derivative_chain(eta_vals, linkinvderiv, max_order = 6,
                                           n_exact = exact$inverse)
 
   # A verdict for a family of orders: FAILED if any checked order failed,

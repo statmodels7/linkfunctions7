@@ -11,7 +11,7 @@ link_fallback_orders(x)
 }
 \value{
 A list with \code{forward} and \code{inverse}, each an integer: the
-number of leading orders implemented analytically, from 0 to 5.
+number of leading orders implemented analytically, from 0 to 6.
 }
 \description{
 Reports, for each direction, how many derivative orders the link implements
@@ -25,7 +25,7 @@ accurate only to the precision of a finite difference, so \code{\link[=check_lin
 reports such orders separately instead of counting them as passed.
 }
 \examples{
-# everything the package ships is exact to fifth order
+# the orders the package ships are exact, the others numerical
 link_fallback_orders(logit_link())
 
 }

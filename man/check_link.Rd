@@ -24,8 +24,8 @@ the summary that it prints to the console.
 Invisibly, a named list of the check results: the four scalar logicals
 \code{invertibility_theta}, \code{invertibility_eta}, \code{monotonicity} and
 \code{inverse_theorem}, plus \code{link_derivatives} and
-\code{inverse_link_derivatives}, each a logical vector of length five named
-\code{order_1} to \code{order_5}. In those two, \code{NA} means that the order was not
+\code{inverse_link_derivatives}, each a logical vector of length six named
+\code{order_1} to \code{order_6}. In those two, \code{NA} means that the order was not
 checked: it is supplied by a numerical fallback, so the value and the
 reference would come from the same computation and would agree even for
 a wrong link. The number of
@@ -53,9 +53,9 @@ at every point of the grid, so that the map is one-to-one.
 \item Inverse function theorem: verifies
 \eqn{g'(\theta) \cdot (g^{-1})'(\eta) = 1}.
 \item Link derivatives: compares each analytic derivative of
-\eqn{g(\theta)}, up to the fifth order, with a numerical one.
+\eqn{g(\theta)}, up to the sixth order, with a numerical one.
 \item Inverse link derivatives: compares each analytic derivative of
-\eqn{g^{-1}(\eta)}, up to the fifth order, with a numerical one.
+\eqn{g^{-1}(\eta)}, up to the sixth order, with a numerical one.
 }
 
 Each analytic derivative of order \eqn{k} is compared with one numerical

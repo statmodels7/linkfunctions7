@@ -11,7 +11,7 @@ linkinv_derivs.link(x, eta, order)
 
 \item{eta}{A numeric vector.}
 
-\item{order}{A whole number from 1 to 5.}
+\item{order}{A whole number from 1 to 6.}
 }
 \value{
 A list of \code{order} numeric vectors of the same length as \code{eta}.

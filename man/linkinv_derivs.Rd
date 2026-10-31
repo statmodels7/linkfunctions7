@@ -12,7 +12,7 @@ linkinv_derivs(x, eta, order)
 \item{eta}{A numeric vector of linear predictors, as for \code{\link[=dlinkinv]{dlinkinv()}}.}
 
 \item{order}{The highest derivative order, a single whole number from 1
-to 5.}
+to 6.}
 }
 \value{
 A list of length \code{order} whose element \code{k} is the \code{k}-th
@@ -28,8 +28,8 @@ The method of the base class calls \code{\link[=dlinkinv]{dlinkinv()}}, \code{\l
 higher generics in turn, so the numerical fallbacks of a link apply here
 as they do there. A class whose derivatives share their work may register
 its own method: the log link computes \eqn{e^\eta} once and returns that
-vector at every order, which gives the same values as the five generics
-at a fifth of the cost. A class that inherits from the log link and
+vector at every order, which gives the same values as the six generics
+at a sixth of the cost. A class that inherits from the log link and
 overrides one of its derivatives is evaluated through the generics.
 }
 \examples{
