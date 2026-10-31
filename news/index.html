@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,6 +36,10 @@
       <small>Source: <a href="https://github.com/statmodels7/linkfunctions7/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.8.1" id="linkfunctions7-081">linkfunctions7 0.8.1<a class="anchor" aria-label="anchor" href="#linkfunctions7-081"></a></h2>
+<ul><li>Tests only: the arguments of the range tests are written as hexadecimal literals, which every platform parses to the same double; on arm64 macOS a 17-digit decimal literal next to the edge of a domain could parse to the neighbouring double.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.8.0" id="linkfunctions7-080">linkfunctions7 0.8.0<a class="anchor" aria-label="anchor" href="#linkfunctions7-080"></a></h2>
 <ul><li>New generics <code><a href="../reference/d6linkfun.html">d6linkfun()</a></code> and <code><a href="../reference/d6linkinv.html">d6linkinv()</a></code>: the sixth derivative of every link in closed form, in both directions. <code><a href="../reference/linkderiv.html">linkderiv()</a></code>, <code><a href="../reference/linkinvderiv.html">linkinvderiv()</a></code> and <code><a href="../reference/linkinv_derivs.html">linkinv_derivs()</a></code> accept order six, a user-defined link without a sixth-order method gets one central stencil on its highest analytic order, and <code><a href="../reference/check_link.html">check_link()</a></code> and <code><a href="../reference/link_fallback_orders.html">link_fallback_orders()</a></code> extend to order six.</li>
