@@ -1,3 +1,24 @@
+# linkfunctions7 0.8.0
+
+* New generics `d6linkfun()` and `d6linkinv()`: the sixth derivative of every
+  link in closed form, in both directions. `linkderiv()`, `linkinvderiv()`
+  and `linkinv_derivs()` accept order six, a user-defined link without a
+  sixth-order method gets one central stencil on its highest analytic order,
+  and `check_link()` and `link_fallback_orders()` extend to order six.
+* The derivatives of every link stay finite up to the point where the true
+  derivative exceeds the largest double, and are a signed infinity beyond it;
+  intermediate powers no longer overflow or underflow first.
+* The inverse cloglog, loglog and cauchit derivatives of orders two to five
+  no longer return `NaN` for large arguments.
+* The probit, logit, softplus and doubly bounded inverse derivatives keep
+  their values in the tails (probit to |eta| = 38.6, logistic to |eta| = 745).
+* The doubly bounded forward derivatives are accurate near the upper bound
+  and near the midpoint.
+* The power link returns exact zeros where the coefficient of a derivative
+  vanishes, at every order.
+* The forward sixth derivative of the log, lower- and upper-bounded links is
+  `-Inf` below theta of about 9.3e-52.
+
 # linkfunctions7 0.7.0
 
 * The graph of a link is drawn with ggplot2 and its two panels are joined

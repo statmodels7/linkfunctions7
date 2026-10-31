@@ -21,7 +21,7 @@ Code outside that package cannot use those closures, compute their
 higher derivatives, or extend them without editing the package source.
 
 `{linkfunctions7}` makes a link an object. Each constructor in the
-package returns a link with exact analytical derivatives up to fifth
+package returns a link with exact analytical derivatives up to sixth
 order in both directions, forward and inverse, and a diagnostic verifies
 those derivatives against numerical ones.
 
@@ -72,7 +72,7 @@ plot(softplus_link(a = 1))
 For a parameter confined to an interval, `bounded_link()` maps the
 interval onto the whole real line and accepts a lower bound, an upper
 bound, or both. For every link in the package the derivatives are
-closed-form expressions, not finite differences, and they go to fifth
+closed-form expressions, not finite differences, and they go to sixth
 order in both directions:
 
 ``` r
@@ -83,14 +83,14 @@ theta                    # stays inside (-3, 2) whatever eta is
 #> [1] -2.762871 -2.087872 -0.500000  1.087872  1.762871
 dlinkfun(link, theta)    # g'(theta), exactly
 #> [1] 4.427065 1.340964 0.800000 1.340964 4.427065
-d5linkfun(link, theta)   # ... down to the fifth order
-#> [1] 32009.92634    38.03412     0.49152    38.03412 32009.92634
+d6linkfun(link, theta)   # ... down to the sixth order
+#> [1] -674946.2671    -208.3502       0.0000     208.3502  674946.2671
 ```
 
 ## A user-defined link
 
 A link that the package does not ship is a subclass of `link()` with two
-methods, `linkfun()` and `linkinv()`. The base class supplies the eight
+methods, `linkfun()` and `linkinv()`. The base class supplies the twelve
 derivative generics by finite differences. Each fallback applies one
 central stencil to the highest order that the link implements
 analytically, and never a chain of first differences. The asymmetric
@@ -121,10 +121,10 @@ d2linkinv(ao_link(0.5), c(-1, 0, 1))
 #> [1]  1.183551e-01 -1.490116e-08 -1.507903e-01
 ```
 
-A method for any of the ten derivative generics replaces its fallback,
-and the orders above it are then differenced from that analytic order.
-`link_fallback_orders()` reports the highest analytic order in each
-direction.
+A method for any of the twelve derivative generics replaces its
+fallback, and the orders above it are then differenced from that
+analytic order. `link_fallback_orders()` reports the highest analytic
+order in each direction.
 
 ## Validating a link
 

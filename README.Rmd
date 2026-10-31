@@ -30,7 +30,7 @@ that package cannot use those closures, compute their higher derivatives, or
 extend them without editing the package source.
 
 `{linkfunctions7}` makes a link an object. Each constructor in the package
-returns a link with exact analytical derivatives up to fifth order in both
+returns a link with exact analytical derivatives up to sixth order in both
 directions, forward and inverse, and a diagnostic verifies those derivatives
 against numerical ones.
 
@@ -76,7 +76,7 @@ plot(softplus_link(a = 1))
 For a parameter confined to an interval, `bounded_link()` maps the
 interval onto the whole real line and accepts a lower bound, an upper bound,
 or both. For every link in the package the derivatives are closed-form
-expressions, not finite differences, and they go to fifth order in both
+expressions, not finite differences, and they go to sixth order in both
 directions:
 
 ```{r}
@@ -85,13 +85,13 @@ theta <- linkinv(link, seq(-3, 3, length.out = 5))
 
 theta                    # stays inside (-3, 2) whatever eta is
 dlinkfun(link, theta)    # g'(theta), exactly
-d5linkfun(link, theta)   # ... down to the fifth order
+d6linkfun(link, theta)   # ... down to the sixth order
 ```
 
 ## A user-defined link
 
 A link that the package does not ship is a subclass of `link()` with two
-methods, `linkfun()` and `linkinv()`. The base class supplies the eight
+methods, `linkfun()` and `linkinv()`. The base class supplies the twelve
 derivative generics by finite differences. Each fallback applies one central
 stencil to the highest order that the link implements analytically, and
 never a chain of first differences. The asymmetric family of Aranda-Ordaz
@@ -115,7 +115,7 @@ link_fallback_orders(ao_link(0.5))   # no analytic order in either direction
 d2linkinv(ao_link(0.5), c(-1, 0, 1))
 ```
 
-A method for any of the ten derivative generics replaces its fallback, and
+A method for any of the twelve derivative generics replaces its fallback, and
 the orders above it are then differenced from that analytic order.
 `link_fallback_orders()` reports the highest analytic order in each
 direction.
