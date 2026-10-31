@@ -9,11 +9,13 @@
 \alias{d3linkfun.DoublyBoundedLink}
 \alias{d4linkfun.DoublyBoundedLink}
 \alias{d5linkfun.DoublyBoundedLink}
+\alias{d6linkfun.DoublyBoundedLink}
 \alias{dlinkinv.DoublyBoundedLink}
 \alias{d2linkinv.DoublyBoundedLink}
 \alias{d3linkinv.DoublyBoundedLink}
 \alias{d4linkinv.DoublyBoundedLink}
 \alias{d5linkinv.DoublyBoundedLink}
+\alias{d6linkinv.DoublyBoundedLink}
 \title{S7 Class for a Doubly Bounded Link}
 \usage{
 DoublyBoundedLink(
@@ -62,10 +64,10 @@ property instead of two.
 }
 \section{Methods}{
 
-Twelve methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
-the five derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d5linkfun]{d5linkfun()}}, and
-the five derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
-\code{\link[=d5linkinv]{d5linkinv()}}. The forward derivatives are the logit's divided by \eqn{W^k} and
+Fourteen methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
+the six derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d6linkfun]{d6linkfun()}}, and
+the six derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
+\code{\link[=d6linkinv]{d6linkinv()}}. The forward derivatives are the logit's divided by \eqn{W^k} and
 the inverse ones the logit's multiplied by \eqn{W}, because \eqn{p} is
 \eqn{\theta} rescaled by the width. The inverse set therefore calls the
 compiled kernel of the logit, and the forward set is the logit's

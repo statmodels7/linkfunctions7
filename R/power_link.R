@@ -23,10 +23,10 @@
 #'   `link_params`. Its `link_bounds` are `c(0, Inf)` and its `link_params` holds `lambda`.
 #'
 #' @section Methods:
-#' Twelve methods are registered on this class: [linkfun()] and [linkinv()],
-#' the five derivatives of the link, [dlinkfun()] through [d5linkfun()], and
-#' the five derivatives of the inverse link, [dlinkinv()] through
-#' [d5linkinv()]. Both directions are a power, so all ten derivatives are falling
+#' Fourteen methods are registered on this class: [linkfun()] and [linkinv()],
+#' the six derivatives of the link, [dlinkfun()] through [d6linkfun()], and
+#' the six derivatives of the inverse link, [dlinkinv()] through
+#' [d6linkinv()]. Both directions are a power, so all twelve derivatives are falling
 #' factorials in the exponent. Each is wrapped in [na_from()] because `NA^0`
 #' is one in R, which would turn a missing parameter into a number as soon
 #' as an exponent reached zero.
@@ -38,11 +38,13 @@
 #' @aliases d3linkfun.PowerLink
 #' @aliases d4linkfun.PowerLink
 #' @aliases d5linkfun.PowerLink
+#' @aliases d6linkfun.PowerLink
 #' @aliases dlinkinv.PowerLink
 #' @aliases d2linkinv.PowerLink
 #' @aliases d3linkinv.PowerLink
 #' @aliases d4linkinv.PowerLink
 #' @aliases d5linkinv.PowerLink
+#' @aliases d6linkinv.PowerLink
 #'
 #' @seealso [power_link()], the constructor that users call.
 #' @keywords internal
@@ -64,12 +66,24 @@ S7::method(d2linkfun, PowerLink) <- function(x, theta) na_from(x@lambda * (x@lam
 S7::method(d3linkfun, PowerLink) <- function(x, theta) na_from(x@lambda * (x@lambda - 1) * (x@lambda - 2) * (theta^(x@lambda - 3)), theta)
 S7::method(d4linkfun, PowerLink) <- function(x, theta) na_from(x@lambda * (x@lambda - 1) * (x@lambda - 2) * (x@lambda - 3) * (theta^(x@lambda - 4)), theta)
 S7::method(d5linkfun, PowerLink) <- function(x, theta) na_from(x@lambda * (x@lambda - 1) * (x@lambda - 2) * (x@lambda - 3) * (x@lambda - 4) * (theta^(x@lambda - 5)), theta)
+S7::method(d6linkfun, PowerLink) <- function(x, theta) {
+  l <- x@lambda
+  cf <- l * (l - 1) * (l - 2) * (l - 3) * (l - 4) * (l - 5)
+  if (cf == 0) return(na_from(rep(0, length(theta)), theta))
+  na_from(cf * (theta^(l - 6)), theta)
+}
 
 S7::method(dlinkinv, PowerLink) <- function(x, eta) { k <- 1 / x@lambda; na_from(k * (eta^(k - 1)), eta) }
 S7::method(d2linkinv, PowerLink) <- function(x, eta) { k <- 1 / x@lambda; na_from(k * (k - 1) * (eta^(k - 2)), eta) }
 S7::method(d3linkinv, PowerLink) <- function(x, eta) { k <- 1 / x@lambda; na_from(k * (k - 1) * (k - 2) * (eta^(k - 3)), eta) }
 S7::method(d4linkinv, PowerLink) <- function(x, eta) { k <- 1 / x@lambda; na_from(k * (k - 1) * (k - 2) * (k - 3) * (eta^(k - 4)), eta) }
 S7::method(d5linkinv, PowerLink) <- function(x, eta) { k <- 1 / x@lambda; na_from(k * (k - 1) * (k - 2) * (k - 3) * (k - 4) * (eta^(k - 5)), eta) }
+S7::method(d6linkinv, PowerLink) <- function(x, eta) {
+  k <- 1 / x@lambda
+  cf <- k * (k - 1) * (k - 2) * (k - 3) * (k - 4) * (k - 5)
+  if (cf == 0) return(na_from(rep(0, length(eta)), eta))
+  na_from(cf * (eta^(k - 6)), eta)
+}
 
 #' @title The Power Link Function
 #'

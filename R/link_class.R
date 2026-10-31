@@ -5,7 +5,7 @@
 #' `link` is the base S7 class for link functions. It carries the name, the domain and
 #' any link parameters. The transformations themselves are methods that each
 #' subclass registers on the generics for the forward map, the inverse, and
-#' their analytical derivatives to fifth order in both directions.
+#' their analytical derivatives to sixth order in both directions.
 #'
 #' @details
 #' Objects of class `link` are instantiated using the S7 object system.
@@ -71,7 +71,7 @@ link <- S7::new_class(
 #' input is `NA`. This is easy to get wrong in R: `NA^0` is `1`, so
 #' `theta^(lambda - 2)` silently turns a missing parameter into a number as
 #' soon as `lambda` is 2. Every derivative method that returns a constant (the
-#' identity link's, and the square root link's second to fifth inverse
+#' identity link's, and the square root link's second to sixth inverse
 #' derivatives) goes through this helper instead of `rep()`.
 #'
 #' @param v A numeric vector whose length and missingness pattern are copied.
@@ -192,7 +192,8 @@ logistic_deriv <- function(p, k) {
 #' The floor is the lowest value that this constraint allows, and it keeps
 #' \eqn{\theta} exact down to \eqn{\eta \approx -176.7}. The fifth forward
 #' derivative, \eqn{24/\theta^5}, does not fit under it and is `Inf` for
-#' \eqn{\eta} below about \eqn{-141}.
+#' \eqn{\eta} below about \eqn{-141}, and the sixth, \eqn{-120/\theta^6},
+#' is `-Inf` for \eqn{\eta} below about \eqn{-117.5}.
 #'
 #' @format A length-one numeric vector.
 #' @return A length-one numeric vector, about `1.9e-77`, at which

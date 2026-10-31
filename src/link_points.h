@@ -25,7 +25,8 @@ inline double logistic_poly(double p, int k) {
     // and the orders above it are generated rather than transcribed.
     case 5: return pq * (1.0 + p * (-30.0 + p * (150.0 +
                                     p * (-240.0 + 120.0 * p))));
-    case 6: return NA_REAL;  // stage 2: closed form
+    // P_6 = pq (1 - 2p) (1 - 60 pq + 360 (pq)^2), from d/deta of the fifth
+    case 6: return pq * (1.0 - 2.0 * p) * (1.0 + pq * (-60.0 + 360.0 * pq));
     default: return NA_REAL;
     }
 }
@@ -44,7 +45,7 @@ inline double logit_inv(double eta, int k) {
     case 3: return pq * (1.0 - 6.0 * pq);
     case 4: return pq * (q - p) * (1.0 - 12.0 * pq);
     case 5: return pq * (1.0 + pq * (-30.0 + 120.0 * pq));
-    case 6: return NA_REAL;  // stage 2: closed form
+    case 6: return pq * (q - p) * (1.0 + pq * (-60.0 + 360.0 * pq));
     default: return NA_REAL;
     }
 }
@@ -60,7 +61,10 @@ inline double probit_inv(double e, int k) {
         double e2 = e * e;
         return (e2 * e2 - 6.0 * e2 + 3.0) * phi;
     }
-    case 6: return NA_REAL;  // stage 2: closed form
+    case 6: {
+        double e2 = e * e;
+        return -e * (e2 * e2 - 10.0 * e2 + 15.0) * phi;
+    }
     default: return NA_REAL;
     }
 }
@@ -74,7 +78,13 @@ inline double cloglog_inv(double eta, int k) {
     case 3: return E * (1.0 + w * (-3.0 + w));
     case 4: return E * (1.0 + w * (-7.0 + w * (6.0 - w)));
     case 5: return E * (1.0 + w * (-15.0 + w * (25.0 + w * (-10.0 + w))));
-    case 6: return NA_REAL;  // stage 2: closed form
+    // Q_6 = 1 - 31 w + 90 w^2 - 65 w^3 + 15 w^4 - w^5. For w > 1e30 the factor
+    // E = exp(eta - w) is exactly 0 and w^5 overflows from w = 1e61.6, which
+    // would give 0 * Inf = NaN where the fifth (w^4, overflow from 1e77) is
+    // still 0; the value is returned as 0 there.
+    case 6:
+        if (w > 1e30) return 0.0;
+        return E * (1.0 + w * (-31.0 + w * (90.0 + w * (-65.0 + w * (15.0 - w)))));
     default: return NA_REAL;
     }
 }
@@ -88,7 +98,11 @@ inline double loglog_inv(double eta, int k) {
     case 3: return E * z * (1.0 + z * (-3.0 + z));
     case 4: return E * z * (-1.0 + z * (7.0 + z * (-6.0 + z)));
     case 5: return E * z * (1.0 + z * (-15.0 + z * (25.0 + z * (-10.0 + z))));
-    case 6: return NA_REAL;  // stage 2: closed form
+    // -E z Q_6(z), the same polynomial as the cloglog's in z = exp(-eta). The
+    // guard returns 0 where E = exp(-z) is 0 and z^5 would overflow (z > 1e30).
+    case 6:
+        if (z > 1e30) return 0.0;
+        return -E * z * (1.0 + z * (-31.0 + z * (90.0 + z * (-65.0 + z * (15.0 - z)))));
     default: return NA_REAL;
     }
 }
@@ -104,7 +118,15 @@ inline double cauchit_inv(double e, int k) {
         double u2 = u * u, e2 = e * e;
         return 24.0 * (1.0 - 10.0 * e2 + 5.0 * e2 * e2) / (M_PI * u2 * u2 * u);
     }
-    case 6: return NA_REAL;  // stage 2: closed form
+    // -240 e (3 - 10 e^2 + 3 e^4) / (pi u^6), written with a = 1/u and
+    // b = e^2/u = 1 - a, so that a very large |e| gives 0 and not the NaN of
+    // Inf/Inf (u^6 overflows at |e| = 1e25.6, e^5 at 1e61.6). b is formed as
+    // e^2 a for |e| <= 1 and as 1 - a beyond, so that neither form cancels.
+    case 6: {
+        double a = 1.0 / u;
+        double b = (std::fabs(e) <= 1.0) ? e * e * a : 1.0 - a;
+        return -240.0 * (e * a) * a * a * a * (3.0 * b * b - 10.0 * a * b + 3.0 * a * a) / M_PI;
+    }
     default: return NA_REAL;
     }
 }
@@ -123,7 +145,7 @@ inline double rhobit_inv(double eta, int k) {
     case 3: return u * (4.0 * t2 - 2.0 * u);
     case 4: return 8.0 * t * u * (2.0 * u - t2);
     case 5: return u * (16.0 * u * u - 88.0 * t2 * u + 16.0 * t2 * t2);
-    case 6: return NA_REAL;  // stage 2: closed form
+    case 6: return -16.0 * t * u * (17.0 * u * u - 26.0 * t2 * u + 2.0 * t2 * t2);
     default: return NA_REAL;
     }
 }

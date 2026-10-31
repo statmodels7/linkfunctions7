@@ -21,10 +21,10 @@
 #'   `link_params`. Its `link_bounds` are `c(0, Inf)` and it carries no link parameters.
 #'
 #' @section Methods:
-#' Twelve methods are registered on this class: [linkfun()] and [linkinv()],
-#' the five derivatives of the link, [dlinkfun()] through [d5linkfun()], and
-#' the five derivatives of the inverse link, [dlinkinv()] through
-#' [d5linkinv()]. The forward derivatives are \eqn{(-1)^{k-1}(k-1)!\,\theta^{-k}},
+#' Fourteen methods are registered on this class: [linkfun()] and [linkinv()],
+#' the six derivatives of the link, [dlinkfun()] through [d6linkfun()], and
+#' the six derivatives of the inverse link, [dlinkinv()] through
+#' [d6linkinv()]. The forward derivatives are \eqn{(-1)^{k-1}(k-1)!\,\theta^{-k}},
 #' written out. Every inverse derivative is [exp_floored()] of \eqn{\eta},
 #' because the exponential is its own derivative to every order, and the floor
 #' keeps \eqn{\theta} strictly inside \eqn{(0, \infty)}.
@@ -36,11 +36,13 @@
 #' @aliases d3linkfun.LogLink
 #' @aliases d4linkfun.LogLink
 #' @aliases d5linkfun.LogLink
+#' @aliases d6linkfun.LogLink
 #' @aliases dlinkinv.LogLink
 #' @aliases d2linkinv.LogLink
 #' @aliases d3linkinv.LogLink
 #' @aliases d4linkinv.LogLink
 #' @aliases d5linkinv.LogLink
+#' @aliases d6linkinv.LogLink
 #'
 #' @seealso [log_link()], the constructor that users call.
 #' @keywords internal
@@ -61,6 +63,7 @@ S7::method(d2linkfun, LogLink) <- function(x, theta) -1 / (theta^2)
 S7::method(d3linkfun, LogLink) <- function(x, theta)  2 / (theta^3)
 S7::method(d4linkfun, LogLink) <- function(x, theta) -6 / (theta^4)
 S7::method(d5linkfun, LogLink) <- function(x, theta) 24 / (theta^5)
+S7::method(d6linkfun, LogLink) <- function(x, theta) -120 / (theta^6)
 
 # Exact analytical derivatives of the inverse link function (wrt eta)
 # d^k/deta^k exp(eta) = exp(eta) for all k > 0, floored for numerical stability
@@ -69,9 +72,10 @@ S7::method(d2linkinv, LogLink) <- function(x, eta) exp_floored(eta)
 S7::method(d3linkinv, LogLink) <- function(x, eta) exp_floored(eta)
 S7::method(d4linkinv, LogLink) <- function(x, eta) exp_floored(eta)
 S7::method(d5linkinv, LogLink) <- function(x, eta) exp_floored(eta)
+S7::method(d6linkinv, LogLink) <- function(x, eta) exp_floored(eta)
 
 # every order is the same exp_floored(eta), so it is computed once; a subclass
-# may override one of the five methods above, and is then read through them
+# may override one of the six methods above, and is then read through them
 S7::method(linkinv_derivs, LogLink) <- function(x, eta, order) {
   if (!identical(class(x)[[1L]], "linkfunctions7::LogLink")) {
     return(linkinv_derivs.link(x, eta, order))
@@ -105,7 +109,7 @@ S7::method(linkinv_derivs, LogLink) <- function(x, eta, order) {
 #' to \eqn{\eta \approx -176.7}.
 #'
 #' @return An S7 object of class `LogLink`, inheriting from [link()], whose
-#'   methods compute the link, its inverse and their derivatives to the fifth
+#'   methods compute the link, its inverse and their derivatives to the sixth
 #'   order.
 #'
 #' @examples

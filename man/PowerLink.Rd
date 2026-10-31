@@ -9,11 +9,13 @@
 \alias{d3linkfun.PowerLink}
 \alias{d4linkfun.PowerLink}
 \alias{d5linkfun.PowerLink}
+\alias{d6linkfun.PowerLink}
 \alias{dlinkinv.PowerLink}
 \alias{d2linkinv.PowerLink}
 \alias{d3linkinv.PowerLink}
 \alias{d4linkinv.PowerLink}
 \alias{d5linkinv.PowerLink}
+\alias{d6linkinv.PowerLink}
 \title{S7 Class for the Power Link}
 \usage{
 PowerLink(
@@ -52,10 +54,10 @@ of the Box-Cox transformation \eqn{(\theta^\lambda - 1)/\lambda}.
 }
 \section{Methods}{
 
-Twelve methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
-the five derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d5linkfun]{d5linkfun()}}, and
-the five derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
-\code{\link[=d5linkinv]{d5linkinv()}}. Both directions are a power, so all ten derivatives are falling
+Fourteen methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
+the six derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d6linkfun]{d6linkfun()}}, and
+the six derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
+\code{\link[=d6linkinv]{d6linkinv()}}. Both directions are a power, so all twelve derivatives are falling
 factorials in the exponent. Each is wrapped in \code{\link[=na_from]{na_from()}} because \code{NA^0}
 is one in R, which would turn a missing parameter into a number as soon
 as an exponent reached zero.

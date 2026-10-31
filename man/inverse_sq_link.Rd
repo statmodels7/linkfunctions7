@@ -8,7 +8,7 @@ inverse_sq_link()
 }
 \value{
 An S7 object of class \code{InverseSqLink}, inheriting from \code{\link[=link]{link()}}, whose
-methods compute the link, its inverse and their derivatives to the fifth
+methods compute the link, its inverse and their derivatives to the sixth
 order.
 }
 \description{

@@ -10,13 +10,13 @@
 # the reason a fallback order is reported as numerical rather than passed.
 
 
-test_that("every shipped link is analytic to the fifth order in both directions", {
+test_that("every shipped link is analytic to the sixth order in both directions", {
   # The fallbacks exist for user-defined links. Nothing in the catalog should
   # reach them, and this is what says a class was not missed when the order was
-  # added: a link left without a d5 method would report 4 here.
+  # added: a link left without a d6 method would report 5 here.
   for (nm in names(all_links())) {
     expect_equal(link_fallback_orders(all_links()[[nm]]),
-                 list(forward = 5L, inverse = 5L),
+                 list(forward = 6L, inverse = 6L),
                  label = nm)
   }
 })
@@ -87,7 +87,7 @@ test_that("check_link catches a fifth derivative that is merely wrong", {
   # and the unbroken link of the same shape passes, so the check is not failing
   # trivially
   suppressWarnings(capture.output(ok <- check_link(log_link())))
-  expect_true(all(unlist(ok), na.rm = TRUE))  # order 6 is a fallback until stage 2
+  expect_true(all(unlist(ok)))
 })
 
 

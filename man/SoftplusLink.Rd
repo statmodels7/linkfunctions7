@@ -9,11 +9,13 @@
 \alias{d3linkfun.SoftplusLink}
 \alias{d4linkfun.SoftplusLink}
 \alias{d5linkfun.SoftplusLink}
+\alias{d6linkfun.SoftplusLink}
 \alias{dlinkinv.SoftplusLink}
 \alias{d2linkinv.SoftplusLink}
 \alias{d3linkinv.SoftplusLink}
 \alias{d4linkinv.SoftplusLink}
 \alias{d5linkinv.SoftplusLink}
+\alias{d6linkinv.SoftplusLink}
 \title{S7 Class for the Softplus Link}
 \usage{
 SoftplusLink(
@@ -54,10 +56,10 @@ where the inverse of the log link grows exponentially; for a large negative
 }
 \section{Methods}{
 
-Twelve methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
-the five derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d5linkfun]{d5linkfun()}}, and
-the five derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
-\code{\link[=d5linkinv]{d5linkinv()}}. The softplus is an antiderivative of the logistic, so its
+Fourteen methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
+the six derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d6linkfun]{d6linkfun()}}, and
+the six derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
+\code{\link[=d6linkinv]{d6linkinv()}}. The softplus is an antiderivative of the logistic, so its
 inverse-link derivatives are the logistic ones shifted a place,
 \eqn{h^{(k+1)} = a^k \sigma^{(k)}}, and they reuse the same polynomials
 as the logit. The forward set comes from a compiled kernel written in

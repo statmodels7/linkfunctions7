@@ -22,11 +22,11 @@
 #'   `link_params`. Its `link_bounds` are `c(0, Inf)` and it carries no link parameters.
 #'
 #' @section Methods:
-#' Twelve methods are registered on this class: [linkfun()] and [linkinv()],
-#' the five derivatives of the link, [dlinkfun()] through [d5linkfun()], and
-#' the five derivatives of the inverse link, [dlinkinv()] through
-#' [d5linkinv()]. The link is its own inverse, so the two directions carry the same
-#' expressions, \eqn{1/\theta} and \eqn{1/\eta}, and the five derivatives
+#' Fourteen methods are registered on this class: [linkfun()] and [linkinv()],
+#' the six derivatives of the link, [dlinkfun()] through [d6linkfun()], and
+#' the six derivatives of the inverse link, [dlinkinv()] through
+#' [d6linkinv()]. The link is its own inverse, so the two directions carry the same
+#' expressions, \eqn{1/\theta} and \eqn{1/\eta}, and the six derivatives
 #' \eqn{(-1)^k k!\,z^{-(k+1)}} are written out in both.
 #'
 #' @aliases linkfun.InverseLink
@@ -36,11 +36,13 @@
 #' @aliases d3linkfun.InverseLink
 #' @aliases d4linkfun.InverseLink
 #' @aliases d5linkfun.InverseLink
+#' @aliases d6linkfun.InverseLink
 #' @aliases dlinkinv.InverseLink
 #' @aliases d2linkinv.InverseLink
 #' @aliases d3linkinv.InverseLink
 #' @aliases d4linkinv.InverseLink
 #' @aliases d5linkinv.InverseLink
+#' @aliases d6linkinv.InverseLink
 #'
 #' @seealso [inverse_link()], the constructor that users call.
 #' @keywords internal
@@ -61,6 +63,7 @@ S7::method(d2linkfun, InverseLink) <- function(x, theta)  2 / (theta^3)
 S7::method(d3linkfun, InverseLink) <- function(x, theta) -6 / (theta^4)
 S7::method(d4linkfun, InverseLink) <- function(x, theta) 24 / (theta^5)
 S7::method(d5linkfun, InverseLink) <- function(x, theta) -120 / (theta^6)
+S7::method(d6linkfun, InverseLink) <- function(x, theta) 720 / (theta^7)
 
 # Exact analytical derivatives of the inverse link function (wrt eta)
 # Due to the symmetric nature of f(x) = 1/x, these are structurally identical
@@ -70,6 +73,7 @@ S7::method(d2linkinv, InverseLink) <- function(x, eta)  2 / (eta^3)
 S7::method(d3linkinv, InverseLink) <- function(x, eta) -6 / (eta^4)
 S7::method(d4linkinv, InverseLink) <- function(x, eta) 24 / (eta^5)
 S7::method(d5linkinv, InverseLink) <- function(x, eta) -120 / (eta^6)
+S7::method(d6linkinv, InverseLink) <- function(x, eta) 720 / (eta^7)
 
 #' @title The Inverse (Reciprocal) Link Function
 #'
@@ -91,7 +95,7 @@ S7::method(d5linkinv, InverseLink) <- function(x, eta) -120 / (eta^6)
 #' [eta_bounds()] returns this range.
 #'
 #' @return An S7 object of class `InverseLink`, inheriting from [link()], whose
-#'   methods compute the link, its inverse and their derivatives to the fifth
+#'   methods compute the link, its inverse and their derivatives to the sixth
 #'   order.
 #'
 #' @examples

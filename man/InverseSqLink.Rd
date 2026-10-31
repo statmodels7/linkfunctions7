@@ -9,11 +9,13 @@
 \alias{d3linkfun.InverseSqLink}
 \alias{d4linkfun.InverseSqLink}
 \alias{d5linkfun.InverseSqLink}
+\alias{d6linkfun.InverseSqLink}
 \alias{dlinkinv.InverseSqLink}
 \alias{d2linkinv.InverseSqLink}
 \alias{d3linkinv.InverseSqLink}
 \alias{d4linkinv.InverseSqLink}
 \alias{d5linkinv.InverseSqLink}
+\alias{d6linkinv.InverseSqLink}
 \title{S7 Class for the InverseSq Link}
 \usage{
 InverseSqLink(
@@ -48,10 +50,10 @@ predictor, and like \code{\link[=inverse_link]{inverse_link()}} the map is decre
 }
 \section{Methods}{
 
-Twelve methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
-the five derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d5linkfun]{d5linkfun()}}, and
-the five derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
-\code{\link[=d5linkinv]{d5linkinv()}}. The two directions are not the same map (\eqn{1/\theta^2} in the
+Fourteen methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
+the six derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d6linkfun]{d6linkfun()}}, and
+the six derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
+\code{\link[=d6linkinv]{d6linkinv()}}. The two directions are not the same map (\eqn{1/\theta^2} in the
 forward direction and \eqn{\eta^{-1/2}} in the inverse one), so the two sets of derivatives
 are written out separately, with integer falling factorials in the forward
 direction and half-integer powers in the inverse one.

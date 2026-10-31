@@ -23,7 +23,7 @@ inherits from \code{link}, and methods dispatch on it.
 \code{link} is the base S7 class for link functions. It carries the name, the domain and
 any link parameters. The transformations themselves are methods that each
 subclass registers on the generics for the forward map, the inverse, and
-their analytical derivatives to fifth order in both directions.
+their analytical derivatives to sixth order in both directions.
 }
 \details{
 Objects of class \code{link} are instantiated using the S7 object system.

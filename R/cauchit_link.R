@@ -22,11 +22,11 @@
 #'   `link_params`. Its `link_bounds` are `c(0, 1)` and it carries no link parameters.
 #'
 #' @section Methods:
-#' Twelve methods are registered on this class: [linkfun()] and [linkinv()],
-#' the five derivatives of the link, [dlinkfun()] through [d5linkfun()], and
-#' the five derivatives of the inverse link, [dlinkinv()] through
-#' [d5linkinv()]. `linkfun()` and `linkinv()` delegate to `stats::qcauchy()` and
-#' `stats::pcauchy()`, which stay accurate in both tails. The ten
+#' Fourteen methods are registered on this class: [linkfun()] and [linkinv()],
+#' the six derivatives of the link, [dlinkfun()] through [d6linkfun()], and
+#' the six derivatives of the inverse link, [dlinkinv()] through
+#' [d6linkinv()]. `linkfun()` and `linkinv()` delegate to `stats::qcauchy()` and
+#' `stats::pcauchy()`, which stay accurate in both tails. The twelve
 #' derivatives come from a compiled kernel, one call per order and
 #' direction.
 #'
@@ -37,11 +37,13 @@
 #' @aliases d3linkfun.CauchitLink
 #' @aliases d4linkfun.CauchitLink
 #' @aliases d5linkfun.CauchitLink
+#' @aliases d6linkfun.CauchitLink
 #' @aliases dlinkinv.CauchitLink
 #' @aliases d2linkinv.CauchitLink
 #' @aliases d3linkinv.CauchitLink
 #' @aliases d4linkinv.CauchitLink
 #' @aliases d5linkinv.CauchitLink
+#' @aliases d6linkinv.CauchitLink
 #'
 #' @seealso [cauchit_link()], the constructor that users call.
 #' @keywords internal
@@ -64,6 +66,7 @@ S7::method(d2linkfun, CauchitLink) <- function(x, theta) lk_cauchit_fwd_cpp(thet
 S7::method(d3linkfun, CauchitLink) <- function(x, theta) lk_cauchit_fwd_cpp(theta, 3L)
 S7::method(d4linkfun, CauchitLink) <- function(x, theta) lk_cauchit_fwd_cpp(theta, 4L)
 S7::method(d5linkfun, CauchitLink) <- function(x, theta) lk_cauchit_fwd_cpp(theta, 5L)
+S7::method(d6linkfun, CauchitLink) <- function(x, theta) lk_cauchit_fwd_cpp(theta, 6L)
 
 # Exact analytical derivatives of the inverse link function (wrt eta)
 # Derived purely from the Cauchy probability density function
@@ -72,6 +75,7 @@ S7::method(d2linkinv, CauchitLink) <- function(x, eta) lk_cauchit_inv_cpp(eta, 2
 S7::method(d3linkinv, CauchitLink) <- function(x, eta) lk_cauchit_inv_cpp(eta, 3L)
 S7::method(d4linkinv, CauchitLink) <- function(x, eta) lk_cauchit_inv_cpp(eta, 4L)
 S7::method(d5linkinv, CauchitLink) <- function(x, eta) lk_cauchit_inv_cpp(eta, 5L)
+S7::method(d6linkinv, CauchitLink) <- function(x, eta) lk_cauchit_inv_cpp(eta, 6L)
 
 #' @title The Cauchit Link Function
 #'
@@ -95,7 +99,7 @@ S7::method(d5linkinv, CauchitLink) <- function(x, eta) lk_cauchit_inv_cpp(eta, 5
 #' The domain of \eqn{\theta} is \eqn{(0, 1)}.
 #'
 #' @return An S7 object of class `CauchitLink`, inheriting from [link()], whose
-#'   methods compute the link, its inverse and their derivatives to the fifth
+#'   methods compute the link, its inverse and their derivatives to the sixth
 #'   order.
 #'
 #' @examples

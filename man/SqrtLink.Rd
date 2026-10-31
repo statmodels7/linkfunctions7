@@ -9,11 +9,13 @@
 \alias{d3linkfun.SqrtLink}
 \alias{d4linkfun.SqrtLink}
 \alias{d5linkfun.SqrtLink}
+\alias{d6linkfun.SqrtLink}
 \alias{dlinkinv.SqrtLink}
 \alias{d2linkinv.SqrtLink}
 \alias{d3linkinv.SqrtLink}
 \alias{d4linkinv.SqrtLink}
 \alias{d5linkinv.SqrtLink}
+\alias{d6linkinv.SqrtLink}
 \title{S7 Class for the Sqrt Link}
 \usage{
 SqrtLink(
@@ -48,12 +50,12 @@ not one-to-one, since \eqn{\eta} and \eqn{-\eta} give the same
 }
 \section{Methods}{
 
-Twelve methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
-the five derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d5linkfun]{d5linkfun()}}, and
-the five derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
-\code{\link[=d5linkinv]{d5linkinv()}}. The forward derivatives are half-integer falling factorials. The
+Fourteen methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
+the six derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d6linkfun]{d6linkfun()}}, and
+the six derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
+\code{\link[=d6linkinv]{d6linkinv()}}. The forward derivatives are half-integer falling factorials. The
 inverse map is \eqn{\eta^2}, so its derivatives terminate: the second is
-the constant two and the third to fifth are exactly zero. \code{\link[=const_like]{const_like()}}
+the constant two and the third to sixth are exactly zero. \code{\link[=const_like]{const_like()}}
 builds all of them, so that a missing value still propagates.
 }
 

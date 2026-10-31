@@ -9,11 +9,13 @@
 \alias{d3linkfun.LogLink}
 \alias{d4linkfun.LogLink}
 \alias{d5linkfun.LogLink}
+\alias{d6linkfun.LogLink}
 \alias{dlinkinv.LogLink}
 \alias{d2linkinv.LogLink}
 \alias{d3linkinv.LogLink}
 \alias{d4linkinv.LogLink}
 \alias{d5linkinv.LogLink}
+\alias{d6linkinv.LogLink}
 \title{S7 Class for the Logarithmic Link}
 \usage{
 LogLink(link_name = character(0), link_bounds = integer(0), link_params = NULL)
@@ -44,10 +46,10 @@ is never exactly zero and can be used as a divisor.
 }
 \section{Methods}{
 
-Twelve methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
-the five derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d5linkfun]{d5linkfun()}}, and
-the five derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
-\code{\link[=d5linkinv]{d5linkinv()}}. The forward derivatives are \eqn{(-1)^{k-1}(k-1)!\,\theta^{-k}},
+Fourteen methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
+the six derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d6linkfun]{d6linkfun()}}, and
+the six derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
+\code{\link[=d6linkinv]{d6linkinv()}}. The forward derivatives are \eqn{(-1)^{k-1}(k-1)!\,\theta^{-k}},
 written out. Every inverse derivative is \code{\link[=exp_floored]{exp_floored()}} of \eqn{\eta},
 because the exponential is its own derivative to every order, and the floor
 keeps \eqn{\theta} strictly inside \eqn{(0, \infty)}.

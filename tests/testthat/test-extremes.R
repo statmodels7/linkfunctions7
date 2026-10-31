@@ -167,12 +167,12 @@ test_that("the numerical fallbacks reproduce a known link", {
   expect_equal(linkinvderiv(bare, 0.7, order = 3), exp(0.7), tolerance = 1e-4)
 })
 
-test_that("the shipped links are all analytic to fifth order", {
+test_that("the shipped links are all analytic to sixth order", {
   # The fallbacks exist for user-defined links; nothing in the catalog should
   # ever reach them.
   for (nm in names(all_links())) {
     expect_equal(link_fallback_orders(all_links()[[nm]]),
-                 list(forward = 5L, inverse = 5L),
+                 list(forward = 6L, inverse = 6L),
                  label = nm)
   }
 })
@@ -211,7 +211,7 @@ test_that("check_link still catches a derivative that is merely wrong", {
   # and an unbroken link of the same shape must still pass, so the check cannot
   # be failing trivially
   res2 <- suppressWarnings(capture.output(ok <- check_link(log_link())))
-  expect_true(all(unlist(ok), na.rm = TRUE))  # order 6 is a fallback until stage 2
+  expect_true(all(unlist(ok)))
 })
 
 test_that("the shared logistic polynomials match their expanded forms", {

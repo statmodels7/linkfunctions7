@@ -48,7 +48,11 @@ NumericVector lk_logit_fwd_cpp(NumericVector theta, int k) {
             out[i] = 24.0 / t5 + 24.0 / q5;
             break;
         }
-        case 6: out[i] = NA_REAL; break;  // stage 2: closed form
+        case 6: {
+            double t6 = t * t * t * t * t * t, q6 = q * q * q * q * q * q;
+            out[i] = -120.0 / t6 + 120.0 / q6;
+            break;
+        }
         default: out[i] = NA_REAL;
         }
     }
@@ -73,7 +77,11 @@ NumericVector lk_probit_fwd_cpp(NumericVector theta, int k) {
             out[i] = (7.0 + 46.0 * e2 + 24.0 * e2 * e2) / (p2 * p2 * phi);
             break;
         }
-        case 6: out[i] = NA_REAL; break;  // stage 2: closed form
+        case 6: {
+            double e2 = e * e, p3 = phi * phi * phi;
+            out[i] = e * (127.0 + e2 * (326.0 + 120.0 * e2)) / (p3 * p3);
+            break;
+        }
         default: out[i] = NA_REAL;
         }
     }
@@ -110,7 +118,12 @@ NumericVector lk_cloglog_fwd_cpp(NumericVector theta, int k) {
                        60.0 * L + 24.0) / (v2 * v2 * v * L2 * L2 * L);
             break;
         }
-        case 6: out[i] = NA_REAL; break;  // stage 2: closed form
+        case 6: {
+            double L2 = L * L, L3 = L2 * L, v2 = v * v;
+            out[i] = -(120.0 + L * (360.0 + L * (510.0 + L * (450.0 + L * (274.0 + 120.0 * L))))) /
+                (v2 * v2 * v2 * L3 * L3);
+            break;
+        }
         default: out[i] = NA_REAL;
         }
     }
@@ -147,7 +160,12 @@ NumericVector lk_loglog_fwd_cpp(NumericVector theta, int k) {
                        24.0 * l2 * l2) / (t2 * t2 * t * l2 * l2 * l);
             break;
         }
-        case 6: out[i] = NA_REAL; break;  // stage 2: closed form
+        case 6: {
+            double l2 = l * l, l3 = l2 * l, t2 = t * t;
+            out[i] = (120.0 + l * (360.0 + l * (510.0 + l * (450.0 + l * (274.0 + 120.0 * l))))) /
+                (t2 * t2 * t2 * l3 * l3);
+            break;
+        }
         default: out[i] = NA_REAL;
         }
     }
@@ -180,7 +198,11 @@ NumericVector lk_cauchit_fwd_cpp(NumericVector theta, int k) {
             out[i] = 8.0 * p2 * p2 * M_PI * u * (2.0 + 15.0 * e2 + 15.0 * e2 * e2);
             break;
         }
-        case 6: out[i] = NA_REAL; break;  // stage 2: closed form
+        case 6: {
+            double p2 = M_PI * M_PI, e2 = e * e;
+            out[i] = 16.0 * p2 * p2 * p2 * u * e * (17.0 + e2 * (60.0 + 45.0 * e2));
+            break;
+        }
         default: out[i] = NA_REAL;
         }
     }
@@ -211,7 +233,11 @@ NumericVector lk_rhobit_fwd_cpp(NumericVector theta, int k) {
             out[i] = (24.0 + 240.0 * t2 + 120.0 * t2 * t2) / (u2 * u2 * u);
             break;
         }
-        case 6: out[i] = NA_REAL; break;  // stage 2: closed form
+        case 6: {
+            double u2 = u * u, t2 = t * t;
+            out[i] = 240.0 * t * (3.0 + t2 * (10.0 + 3.0 * t2)) / (u2 * u2 * u2);
+            break;
+        }
         default: out[i] = NA_REAL;
         }
     }
@@ -244,7 +270,12 @@ NumericVector lk_softplus_fwd_cpp(NumericVector theta, double a, int k) {
             out[i] = a2 * a2 * e * (1.0 + e * (11.0 + e * (11.0 + e))) / (u2 * u2 * u);
             break;
         }
-        case 6: out[i] = NA_REAL; break;  // stage 2: closed form
+        // numerator 1 + 26 e + 66 e^2 + 26 e^3 + e^4: Eulerian numbers A(5, k)
+        case 6: {
+            double a2 = a * a, u2 = u * u;
+            out[i] = -a2 * a2 * a * e * (1.0 + e * (26.0 + e * (66.0 + e * (26.0 + e)))) / (u2 * u2 * u2);
+            break;
+        }
         default: out[i] = NA_REAL;
         }
     }

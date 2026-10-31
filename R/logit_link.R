@@ -21,11 +21,11 @@
 #'   `link_params`. Its `link_bounds` are `c(0, 1)` and it carries no link parameters.
 #'
 #' @section Methods:
-#' Twelve methods are registered on this class: [linkfun()] and [linkinv()],
-#' the five derivatives of the link, [dlinkfun()] through [d5linkfun()], and
-#' the five derivatives of the inverse link, [dlinkinv()] through
-#' [d5linkinv()]. `linkfun()` and `linkinv()` delegate to `stats::qlogis()` and
-#' `stats::plogis()`, which remain accurate near both boundaries. The ten
+#' Fourteen methods are registered on this class: [linkfun()] and [linkinv()],
+#' the six derivatives of the link, [dlinkfun()] through [d6linkfun()], and
+#' the six derivatives of the inverse link, [dlinkinv()] through
+#' [d6linkinv()]. `linkfun()` and `linkinv()` delegate to `stats::qlogis()` and
+#' `stats::plogis()`, which remain accurate near both boundaries. The twelve
 #' derivatives come from a compiled kernel, one call per order and
 #' direction. The inverse derivatives are evaluated in \eqn{\theta},
 #' \eqn{1 - \theta} and their product, and each of these is computed from
@@ -39,11 +39,13 @@
 #' @aliases d3linkfun.LogitLink
 #' @aliases d4linkfun.LogitLink
 #' @aliases d5linkfun.LogitLink
+#' @aliases d6linkfun.LogitLink
 #' @aliases dlinkinv.LogitLink
 #' @aliases d2linkinv.LogitLink
 #' @aliases d3linkinv.LogitLink
 #' @aliases d4linkinv.LogitLink
 #' @aliases d5linkinv.LogitLink
+#' @aliases d6linkinv.LogitLink
 #'
 #' @seealso [logit_link()], the constructor that users call.
 #' @keywords internal
@@ -64,6 +66,7 @@ S7::method(d2linkfun, LogitLink) <- function(x, theta) lk_logit_fwd_cpp(theta, 2
 S7::method(d3linkfun, LogitLink) <- function(x, theta) lk_logit_fwd_cpp(theta, 3L)
 S7::method(d4linkfun, LogitLink) <- function(x, theta) lk_logit_fwd_cpp(theta, 4L)
 S7::method(d5linkfun, LogitLink) <- function(x, theta) lk_logit_fwd_cpp(theta, 5L)
+S7::method(d6linkfun, LogitLink) <- function(x, theta) lk_logit_fwd_cpp(theta, 6L)
 
 # Exact analytical derivatives of the inverse link function (wrt eta).
 #
@@ -75,6 +78,7 @@ S7::method(d2linkinv, LogitLink) <- function(x, eta) lk_logit_inv_cpp(eta, 2L)
 S7::method(d3linkinv, LogitLink) <- function(x, eta) lk_logit_inv_cpp(eta, 3L)
 S7::method(d4linkinv, LogitLink) <- function(x, eta) lk_logit_inv_cpp(eta, 4L)
 S7::method(d5linkinv, LogitLink) <- function(x, eta) lk_logit_inv_cpp(eta, 5L)
+S7::method(d6linkinv, LogitLink) <- function(x, eta) lk_logit_inv_cpp(eta, 6L)
 
 #' @title The Logit Link Function
 #'
@@ -96,7 +100,7 @@ S7::method(d5linkinv, LogitLink) <- function(x, eta) lk_logit_inv_cpp(eta, 5L)
 #' remain accurate near both boundaries.
 #'
 #' @return An S7 object of class `LogitLink`, inheriting from [link()], whose
-#'   methods compute the link, its inverse and their derivatives to the fifth
+#'   methods compute the link, its inverse and their derivatives to the sixth
 #'   order.
 #'
 #' @examples

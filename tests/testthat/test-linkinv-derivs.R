@@ -7,9 +7,6 @@ test_that("linkinv_derivs() returns the order-specific generics bit for bit", {
     hi <- if (is.finite(b[2])) b[2] - 0.1 else 3
     eta <- c(seq(lo, hi, length.out = 23), NA)
     for (k in 1:6) {
-      # stage one: the log link shares exp() at every order while its sixth
-      # generic is still the numerical fallback; stage two removes this line
-      if (nm == "log" && k == 6) next
       got <- linkinv_derivs(lk, eta, order = k)
       expect_length(got, k)
       for (j in seq_len(k)) {

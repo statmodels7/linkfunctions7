@@ -13,7 +13,7 @@ strictly greater than 0. Defaults to 1.}
 \value{
 An S7 object of class \code{SoftplusLink}, inheriting from \code{\link[=link]{link()}},
 whose methods compute the link, its inverse and their derivatives to the
-fifth order; its \code{link_params} holds \code{a}.
+sixth order; its \code{link_params} holds \code{a}.
 }
 \description{
 Returns the softplus link with scale \eqn{a}. Its inverse is

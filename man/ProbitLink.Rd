@@ -9,11 +9,13 @@
 \alias{d3linkfun.ProbitLink}
 \alias{d4linkfun.ProbitLink}
 \alias{d5linkfun.ProbitLink}
+\alias{d6linkfun.ProbitLink}
 \alias{dlinkinv.ProbitLink}
 \alias{d2linkinv.ProbitLink}
 \alias{d3linkinv.ProbitLink}
 \alias{d4linkinv.ProbitLink}
 \alias{d5linkinv.ProbitLink}
+\alias{d6linkinv.ProbitLink}
 \title{S7 Class for the Probit Link}
 \usage{
 ProbitLink(
@@ -49,11 +51,11 @@ than those of the logistic.
 }
 \section{Methods}{
 
-Twelve methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
-the five derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d5linkfun]{d5linkfun()}}, and
-the five derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
-\code{\link[=d5linkinv]{d5linkinv()}}. \code{linkfun()} and \code{linkinv()} delegate to \code{stats::qnorm()} and
-\code{stats::pnorm()}. The ten derivatives come from a compiled kernel, one
+Fourteen methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
+the six derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d6linkfun]{d6linkfun()}}, and
+the six derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
+\code{\link[=d6linkinv]{d6linkinv()}}. \code{linkfun()} and \code{linkinv()} delegate to \code{stats::qnorm()} and
+\code{stats::pnorm()}. The twelve derivatives come from a compiled kernel, one
 call per order and direction.
 }
 

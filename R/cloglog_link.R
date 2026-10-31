@@ -22,12 +22,12 @@
 #'   `link_params`. Its `link_bounds` are `c(0, 1)` and it carries no link parameters.
 #'
 #' @section Methods:
-#' Twelve methods are registered on this class: [linkfun()] and [linkinv()],
-#' the five derivatives of the link, [dlinkfun()] through [d5linkfun()], and
-#' the five derivatives of the inverse link, [dlinkinv()] through
-#' [d5linkinv()]. `linkfun()` is written through `log1p()` rather than as
+#' Fourteen methods are registered on this class: [linkfun()] and [linkinv()],
+#' the six derivatives of the link, [dlinkfun()] through [d6linkfun()], and
+#' the six derivatives of the inverse link, [dlinkinv()] through
+#' [d6linkinv()]. `linkfun()` is written through `log1p()` rather than as
 #' \eqn{\log(-\log(1 - \theta))}, which rounds to \eqn{-\infty} for a small
-#' \eqn{\theta} where the true value is finite and representable. The ten
+#' \eqn{\theta} where the true value is finite and representable. The twelve
 #' derivatives come from a compiled kernel.
 #'
 #' @aliases linkfun.ClogLogLink
@@ -37,11 +37,13 @@
 #' @aliases d3linkfun.ClogLogLink
 #' @aliases d4linkfun.ClogLogLink
 #' @aliases d5linkfun.ClogLogLink
+#' @aliases d6linkfun.ClogLogLink
 #' @aliases dlinkinv.ClogLogLink
 #' @aliases d2linkinv.ClogLogLink
 #' @aliases d3linkinv.ClogLogLink
 #' @aliases d4linkinv.ClogLogLink
 #' @aliases d5linkinv.ClogLogLink
+#' @aliases d6linkinv.ClogLogLink
 #'
 #' @seealso [cloglog_link()], the constructor that users call.
 #' @keywords internal
@@ -76,6 +78,7 @@ S7::method(d2linkfun, ClogLogLink) <- function(x, theta) lk_cloglog_fwd_cpp(thet
 S7::method(d3linkfun, ClogLogLink) <- function(x, theta) lk_cloglog_fwd_cpp(theta, 3L)
 S7::method(d4linkfun, ClogLogLink) <- function(x, theta) lk_cloglog_fwd_cpp(theta, 4L)
 S7::method(d5linkfun, ClogLogLink) <- function(x, theta) lk_cloglog_fwd_cpp(theta, 5L)
+S7::method(d6linkfun, ClogLogLink) <- function(x, theta) lk_cloglog_fwd_cpp(theta, 6L)
 
 # Exact analytical derivatives of the inverse link function (wrt eta).
 #
@@ -88,6 +91,7 @@ S7::method(d2linkinv, ClogLogLink) <- function(x, eta) lk_cloglog_inv_cpp(eta, 2
 S7::method(d3linkinv, ClogLogLink) <- function(x, eta) lk_cloglog_inv_cpp(eta, 3L)
 S7::method(d4linkinv, ClogLogLink) <- function(x, eta) lk_cloglog_inv_cpp(eta, 4L)
 S7::method(d5linkinv, ClogLogLink) <- function(x, eta) lk_cloglog_inv_cpp(eta, 5L)
+S7::method(d6linkinv, ClogLogLink) <- function(x, eta) lk_cloglog_inv_cpp(eta, 6L)
 
 #' @title The Complementary Log-Log (ClogLog) Link Function
 #'
@@ -110,7 +114,7 @@ S7::method(d5linkinv, ClogLogLink) <- function(x, eta) lk_cloglog_inv_cpp(eta, 5
 #' The domain of \eqn{\theta} is \eqn{(0, 1)}.
 #'
 #' @return An S7 object of class `ClogLogLink`, inheriting from [link()], whose
-#'   methods compute the link, its inverse and their derivatives to the fifth
+#'   methods compute the link, its inverse and their derivatives to the sixth
 #'   order.
 #'
 #' @examples

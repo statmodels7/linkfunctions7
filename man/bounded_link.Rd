@@ -13,7 +13,7 @@ bounded_link(lwr = NULL, upr = NULL)
 }
 \value{
 An S7 object inheriting from \code{\link[=link]{link()}}, whose methods compute the
-link, its inverse and their derivatives to the fifth order. Its class
+link, its inverse and their derivatives to the sixth order. Its class
 depends on the endpoints given: \code{\link[=DoublyBoundedLink]{DoublyBoundedLink()}},
 \code{\link[=LowerBoundedLink]{LowerBoundedLink()}}, \code{\link[=UpperBoundedLink]{UpperBoundedLink()}}, or \code{\link[=IdentityLink]{IdentityLink()}} when
 neither endpoint is supplied.

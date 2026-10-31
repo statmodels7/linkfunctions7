@@ -30,10 +30,10 @@
 #'   `lwr` and `upr`.
 #'
 #' @section Methods:
-#' Twelve methods are registered on this class: [linkfun()] and [linkinv()],
-#' the five derivatives of the link, [dlinkfun()] through [d5linkfun()], and
-#' the five derivatives of the inverse link, [dlinkinv()] through
-#' [d5linkinv()]. The forward derivatives are the logit's divided by \eqn{W^k} and
+#' Fourteen methods are registered on this class: [linkfun()] and [linkinv()],
+#' the six derivatives of the link, [dlinkfun()] through [d6linkfun()], and
+#' the six derivatives of the inverse link, [dlinkinv()] through
+#' [d6linkinv()]. The forward derivatives are the logit's divided by \eqn{W^k} and
 #' the inverse ones the logit's multiplied by \eqn{W}, because \eqn{p} is
 #' \eqn{\theta} rescaled by the width. The inverse set therefore calls the
 #' compiled kernel of the logit, and the forward set is the logit's
@@ -46,11 +46,13 @@
 #' @aliases d3linkfun.DoublyBoundedLink
 #' @aliases d4linkfun.DoublyBoundedLink
 #' @aliases d5linkfun.DoublyBoundedLink
+#' @aliases d6linkfun.DoublyBoundedLink
 #' @aliases dlinkinv.DoublyBoundedLink
 #' @aliases d2linkinv.DoublyBoundedLink
 #' @aliases d3linkinv.DoublyBoundedLink
 #' @aliases d4linkinv.DoublyBoundedLink
 #' @aliases d5linkinv.DoublyBoundedLink
+#' @aliases d6linkinv.DoublyBoundedLink
 #'
 #' @seealso [bounded_link()], the constructor that users call.
 #' @keywords internal
@@ -93,10 +95,10 @@ DoublyBoundedLink <- S7::new_class(
 #'   `link_params`. Its `link_bounds` are `c(lwr, Inf)`, and its `link_params` holds `lwr`.
 #'
 #' @section Methods:
-#' Twelve methods are registered on this class: [linkfun()] and [linkinv()],
-#' the five derivatives of the link, [dlinkfun()] through [d5linkfun()], and
-#' the five derivatives of the inverse link, [dlinkinv()] through
-#' [d5linkinv()]. The forward derivatives are the log link's read at \eqn{\theta -
+#' Fourteen methods are registered on this class: [linkfun()] and [linkinv()],
+#' the six derivatives of the link, [dlinkfun()] through [d6linkfun()], and
+#' the six derivatives of the inverse link, [dlinkinv()] through
+#' [d6linkinv()]. The forward derivatives are the log link's read at \eqn{\theta -
 #' \mathrm{lwr}}, because the shift is a constant that differentiates away.
 #' Every inverse derivative is [exp_floored()] of \eqn{\eta} itself, because
 #' the exponential is its own derivative to every order.
@@ -108,11 +110,13 @@ DoublyBoundedLink <- S7::new_class(
 #' @aliases d3linkfun.LowerBoundedLink
 #' @aliases d4linkfun.LowerBoundedLink
 #' @aliases d5linkfun.LowerBoundedLink
+#' @aliases d6linkfun.LowerBoundedLink
 #' @aliases dlinkinv.LowerBoundedLink
 #' @aliases d2linkinv.LowerBoundedLink
 #' @aliases d3linkinv.LowerBoundedLink
 #' @aliases d4linkinv.LowerBoundedLink
 #' @aliases d5linkinv.LowerBoundedLink
+#' @aliases d6linkinv.LowerBoundedLink
 #'
 #' @seealso [bounded_link()], the constructor that users call.
 #' @keywords internal
@@ -149,10 +153,10 @@ LowerBoundedLink <- S7::new_class(
 #'   `link_params`. Its `link_bounds` are `c(-Inf, upr)`, and its `link_params` holds `upr`.
 #'
 #' @section Methods:
-#' Twelve methods are registered on this class: [linkfun()] and [linkinv()],
-#' the five derivatives of the link, [dlinkfun()] through [d5linkfun()], and
-#' the five derivatives of the inverse link, [dlinkinv()] through
-#' [d5linkinv()]. The reflection makes the map decreasing, so every inverse
+#' Fourteen methods are registered on this class: [linkfun()] and [linkinv()],
+#' the six derivatives of the link, [dlinkfun()] through [d6linkfun()], and
+#' the six derivatives of the inverse link, [dlinkinv()] through
+#' [d6linkinv()]. The reflection makes the map decreasing, so every inverse
 #' derivative is the negative of [exp_floored()] of \eqn{\eta}, and the
 #' forward ones
 #' are the log's read at \eqn{\mathrm{upr} - \theta}, with the change of sign
@@ -165,11 +169,13 @@ LowerBoundedLink <- S7::new_class(
 #' @aliases d3linkfun.UpperBoundedLink
 #' @aliases d4linkfun.UpperBoundedLink
 #' @aliases d5linkfun.UpperBoundedLink
+#' @aliases d6linkfun.UpperBoundedLink
 #' @aliases dlinkinv.UpperBoundedLink
 #' @aliases d2linkinv.UpperBoundedLink
 #' @aliases d3linkinv.UpperBoundedLink
 #' @aliases d4linkinv.UpperBoundedLink
 #' @aliases d5linkinv.UpperBoundedLink
+#' @aliases d6linkinv.UpperBoundedLink
 #'
 #' @seealso [bounded_link()], the constructor that users call.
 #' @keywords internal
@@ -218,6 +224,11 @@ S7::method(d5linkfun, DoublyBoundedLink) <- function(x, theta) {
   p <- (theta - x@lwr) / W
   (24 / (p^5) + 24 / ((1 - p)^5)) / (W^5)
 }
+S7::method(d6linkfun, DoublyBoundedLink) <- function(x, theta) {
+  W <- x@width
+  p <- (theta - x@lwr) / W
+  (-120 / (p^6) + 120 / ((1 - p)^6)) / (W^6)
+}
 S7::method(dlinkinv, DoublyBoundedLink) <- function(x, eta) {
   x@width * lk_logit_inv_cpp(eta, 1L)
 }
@@ -233,6 +244,9 @@ S7::method(d4linkinv, DoublyBoundedLink) <- function(x, eta) {
 S7::method(d5linkinv, DoublyBoundedLink) <- function(x, eta) {
   x@width * lk_logit_inv_cpp(eta, 5L)
 }
+S7::method(d6linkinv, DoublyBoundedLink) <- function(x, eta) {
+  x@width * lk_logit_inv_cpp(eta, 6L)
+}
 
 # --- Methods for LowerBoundedLink ---
 #
@@ -246,11 +260,13 @@ S7::method(d2linkfun, LowerBoundedLink) <- function(x, theta) -1 / ((theta - x@l
 S7::method(d3linkfun, LowerBoundedLink) <- function(x, theta) 2 / ((theta - x@lwr)^3)
 S7::method(d4linkfun, LowerBoundedLink) <- function(x, theta) -6 / ((theta - x@lwr)^4)
 S7::method(d5linkfun, LowerBoundedLink) <- function(x, theta) 24 / ((theta - x@lwr)^5)
+S7::method(d6linkfun, LowerBoundedLink) <- function(x, theta) -120 / ((theta - x@lwr)^6)
 S7::method(dlinkinv, LowerBoundedLink) <- function(x, eta) exp_floored(eta)
 S7::method(d2linkinv, LowerBoundedLink) <- function(x, eta) exp_floored(eta)
 S7::method(d3linkinv, LowerBoundedLink) <- function(x, eta) exp_floored(eta)
 S7::method(d4linkinv, LowerBoundedLink) <- function(x, eta) exp_floored(eta)
 S7::method(d5linkinv, LowerBoundedLink) <- function(x, eta) exp_floored(eta)
+S7::method(d6linkinv, LowerBoundedLink) <- function(x, eta) exp_floored(eta)
 
 # --- Methods for UpperBoundedLink ---
 #
@@ -264,11 +280,13 @@ S7::method(d2linkfun, UpperBoundedLink) <- function(x, theta) -1 / ((x@upr - the
 S7::method(d3linkfun, UpperBoundedLink) <- function(x, theta) -2 / ((x@upr - theta)^3)
 S7::method(d4linkfun, UpperBoundedLink) <- function(x, theta) -6 / ((x@upr - theta)^4)
 S7::method(d5linkfun, UpperBoundedLink) <- function(x, theta) -24 / ((x@upr - theta)^5)
+S7::method(d6linkfun, UpperBoundedLink) <- function(x, theta) -120 / ((x@upr - theta)^6)
 S7::method(dlinkinv, UpperBoundedLink) <- function(x, eta) -exp_floored(eta)
 S7::method(d2linkinv, UpperBoundedLink) <- function(x, eta) -exp_floored(eta)
 S7::method(d3linkinv, UpperBoundedLink) <- function(x, eta) -exp_floored(eta)
 S7::method(d4linkinv, UpperBoundedLink) <- function(x, eta) -exp_floored(eta)
 S7::method(d5linkinv, UpperBoundedLink) <- function(x, eta) -exp_floored(eta)
+S7::method(d6linkinv, UpperBoundedLink) <- function(x, eta) -exp_floored(eta)
 
 # --- The General Bounded Link Function Factory ---
 
@@ -298,7 +316,7 @@ S7::method(d5linkinv, UpperBoundedLink) <- function(x, eta) -exp_floored(eta)
 #' - neither: the result is [identity_link()].
 #'
 #' @return An S7 object inheriting from [link()], whose methods compute the
-#'   link, its inverse and their derivatives to the fifth order. Its class
+#'   link, its inverse and their derivatives to the sixth order. Its class
 #'   depends on the endpoints given: [DoublyBoundedLink()],
 #'   [LowerBoundedLink()], [UpperBoundedLink()], or [IdentityLink()] when
 #'   neither endpoint is supplied.

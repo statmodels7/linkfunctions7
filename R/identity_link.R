@@ -22,10 +22,10 @@
 #'   `link_params`. Its `link_bounds` are `c(-Inf, Inf)` and it carries no link parameters.
 #'
 #' @section Methods:
-#' Twelve methods are registered on this class: [linkfun()] and [linkinv()],
-#' the five derivatives of the link, [dlinkfun()] through [d5linkfun()], and
-#' the five derivatives of the inverse link, [dlinkinv()] through
-#' [d5linkinv()]. `linkfun()` and `linkinv()` return their argument. The first
+#' Fourteen methods are registered on this class: [linkfun()] and [linkinv()],
+#' the six derivatives of the link, [dlinkfun()] through [d6linkfun()], and
+#' the six derivatives of the inverse link, [dlinkinv()] through
+#' [d6linkinv()]. `linkfun()` and `linkinv()` return their argument. The first
 #' derivative is one and every higher one is zero. [const_like()] builds each
 #' of them, so that the result is `NA` wherever the argument is `NA`, although
 #' the derivative does not depend on it.
@@ -37,11 +37,13 @@
 #' @aliases d3linkfun.IdentityLink
 #' @aliases d4linkfun.IdentityLink
 #' @aliases d5linkfun.IdentityLink
+#' @aliases d6linkfun.IdentityLink
 #' @aliases dlinkinv.IdentityLink
 #' @aliases d2linkinv.IdentityLink
 #' @aliases d3linkinv.IdentityLink
 #' @aliases d4linkinv.IdentityLink
 #' @aliases d5linkinv.IdentityLink
+#' @aliases d6linkinv.IdentityLink
 #'
 #' @seealso [identity_link()], the constructor that users call.
 #' @keywords internal
@@ -62,6 +64,7 @@ S7::method(d2linkfun, IdentityLink) <- function(x, theta) const_like(theta, 0)
 S7::method(d3linkfun, IdentityLink) <- function(x, theta) const_like(theta, 0)
 S7::method(d4linkfun, IdentityLink) <- function(x, theta) const_like(theta, 0)
 S7::method(d5linkfun, IdentityLink) <- function(x, theta) const_like(theta, 0)
+S7::method(d6linkfun, IdentityLink) <- function(x, theta) const_like(theta, 0)
 
 # Exact analytical derivatives of the inverse link function (wrt eta)
 S7::method(dlinkinv, IdentityLink) <- function(x, eta) const_like(eta, 1)
@@ -69,6 +72,7 @@ S7::method(d2linkinv, IdentityLink) <- function(x, eta) const_like(eta, 0)
 S7::method(d3linkinv, IdentityLink) <- function(x, eta) const_like(eta, 0)
 S7::method(d4linkinv, IdentityLink) <- function(x, eta) const_like(eta, 0)
 S7::method(d5linkinv, IdentityLink) <- function(x, eta) const_like(eta, 0)
+S7::method(d6linkinv, IdentityLink) <- function(x, eta) const_like(eta, 0)
 
 #' @title The Identity Link Function
 #'
@@ -87,7 +91,7 @@ S7::method(d5linkinv, IdentityLink) <- function(x, eta) const_like(eta, 0)
 #' The domain of \eqn{\theta} is the whole real line.
 #'
 #' @return An S7 object of class `IdentityLink`, inheriting from [link()], whose
-#'   methods compute the link, its inverse and their derivatives to the fifth
+#'   methods compute the link, its inverse and their derivatives to the sixth
 #'   order.
 #'
 #' @examples

@@ -25,10 +25,10 @@
 #'   `link_params`. Its `link_bounds` are `c(0, Inf)` and its `link_params` holds `a`.
 #'
 #' @section Methods:
-#' Twelve methods are registered on this class: [linkfun()] and [linkinv()],
-#' the five derivatives of the link, [dlinkfun()] through [d5linkfun()], and
-#' the five derivatives of the inverse link, [dlinkinv()] through
-#' [d5linkinv()]. The softplus is an antiderivative of the logistic, so its
+#' Fourteen methods are registered on this class: [linkfun()] and [linkinv()],
+#' the six derivatives of the link, [dlinkfun()] through [d6linkfun()], and
+#' the six derivatives of the inverse link, [dlinkinv()] through
+#' [d6linkinv()]. The softplus is an antiderivative of the logistic, so its
 #' inverse-link derivatives are the logistic ones shifted a place,
 #' \eqn{h^{(k+1)} = a^k \sigma^{(k)}}, and they reuse the same polynomials
 #' as the logit. The forward set comes from a compiled kernel written in
@@ -42,11 +42,13 @@
 #' @aliases d3linkfun.SoftplusLink
 #' @aliases d4linkfun.SoftplusLink
 #' @aliases d5linkfun.SoftplusLink
+#' @aliases d6linkfun.SoftplusLink
 #' @aliases dlinkinv.SoftplusLink
 #' @aliases d2linkinv.SoftplusLink
 #' @aliases d3linkinv.SoftplusLink
 #' @aliases d4linkinv.SoftplusLink
 #' @aliases d5linkinv.SoftplusLink
+#' @aliases d6linkinv.SoftplusLink
 #'
 #' @seealso [softplus_link()], the constructor that users call.
 #' @keywords internal
@@ -97,6 +99,7 @@ S7::method(d2linkfun, SoftplusLink) <- function(x, theta) lk_softplus_fwd_cpp(th
 S7::method(d3linkfun, SoftplusLink) <- function(x, theta) lk_softplus_fwd_cpp(theta, x@a, 3L)
 S7::method(d4linkfun, SoftplusLink) <- function(x, theta) lk_softplus_fwd_cpp(theta, x@a, 4L)
 S7::method(d5linkfun, SoftplusLink) <- function(x, theta) lk_softplus_fwd_cpp(theta, x@a, 5L)
+S7::method(d6linkfun, SoftplusLink) <- function(x, theta) lk_softplus_fwd_cpp(theta, x@a, 6L)
 
 # Exact analytical derivatives of the inverse link function (wrt eta).
 #
@@ -118,6 +121,9 @@ S7::method(d4linkinv, SoftplusLink) <- function(x, eta) {
 }
 S7::method(d5linkinv, SoftplusLink) <- function(x, eta) {
   (x@a^4) * lk_logit_inv_cpp(x@a * eta, 4L)
+}
+S7::method(d6linkinv, SoftplusLink) <- function(x, eta) {
+  (x@a^5) * lk_logit_inv_cpp(x@a * eta, 5L)
 }
 
 #' @title The Softplus Link Function
@@ -153,7 +159,7 @@ S7::method(d5linkinv, SoftplusLink) <- function(x, eta) {
 #'
 #' @return An S7 object of class `SoftplusLink`, inheriting from [link()],
 #'   whose methods compute the link, its inverse and their derivatives to the
-#'   fifth order; its `link_params` holds `a`.
+#'   sixth order; its `link_params` holds `a`.
 #'
 #' @examples
 #' lk <- softplus_link(a = 2)

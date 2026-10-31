@@ -9,11 +9,13 @@
 \alias{d3linkfun.UpperBoundedLink}
 \alias{d4linkfun.UpperBoundedLink}
 \alias{d5linkfun.UpperBoundedLink}
+\alias{d6linkfun.UpperBoundedLink}
 \alias{dlinkinv.UpperBoundedLink}
 \alias{d2linkinv.UpperBoundedLink}
 \alias{d3linkinv.UpperBoundedLink}
 \alias{d4linkinv.UpperBoundedLink}
 \alias{d5linkinv.UpperBoundedLink}
+\alias{d6linkinv.UpperBoundedLink}
 \title{S7 Class for an Upper Bounded Link}
 \usage{
 UpperBoundedLink(
@@ -52,10 +54,10 @@ while the even ones do not, and every inverse derivative changes sign.
 }
 \section{Methods}{
 
-Twelve methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
-the five derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d5linkfun]{d5linkfun()}}, and
-the five derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
-\code{\link[=d5linkinv]{d5linkinv()}}. The reflection makes the map decreasing, so every inverse
+Fourteen methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
+the six derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d6linkfun]{d6linkfun()}}, and
+the six derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
+\code{\link[=d6linkinv]{d6linkinv()}}. The reflection makes the map decreasing, so every inverse
 derivative is the negative of \code{\link[=exp_floored]{exp_floored()}} of \eqn{\eta}, and the
 forward ones
 are the log's read at \eqn{\mathrm{upr} - \theta}, with the change of sign

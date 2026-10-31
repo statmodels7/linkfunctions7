@@ -22,10 +22,10 @@
 #'   `link_params`. Its `link_bounds` are `c(-1, 1)` and it carries no link parameters.
 #'
 #' @section Methods:
-#' Twelve methods are registered on this class: [linkfun()] and [linkinv()],
-#' the five derivatives of the link, [dlinkfun()] through [d5linkfun()], and
-#' the five derivatives of the inverse link, [dlinkinv()] through
-#' [d5linkinv()]. `linkfun()` and `linkinv()` are `atanh()` and `tanh()`. The ten
+#' Fourteen methods are registered on this class: [linkfun()] and [linkinv()],
+#' the six derivatives of the link, [dlinkfun()] through [d6linkfun()], and
+#' the six derivatives of the inverse link, [dlinkinv()] through
+#' [d6linkinv()]. `linkfun()` and `linkinv()` are `atanh()` and `tanh()`. The twelve
 #' derivatives come from a compiled kernel, one call per order and
 #' direction. The inverse derivatives are written in \eqn{\tanh\eta} and
 #' \eqn{\mathrm{sech}^2\eta}. The second is computed from \eqn{e^{-2|\eta|}}
@@ -39,11 +39,13 @@
 #' @aliases d3linkfun.RhobitLink
 #' @aliases d4linkfun.RhobitLink
 #' @aliases d5linkfun.RhobitLink
+#' @aliases d6linkfun.RhobitLink
 #' @aliases dlinkinv.RhobitLink
 #' @aliases d2linkinv.RhobitLink
 #' @aliases d3linkinv.RhobitLink
 #' @aliases d4linkinv.RhobitLink
 #' @aliases d5linkinv.RhobitLink
+#' @aliases d6linkinv.RhobitLink
 #'
 #' @seealso [rhobit_link()], the constructor that users call.
 #' @keywords internal
@@ -64,6 +66,7 @@ S7::method(d2linkfun, RhobitLink) <- function(x, theta) lk_rhobit_fwd_cpp(theta,
 S7::method(d3linkfun, RhobitLink) <- function(x, theta) lk_rhobit_fwd_cpp(theta, 3L)
 S7::method(d4linkfun, RhobitLink) <- function(x, theta) lk_rhobit_fwd_cpp(theta, 4L)
 S7::method(d5linkfun, RhobitLink) <- function(x, theta) lk_rhobit_fwd_cpp(theta, 5L)
+S7::method(d6linkfun, RhobitLink) <- function(x, theta) lk_rhobit_fwd_cpp(theta, 6L)
 
 # Exact analytical derivatives of the inverse link function (wrt eta)
 # All of these are evaluated as polynomials in t = tanh(eta)
@@ -72,6 +75,7 @@ S7::method(d2linkinv, RhobitLink) <- function(x, eta) lk_rhobit_inv_cpp(eta, 2L)
 S7::method(d3linkinv, RhobitLink) <- function(x, eta) lk_rhobit_inv_cpp(eta, 3L)
 S7::method(d4linkinv, RhobitLink) <- function(x, eta) lk_rhobit_inv_cpp(eta, 4L)
 S7::method(d5linkinv, RhobitLink) <- function(x, eta) lk_rhobit_inv_cpp(eta, 5L)
+S7::method(d6linkinv, RhobitLink) <- function(x, eta) lk_rhobit_inv_cpp(eta, 6L)
 
 #' @title The Rhobit (Fisher's z) Link Function
 #'
@@ -90,7 +94,7 @@ S7::method(d5linkinv, RhobitLink) <- function(x, eta) lk_rhobit_inv_cpp(eta, 5L)
 #' The domain of \eqn{\theta} is \eqn{(-1, 1)}.
 #'
 #' @return An S7 object of class `RhobitLink`, inheriting from [link()], whose
-#'   methods compute the link, its inverse and their derivatives to the fifth
+#'   methods compute the link, its inverse and their derivatives to the sixth
 #'   order.
 #'
 #' @examples

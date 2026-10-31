@@ -21,10 +21,10 @@
 #'   `link_params`. Its `link_bounds` are `c(0, Inf)` and it carries no link parameters.
 #'
 #' @section Methods:
-#' Twelve methods are registered on this class: [linkfun()] and [linkinv()],
-#' the five derivatives of the link, [dlinkfun()] through [d5linkfun()], and
-#' the five derivatives of the inverse link, [dlinkinv()] through
-#' [d5linkinv()]. The two directions are not the same map (\eqn{1/\theta^2} in the
+#' Fourteen methods are registered on this class: [linkfun()] and [linkinv()],
+#' the six derivatives of the link, [dlinkfun()] through [d6linkfun()], and
+#' the six derivatives of the inverse link, [dlinkinv()] through
+#' [d6linkinv()]. The two directions are not the same map (\eqn{1/\theta^2} in the
 #' forward direction and \eqn{\eta^{-1/2}} in the inverse one), so the two sets of derivatives
 #' are written out separately, with integer falling factorials in the forward
 #' direction and half-integer powers in the inverse one.
@@ -36,11 +36,13 @@
 #' @aliases d3linkfun.InverseSqLink
 #' @aliases d4linkfun.InverseSqLink
 #' @aliases d5linkfun.InverseSqLink
+#' @aliases d6linkfun.InverseSqLink
 #' @aliases dlinkinv.InverseSqLink
 #' @aliases d2linkinv.InverseSqLink
 #' @aliases d3linkinv.InverseSqLink
 #' @aliases d4linkinv.InverseSqLink
 #' @aliases d5linkinv.InverseSqLink
+#' @aliases d6linkinv.InverseSqLink
 #'
 #' @seealso [inverse_sq_link()], the constructor that users call.
 #' @keywords internal
@@ -61,6 +63,7 @@ S7::method(d2linkfun, InverseSqLink) <- function(x, theta)  6 / (theta^4)
 S7::method(d3linkfun, InverseSqLink) <- function(x, theta) -24 / (theta^5)
 S7::method(d4linkfun, InverseSqLink) <- function(x, theta) 120 / (theta^6)
 S7::method(d5linkfun, InverseSqLink) <- function(x, theta) -720 / (theta^7)
+S7::method(d6linkfun, InverseSqLink) <- function(x, theta) 5040 / (theta^8)
 
 # Exact analytical derivatives of the inverse link function (wrt eta)
 # Utilizing explicit fractions to optimize numeric evaluations
@@ -69,6 +72,7 @@ S7::method(d2linkinv, InverseSqLink) <- function(x, eta)  3 / (4 * eta^2.5)
 S7::method(d3linkinv, InverseSqLink) <- function(x, eta) -15 / (8 * eta^3.5)
 S7::method(d4linkinv, InverseSqLink) <- function(x, eta) 105 / (16 * eta^4.5)
 S7::method(d5linkinv, InverseSqLink) <- function(x, eta) -945 / (32 * eta^5.5)
+S7::method(d6linkinv, InverseSqLink) <- function(x, eta) 10395 / (64 * eta^6.5)
 
 #' @title The Inverse Square Link Function
 #'
@@ -91,7 +95,7 @@ S7::method(d5linkinv, InverseSqLink) <- function(x, eta) -945 / (32 * eta^5.5)
 #' optimization; [eta_bounds()] returns this range.
 #'
 #' @return An S7 object of class `InverseSqLink`, inheriting from [link()], whose
-#'   methods compute the link, its inverse and their derivatives to the fifth
+#'   methods compute the link, its inverse and their derivatives to the sixth
 #'   order.
 #'
 #' @examples

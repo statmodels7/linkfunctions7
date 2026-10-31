@@ -9,11 +9,13 @@
 \alias{d3linkfun.LogLogLink}
 \alias{d4linkfun.LogLogLink}
 \alias{d5linkfun.LogLogLink}
+\alias{d6linkfun.LogLogLink}
 \alias{dlinkinv.LogLogLink}
 \alias{d2linkinv.LogLogLink}
 \alias{d3linkinv.LogLogLink}
 \alias{d4linkinv.LogLogLink}
 \alias{d5linkinv.LogLogLink}
+\alias{d6linkinv.LogLogLink}
 \title{S7 Class for the LogLog Link}
 \usage{
 LogLogLink(
@@ -48,11 +50,11 @@ faster than one.
 }
 \section{Methods}{
 
-Twelve methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
-the five derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d5linkfun]{d5linkfun()}}, and
-the five derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
-\code{\link[=d5linkinv]{d5linkinv()}}. \code{linkfun()} and \code{linkinv()} are the elementary
-\eqn{-\log(-\log\theta)} and \eqn{\exp(-\exp(-\eta))}; the ten
+Fourteen methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
+the six derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d6linkfun]{d6linkfun()}}, and
+the six derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
+\code{\link[=d6linkinv]{d6linkinv()}}. \code{linkfun()} and \code{linkinv()} are the elementary
+\eqn{-\log(-\log\theta)} and \eqn{\exp(-\exp(-\eta))}; the twelve
 derivatives come from a compiled kernel.
 }
 

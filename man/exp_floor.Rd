@@ -31,7 +31,8 @@ gives \code{(24 / .Machine$double.xmax)^0.25}, about \code{1.9e-77}, at which
 The floor is the lowest value that this constraint allows, and it keeps
 \eqn{\theta} exact down to \eqn{\eta \approx -176.7}. The fifth forward
 derivative, \eqn{24/\theta^5}, does not fit under it and is \code{Inf} for
-\eqn{\eta} below about \eqn{-141}.
+\eqn{\eta} below about \eqn{-141}, and the sixth, \eqn{-120/\theta^6},
+is \code{-Inf} for \eqn{\eta} below about \eqn{-117.5}.
 }
 \seealso{
 \code{\link[=exp_floored]{exp_floored()}}

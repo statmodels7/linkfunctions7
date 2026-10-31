@@ -22,11 +22,11 @@
 #'   `link_params`. Its `link_bounds` are `c(0, 1)` and it carries no link parameters.
 #'
 #' @section Methods:
-#' Twelve methods are registered on this class: [linkfun()] and [linkinv()],
-#' the five derivatives of the link, [dlinkfun()] through [d5linkfun()], and
-#' the five derivatives of the inverse link, [dlinkinv()] through
-#' [d5linkinv()]. `linkfun()` and `linkinv()` delegate to `stats::qnorm()` and
-#' `stats::pnorm()`. The ten derivatives come from a compiled kernel, one
+#' Fourteen methods are registered on this class: [linkfun()] and [linkinv()],
+#' the six derivatives of the link, [dlinkfun()] through [d6linkfun()], and
+#' the six derivatives of the inverse link, [dlinkinv()] through
+#' [d6linkinv()]. `linkfun()` and `linkinv()` delegate to `stats::qnorm()` and
+#' `stats::pnorm()`. The twelve derivatives come from a compiled kernel, one
 #' call per order and direction.
 #'
 #' @aliases linkfun.ProbitLink
@@ -36,11 +36,13 @@
 #' @aliases d3linkfun.ProbitLink
 #' @aliases d4linkfun.ProbitLink
 #' @aliases d5linkfun.ProbitLink
+#' @aliases d6linkfun.ProbitLink
 #' @aliases dlinkinv.ProbitLink
 #' @aliases d2linkinv.ProbitLink
 #' @aliases d3linkinv.ProbitLink
 #' @aliases d4linkinv.ProbitLink
 #' @aliases d5linkinv.ProbitLink
+#' @aliases d6linkinv.ProbitLink
 #'
 #' @seealso [probit_link()], the constructor that users call.
 #' @keywords internal
@@ -62,6 +64,7 @@ S7::method(d2linkfun, ProbitLink) <- function(x, theta) lk_probit_fwd_cpp(theta,
 S7::method(d3linkfun, ProbitLink) <- function(x, theta) lk_probit_fwd_cpp(theta, 3L)
 S7::method(d4linkfun, ProbitLink) <- function(x, theta) lk_probit_fwd_cpp(theta, 4L)
 S7::method(d5linkfun, ProbitLink) <- function(x, theta) lk_probit_fwd_cpp(theta, 5L)
+S7::method(d6linkfun, ProbitLink) <- function(x, theta) lk_probit_fwd_cpp(theta, 6L)
 
 # Exact analytical derivatives of the inverse link function (wrt eta)
 # They rely exclusively on standard normal density properties.
@@ -70,6 +73,7 @@ S7::method(d2linkinv, ProbitLink) <- function(x, eta) lk_probit_inv_cpp(eta, 2L)
 S7::method(d3linkinv, ProbitLink) <- function(x, eta) lk_probit_inv_cpp(eta, 3L)
 S7::method(d4linkinv, ProbitLink) <- function(x, eta) lk_probit_inv_cpp(eta, 4L)
 S7::method(d5linkinv, ProbitLink) <- function(x, eta) lk_probit_inv_cpp(eta, 5L)
+S7::method(d6linkinv, ProbitLink) <- function(x, eta) lk_probit_inv_cpp(eta, 6L)
 
 #' @title The Probit Link Function
 #'
@@ -92,7 +96,7 @@ S7::method(d5linkinv, ProbitLink) <- function(x, eta) lk_probit_inv_cpp(eta, 5L)
 #' The domain of \eqn{\theta} is \eqn{(0, 1)}.
 #'
 #' @return An S7 object of class `ProbitLink`, inheriting from [link()], whose
-#'   methods compute the link, its inverse and their derivatives to the fifth
+#'   methods compute the link, its inverse and their derivatives to the sixth
 #'   order.
 #'
 #' @examples

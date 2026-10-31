@@ -9,11 +9,13 @@
 \alias{d3linkfun.IdentityLink}
 \alias{d4linkfun.IdentityLink}
 \alias{d5linkfun.IdentityLink}
+\alias{d6linkfun.IdentityLink}
 \alias{dlinkinv.IdentityLink}
 \alias{d2linkinv.IdentityLink}
 \alias{d3linkinv.IdentityLink}
 \alias{d4linkinv.IdentityLink}
 \alias{d5linkinv.IdentityLink}
+\alias{d6linkinv.IdentityLink}
 \title{S7 Class for the Identity Link}
 \usage{
 IdentityLink(
@@ -49,10 +51,10 @@ given.
 }
 \section{Methods}{
 
-Twelve methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
-the five derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d5linkfun]{d5linkfun()}}, and
-the five derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
-\code{\link[=d5linkinv]{d5linkinv()}}. \code{linkfun()} and \code{linkinv()} return their argument. The first
+Fourteen methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
+the six derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d6linkfun]{d6linkfun()}}, and
+the six derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
+\code{\link[=d6linkinv]{d6linkinv()}}. \code{linkfun()} and \code{linkinv()} return their argument. The first
 derivative is one and every higher one is zero. \code{\link[=const_like]{const_like()}} builds each
 of them, so that the result is \code{NA} wherever the argument is \code{NA}, although
 the derivative does not depend on it.

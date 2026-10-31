@@ -9,11 +9,13 @@
 \alias{d3linkfun.RhobitLink}
 \alias{d4linkfun.RhobitLink}
 \alias{d5linkfun.RhobitLink}
+\alias{d6linkfun.RhobitLink}
 \alias{dlinkinv.RhobitLink}
 \alias{d2linkinv.RhobitLink}
 \alias{d3linkinv.RhobitLink}
 \alias{d4linkinv.RhobitLink}
 \alias{d5linkinv.RhobitLink}
+\alias{d6linkinv.RhobitLink}
 \title{S7 Class for the Rhobit Link}
 \usage{
 RhobitLink(
@@ -49,10 +51,10 @@ cannot propose a correlation outside \eqn{(-1, 1)}.
 }
 \section{Methods}{
 
-Twelve methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
-the five derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d5linkfun]{d5linkfun()}}, and
-the five derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
-\code{\link[=d5linkinv]{d5linkinv()}}. \code{linkfun()} and \code{linkinv()} are \code{atanh()} and \code{tanh()}. The ten
+Fourteen methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
+the six derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d6linkfun]{d6linkfun()}}, and
+the six derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
+\code{\link[=d6linkinv]{d6linkinv()}}. \code{linkfun()} and \code{linkinv()} are \code{atanh()} and \code{tanh()}. The twelve
 derivatives come from a compiled kernel, one call per order and
 direction. The inverse derivatives are written in \eqn{\tanh\eta} and
 \eqn{\mathrm{sech}^2\eta}. The second is computed from \eqn{e^{-2|\eta|}}

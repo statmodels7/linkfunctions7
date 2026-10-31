@@ -9,11 +9,13 @@
 \alias{d3linkfun.InverseLink}
 \alias{d4linkfun.InverseLink}
 \alias{d5linkfun.InverseLink}
+\alias{d6linkfun.InverseLink}
 \alias{dlinkinv.InverseLink}
 \alias{d2linkinv.InverseLink}
 \alias{d3linkinv.InverseLink}
 \alias{d4linkinv.InverseLink}
 \alias{d5linkinv.InverseLink}
+\alias{d6linkinv.InverseLink}
 \title{S7 Class for the Inverse Link}
 \usage{
 InverseLink(
@@ -49,11 +51,11 @@ predictor, and the map is decreasing: a larger parameter gives a smaller
 }
 \section{Methods}{
 
-Twelve methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
-the five derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d5linkfun]{d5linkfun()}}, and
-the five derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
-\code{\link[=d5linkinv]{d5linkinv()}}. The link is its own inverse, so the two directions carry the same
-expressions, \eqn{1/\theta} and \eqn{1/\eta}, and the five derivatives
+Fourteen methods are registered on this class: \code{\link[=linkfun]{linkfun()}} and \code{\link[=linkinv]{linkinv()}},
+the six derivatives of the link, \code{\link[=dlinkfun]{dlinkfun()}} through \code{\link[=d6linkfun]{d6linkfun()}}, and
+the six derivatives of the inverse link, \code{\link[=dlinkinv]{dlinkinv()}} through
+\code{\link[=d6linkinv]{d6linkinv()}}. The link is its own inverse, so the two directions carry the same
+expressions, \eqn{1/\theta} and \eqn{1/\eta}, and the six derivatives
 \eqn{(-1)^k k!\,z^{-(k+1)}} are written out in both.
 }
 
