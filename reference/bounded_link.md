@@ -27,7 +27,7 @@ bounded_link(lwr = NULL, upr = NULL)
 An S7 object inheriting from
 [`link()`](https://statmodels7.github.io/linkfunctions7/reference/link.md),
 whose methods compute the link, its inverse and their derivatives to the
-fifth order. Its class depends on the endpoints given:
+sixth order. Its class depends on the endpoints given:
 [`DoublyBoundedLink()`](https://statmodels7.github.io/linkfunctions7/reference/DoublyBoundedLink.md),
 [`LowerBoundedLink()`](https://statmodels7.github.io/linkfunctions7/reference/LowerBoundedLink.md),
 [`UpperBoundedLink()`](https://statmodels7.github.io/linkfunctions7/reference/UpperBoundedLink.md),

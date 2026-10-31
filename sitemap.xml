@@ -36,6 +36,9 @@
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/d4linkinv.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/d5linkfun.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/d5linkinv.html</loc></url>
+<url><loc>https://statmodels7.github.io/linkfunctions7/reference/d6linkfun.html</loc></url>
+<url><loc>https://statmodels7.github.io/linkfunctions7/reference/d6linkinv.html</loc></url>
+<url><loc>https://statmodels7.github.io/linkfunctions7/reference/dbl_fwd.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/dlinkfun.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/dlinkinv.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/eta_bounds.html</loc></url>
@@ -66,9 +69,11 @@
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/na_from.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/need_ggplot.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/plot.link.html</loc></url>
+<url><loc>https://statmodels7.github.io/linkfunctions7/reference/power_deriv.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/power_link.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/print.link.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/probit_link.html</loc></url>
+<url><loc>https://statmodels7.github.io/linkfunctions7/reference/rescue_pow.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/rhobit_link.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/softplus_link.html</loc></url>
 <url><loc>https://statmodels7.github.io/linkfunctions7/reference/sqrt_link.html</loc></url>

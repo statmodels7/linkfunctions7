@@ -23,7 +23,7 @@ fallback_deriv(x, v, order, inverse)
 
 - order:
 
-  The derivative order, from 1 to 5.
+  The derivative order, from 1 to 6.
 
 - inverse:
 
@@ -53,16 +53,16 @@ implements, so the chain always ends on analytic code.
 
 ## Methods
 
-The ten registrations on the base class
+The twelve registrations on the base class
 [`link()`](https://statmodels7.github.io/linkfunctions7/reference/link.md)
 have this function as their whole body:
 [`dlinkfun()`](https://statmodels7.github.io/linkfunctions7/reference/dlinkfun.md)
 through
-[`d5linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkfun.md)
+[`d6linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/d6linkfun.md)
 for the link and
 [`dlinkinv()`](https://statmodels7.github.io/linkfunctions7/reference/dlinkinv.md)
 through
-[`d5linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkinv.md)
+[`d6linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d6linkinv.md)
 for the inverse link. Each of them passes its order and its direction. A
 link inherits them for the orders it does not implement itself, so a
 link defined with nothing but
@@ -71,5 +71,5 @@ and
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md)
 still has a method for every derivative generic. S7 requires the formals
 of a method to match those of the generic, and the two directions name
-their argument differently, so the ten wrappers are written out instead
-of generated.
+their argument differently, so the twelve wrappers are written out
+instead of generated.

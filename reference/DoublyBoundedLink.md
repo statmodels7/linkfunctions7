@@ -63,18 +63,18 @@ property instead of two.
 
 ## Methods
 
-Twelve methods are registered on this class:
+Fourteen methods are registered on this class:
 [`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md)
 and
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md),
-the five derivatives of the link,
+the six derivatives of the link,
 [`dlinkfun()`](https://statmodels7.github.io/linkfunctions7/reference/dlinkfun.md)
 through
-[`d5linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkfun.md),
-and the five derivatives of the inverse link,
+[`d6linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/d6linkfun.md),
+and the six derivatives of the inverse link,
 [`dlinkinv()`](https://statmodels7.github.io/linkfunctions7/reference/dlinkinv.md)
 through
-[`d5linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkinv.md).
+[`d6linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d6linkinv.md).
 The forward derivatives are the logit's divided by \\W^k\\ and the
 inverse ones the logit's multiplied by \\W\\, because \\p\\ is
 \\\theta\\ rescaled by the width. The inverse set therefore calls the

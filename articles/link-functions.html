@@ -27,7 +27,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -85,13 +85,13 @@ the log and logit links move the optimization onto the whole real line
 and map the result back.</p>
 <p>Unlike a pair of <code><a href="https://rdrr.io/r/base/Log.html" class="external-link">log()</a></code> and <code><a href="https://rdrr.io/r/stats/Logistic.html" class="external-link">plogis()</a></code> calls,
 every link in linkfunctions7 carries its exact analytical derivatives up
-to fifth order, in both directions, together with a diagnostic that
+to sixth order, in both directions, together with a diagnostic that
 verifies them. A modeling routine uses these derivatives: a Newton or
 Fisher-scoring step uses the derivative of the inverse link, and a
-higher-order correction uses the orders above it. The fifth order is
-needed by models whose predictor is defined by a recursion, since each
-order of differentiation through the recursion involves one more order
-of the link.</p>
+higher-order correction uses the orders above it. The fifth and sixth
+orders are needed by models whose predictor is defined by a recursion,
+since each order of differentiation through the recursion involves one
+more order of the link.</p>
 <div class="section level2">
 <h2 id="a-link-is-an-object">A link is an object<a class="anchor" aria-label="anchor" href="#a-link-is-an-object"></a>
 </h2>
@@ -138,30 +138,34 @@ and
 <h2 id="every-order-either-direction">Every order, either direction<a class="anchor" aria-label="anchor" href="#every-order-either-direction"></a>
 </h2>
 <p><code><a href="../reference/linkderiv.html">linkderiv()</a></code> and <code><a href="../reference/linkinvderiv.html">linkinvderiv()</a></code> reach any
-order from zero to five without naming a separate function:</p>
+order from zero to six without naming a separate function:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/logit_link.html">logit_link</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">theta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.5</span>, <span class="fl">0.8</span><span class="op">)</span></span>
 <span><span class="va">eta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/linkfun.html">linkfun</a></span><span class="op">(</span><span class="va">lk</span>, <span class="va">theta</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">5</span>, <span class="kw">function</span><span class="op">(</span><span class="va">k</span><span class="op">)</span> <span class="fu"><a href="../reference/linkinvderiv.html">linkinvderiv</a></span><span class="op">(</span><span class="va">lk</span>, <span class="va">eta</span>, order <span class="op">=</span> <span class="va">k</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;      [,1] [,2]   [,3]    [,4]     [,5]     [,6]</span></span>
-<span><span class="co">#&gt; [1,]  0.2 0.16  0.096  0.0064 -0.08832 -0.11648</span></span>
-<span><span class="co">#&gt; [2,]  0.5 0.25  0.000 -0.1250  0.00000  0.25000</span></span>
-<span><span class="co">#&gt; [3,]  0.8 0.16 -0.096  0.0064  0.08832 -0.11648</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">6</span>, <span class="kw">function</span><span class="op">(</span><span class="va">k</span><span class="op">)</span> <span class="fu"><a href="../reference/linkinvderiv.html">linkinvderiv</a></span><span class="op">(</span><span class="va">lk</span>, <span class="va">eta</span>, order <span class="op">=</span> <span class="va">k</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      [,1] [,2]   [,3]    [,4]     [,5]     [,6]      [,7]</span></span>
+<span><span class="co">#&gt; [1,]  0.2 0.16  0.096  0.0064 -0.08832 -0.11648  0.059136</span></span>
+<span><span class="co">#&gt; [2,]  0.5 0.25  0.000 -0.1250  0.00000  0.25000  0.000000</span></span>
+<span><span class="co">#&gt; [3,]  0.8 0.16 -0.096  0.0064  0.08832 -0.11648 -0.059136</span></span></code></pre></div>
 <p>Order zero is the function itself; the columns are the successive
 derivatives of the inverse logit at those three points.</p>
-<p>The fifth forward derivative of the exponential links has a limited
-range. These links floor
+<p>The fifth and sixth forward derivatives of the exponential links have
+a limited range. These links floor
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi><mo>=</mo><msup><mi>e</mi><mi>η</mi></msup></mrow><annotation encoding="application/x-tex">\theta = e^{\eta}</annotation></semantics></math>
 at a value chosen so that the fourth forward derivative
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>6</mn><mi>/</mi><msup><mi>θ</mi><mn>4</mn></msup></mrow><annotation encoding="application/x-tex">-6/\theta^4</annotation></semantics></math>
 stays representable with a factor of four to spare, and at that value
 the fifth,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>24</mn><mi>/</mi><msup><mi>θ</mi><mn>5</mn></msup></mrow><annotation encoding="application/x-tex">24/\theta^5</annotation></semantics></math>,
-is not. The forward fifth derivative of a log, lower- or upper-bounded
+and the sixth,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>120</mn><mi>/</mi><msup><mi>θ</mi><mn>6</mn></msup></mrow><annotation encoding="application/x-tex">-120/\theta^6</annotation></semantics></math>,
+are not. The forward fifth derivative of a log, lower- or upper-bounded
 link is therefore <code>Inf</code> below about
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>η</mi><mo>=</mo><mi>−</mi><mn>141</mn></mrow><annotation encoding="application/x-tex">\eta = -141</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>η</mi><mo>=</mo><mi>−</mi><mn>141</mn></mrow><annotation encoding="application/x-tex">\eta = -141</annotation></semantics></math>
+and the sixth <code>-Inf</code> below about
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>η</mi><mo>=</mo><mi>−</mi><mn>117.5</mn></mrow><annotation encoding="application/x-tex">\eta = -117.5</annotation></semantics></math>,
 while the fourth remains finite to
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>η</mi><mo>=</mo><mi>−</mi><mn>200</mn></mrow><annotation encoding="application/x-tex">\eta = -200</annotation></semantics></math>.
 Raising the floor to cover the fifth would clamp
@@ -350,8 +354,8 @@ on
 <span><span class="co">#&gt;   [2] Invertibility (Eta space):   [PASSED] </span></span>
 <span><span class="co">#&gt;   [3] Strict Monotonicity:         [PASSED] </span></span>
 <span><span class="co">#&gt;   [4] Inverse Function Theorem:    [PASSED] </span></span>
-<span><span class="co">#&gt;   [5] Link Derivatives:            [PASSED to order 4, 1 numerical] </span></span>
-<span><span class="co">#&gt;   [6] Inverse Link Derivatives:    [PASSED to order 4, 1 numerical]</span></span></code></pre></div>
+<span><span class="co">#&gt;   [5] Link Derivatives:            [PASSED to order 4, 2 numerical] </span></span>
+<span><span class="co">#&gt;   [6] Inverse Link Derivatives:    [PASSED to order 4, 2 numerical]</span></span></code></pre></div>
 <p>Both derivative rows report that they passed to order four and that
 one order is numerical. The fifth order comes from the fallback and is
 not checked, since it would be compared with a numerical differentiation

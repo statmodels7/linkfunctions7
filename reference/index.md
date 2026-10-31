@@ -100,6 +100,8 @@ returns the inverse derivatives up to an order at once.
   : 4th Derivative of a Link Function
 - [`d5linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkfun.md)
   : 5th Derivative of a Link Function
+- [`d6linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/d6linkfun.md)
+  : 6th Derivative of a Link Function
 - [`dlinkinv()`](https://statmodels7.github.io/linkfunctions7/reference/dlinkinv.md)
   : 1st Derivative of an Inverse Link Function
 - [`d2linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d2linkinv.md)
@@ -110,6 +112,8 @@ returns the inverse derivatives up to an order at once.
   : 4th Derivative of an Inverse Link Function
 - [`d5linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkinv.md)
   : 5th Derivative of an Inverse Link Function
+- [`d6linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d6linkinv.md)
+  : 6th Derivative of an Inverse Link Function
 - [`linkinv_derivs()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv_derivs.md)
   : Derivatives of an Inverse Link up to an Order
 
@@ -156,6 +160,8 @@ returns the inverse derivatives up to an order at once.
   : Validate and Check a Link Object
 - [`const_like()`](https://statmodels7.github.io/linkfunctions7/reference/const_like.md)
   : A Constant Vector That Preserves Missingness
+- [`dbl_fwd()`](https://statmodels7.github.io/linkfunctions7/reference/dbl_fwd.md)
+  : Forward Derivatives of the Doubly Bounded Link
 - [`exp_floor`](https://statmodels7.github.io/linkfunctions7/reference/exp_floor.md)
   : The Floor of the Exponential Links
 - [`exp_floored()`](https://statmodels7.github.io/linkfunctions7/reference/exp_floored.md)
@@ -183,6 +189,10 @@ returns the inverse derivatives up to an order at once.
   : Carry Missingness From an Input Over to a Result
 - [`need_ggplot()`](https://statmodels7.github.io/linkfunctions7/reference/need_ggplot.md)
   : The Packages That a Graph Requires
+- [`power_deriv()`](https://statmodels7.github.io/linkfunctions7/reference/power_deriv.md)
+  : Derivative of a Power
+- [`rescue_pow()`](https://statmodels7.github.io/linkfunctions7/reference/rescue_pow.md)
+  : Recompute a Power Term Without a Premature Overflow
 - [`stencil_deriv()`](https://statmodels7.github.io/linkfunctions7/reference/stencil_deriv.md)
   : One Central Stencil, Never Nested
 - [`print(`*`<link>`*`)`](https://statmodels7.github.io/linkfunctions7/reference/print.link.md)

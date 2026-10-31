@@ -18,7 +18,7 @@ fd_step(x, order, bounds = NULL)
 
 - order:
 
-  The derivative order, 1 to 5.
+  The derivative order, 1 to 6.
 
 - bounds:
 

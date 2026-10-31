@@ -11,7 +11,7 @@ floor to exp(eta)."><meta property="og:image" content="https://statmodels7.githu
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,7 +73,8 @@ gives <code>(24 / .Machine$double.xmax)^0.25</code>, about <code>1.9e-77</code>,
 <p>The floor is the lowest value that this constraint allows, and it keeps
 \(\theta\) exact down to \(\eta \approx -176.7\). The fifth forward
 derivative, \(24/\theta^5\), does not fit under it and is <code>Inf</code> for
-\(\eta\) below about \(-141\).</p>
+\(\eta\) below about \(-141\), and the sixth, \(-120/\theta^6\),
+is <code>-Inf</code> for \(\eta\) below about \(-117.5\).</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

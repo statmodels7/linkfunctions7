@@ -11,7 +11,7 @@ analytically."><meta property="og:image" content="https://statmodels7.github.io/
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,7 +66,7 @@ in the inverse one.</p></dd>
 
 
 <dt id="arg-order">order<a class="anchor" aria-label="anchor" href="#arg-order"></a></dt>
-<dd><p>The derivative order, from 1 to 5.</p></dd>
+<dd><p>The derivative order, from 1 to 6.</p></dd>
 
 
 <dt id="arg-inverse">inverse<a class="anchor" aria-label="anchor" href="#arg-inverse"></a></dt>
@@ -94,14 +94,14 @@ ends on analytic code.</p>
     <h2 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a></h2>
 
 
-<p>The ten registrations on the base class <code><a href="link.html">link()</a></code> have this function as
-their whole body: <code><a href="dlinkfun.html">dlinkfun()</a></code> through <code><a href="d5linkfun.html">d5linkfun()</a></code> for the link and
-<code><a href="dlinkinv.html">dlinkinv()</a></code> through <code><a href="d5linkinv.html">d5linkinv()</a></code> for the inverse link. Each of them passes
+<p>The twelve registrations on the base class <code><a href="link.html">link()</a></code> have this function as
+their whole body: <code><a href="dlinkfun.html">dlinkfun()</a></code> through <code><a href="d6linkfun.html">d6linkfun()</a></code> for the link and
+<code><a href="dlinkinv.html">dlinkinv()</a></code> through <code><a href="d6linkinv.html">d6linkinv()</a></code> for the inverse link. Each of them passes
 its order and its direction. A link inherits them for the orders it does not implement
 itself, so a link defined with nothing but <code><a href="linkfun.html">linkfun()</a></code> and <code><a href="linkinv.html">linkinv()</a></code>
 still has a method for every derivative generic. S7 requires the formals of
 a method to match those of the generic, and the two directions name their
-argument differently, so the ten wrappers are written out instead of
+argument differently, so the twelve wrappers are written out instead of
 generated.</p>
     </div>
 

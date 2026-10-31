@@ -34,7 +34,8 @@ links are \\1/\theta\\, \\-1/\theta^2\\, \\2/\theta^3\\ and
 The floor is the lowest value that this constraint allows, and it keeps
 \\\theta\\ exact down to \\\eta \approx -176.7\\. The fifth forward
 derivative, \\24/\theta^5\\, does not fit under it and is `Inf` for
-\\\eta\\ below about \\-141\\.
+\\\eta\\ below about \\-141\\, and the sixth, \\-120/\theta^6\\, is
+`-Inf` for \\\eta\\ below about \\-117.5\\.
 
 ## See also
 

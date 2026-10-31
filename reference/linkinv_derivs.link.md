@@ -25,7 +25,7 @@ linkinv_derivs.link(x, eta, order)
 
 - order:
 
-  A whole number from 1 to 5.
+  A whole number from 1 to 6.
 
 ## Value
 

@@ -3,7 +3,7 @@
 `link` is the base S7 class for link functions. It carries the name, the
 domain and any link parameters. The transformations themselves are
 methods that each subclass registers on the generics for the forward
-map, the inverse, and their analytical derivatives to fifth order in
+map, the inverse, and their analytical derivatives to sixth order in
 both directions.
 
 ## Usage

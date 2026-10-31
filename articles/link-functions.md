@@ -13,14 +13,14 @@ the optimization onto the whole real line and map the result back.
 
 Unlike a pair of [`log()`](https://rdrr.io/r/base/Log.html) and
 [`plogis()`](https://rdrr.io/r/stats/Logistic.html) calls, every link in
-linkfunctions7 carries its exact analytical derivatives up to fifth
+linkfunctions7 carries its exact analytical derivatives up to sixth
 order, in both directions, together with a diagnostic that verifies
 them. A modeling routine uses these derivatives: a Newton or
 Fisher-scoring step uses the derivative of the inverse link, and a
-higher-order correction uses the orders above it. The fifth order is
-needed by models whose predictor is defined by a recursion, since each
-order of differentiation through the recursion involves one more order
-of the link.
+higher-order correction uses the orders above it. The fifth and sixth
+orders are needed by models whose predictor is defined by a recursion,
+since each order of differentiation through the recursion involves one
+more order of the link.
 
 ## A link is an object
 
@@ -79,7 +79,7 @@ all.equal(dlinkfun(lk, theta), 1 / theta)
 [`linkderiv()`](https://statmodels7.github.io/linkfunctions7/reference/linkderiv.md)
 and
 [`linkinvderiv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinvderiv.md)
-reach any order from zero to five without naming a separate function:
+reach any order from zero to six without naming a separate function:
 
 ``` r
 
@@ -87,24 +87,26 @@ lk <- logit_link()
 theta <- c(0.2, 0.5, 0.8)
 eta <- linkfun(lk, theta)
 
-sapply(0:5, function(k) linkinvderiv(lk, eta, order = k))
-#>      [,1] [,2]   [,3]    [,4]     [,5]     [,6]
-#> [1,]  0.2 0.16  0.096  0.0064 -0.08832 -0.11648
-#> [2,]  0.5 0.25  0.000 -0.1250  0.00000  0.25000
-#> [3,]  0.8 0.16 -0.096  0.0064  0.08832 -0.11648
+sapply(0:6, function(k) linkinvderiv(lk, eta, order = k))
+#>      [,1] [,2]   [,3]    [,4]     [,5]     [,6]      [,7]
+#> [1,]  0.2 0.16  0.096  0.0064 -0.08832 -0.11648  0.059136
+#> [2,]  0.5 0.25  0.000 -0.1250  0.00000  0.25000  0.000000
+#> [3,]  0.8 0.16 -0.096  0.0064  0.08832 -0.11648 -0.059136
 ```
 
 Order zero is the function itself; the columns are the successive
 derivatives of the inverse logit at those three points.
 
-The fifth forward derivative of the exponential links has a limited
-range. These links floor $`\theta = e^{\eta}`$ at a value chosen so that
-the fourth forward derivative $`-6/\theta^4`$ stays representable with a
-factor of four to spare, and at that value the fifth, $`24/\theta^5`$,
-is not. The forward fifth derivative of a log, lower- or upper-bounded
-link is therefore `Inf` below about $`\eta = -141`$, while the fourth
-remains finite to $`\eta = -200`$. Raising the floor to cover the fifth
-would clamp $`\theta`$ over a range where
+The fifth and sixth forward derivatives of the exponential links have a
+limited range. These links floor $`\theta = e^{\eta}`$ at a value chosen
+so that the fourth forward derivative $`-6/\theta^4`$ stays
+representable with a factor of four to spare, and at that value the
+fifth, $`24/\theta^5`$, and the sixth, $`-120/\theta^6`$, are not. The
+forward fifth derivative of a log, lower- or upper-bounded link is
+therefore `Inf` below about $`\eta = -141`$ and the sixth `-Inf` below
+about $`\eta = -117.5`$, while the fourth remains finite to
+$`\eta = -200`$. Raising the floor to cover the fifth would clamp
+$`\theta`$ over a range where
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md)
 is now exact, so the floor stays where it is. In the lower tail the
 inverse direction, which a chain rule onto the link scale uses, is
@@ -259,8 +261,8 @@ invisible(check_link(neglog))
 #>   [2] Invertibility (Eta space):   [PASSED] 
 #>   [3] Strict Monotonicity:         [PASSED] 
 #>   [4] Inverse Function Theorem:    [PASSED] 
-#>   [5] Link Derivatives:            [PASSED to order 4, 1 numerical] 
-#>   [6] Inverse Link Derivatives:    [PASSED to order 4, 1 numerical]
+#>   [5] Link Derivatives:            [PASSED to order 4, 2 numerical] 
+#>   [6] Inverse Link Derivatives:    [PASSED to order 4, 2 numerical]
 ```
 
 Both derivative rows report that they passed to order four and that one

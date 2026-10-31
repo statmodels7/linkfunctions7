@@ -46,24 +46,24 @@ parameters.
 
 ## Methods
 
-Twelve methods are registered on this class:
+Fourteen methods are registered on this class:
 [`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md)
 and
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md),
-the five derivatives of the link,
+the six derivatives of the link,
 [`dlinkfun()`](https://statmodels7.github.io/linkfunctions7/reference/dlinkfun.md)
 through
-[`d5linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkfun.md),
-and the five derivatives of the inverse link,
+[`d6linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/d6linkfun.md),
+and the six derivatives of the inverse link,
 [`dlinkinv()`](https://statmodels7.github.io/linkfunctions7/reference/dlinkinv.md)
 through
-[`d5linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkinv.md).
+[`d6linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d6linkinv.md).
 [`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md)
 and
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md)
 delegate to [`stats::qlogis()`](https://rdrr.io/r/stats/Logistic.html)
 and [`stats::plogis()`](https://rdrr.io/r/stats/Logistic.html), which
-remain accurate near both boundaries. The ten derivatives come from a
+remain accurate near both boundaries. The twelve derivatives come from a
 compiled kernel, one call per order and direction. The inverse
 derivatives are evaluated in \\\theta\\, \\1 - \theta\\ and their
 product, and each of these is computed from \\\eta\\, so that the

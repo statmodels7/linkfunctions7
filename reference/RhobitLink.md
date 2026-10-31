@@ -46,25 +46,25 @@ parameters.
 
 ## Methods
 
-Twelve methods are registered on this class:
+Fourteen methods are registered on this class:
 [`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md)
 and
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md),
-the five derivatives of the link,
+the six derivatives of the link,
 [`dlinkfun()`](https://statmodels7.github.io/linkfunctions7/reference/dlinkfun.md)
 through
-[`d5linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkfun.md),
-and the five derivatives of the inverse link,
+[`d6linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/d6linkfun.md),
+and the six derivatives of the inverse link,
 [`dlinkinv()`](https://statmodels7.github.io/linkfunctions7/reference/dlinkinv.md)
 through
-[`d5linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkinv.md).
+[`d6linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d6linkinv.md).
 [`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md)
 and
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md)
 are [`atanh()`](https://rdrr.io/r/base/Hyperbolic.html) and
-[`tanh()`](https://rdrr.io/r/base/Hyperbolic.html). The ten derivatives
-come from a compiled kernel, one call per order and direction. The
-inverse derivatives are written in \\\tanh\eta\\ and
+[`tanh()`](https://rdrr.io/r/base/Hyperbolic.html). The twelve
+derivatives come from a compiled kernel, one call per order and
+direction. The inverse derivatives are written in \\\tanh\eta\\ and
 \\\mathrm{sech}^2\eta\\. The second is computed from \\e^{-2\|\eta\|}\\
 and not as \\1 - \tanh^2\eta\\, so that the derivatives keep their
 relative accuracy for large \\\|\eta\|\\.

@@ -1,6 +1,6 @@
 # Highest Analytically Implemented Derivative Order
 
-Returns the largest \\k \le 5\\ for which the link's own class registers
+Returns the largest \\k \le 6\\ for which the link's own class registers
 a method for the order-\\k\\ derivative generic, and `0` when it
 registers none, so that only
 [`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md)
@@ -26,7 +26,7 @@ analytic_order(x, inverse = FALSE)
 
 ## Value
 
-An integer between 0 and 5.
+An integer between 0 and 6.
 
 ## Details
 

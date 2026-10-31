@@ -9,7 +9,7 @@ one to order at the same linear predictors, as a list."><meta property="og:image
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,7 +63,7 @@ one to <code>order</code> at the same linear predictors, as a list.</p>
 
 <dt id="arg-order">order<a class="anchor" aria-label="anchor" href="#arg-order"></a></dt>
 <dd><p>The highest derivative order, a single whole number from 1
-to 5.</p></dd>
+to 6.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -78,8 +78,8 @@ as <code>eta</code>.</p>
 higher generics in turn, so the numerical fallbacks of a link apply here
 as they do there. A class whose derivatives share their work may register
 its own method: the log link computes \(e^\eta\) once and returns that
-vector at every order, which gives the same values as the five generics
-at a fifth of the cost. A class that inherits from the log link and
+vector at every order, which gives the same values as the six generics
+at a sixth of the cost. A class that inherits from the log link and
 overrides one of its derivatives is evaluated through the generics.</p>
     </div>
     <div class="section level2">

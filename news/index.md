@@ -1,5 +1,37 @@
 # Changelog
 
+## linkfunctions7 0.8.0
+
+- New generics
+  [`d6linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/d6linkfun.md)
+  and
+  [`d6linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d6linkinv.md):
+  the sixth derivative of every link in closed form, in both directions.
+  [`linkderiv()`](https://statmodels7.github.io/linkfunctions7/reference/linkderiv.md),
+  [`linkinvderiv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinvderiv.md)
+  and
+  [`linkinv_derivs()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv_derivs.md)
+  accept order six, a user-defined link without a sixth-order method
+  gets one central stencil on its highest analytic order, and
+  [`check_link()`](https://statmodels7.github.io/linkfunctions7/reference/check_link.md)
+  and
+  [`link_fallback_orders()`](https://statmodels7.github.io/linkfunctions7/reference/link_fallback_orders.md)
+  extend to order six.
+- The derivatives of every link stay finite up to the point where the
+  true derivative exceeds the largest double, and are a signed infinity
+  beyond it; intermediate powers no longer overflow or underflow first.
+- The inverse cloglog, loglog and cauchit derivatives of orders two to
+  five no longer return `NaN` for large arguments.
+- The probit, logit, softplus and doubly bounded inverse derivatives
+  keep their values in the tails (probit to \|eta\| = 38.6, logistic to
+  \|eta\| = 745).
+- The doubly bounded forward derivatives are accurate near the upper
+  bound and near the midpoint.
+- The power link returns exact zeros where the coefficient of a
+  derivative vanishes, at every order.
+- The forward sixth derivative of the log, lower- and upper-bounded
+  links is `-Inf` below theta of about 9.3e-52.
+
 ## linkfunctions7 0.7.0
 
 - The graph of a link is drawn with ggplot2 and its two panels are

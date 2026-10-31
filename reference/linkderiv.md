@@ -2,7 +2,7 @@
 
 Routes a call, by derivative order, to
 [`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md)
-or to one of the five `d*linkfun` generics.
+or to one of the six `d*linkfun` generics.
 
 Routes to the correct forward derivative generic based on order.
 
@@ -26,7 +26,7 @@ linkderiv.link(x, theta, order = 1)
 
 - order:
 
-  An integer (0 to 5).
+  An integer (0 to 6).
 
 ## Value
 

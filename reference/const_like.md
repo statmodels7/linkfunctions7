@@ -30,7 +30,7 @@ A derivative that reduces to a constant must still return `NA` where its
 input is `NA`. This is easy to get wrong in R: `NA^0` is `1`, so
 `theta^(lambda - 2)` silently turns a missing parameter into a number as
 soon as `lambda` is 2. Every derivative method that returns a constant
-(the identity link's, and the square root link's second to fifth inverse
+(the identity link's, and the square root link's second to sixth inverse
 derivatives) goes through this helper instead of
 [`rep()`](https://rdrr.io/r/base/rep.html).
 

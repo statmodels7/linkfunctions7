@@ -22,7 +22,7 @@ linkinv_derivs(x, eta, order)
 
 - order:
 
-  The highest derivative order, a single whole number from 1 to 5.
+  The highest derivative order, a single whole number from 1 to 6.
 
 ## Value
 
@@ -38,7 +38,7 @@ and the higher generics in turn, so the numerical fallbacks of a link
 apply here as they do there. A class whose derivatives share their work
 may register its own method: the log link computes \\e^\eta\\ once and
 returns that vector at every order, which gives the same values as the
-five generics at a fifth of the cost. A class that inherits from the log
+six generics at a sixth of the cost. A class that inherits from the log
 link and overrides one of its derivatives is evaluated through the
 generics.
 

@@ -36,8 +36,8 @@ to the console.
 Invisibly, a named list of the check results: the four scalar logicals
 `invertibility_theta`, `invertibility_eta`, `monotonicity` and
 `inverse_theorem`, plus `link_derivatives` and
-`inverse_link_derivatives`, each a logical vector of length five named
-`order_1` to `order_5`. In those two, `NA` means that the order was not
+`inverse_link_derivatives`, each a logical vector of length six named
+`order_1` to `order_6`. In those two, `NA` means that the order was not
 checked: it is supplied by a numerical fallback, so the value and the
 reference would come from the same computation and would agree even for
 a wrong link. The number of orders actually implemented is carried on
@@ -64,10 +64,10 @@ The method performs six checks:
     (g^{-1})'(\eta) = 1\\.
 
 5.  Link derivatives: compares each analytic derivative of
-    \\g(\theta)\\, up to the fifth order, with a numerical one.
+    \\g(\theta)\\, up to the sixth order, with a numerical one.
 
 6.  Inverse link derivatives: compares each analytic derivative of
-    \\g^{-1}(\eta)\\, up to the fifth order, with a numerical one.
+    \\g^{-1}(\eta)\\, up to the sixth order, with a numerical one.
 
 Each analytic derivative of order \\k\\ is compared with one numerical
 differentiation of the analytic derivative of order \\k - 1\\, so the
@@ -111,8 +111,8 @@ res <- check_link(power_link(2))
 #>   [5] Link Derivatives:            [PASSED] 
 #>   [6] Inverse Link Derivatives:    [PASSED] 
 res$link_derivatives
-#> order_1 order_2 order_3 order_4 order_5 
-#>    TRUE    TRUE    TRUE    TRUE    TRUE 
+#> order_1 order_2 order_3 order_4 order_5 order_6 
+#>    TRUE    TRUE    TRUE    TRUE    TRUE    TRUE 
 res$inverse_theorem
 #> [1] TRUE
 

@@ -53,19 +53,19 @@ holds `lambda`.
 
 ## Methods
 
-Twelve methods are registered on this class:
+Fourteen methods are registered on this class:
 [`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md)
 and
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md),
-the five derivatives of the link,
+the six derivatives of the link,
 [`dlinkfun()`](https://statmodels7.github.io/linkfunctions7/reference/dlinkfun.md)
 through
-[`d5linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkfun.md),
-and the five derivatives of the inverse link,
+[`d6linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/d6linkfun.md),
+and the six derivatives of the inverse link,
 [`dlinkinv()`](https://statmodels7.github.io/linkfunctions7/reference/dlinkinv.md)
 through
-[`d5linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkinv.md).
-Both directions are a power, so all ten derivatives are falling
+[`d6linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d6linkinv.md).
+Both directions are a power, so all twelve derivatives are falling
 factorials in the exponent. Each is wrapped in
 [`na_from()`](https://statmodels7.github.io/linkfunctions7/reference/na_from.md)
 because `NA^0` is one in R, which would turn a missing parameter into a

@@ -46,20 +46,20 @@ parameters.
 
 ## Methods
 
-Twelve methods are registered on this class:
+Fourteen methods are registered on this class:
 [`linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/linkfun.md)
 and
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md),
-the five derivatives of the link,
+the six derivatives of the link,
 [`dlinkfun()`](https://statmodels7.github.io/linkfunctions7/reference/dlinkfun.md)
 through
-[`d5linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkfun.md),
-and the five derivatives of the inverse link,
+[`d6linkfun()`](https://statmodels7.github.io/linkfunctions7/reference/d6linkfun.md),
+and the six derivatives of the inverse link,
 [`dlinkinv()`](https://statmodels7.github.io/linkfunctions7/reference/dlinkinv.md)
 through
-[`d5linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d5linkinv.md).
+[`d6linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/d6linkinv.md).
 The link is its own inverse, so the two directions carry the same
-expressions, \\1/\theta\\ and \\1/\eta\\, and the five derivatives
+expressions, \\1/\theta\\ and \\1/\eta\\, and the six derivatives
 \\(-1)^k k!\\z^{-(k+1)}\\ are written out in both.
 
 ## See also

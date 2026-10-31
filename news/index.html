@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,6 +36,16 @@
       <small>Source: <a href="https://github.com/statmodels7/linkfunctions7/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.8.0" id="linkfunctions7-080">linkfunctions7 0.8.0<a class="anchor" aria-label="anchor" href="#linkfunctions7-080"></a></h2>
+<ul><li>New generics <code><a href="../reference/d6linkfun.html">d6linkfun()</a></code> and <code><a href="../reference/d6linkinv.html">d6linkinv()</a></code>: the sixth derivative of every link in closed form, in both directions. <code><a href="../reference/linkderiv.html">linkderiv()</a></code>, <code><a href="../reference/linkinvderiv.html">linkinvderiv()</a></code> and <code><a href="../reference/linkinv_derivs.html">linkinv_derivs()</a></code> accept order six, a user-defined link without a sixth-order method gets one central stencil on its highest analytic order, and <code><a href="../reference/check_link.html">check_link()</a></code> and <code><a href="../reference/link_fallback_orders.html">link_fallback_orders()</a></code> extend to order six.</li>
+<li>The derivatives of every link stay finite up to the point where the true derivative exceeds the largest double, and are a signed infinity beyond it; intermediate powers no longer overflow or underflow first.</li>
+<li>The inverse cloglog, loglog and cauchit derivatives of orders two to five no longer return <code>NaN</code> for large arguments.</li>
+<li>The probit, logit, softplus and doubly bounded inverse derivatives keep their values in the tails (probit to |eta| = 38.6, logistic to |eta| = 745).</li>
+<li>The doubly bounded forward derivatives are accurate near the upper bound and near the midpoint.</li>
+<li>The power link returns exact zeros where the coefficient of a derivative vanishes, at every order.</li>
+<li>The forward sixth derivative of the log, lower- and upper-bounded links is <code>-Inf</code> below theta of about 9.3e-52.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.7.0" id="linkfunctions7-070">linkfunctions7 0.7.0<a class="anchor" aria-label="anchor" href="#linkfunctions7-070"></a></h2>
 <ul><li>The graph of a link is drawn with ggplot2 and its two panels are joined with patchwork, both suggested. <code><a href="../reference/autoplot.html">autoplot()</a></code> returns the graph and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> prints it and returns it invisibly, where it returned <code>NULL</code>. The graphical arguments that <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> passed to <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">graphics::plot()</a></code> are removed; the returned object is modified instead. <code>graphics</code> is no longer imported.</li>

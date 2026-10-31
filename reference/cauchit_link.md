@@ -15,7 +15,7 @@ cauchit_link()
 An S7 object of class `CauchitLink`, inheriting from
 [`link()`](https://statmodels7.github.io/linkfunctions7/reference/link.md),
 whose methods compute the link, its inverse and their derivatives to the
-fifth order.
+sixth order.
 
 ## Details
 

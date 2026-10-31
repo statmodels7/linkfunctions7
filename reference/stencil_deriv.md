@@ -21,7 +21,7 @@ stencil_deriv(f, x, order, h)
 
 - order:
 
-  The derivative order, 1 to 5.
+  The derivative order, 1 to 6.
 
 - h:
 

@@ -13,7 +13,7 @@ numerical differentiation of the analytic order below it."><meta property="og:im
 
     <a class="navbar-brand me-2" href="../index.html">linkfunctions7</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -81,8 +81,8 @@ the summary that it prints to the console.</p>
 <p>Invisibly, a named list of the check results: the four scalar logicals
 <code>invertibility_theta</code>, <code>invertibility_eta</code>, <code>monotonicity</code> and
 <code>inverse_theorem</code>, plus <code>link_derivatives</code> and
-<code>inverse_link_derivatives</code>, each a logical vector of length five named
-<code>order_1</code> to <code>order_5</code>. In those two, <code>NA</code> means that the order was not
+<code>inverse_link_derivatives</code>, each a logical vector of length six named
+<code>order_1</code> to <code>order_6</code>. In those two, <code>NA</code> means that the order was not
 checked: it is supplied by a numerical fallback, so the value and the
 reference would come from the same computation and would agree even for
 a wrong link. The number of
@@ -103,9 +103,9 @@ at every point of the grid, so that the map is one-to-one.</p></li>
 <li><p>Inverse function theorem: verifies
 \(g'(\theta) \cdot (g^{-1})'(\eta) = 1\).</p></li>
 <li><p>Link derivatives: compares each analytic derivative of
-\(g(\theta)\), up to the fifth order, with a numerical one.</p></li>
+\(g(\theta)\), up to the sixth order, with a numerical one.</p></li>
 <li><p>Inverse link derivatives: compares each analytic derivative of
-\(g^{-1}(\eta)\), up to the fifth order, with a numerical one.</p></li>
+\(g^{-1}(\eta)\), up to the sixth order, with a numerical one.</p></li>
 </ol><p>Each analytic derivative of order \(k\) is compared with one numerical
 differentiation of the analytic derivative of order \(k - 1\), so the
 errors of successive numerical differentiations do not compound.</p>
@@ -144,8 +144,8 @@ errors of successive numerical differentiations do not compound.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [5] Link Derivatives:            [PASSED] </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [6] Inverse Link Derivatives:    [PASSED] </span>
 <span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">link_derivatives</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> order_1 order_2 order_3 order_4 order_5 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    TRUE    TRUE    TRUE    TRUE    TRUE </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> order_1 order_2 order_3 order_4 order_5 order_6 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    TRUE    TRUE    TRUE    TRUE    TRUE    TRUE </span>
 <span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">inverse_theorem</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 <span class="r-in"><span></span></span>

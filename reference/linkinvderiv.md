@@ -2,7 +2,7 @@
 
 Routes a call, by derivative order, to
 [`linkinv()`](https://statmodels7.github.io/linkfunctions7/reference/linkinv.md)
-or to one of the five `d*linkinv` generics.
+or to one of the six `d*linkinv` generics.
 
 Routes to the correct inverse derivative generic based on order.
 
@@ -26,7 +26,7 @@ linkinvderiv.link(x, eta, order = 1)
 
 - order:
 
-  An integer (0 to 5).
+  An integer (0 to 6).
 
 ## Value
 
