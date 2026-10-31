@@ -62,19 +62,19 @@ S7::method(dlinkfun, SqrtLink) <- function(x, theta) {
   1 / (2 * sqrt(theta))
 }
 S7::method(d2linkfun, SqrtLink) <- function(x, theta) {
-  -1 / (4 * (theta^1.5))
+  rescue_pow(-1 / (4 * (theta^1.5)), theta, (-1 / 4), -1.5)
 }
 S7::method(d3linkfun, SqrtLink) <- function(x, theta) {
-  3 / (8 * (theta^2.5))
+  rescue_pow(3 / (8 * (theta^2.5)), theta, (3 / 8), -2.5)
 }
 S7::method(d4linkfun, SqrtLink) <- function(x, theta) {
-  -15 / (16 * (theta^3.5))
+  rescue_pow(-15 / (16 * (theta^3.5)), theta, (-15 / 16), -3.5)
 }
 S7::method(d5linkfun, SqrtLink) <- function(x, theta) {
-  105 / (32 * (theta^4.5))
+  rescue_pow(105 / (32 * (theta^4.5)), theta, (105 / 32), -4.5)
 }
 S7::method(d6linkfun, SqrtLink) <- function(x, theta) {
-  -945 / (64 * (theta^5.5))
+  rescue_pow(-945 / (64 * (theta^5.5)), theta, (-945 / 64), -5.5)
 }
 
 # Exact analytical derivatives of the inverse link function (wrt eta)

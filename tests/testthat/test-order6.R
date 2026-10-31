@@ -203,3 +203,17 @@ test_that("the sixth derivatives follow the inverse function theorem", {
     expect_lt(max(abs(res) / scale), 1e-9, label = nm)
   }
 })
+
+test_that("a power link returns exact zeros where the falling factorial vanishes, at every order", {
+  x <- c(1e-300, 1e-100, 0.5, 2, 1e100, 1e300, NA)
+  zero <- function(v) all(v[!is.na(x)] == 0) && is.na(v[is.na(x)])
+  # forward: lambda = 2 vanishes from order 3, lambda = 3 from order 4, lambda = 7 never up to 6
+  for (k in 3:6) expect_true(zero(list(d3linkfun, d4linkfun, d5linkfun, d6linkfun)[[k - 2]](power_link(2), x)))
+  for (k in 4:6) expect_true(zero(list(d4linkfun, d5linkfun, d6linkfun)[[k - 3]](power_link(3), x)))
+  # inverse: 1 / lambda = 2 vanishes from order 3, 1 / lambda = 3 from order 4
+  for (k in 3:6) expect_true(zero(list(d3linkinv, d4linkinv, d5linkinv, d6linkinv)[[k - 2]](power_link(0.5), x)))
+  for (k in 4:6) expect_true(zero(list(d4linkinv, d5linkinv, d6linkinv)[[k - 3]](power_link(1 / 3), x)))
+  # a vanishing coefficient is not NaN where the power overflows
+  expect_identical(d4linkfun(power_link(3), 1e-300), 0)
+  expect_identical(d6linkinv(power_link(0.5), 1e-300), 0)
+})

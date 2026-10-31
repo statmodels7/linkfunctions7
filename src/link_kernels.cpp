@@ -21,6 +21,14 @@ NumericVector lk_logit_inv_cpp(NumericVector eta, int k) {
 }
 
 // [[Rcpp::export]]
+NumericVector lk_logit_inv_scaled_cpp(NumericVector eta, int k, double s) {
+    R_xlen_t n = eta.size();
+    NumericVector out(n);
+    for (R_xlen_t i = 0; i < n; ++i) out[i] = lf7::logit_inv_scaled(eta[i], k, s);
+    return out;
+}
+
+// [[Rcpp::export]]
 NumericVector lk_logistic_poly_cpp(NumericVector p, int k) {
     R_xlen_t n = p.size();
     NumericVector out(n);
@@ -142,28 +150,31 @@ NumericVector lk_cloglog_inv_cpp(NumericVector eta, int k) {
 NumericVector lk_loglog_fwd_cpp(NumericVector theta, int k) {
     R_xlen_t n = theta.size();
     NumericVector out(n);
+    // the denominator is (theta log theta)^k, formed from w = theta log theta
+    // and not as theta^k times log(theta)^k: theta^k is subnormal for
+    // theta near 1e-155 at k = 2, where the value is still a number
     for (R_xlen_t i = 0; i < n; ++i) {
-        double t = theta[i], l = std::log(t);
+        double t = theta[i], l = std::log(t), w = t * l;
+        double w2 = w * w;
         switch (k) {
-        case 1: out[i] = -1.0 / (t * l); break;
-        case 2: out[i] = (1.0 + l) / (t * t * l * l); break;
-        case 3: out[i] = -(2.0 + 3.0 * l + 2.0 * l * l) / (t * t * t * l * l * l); break;
+        case 1: out[i] = -1.0 / w; break;
+        case 2: out[i] = (1.0 + l) / w2; break;
+        case 3: out[i] = -(2.0 + 3.0 * l + 2.0 * l * l) / (w2 * w); break;
         case 4: {
             double l2 = l * l;
-            out[i] = (6.0 + 12.0 * l + 11.0 * l2 + 6.0 * l * l2) /
-                (t * t * t * t * l2 * l2);
+            out[i] = (6.0 + 12.0 * l + 11.0 * l2 + 6.0 * l * l2) / (w2 * w2);
             break;
         }
         case 5: {
-            double l2 = l * l, t2 = t * t;
+            double l2 = l * l;
             out[i] = -(24.0 + 60.0 * l + 70.0 * l2 + 50.0 * l2 * l +
-                       24.0 * l2 * l2) / (t2 * t2 * t * l2 * l2 * l);
+                       24.0 * l2 * l2) / (w2 * w2 * w);
             break;
         }
         case 6: {
-            double l2 = l * l, l3 = l2 * l, t2 = t * t;
+            double w3 = w2 * w;
             out[i] = (120.0 + l * (360.0 + l * (510.0 + l * (450.0 + l * (274.0 + 120.0 * l))))) /
-                (t2 * t2 * t2 * l3 * l3);
+                (w3 * w3);
             break;
         }
         default: out[i] = NA_REAL;
@@ -222,7 +233,9 @@ NumericVector lk_rhobit_fwd_cpp(NumericVector theta, int k) {
     R_xlen_t n = theta.size();
     NumericVector out(n);
     for (R_xlen_t i = 0; i < n; ++i) {
-        double t = theta[i], u = 1.0 - t * t;
+        // u = (1 - t)(1 + t) and not 1 - t * t: the product t * t is rounded to
+        // a spacing of 1e-16 near 1, which is the size of u close to the ends
+        double t = theta[i], u = (1.0 - t) * (1.0 + t);
         switch (k) {
         case 1: out[i] = 1.0 / u; break;
         case 2: out[i] = 2.0 * t / (u * u); break;
@@ -256,28 +269,29 @@ NumericVector lk_rhobit_inv_cpp(NumericVector eta, int k) {
 NumericVector lk_softplus_fwd_cpp(NumericVector theta, double a, int k) {
     R_xlen_t n = theta.size();
     NumericVector out(n);
+    // order k >= 2 is (-1)^(k-1) exp(-z) N_k(e) q^(k-1) / u, with e = exp(-z),
+    // z = a theta, u = 1 - e, q = a / u and N_k the Eulerian numerators
+    // (1; 1, 1; 1, 4, 1; 1, 11, 11, 1; 1, 26, 66, 26, 1). The powers of u and
+    // of a are never formed alone: a / u is about 1 / theta, so neither the
+    // denominator underflows nor the numerator overflows before the value
+    // does, and exp(-z) enters through exp_times() so that a value that is
+    // still a number past z = 745 is not flushed by the first factor.
     for (R_xlen_t i = 0; i < n; ++i) {
         double z = a * theta[i];
         double e = std::exp(-z), u = -std::expm1(-z);
+        double N;
         switch (k) {
-        case 1: out[i] = 1.0 / u; break;
-        case 2: out[i] = -a * e / (u * u); break;
-        case 3: out[i] = a * a * e * (1.0 + e) / (u * u * u); break;
-        case 4: out[i] = -a * a * a * e * (1.0 + e * (4.0 + e)) / (u * u * u * u);
-            break;
-        case 5: {
-            double a2 = a * a, u2 = u * u;
-            out[i] = a2 * a2 * e * (1.0 + e * (11.0 + e * (11.0 + e))) / (u2 * u2 * u);
-            break;
+        case 1: out[i] = 1.0 / u; continue;
+        case 2: N = -1.0; break;
+        case 3: N = 1.0 + e; break;
+        case 4: N = -(1.0 + e * (4.0 + e)); break;
+        case 5: N = 1.0 + e * (11.0 + e * (11.0 + e)); break;
+        case 6: N = -(1.0 + e * (26.0 + e * (66.0 + e * (26.0 + e)))); break;
+        default: out[i] = NA_REAL; continue;
         }
-        // numerator 1 + 26 e + 66 e^2 + 26 e^3 + e^4: Eulerian numbers A(5, k)
-        case 6: {
-            double a2 = a * a, u2 = u * u;
-            out[i] = -a2 * a2 * a * e * (1.0 + e * (26.0 + e * (66.0 + e * (26.0 + e)))) / (u2 * u2 * u2);
-            break;
-        }
-        default: out[i] = NA_REAL;
-        }
+        double q = a / u, qp = q;
+        for (int j = 2; j < k; ++j) qp *= q;
+        out[i] = lf7::exp_times(-z, N * qp / u);
     }
     return out;
 }

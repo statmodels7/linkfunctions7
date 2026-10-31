@@ -59,11 +59,11 @@ S7::method(linkinv, LogLink) <- function(x, eta) exp_floored(eta)
 
 # Exact analytical derivatives of the link function (wrt theta)
 S7::method(dlinkfun, LogLink) <- function(x, theta)  1 / theta
-S7::method(d2linkfun, LogLink) <- function(x, theta) -1 / (theta^2)
-S7::method(d3linkfun, LogLink) <- function(x, theta)  2 / (theta^3)
-S7::method(d4linkfun, LogLink) <- function(x, theta) -6 / (theta^4)
-S7::method(d5linkfun, LogLink) <- function(x, theta) 24 / (theta^5)
-S7::method(d6linkfun, LogLink) <- function(x, theta) -120 / (theta^6)
+S7::method(d2linkfun, LogLink) <- function(x, theta) rescue_pow(-1 / (theta^2), theta, -1, -2)
+S7::method(d3linkfun, LogLink) <- function(x, theta)  rescue_pow(2 / (theta^3), theta, 2, -3)
+S7::method(d4linkfun, LogLink) <- function(x, theta) rescue_pow(-6 / (theta^4), theta, -6, -4)
+S7::method(d5linkfun, LogLink) <- function(x, theta) rescue_pow(24 / (theta^5), theta, 24, -5)
+S7::method(d6linkfun, LogLink) <- function(x, theta) rescue_pow(-120 / (theta^6), theta, -120, -6)
 
 # Exact analytical derivatives of the inverse link function (wrt eta)
 # d^k/deta^k exp(eta) = exp(eta) for all k > 0, floored for numerical stability

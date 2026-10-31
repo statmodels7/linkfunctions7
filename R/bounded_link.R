@@ -199,53 +199,74 @@ S7::method(linkfun, DoublyBoundedLink) <- function(x, theta) {
 S7::method(linkinv, DoublyBoundedLink) <- function(x, eta) {
   x@lwr + x@width * stats::plogis(eta)
 }
-S7::method(dlinkfun, DoublyBoundedLink) <- function(x, theta) {
-  W <- x@width
-  p <- (theta - x@lwr) / W
-  1 / (W * p * (1 - p))
+#' Forward Derivatives of the Doubly Bounded Link
+#'
+#' @description
+#' Computes the derivative of order `k` of the doubly bounded link,
+#' \eqn{(k-1)!\,[(-1)^{k-1}/d^k + 1/u^k]}, with \eqn{d = \theta - l} and
+#' \eqn{u = W - d} the distances to the two bounds. It is the body of the six
+#' forward derivative methods of the class.
+#'
+#' @details
+#' The distance \eqn{d} is exact near the lower bound (Sterbenz) and
+#' \eqn{u = W - d} is exact near the upper one, where \eqn{1 - p} with
+#' \eqn{p = d/W} would cancel. The powers are of the reciprocals, split in two
+#' halves around the factorial, so that neither \eqn{W^k} nor \eqn{d^k}
+#' underflows or overflows before the value does.
+#'
+#' @param x A doubly bounded link.
+#' @param theta A numeric vector inside the bounds.
+#' @param k The derivative order, from 1 to 6.
+#'
+#' @return A numeric vector of the same length as `theta`.
+#'
+#' @keywords internal
+dbl_fwd <- function(x, theta, k) {
+  d <- theta - x@lwr
+  u <- x@width - d
+  cf <- factorial(k - 1L)
+  rd <- 1 / d
+  ru <- 1 / u
+  if (k %% 2L == 1L) {
+    m <- (k + 1L) %/% 2L
+    return((cf * rd^m) * rd^(k - m) + (cf * ru^m) * ru^(k - m))
+  }
+  # even order: cf (ru^k - rd^k) = cf (ru - rd) S_k, S_k a sum of positive
+  # terms, and ru - rd = (d - u) ru rd with d - u = 2 d - W exact near the
+  # middle, so the value stays accurate where the two terms nearly cancel
+  # and is +-Inf, not NaN, where each term overflows
+  delta <- (2 * d - x@width) * ru * rd
+  S <- switch(k / 2L,
+    ru + rd,
+    (ru + rd) * (ru^2 + rd^2),
+    (ru + rd) * (ru^4 + ru^2 * rd^2 + rd^4))
+  r <- (cf * delta) * S
+  r[which(delta == 0)] <- 0
+  r
 }
-S7::method(d2linkfun, DoublyBoundedLink) <- function(x, theta) {
-  W <- x@width
-  p <- (theta - x@lwr) / W
-  (2 * p - 1) / ((W^2) * (p^2) * ((1 - p)^2))
-}
-S7::method(d3linkfun, DoublyBoundedLink) <- function(x, theta) {
-  W <- x@width
-  p <- (theta - x@lwr) / W
-  (2 / (p^3) + 2 / ((1 - p)^3)) / (W^3)
-}
-S7::method(d4linkfun, DoublyBoundedLink) <- function(x, theta) {
-  W <- x@width
-  p <- (theta - x@lwr) / W
-  (-6 / (p^4) + 6 / ((1 - p)^4)) / (W^4)
-}
-S7::method(d5linkfun, DoublyBoundedLink) <- function(x, theta) {
-  W <- x@width
-  p <- (theta - x@lwr) / W
-  (24 / (p^5) + 24 / ((1 - p)^5)) / (W^5)
-}
-S7::method(d6linkfun, DoublyBoundedLink) <- function(x, theta) {
-  W <- x@width
-  p <- (theta - x@lwr) / W
-  (-120 / (p^6) + 120 / ((1 - p)^6)) / (W^6)
-}
+S7::method(dlinkfun,  DoublyBoundedLink) <- function(x, theta) dbl_fwd(x, theta, 1L)
+S7::method(d2linkfun, DoublyBoundedLink) <- function(x, theta) dbl_fwd(x, theta, 2L)
+S7::method(d3linkfun, DoublyBoundedLink) <- function(x, theta) dbl_fwd(x, theta, 3L)
+S7::method(d4linkfun, DoublyBoundedLink) <- function(x, theta) dbl_fwd(x, theta, 4L)
+S7::method(d5linkfun, DoublyBoundedLink) <- function(x, theta) dbl_fwd(x, theta, 5L)
+S7::method(d6linkfun, DoublyBoundedLink) <- function(x, theta) dbl_fwd(x, theta, 6L)
 S7::method(dlinkinv, DoublyBoundedLink) <- function(x, eta) {
-  x@width * lk_logit_inv_cpp(eta, 1L)
+  lk_logit_inv_scaled_cpp(eta, 1L, x@width)
 }
 S7::method(d2linkinv, DoublyBoundedLink) <- function(x, eta) {
-  x@width * lk_logit_inv_cpp(eta, 2L)
+  lk_logit_inv_scaled_cpp(eta, 2L, x@width)
 }
 S7::method(d3linkinv, DoublyBoundedLink) <- function(x, eta) {
-  x@width * lk_logit_inv_cpp(eta, 3L)
+  lk_logit_inv_scaled_cpp(eta, 3L, x@width)
 }
 S7::method(d4linkinv, DoublyBoundedLink) <- function(x, eta) {
-  x@width * lk_logit_inv_cpp(eta, 4L)
+  lk_logit_inv_scaled_cpp(eta, 4L, x@width)
 }
 S7::method(d5linkinv, DoublyBoundedLink) <- function(x, eta) {
-  x@width * lk_logit_inv_cpp(eta, 5L)
+  lk_logit_inv_scaled_cpp(eta, 5L, x@width)
 }
 S7::method(d6linkinv, DoublyBoundedLink) <- function(x, eta) {
-  x@width * lk_logit_inv_cpp(eta, 6L)
+  lk_logit_inv_scaled_cpp(eta, 6L, x@width)
 }
 
 # --- Methods for LowerBoundedLink ---
@@ -256,11 +277,11 @@ S7::method(d6linkinv, DoublyBoundedLink) <- function(x, eta) {
 S7::method(linkfun, LowerBoundedLink) <- function(x, theta) log(theta - x@lwr)
 S7::method(linkinv, LowerBoundedLink) <- function(x, eta) x@lwr + exp_floored(eta)
 S7::method(dlinkfun, LowerBoundedLink) <- function(x, theta) 1 / (theta - x@lwr)
-S7::method(d2linkfun, LowerBoundedLink) <- function(x, theta) -1 / ((theta - x@lwr)^2)
-S7::method(d3linkfun, LowerBoundedLink) <- function(x, theta) 2 / ((theta - x@lwr)^3)
-S7::method(d4linkfun, LowerBoundedLink) <- function(x, theta) -6 / ((theta - x@lwr)^4)
-S7::method(d5linkfun, LowerBoundedLink) <- function(x, theta) 24 / ((theta - x@lwr)^5)
-S7::method(d6linkfun, LowerBoundedLink) <- function(x, theta) -120 / ((theta - x@lwr)^6)
+S7::method(d2linkfun, LowerBoundedLink) <- function(x, theta) rescue_pow(-1 / ((theta - x@lwr)^2), (theta - x@lwr), -1, -2)
+S7::method(d3linkfun, LowerBoundedLink) <- function(x, theta) rescue_pow(2 / ((theta - x@lwr)^3), (theta - x@lwr), 2, -3)
+S7::method(d4linkfun, LowerBoundedLink) <- function(x, theta) rescue_pow(-6 / ((theta - x@lwr)^4), (theta - x@lwr), -6, -4)
+S7::method(d5linkfun, LowerBoundedLink) <- function(x, theta) rescue_pow(24 / ((theta - x@lwr)^5), (theta - x@lwr), 24, -5)
+S7::method(d6linkfun, LowerBoundedLink) <- function(x, theta) rescue_pow(-120 / ((theta - x@lwr)^6), (theta - x@lwr), -120, -6)
 S7::method(dlinkinv, LowerBoundedLink) <- function(x, eta) exp_floored(eta)
 S7::method(d2linkinv, LowerBoundedLink) <- function(x, eta) exp_floored(eta)
 S7::method(d3linkinv, LowerBoundedLink) <- function(x, eta) exp_floored(eta)
@@ -276,11 +297,11 @@ S7::method(d6linkinv, LowerBoundedLink) <- function(x, eta) exp_floored(eta)
 S7::method(linkfun, UpperBoundedLink) <- function(x, theta) log(x@upr - theta)
 S7::method(linkinv, UpperBoundedLink) <- function(x, eta) x@upr - exp_floored(eta)
 S7::method(dlinkfun, UpperBoundedLink) <- function(x, theta) -1 / (x@upr - theta)
-S7::method(d2linkfun, UpperBoundedLink) <- function(x, theta) -1 / ((x@upr - theta)^2)
-S7::method(d3linkfun, UpperBoundedLink) <- function(x, theta) -2 / ((x@upr - theta)^3)
-S7::method(d4linkfun, UpperBoundedLink) <- function(x, theta) -6 / ((x@upr - theta)^4)
-S7::method(d5linkfun, UpperBoundedLink) <- function(x, theta) -24 / ((x@upr - theta)^5)
-S7::method(d6linkfun, UpperBoundedLink) <- function(x, theta) -120 / ((x@upr - theta)^6)
+S7::method(d2linkfun, UpperBoundedLink) <- function(x, theta) rescue_pow(-1 / ((x@upr - theta)^2), (x@upr - theta), -1, -2)
+S7::method(d3linkfun, UpperBoundedLink) <- function(x, theta) rescue_pow(-2 / ((x@upr - theta)^3), (x@upr - theta), -2, -3)
+S7::method(d4linkfun, UpperBoundedLink) <- function(x, theta) rescue_pow(-6 / ((x@upr - theta)^4), (x@upr - theta), -6, -4)
+S7::method(d5linkfun, UpperBoundedLink) <- function(x, theta) rescue_pow(-24 / ((x@upr - theta)^5), (x@upr - theta), -24, -5)
+S7::method(d6linkfun, UpperBoundedLink) <- function(x, theta) rescue_pow(-120 / ((x@upr - theta)^6), (x@upr - theta), -120, -6)
 S7::method(dlinkinv, UpperBoundedLink) <- function(x, eta) -exp_floored(eta)
 S7::method(d2linkinv, UpperBoundedLink) <- function(x, eta) -exp_floored(eta)
 S7::method(d3linkinv, UpperBoundedLink) <- function(x, eta) -exp_floored(eta)

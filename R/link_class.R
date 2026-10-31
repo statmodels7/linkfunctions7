@@ -112,6 +112,42 @@ na_from <- function(r, v) {
   r
 }
 
+#' Recompute a Power Term Without a Premature Overflow
+#'
+#' @description
+#' Replaces the elements of `r`, a derivative of the form \eqn{c\,v^q} that was
+#' computed as a quotient or a product, by the same quantity formed with the
+#' power split in two halves, \eqn{(c\,v^{q/2})\,v^{q/2}}, where `r` is
+#' infinite or below 1e-290 (zero, or subnormal with its precision lost, a loss
+#' that the coefficient then multiplies) although the value is not.
+#'
+#' @details
+#' A derivative such as \eqn{-120/\theta^6} divides by a power that overflows
+#' before the quotient underflows (\eqn{\theta > 10^{51.4}}), and
+#' \eqn{24/\theta^5} multiplies a small coefficient by a power that
+#' overflows before the product does. Only the elements that came out
+#' infinite or tiny are recomputed, so the values of ordinary size are
+#' unchanged to the last bit. An element that is still infinite or zero after
+#' the split is a true overflow or underflow.
+#'
+#' @param r A numeric vector, the first computation of the derivative.
+#' @param v A numeric vector, the base of the power (\eqn{\theta},
+#'   \eqn{\eta}, or a distance to a bound).
+#' @param cf The coefficient \eqn{c}.
+#' @param q The exponent \eqn{q} of the power.
+#'
+#' @return A numeric vector of the same length as `r`.
+#'
+#' @keywords internal
+rescue_pow <- function(r, v, cf, q) {
+  bad <- which((is.infinite(r) | abs(r) < 1e-290) & is.finite(v) & v > 0)
+  if (length(bad)) {
+    s <- v[bad]^(q / 2)
+    r[bad] <- (cf * s) * s
+  }
+  r
+}
+
 #' Derivatives of the Standard Logistic Function
 #'
 #' @description

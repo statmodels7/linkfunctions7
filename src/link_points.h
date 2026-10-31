@@ -36,6 +36,18 @@ inline double logistic_poly(double p, int k) {
 // order 0, where pq is 8.5e-17. P_3 = pq(1 - 6pq), P_4 = pq(q - p)(1 - 12pq)
 // and P_5 = pq(1 - 30pq + 120(pq)^2) expand to logistic_poly()'s forms.
 inline double logit_inv(double eta, int k) {
+    // Beyond |eta| = 600 the value is exp(-|eta|) to the working precision
+    // (pq = a / (1 + a)^2 with a < 1e-261), signed by the parity of the order
+    // and the side. The direct form returns 0 from |eta| = 709.78, where
+    // exp(|eta|) overflows, although the value is a number down to 745.
+    if (std::fabs(eta) > 600.0) {
+        double a = std::exp(-std::fabs(eta));
+        switch (k) {
+        case 1: case 3: case 5: return a;
+        case 2: case 4: case 6: return eta > 0.0 ? -a : a;
+        default: return NA_REAL;
+        }
+    }
     double p = 1.0 / (1.0 + std::exp(-eta));
     double q = 1.0 / (1.0 + std::exp(eta));
     double pq = p * q;
@@ -50,83 +62,111 @@ inline double logit_inv(double eta, int k) {
     }
 }
 
+// s * logit_inv(eta, k) where the product, not the factor, is the quantity
+// that must not underflow: beyond |eta| = 600 it is formed as
+// exp(log|s| - |eta|), so that a large s (the width of a doubly bounded link,
+// a power of the softplus scale) keeps the representable values.
+inline double logit_inv_scaled(double eta, int k, double s) {
+    if (std::fabs(eta) > 600.0) {
+        if (ISNAN(eta) || ISNAN(s) || s == 0.0) return eta * s;
+        if (k < 1 || k > 6) return NA_REAL;
+        // the sign is the parity of the order and the side of eta; the value
+        // itself may already be the subnormal 0 that this branch exists for
+        double sg = (k % 2 == 1) ? 1.0 : (eta > 0.0 ? -1.0 : 1.0);
+        if (s < 0.0) sg = -sg;
+        return sg * std::exp(std::log(std::fabs(s)) - std::fabs(eta));
+    }
+    return s * logit_inv(eta, k);
+}
+
+// phi(e) P_k(e) with P_k the Hermite polynomials: -e phi, (e^2 - 1) phi, ...
+// Where phi underflows (|e| > 37.1) the product is formed through
+// exp_times(), so that the values that are still numbers up to |e| = 38.6
+// are not flushed to zero or computed from a subnormal phi; beyond 1e30
+// phi is 0 and e^5 would overflow, and the value is 0.
 inline double probit_inv(double e, int k) {
     double phi = R::dnorm4(e, 0.0, 1.0, 0);
+    double e2 = e * e, P;
     switch (k) {
-    case 1: return phi;
-    case 2: return -e * phi;
-    case 3: return (e * e - 1.0) * phi;
-    case 4: return (3.0 * e - e * e * e) * phi;
-    case 5: {
-        double e2 = e * e;
-        return (e2 * e2 - 6.0 * e2 + 3.0) * phi;
-    }
-    case 6: {
-        double e2 = e * e;
-        return -e * (e2 * e2 - 10.0 * e2 + 15.0) * phi;
-    }
+    case 1: P = 1.0; break;
+    case 2: P = -e; break;
+    case 3: P = e2 - 1.0; break;
+    case 4: P = 3.0 * e - e * e2; break;
+    case 5: P = e2 * e2 - 6.0 * e2 + 3.0; break;
+    case 6: P = -e * (e2 * e2 - 10.0 * e2 + 15.0); break;
     default: return NA_REAL;
     }
+    if (std::fabs(e) > 1e30) return 0.0;
+    if (phi > 1e-290 || ISNAN(phi) || ISNAN(P) || P == 0.0) return phi * P;
+    return std::copysign(std::exp(-0.5 * e2 - 0.91893853320467274178 + std::log(std::fabs(P))), P);
 }
 
+// exp(a) * P without a premature underflow: where exp(a) is below 1e-290 the
+// product is formed as exp(a + log|P|), so that a result still representable
+// (a subnormal, say) is not flushed to zero by the first factor. P is a
+// finite polynomial value there; a NaN in either factor is returned as is.
+inline double exp_times(double a, double P) {
+    double E = std::exp(a);
+    if (E > 1e-290 || ISNAN(E) || ISNAN(P) || P == 0.0) return E * P;
+    return std::copysign(std::exp(a + std::log(std::fabs(P))), P);
+}
+
+// h(eta) = 1 - exp(-exp(eta)). With w = exp(eta), the derivative of order k is
+// exp(eta - w) Q_k(w), Q_1 = 1, Q_{k+1} = (1 - w) Q_k + w Q_k'. For w > 1e30
+// exp(-w) is 0 and the polynomial would overflow (w^5 from w = 1e61.6, so
+// 0 * Inf = NaN, and Inf for w = Inf at eta > 709.78): the value is 0 there.
 inline double cloglog_inv(double eta, int k) {
     double w = std::exp(eta);
-    double E = std::exp(eta - w);
+    double P;
     switch (k) {
-    case 1: return E;
-    case 2: return E * (1.0 - w);
-    case 3: return E * (1.0 + w * (-3.0 + w));
-    case 4: return E * (1.0 + w * (-7.0 + w * (6.0 - w)));
-    case 5: return E * (1.0 + w * (-15.0 + w * (25.0 + w * (-10.0 + w))));
-    // Q_6 = 1 - 31 w + 90 w^2 - 65 w^3 + 15 w^4 - w^5. For w > 1e30 the factor
-    // E = exp(eta - w) is exactly 0 and w^5 overflows from w = 1e61.6, which
-    // would give 0 * Inf = NaN where the fifth (w^4, overflow from 1e77) is
-    // still 0; the value is returned as 0 there.
-    case 6:
-        if (w > 1e30) return 0.0;
-        return E * (1.0 + w * (-31.0 + w * (90.0 + w * (-65.0 + w * (15.0 - w)))));
+    case 1: P = 1.0; break;
+    case 2: P = 1.0 - w; break;
+    case 3: P = 1.0 + w * (-3.0 + w); break;
+    case 4: P = 1.0 + w * (-7.0 + w * (6.0 - w)); break;
+    case 5: P = 1.0 + w * (-15.0 + w * (25.0 + w * (-10.0 + w))); break;
+    case 6: P = 1.0 + w * (-31.0 + w * (90.0 + w * (-65.0 + w * (15.0 - w)))); break;
     default: return NA_REAL;
     }
+    if (w > 1e30) return 0.0;
+    return exp_times(eta - w, P);
 }
 
+// h(eta) = exp(-exp(-eta)). With z = exp(-eta), the derivative of order k is
+// (-1)^{k-1} exp(-z) z Q_k(z), the polynomials of the cloglog; exp(-z) z is
+// formed as exp(-eta - z). Zero for z > 1e30, as in the cloglog.
 inline double loglog_inv(double eta, int k) {
     double z = std::exp(-eta);
-    double E = std::exp(-z);
+    double P;
     switch (k) {
-    case 1: return E * z;
-    case 2: return E * z * (z - 1.0);
-    case 3: return E * z * (1.0 + z * (-3.0 + z));
-    case 4: return E * z * (-1.0 + z * (7.0 + z * (-6.0 + z)));
-    case 5: return E * z * (1.0 + z * (-15.0 + z * (25.0 + z * (-10.0 + z))));
-    // -E z Q_6(z), the same polynomial as the cloglog's in z = exp(-eta). The
-    // guard returns 0 where E = exp(-z) is 0 and z^5 would overflow (z > 1e30).
-    case 6:
-        if (z > 1e30) return 0.0;
-        return -E * z * (1.0 + z * (-31.0 + z * (90.0 + z * (-65.0 + z * (15.0 - z)))));
+    case 1: P = 1.0; break;
+    case 2: P = z - 1.0; break;
+    case 3: P = 1.0 + z * (-3.0 + z); break;
+    case 4: P = -1.0 + z * (7.0 + z * (-6.0 + z)); break;
+    case 5: P = 1.0 + z * (-15.0 + z * (25.0 + z * (-10.0 + z))); break;
+    case 6: P = -(1.0 + z * (-31.0 + z * (90.0 + z * (-65.0 + z * (15.0 - z))))); break;
     default: return NA_REAL;
     }
+    if (z > 1e30) return 0.0;
+    return exp_times(-eta - z, P);
 }
 
+// h(eta) = 1/2 + atan(eta)/pi. With a = 1/(1 + e^2) and b = e^2 a = 1 - a,
+// every order is a power of a times a polynomial in (a, b) and the factor
+// e a, which stay finite and exact for any |e| (u = 1 + e^2 overflows at
+// 1.3e154, and u^2, u^3, ... earlier, while the value is still a number).
+// b is formed as e^2 a for |e| <= 1 and as 1 - a beyond, so that neither
+// form cancels; a is (1/e)/e once e^2 overflows.
 inline double cauchit_inv(double e, int k) {
-    double u = 1.0 + e * e;
+    double a = (std::fabs(e) > 1e150) ? (1.0 / e) / e : 1.0 / (1.0 + e * e);
+    double b = (std::fabs(e) <= 1.0) ? e * e * a : 1.0 - a;
+    double ea = e * a;
     switch (k) {
-    case 1: return 1.0 / (M_PI * u);
-    case 2: return -2.0 * e / (M_PI * u * u);
-    case 3: return 2.0 * (3.0 * e * e - 1.0) / (M_PI * u * u * u);
-    case 4: return 24.0 * e * (1.0 - e * e) / (M_PI * u * u * u * u);
-    case 5: {
-        double u2 = u * u, e2 = e * e;
-        return 24.0 * (1.0 - 10.0 * e2 + 5.0 * e2 * e2) / (M_PI * u2 * u2 * u);
-    }
-    // -240 e (3 - 10 e^2 + 3 e^4) / (pi u^6), written with a = 1/u and
-    // b = e^2/u = 1 - a, so that a very large |e| gives 0 and not the NaN of
-    // Inf/Inf (u^6 overflows at |e| = 1e25.6, e^5 at 1e61.6). b is formed as
-    // e^2 a for |e| <= 1 and as 1 - a beyond, so that neither form cancels.
-    case 6: {
-        double a = 1.0 / u;
-        double b = (std::fabs(e) <= 1.0) ? e * e * a : 1.0 - a;
-        return -240.0 * (e * a) * a * a * a * (3.0 * b * b - 10.0 * a * b + 3.0 * a * a) / M_PI;
-    }
+    case 1: return a / M_PI;
+    case 2: return -2.0 * ea * a / M_PI;
+    case 3: return 2.0 * (3.0 * b - a) * a * a / M_PI;
+    case 4: return 24.0 * ea * (a - b) * a * a / M_PI;
+    case 5: return 24.0 * (a * a - 10.0 * a * b + 5.0 * b * b) * a * a * a / M_PI;
+    case 6: return -240.0 * ea * a * a * a * (3.0 * b * b - 10.0 * a * b + 3.0 * a * a) / M_PI;
     default: return NA_REAL;
     }
 }
@@ -136,6 +176,17 @@ inline double cauchit_inv(double e, int k) {
 // eta = 20 the subtraction returns 0 where u is 1.7e-17. Each order is u
 // times a polynomial in t and u, from dt = u and du = -2tu.
 inline double rhobit_inv(double eta, int k) {
+    // Beyond |eta| = 300 the value is 4 (-2 t)^(k-1) exp(-2 |eta|), t = +-1, to
+    // the working precision (the corrections are O(exp(-600))), formed in
+    // one exponential so that the result keeps its precision down to the
+    // smallest subnormal; through u = 4a / (1 + a)^2 the subnormal a would
+    // be multiplied by the coefficient, up to 128, with its rounding error.
+    if (std::fabs(eta) > 300.0) {
+        if (k < 1 || k > 6) return NA_REAL;
+        double s = eta > 0.0 ? 1.0 : -1.0, c = 4.0;
+        for (int j = 1; j < k; ++j) c *= -2.0 * s;
+        return std::copysign(std::exp(std::log(std::fabs(c)) - 2.0 * std::fabs(eta)), c);
+    }
     double t = std::tanh(eta), t2 = t * t;
     double a = std::exp(-2.0 * std::fabs(eta));
     double u = 4.0 * a / ((1.0 + a) * (1.0 + a));

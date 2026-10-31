@@ -108,22 +108,28 @@ S7::method(d6linkfun, SoftplusLink) <- function(x, theta) lk_softplus_fwd_cpp(th
 # a^k sigma^(k). They are the same four polynomials the logit and the doubly
 # bounded link use, hence the shared helper.
 S7::method(dlinkinv, SoftplusLink) <- function(x, eta) {
-  stats::plogis(x@a * eta)
+  z <- x@a * eta
+  p <- stats::plogis(z)
+  # plogis() returns 0 from z = -710, where exp(-z) overflows, although the
+  # value exp(z) is a number down to z = -745
+  lo <- which(z < -700)
+  p[lo] <- exp(z[lo])
+  p
 }
 S7::method(d2linkinv, SoftplusLink) <- function(x, eta) {
-  x@a * lk_logit_inv_cpp(x@a * eta, 1L)
+  lk_logit_inv_scaled_cpp(x@a * eta, 1L, x@a^1)
 }
 S7::method(d3linkinv, SoftplusLink) <- function(x, eta) {
-  (x@a^2) * lk_logit_inv_cpp(x@a * eta, 2L)
+  lk_logit_inv_scaled_cpp(x@a * eta, 2L, x@a^2)
 }
 S7::method(d4linkinv, SoftplusLink) <- function(x, eta) {
-  (x@a^3) * lk_logit_inv_cpp(x@a * eta, 3L)
+  lk_logit_inv_scaled_cpp(x@a * eta, 3L, x@a^3)
 }
 S7::method(d5linkinv, SoftplusLink) <- function(x, eta) {
-  (x@a^4) * lk_logit_inv_cpp(x@a * eta, 4L)
+  lk_logit_inv_scaled_cpp(x@a * eta, 4L, x@a^4)
 }
 S7::method(d6linkinv, SoftplusLink) <- function(x, eta) {
-  (x@a^5) * lk_logit_inv_cpp(x@a * eta, 5L)
+  lk_logit_inv_scaled_cpp(x@a * eta, 5L, x@a^5)
 }
 
 #' @title The Softplus Link Function

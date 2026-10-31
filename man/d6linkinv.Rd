@@ -41,6 +41,14 @@ In code where speed matters, call this generic directly: \code{\link[=linkderiv]
 \code{\link[=linkinvderiv]{linkinvderiv()}} route by order and so dispatch twice, once on themselves
 and once here, and on a short vector the routed call takes two to three
 times as long as the direct one.
+
+The inverse direction is finite at every linear predictor on which the
+value itself is representable: the derivatives that decay (the logit,
+probit, cloglog, loglog, cauchit and rhobit links in the tails) are
+formed so that they are not flushed to zero before the true value is, and
+they are \code{0} only where it is below the smallest subnormal. The log,
+lower- and upper-bounded links overflow with the exponential, for
+\eqn{\eta} above about 709.78.
 }
 \examples{
 # Every derivative of exp is exp, so the log link's inverse gives the

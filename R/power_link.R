@@ -61,29 +61,55 @@ PowerLink <- S7::new_class(
 S7::method(linkfun, PowerLink) <- function(x, theta) theta^x@lambda
 S7::method(linkinv, PowerLink) <- function(x, eta) eta^(1 / x@lambda)
 
-S7::method(dlinkfun, PowerLink) <- function(x, theta) na_from(x@lambda * (theta^(x@lambda - 1)), theta)
-S7::method(d2linkfun, PowerLink) <- function(x, theta) na_from(x@lambda * (x@lambda - 1) * (theta^(x@lambda - 2)), theta)
-S7::method(d3linkfun, PowerLink) <- function(x, theta) na_from(x@lambda * (x@lambda - 1) * (x@lambda - 2) * (theta^(x@lambda - 3)), theta)
-S7::method(d4linkfun, PowerLink) <- function(x, theta) na_from(x@lambda * (x@lambda - 1) * (x@lambda - 2) * (x@lambda - 3) * (theta^(x@lambda - 4)), theta)
-S7::method(d5linkfun, PowerLink) <- function(x, theta) na_from(x@lambda * (x@lambda - 1) * (x@lambda - 2) * (x@lambda - 3) * (x@lambda - 4) * (theta^(x@lambda - 5)), theta)
-S7::method(d6linkfun, PowerLink) <- function(x, theta) {
-  l <- x@lambda
-  cf <- l * (l - 1) * (l - 2) * (l - 3) * (l - 4) * (l - 5)
-  if (cf == 0) return(na_from(rep(0, length(theta)), theta))
-  na_from(cf * (theta^(l - 6)), theta)
+#' Derivative of a Power
+#'
+#' @description
+#' Computes the derivative of order `order` of \eqn{v^p}, which is
+#' \eqn{c\,v^{p - \mathrm{order}}} with \eqn{c = p(p-1)\cdots(p - \mathrm{order} + 1)}.
+#' It is the body of the derivative methods of [power_link()], in both
+#' directions.
+#'
+#' @details
+#' The coefficient \eqn{c} is multiplied from left to right. When it is exactly
+#' zero, which happens for a whole number \eqn{p} from 0 to `order - 1`, the
+#' derivative is identically zero and zeros are returned directly, so that the
+#' product \eqn{0 \cdot v^{p - \mathrm{order}}} does not give `NaN` where the
+#' power overflows. A product that overflows or underflows in its second
+#' factor alone is recomputed with the power split in two halves,
+#' \eqn{(c\,v^h)\,v^h} with \eqn{h = (p - \mathrm{order})/2}, which is
+#' finite whenever the value is.
+#'
+#' @param v A numeric vector: \eqn{\theta} in the forward direction, \eqn{\eta}
+#'   in the inverse one.
+#' @param p The exponent: \eqn{\lambda} forward, \eqn{1/\lambda} inverse.
+#' @param order The derivative order, from 1 to 6.
+#'
+#' @return A numeric vector of the same length as `v`, missing wherever `v` is.
+#'
+#' @keywords internal
+power_deriv <- function(v, p, order) {
+  cf <- 1
+  for (j in seq_len(order) - 1L) cf <- cf * (p - j)
+  if (cf == 0) return(na_from(rep(0, length(v)), v))
+  q <- p - order
+  r <- cf * (v^q)
+  r <- rescue_pow(r, v, cf, q)
+  na_from(r, v)
 }
 
-S7::method(dlinkinv, PowerLink) <- function(x, eta) { k <- 1 / x@lambda; na_from(k * (eta^(k - 1)), eta) }
-S7::method(d2linkinv, PowerLink) <- function(x, eta) { k <- 1 / x@lambda; na_from(k * (k - 1) * (eta^(k - 2)), eta) }
-S7::method(d3linkinv, PowerLink) <- function(x, eta) { k <- 1 / x@lambda; na_from(k * (k - 1) * (k - 2) * (eta^(k - 3)), eta) }
-S7::method(d4linkinv, PowerLink) <- function(x, eta) { k <- 1 / x@lambda; na_from(k * (k - 1) * (k - 2) * (k - 3) * (eta^(k - 4)), eta) }
-S7::method(d5linkinv, PowerLink) <- function(x, eta) { k <- 1 / x@lambda; na_from(k * (k - 1) * (k - 2) * (k - 3) * (k - 4) * (eta^(k - 5)), eta) }
-S7::method(d6linkinv, PowerLink) <- function(x, eta) {
-  k <- 1 / x@lambda
-  cf <- k * (k - 1) * (k - 2) * (k - 3) * (k - 4) * (k - 5)
-  if (cf == 0) return(na_from(rep(0, length(eta)), eta))
-  na_from(cf * (eta^(k - 6)), eta)
-}
+S7::method(dlinkfun,  PowerLink) <- function(x, theta) power_deriv(theta, x@lambda, 1L)
+S7::method(d2linkfun, PowerLink) <- function(x, theta) power_deriv(theta, x@lambda, 2L)
+S7::method(d3linkfun, PowerLink) <- function(x, theta) power_deriv(theta, x@lambda, 3L)
+S7::method(d4linkfun, PowerLink) <- function(x, theta) power_deriv(theta, x@lambda, 4L)
+S7::method(d5linkfun, PowerLink) <- function(x, theta) power_deriv(theta, x@lambda, 5L)
+S7::method(d6linkfun, PowerLink) <- function(x, theta) power_deriv(theta, x@lambda, 6L)
+
+S7::method(dlinkinv,  PowerLink) <- function(x, eta) power_deriv(eta, 1 / x@lambda, 1L)
+S7::method(d2linkinv, PowerLink) <- function(x, eta) power_deriv(eta, 1 / x@lambda, 2L)
+S7::method(d3linkinv, PowerLink) <- function(x, eta) power_deriv(eta, 1 / x@lambda, 3L)
+S7::method(d4linkinv, PowerLink) <- function(x, eta) power_deriv(eta, 1 / x@lambda, 4L)
+S7::method(d5linkinv, PowerLink) <- function(x, eta) power_deriv(eta, 1 / x@lambda, 5L)
+S7::method(d6linkinv, PowerLink) <- function(x, eta) power_deriv(eta, 1 / x@lambda, 6L)
 
 #' @title The Power Link Function
 #'

@@ -13,6 +13,10 @@ lk_logit_inv_cpp <- function(eta, k) {
     .Call(`_linkfunctions7_lk_logit_inv_cpp`, eta, k)
 }
 
+lk_logit_inv_scaled_cpp <- function(eta, k, s) {
+    .Call(`_linkfunctions7_lk_logit_inv_scaled_cpp`, eta, k, s)
+}
+
 lk_logistic_poly_cpp <- function(p, k) {
     .Call(`_linkfunctions7_lk_logistic_poly_cpp`, p, k)
 }

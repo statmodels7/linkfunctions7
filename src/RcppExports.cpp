@@ -48,6 +48,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// lk_logit_inv_scaled_cpp
+NumericVector lk_logit_inv_scaled_cpp(NumericVector eta, int k, double s);
+RcppExport SEXP _linkfunctions7_lk_logit_inv_scaled_cpp(SEXP etaSEXP, SEXP kSEXP, SEXP sSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type eta(etaSEXP);
+    Rcpp::traits::input_parameter< int >::type k(kSEXP);
+    Rcpp::traits::input_parameter< double >::type s(sSEXP);
+    rcpp_result_gen = Rcpp::wrap(lk_logit_inv_scaled_cpp(eta, k, s));
+    return rcpp_result_gen;
+END_RCPP
+}
 // lk_logistic_poly_cpp
 NumericVector lk_logistic_poly_cpp(NumericVector p, int k);
 RcppExport SEXP _linkfunctions7_lk_logistic_poly_cpp(SEXP pSEXP, SEXP kSEXP) {
@@ -210,6 +223,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_linkfunctions7_lf7_class_probe", (DL_FUNC) &_linkfunctions7_lf7_class_probe, 3},
     {"_linkfunctions7_lf7_scalar_probe", (DL_FUNC) &_linkfunctions7_lf7_scalar_probe, 3},
     {"_linkfunctions7_lk_logit_inv_cpp", (DL_FUNC) &_linkfunctions7_lk_logit_inv_cpp, 2},
+    {"_linkfunctions7_lk_logit_inv_scaled_cpp", (DL_FUNC) &_linkfunctions7_lk_logit_inv_scaled_cpp, 3},
     {"_linkfunctions7_lk_logistic_poly_cpp", (DL_FUNC) &_linkfunctions7_lk_logistic_poly_cpp, 2},
     {"_linkfunctions7_lk_logit_fwd_cpp", (DL_FUNC) &_linkfunctions7_lk_logit_fwd_cpp, 2},
     {"_linkfunctions7_lk_probit_fwd_cpp", (DL_FUNC) &_linkfunctions7_lk_probit_fwd_cpp, 2},

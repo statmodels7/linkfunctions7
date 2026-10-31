@@ -58,22 +58,22 @@ S7::method(linkfun, InverseLink) <- function(x, theta) 1 / theta
 S7::method(linkinv, InverseLink) <- function(x, eta) 1 / eta
 
 # Exact analytical derivatives of the link function (wrt theta)
-S7::method(dlinkfun, InverseLink) <- function(x, theta) -1 / (theta^2)
-S7::method(d2linkfun, InverseLink) <- function(x, theta)  2 / (theta^3)
-S7::method(d3linkfun, InverseLink) <- function(x, theta) -6 / (theta^4)
-S7::method(d4linkfun, InverseLink) <- function(x, theta) 24 / (theta^5)
-S7::method(d5linkfun, InverseLink) <- function(x, theta) -120 / (theta^6)
-S7::method(d6linkfun, InverseLink) <- function(x, theta) 720 / (theta^7)
+S7::method(dlinkfun, InverseLink) <- function(x, theta) rescue_pow(-1 / (theta^2), theta, -1, -2)
+S7::method(d2linkfun, InverseLink) <- function(x, theta)  rescue_pow(2 / (theta^3), theta, 2, -3)
+S7::method(d3linkfun, InverseLink) <- function(x, theta) rescue_pow(-6 / (theta^4), theta, -6, -4)
+S7::method(d4linkfun, InverseLink) <- function(x, theta) rescue_pow(24 / (theta^5), theta, 24, -5)
+S7::method(d5linkfun, InverseLink) <- function(x, theta) rescue_pow(-120 / (theta^6), theta, -120, -6)
+S7::method(d6linkfun, InverseLink) <- function(x, theta) rescue_pow(720 / (theta^7), theta, 720, -7)
 
 # Exact analytical derivatives of the inverse link function (wrt eta)
 # Due to the symmetric nature of f(x) = 1/x, these are structurally identical
 # to the link function derivatives, but evaluated at eta.
-S7::method(dlinkinv, InverseLink) <- function(x, eta) -1 / (eta^2)
-S7::method(d2linkinv, InverseLink) <- function(x, eta)  2 / (eta^3)
-S7::method(d3linkinv, InverseLink) <- function(x, eta) -6 / (eta^4)
-S7::method(d4linkinv, InverseLink) <- function(x, eta) 24 / (eta^5)
-S7::method(d5linkinv, InverseLink) <- function(x, eta) -120 / (eta^6)
-S7::method(d6linkinv, InverseLink) <- function(x, eta) 720 / (eta^7)
+S7::method(dlinkinv, InverseLink) <- function(x, eta) rescue_pow(-1 / (eta^2), eta, -1, -2)
+S7::method(d2linkinv, InverseLink) <- function(x, eta)  rescue_pow(2 / (eta^3), eta, 2, -3)
+S7::method(d3linkinv, InverseLink) <- function(x, eta) rescue_pow(-6 / (eta^4), eta, -6, -4)
+S7::method(d4linkinv, InverseLink) <- function(x, eta) rescue_pow(24 / (eta^5), eta, 24, -5)
+S7::method(d5linkinv, InverseLink) <- function(x, eta) rescue_pow(-120 / (eta^6), eta, -120, -6)
+S7::method(d6linkinv, InverseLink) <- function(x, eta) rescue_pow(720 / (eta^7), eta, 720, -7)
 
 #' @title The Inverse (Reciprocal) Link Function
 #'

@@ -287,6 +287,14 @@ d5linkfun <- S7::new_generic("d5linkfun", "x", fun = function(x, theta) S7::S7_d
 #' [linkinvderiv()] route by order and so dispatch twice, once on themselves
 #' and once here, and on a short vector the routed call takes two to three
 #' times as long as the direct one.
+#'
+#' The result is a signed infinity only where the derivative itself exceeds
+#' the largest double, and the powers and products are arranged so that no
+#' intermediate quantity overflows or underflows first. For the log,
+#' lower-bounded and upper-bounded links this happens for \eqn{\theta}
+#' (or the distance to the bound) below about \eqn{9.3 \times 10^{-52}}, and
+#' for the logit, probit, cloglog, loglog and cauchit links at the
+#' corresponding probabilities close to 0.
 #' @param x An object of class `link`.
 #' @param theta A numeric vector of parameter values, inside
 #'   `x@link_bounds`. The domain is not checked: outside it the formula is
@@ -532,6 +540,14 @@ d5linkinv <- S7::new_generic("d5linkinv", "x", fun = function(x, eta) S7::S7_dis
 #' [linkinvderiv()] route by order and so dispatch twice, once on themselves
 #' and once here, and on a short vector the routed call takes two to three
 #' times as long as the direct one.
+#'
+#' The inverse direction is finite at every linear predictor on which the
+#' value itself is representable: the derivatives that decay (the logit,
+#' probit, cloglog, loglog, cauchit and rhobit links in the tails) are
+#' formed so that they are not flushed to zero before the true value is, and
+#' they are `0` only where it is below the smallest subnormal. The log,
+#' lower- and upper-bounded links overflow with the exponential, for
+#' \eqn{\eta} above about 709.78.
 #' @param x An object of class `link`.
 #' @param eta A numeric vector of linear predictors, inside the range that
 #'   [eta_bounds()] returns for the link. The derivative is computed from

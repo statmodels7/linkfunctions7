@@ -41,6 +41,14 @@ In code where speed matters, call this generic directly: \code{\link[=linkderiv]
 \code{\link[=linkinvderiv]{linkinvderiv()}} route by order and so dispatch twice, once on themselves
 and once here, and on a short vector the routed call takes two to three
 times as long as the direct one.
+
+The result is a signed infinity only where the derivative itself exceeds
+the largest double, and the powers and products are arranged so that no
+intermediate quantity overflows or underflows first. For the log,
+lower-bounded and upper-bounded links this happens for \eqn{\theta}
+(or the distance to the bound) below about \eqn{9.3 \times 10^{-52}}, and
+for the logit, probit, cloglog, loglog and cauchit links at the
+corresponding probabilities close to 0.
 }
 \examples{
 # The log link's sixth derivative is -120 / t^6, so at theta = 2:

@@ -58,21 +58,21 @@ S7::method(linkfun, InverseSqLink) <- function(x, theta) 1 / (theta^2)
 S7::method(linkinv, InverseSqLink) <- function(x, eta) 1 / sqrt(eta)
 
 # Exact analytical derivatives of the link function (wrt theta)
-S7::method(dlinkfun, InverseSqLink) <- function(x, theta) -2 / (theta^3)
-S7::method(d2linkfun, InverseSqLink) <- function(x, theta)  6 / (theta^4)
-S7::method(d3linkfun, InverseSqLink) <- function(x, theta) -24 / (theta^5)
-S7::method(d4linkfun, InverseSqLink) <- function(x, theta) 120 / (theta^6)
-S7::method(d5linkfun, InverseSqLink) <- function(x, theta) -720 / (theta^7)
-S7::method(d6linkfun, InverseSqLink) <- function(x, theta) 5040 / (theta^8)
+S7::method(dlinkfun, InverseSqLink) <- function(x, theta) rescue_pow(-2 / (theta^3), theta, -2, -3)
+S7::method(d2linkfun, InverseSqLink) <- function(x, theta)  rescue_pow(6 / (theta^4), theta, 6, -4)
+S7::method(d3linkfun, InverseSqLink) <- function(x, theta) rescue_pow(-24 / (theta^5), theta, -24, -5)
+S7::method(d4linkfun, InverseSqLink) <- function(x, theta) rescue_pow(120 / (theta^6), theta, 120, -6)
+S7::method(d5linkfun, InverseSqLink) <- function(x, theta) rescue_pow(-720 / (theta^7), theta, -720, -7)
+S7::method(d6linkfun, InverseSqLink) <- function(x, theta) rescue_pow(5040 / (theta^8), theta, 5040, -8)
 
 # Exact analytical derivatives of the inverse link function (wrt eta)
 # Utilizing explicit fractions to optimize numeric evaluations
-S7::method(dlinkinv, InverseSqLink) <- function(x, eta) -1 / (2 * eta^1.5)
-S7::method(d2linkinv, InverseSqLink) <- function(x, eta)  3 / (4 * eta^2.5)
-S7::method(d3linkinv, InverseSqLink) <- function(x, eta) -15 / (8 * eta^3.5)
-S7::method(d4linkinv, InverseSqLink) <- function(x, eta) 105 / (16 * eta^4.5)
-S7::method(d5linkinv, InverseSqLink) <- function(x, eta) -945 / (32 * eta^5.5)
-S7::method(d6linkinv, InverseSqLink) <- function(x, eta) 10395 / (64 * eta^6.5)
+S7::method(dlinkinv, InverseSqLink) <- function(x, eta) rescue_pow(-1 / (2 * eta^1.5), eta, (-1 / 2), -1.5)
+S7::method(d2linkinv, InverseSqLink) <- function(x, eta)  rescue_pow(3 / (4 * eta^2.5), eta, (3 / 4), -2.5)
+S7::method(d3linkinv, InverseSqLink) <- function(x, eta) rescue_pow(-15 / (8 * eta^3.5), eta, (-15 / 8), -3.5)
+S7::method(d4linkinv, InverseSqLink) <- function(x, eta) rescue_pow(105 / (16 * eta^4.5), eta, (105 / 16), -4.5)
+S7::method(d5linkinv, InverseSqLink) <- function(x, eta) rescue_pow(-945 / (32 * eta^5.5), eta, (-945 / 32), -5.5)
+S7::method(d6linkinv, InverseSqLink) <- function(x, eta) rescue_pow(10395 / (64 * eta^6.5), eta, (10395 / 64), -6.5)
 
 #' @title The Inverse Square Link Function
 #'
