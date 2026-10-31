@@ -1,3 +1,10 @@
+# linkfunctions7 0.8.2
+
+* Tests only: the parameters of the links in the range tests (the bounds
+  1e-60 and 1e60, the power 1/3, the softplus scale 0.01) are written as
+  hexadecimal literals too; on arm64 macOS the decimal bound 1e-60 parsed to
+  the neighbouring double.
+
 # linkfunctions7 0.8.1
 
 * Tests only: the arguments of the range tests are written as hexadecimal
