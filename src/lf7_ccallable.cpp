@@ -194,6 +194,92 @@ void lf7_inv12p(int id, const double* par, double eta, double* h,
     }
 }
 
+// rescue_pow() on one value: where cf * v^q overflowed or underflowed and v
+// is a finite positive number, the power is formed in two halves
+static double lf7_rescue_pow(double r, double v, double cf, double q) {
+    if ((std::isinf(r) || std::fabs(r) < 1e-290) && std::isfinite(v) &&
+        v > 0.0) {
+        double s = lf7::rpow(v, q / 2.0);
+        r = (cf * s) * s;
+    }
+    return r;
+}
+
+// power_deriv() on one value: the order-th derivative of v^p
+static double lf7_power_deriv(double v, double p, int order) {
+    double cf = 1.0;
+    for (int j = 0; j < order; ++j) cf *= (p - j);
+    if (cf == 0.0) return ISNAN(v) ? NA_REAL : 0.0;
+    double q = p - order;
+    double r = lf7_rescue_pow(cf * lf7::rpow(v, q), v, cf, q);
+    return ISNAN(v) ? NA_REAL : r;
+}
+
+// h[0] = linkinv(eta) before the clamp and h[1] to h[4] its first four
+// derivatives, for the engine's derivatives on the link scale up to the
+// fourth order (piano_motore.md). Orders 0 to 2 are lf7_inv12p()'s; orders 3
+// and 4 mirror the d3linkinv() and d4linkinv() methods of each class.
+void lf7_inv1234p(int id, const double* par, double eta, double* h) {
+    lf7_inv12p(id, par, eta, &h[0], &h[1], &h[2]);
+    const bool na = ISNAN(eta);
+    switch (id) {
+    case 0: case 8:
+        h[3] = na ? NA_REAL : 0.0; h[4] = h[3];
+        break;
+    case 1: case 14:
+        h[3] = lf7::exp_floored(eta); h[4] = h[3];
+        break;
+    case 15:
+        h[3] = -lf7::exp_floored(eta); h[4] = h[3];
+        break;
+    case 2:
+        h[3] = lf7::logit_inv(eta, 3); h[4] = lf7::logit_inv(eta, 4);
+        break;
+    case 3:
+        h[3] = lf7::probit_inv(eta, 3); h[4] = lf7::probit_inv(eta, 4);
+        break;
+    case 4:
+        h[3] = lf7::cloglog_inv(eta, 3); h[4] = lf7::cloglog_inv(eta, 4);
+        break;
+    case 5:
+        h[3] = lf7::loglog_inv(eta, 3); h[4] = lf7::loglog_inv(eta, 4);
+        break;
+    case 6:
+        h[3] = lf7::cauchit_inv(eta, 3); h[4] = lf7::cauchit_inv(eta, 4);
+        break;
+    case 7:
+        h[3] = lf7::rhobit_inv(eta, 3); h[4] = lf7::rhobit_inv(eta, 4);
+        break;
+    case 9:
+        h[3] = lf7_rescue_pow(-6.0 / lf7::rpow(eta, 4.0), eta, -6.0, -4.0);
+        h[4] = lf7_rescue_pow(24.0 / lf7::rpow(eta, 5.0), eta, 24.0, -5.0);
+        break;
+    case 10:
+        h[3] = lf7_rescue_pow(-15.0 / (8.0 * lf7::rpow(eta, 3.5)), eta,
+                              -15.0 / 8.0, -3.5);
+        h[4] = lf7_rescue_pow(105.0 / (16.0 * lf7::rpow(eta, 4.5)), eta,
+                              105.0 / 16.0, -4.5);
+        break;
+    case 11:
+        h[3] = lf7_power_deriv(eta, 1.0 / par[0], 3);
+        h[4] = lf7_power_deriv(eta, 1.0 / par[0], 4);
+        break;
+    case 12: {
+        double a = par[0];
+        // x@a^2 and x@a^3 as R evaluates them
+        h[3] = lf7::logit_inv_scaled(a * eta, 2, lf7::rpow(a, 2.0));
+        h[4] = lf7::logit_inv_scaled(a * eta, 3, lf7::rpow(a, 3.0));
+        break;
+    }
+    case 13:
+        h[3] = lf7::logit_inv_scaled(eta, 3, par[1]);
+        h[4] = lf7::logit_inv_scaled(eta, 4, par[1]);
+        break;
+    default:
+        h[3] = R_NaN; h[4] = R_NaN;
+    }
+}
+
 } // extern "C"
 
 // the class entries, for the same tests
@@ -210,6 +296,21 @@ Rcpp::List lf7_class_probe(std::string cls, Rcpp::NumericVector par,
     }
     return Rcpp::List::create(Rcpp::_["id"] = id, Rcpp::_["h"] = h,
                               Rcpp::_["h1"] = h1, Rcpp::_["h2"] = h2);
+}
+
+// the class entry to the fourth order, for the same tests
+// [[Rcpp::export]]
+Rcpp::List lf7_class_probe4(std::string cls, Rcpp::NumericVector par,
+                            Rcpp::NumericVector eta) {
+    int id = lf7_class_id(cls.c_str());
+    int n = eta.size();
+    Rcpp::NumericMatrix out(n, 5);
+    for (int i = 0; i < n; ++i) {
+        double h[5];
+        lf7_inv1234p(id, par.begin(), eta[i], h);
+        for (int k = 0; k < 5; ++k) out(i, k) = h[k];
+    }
+    return Rcpp::List::create(Rcpp::_["id"] = id, Rcpp::_["h"] = out);
 }
 
 // exposed to this package's own tests, so the twin comparison against the R
@@ -240,4 +341,6 @@ void lf7_register_ccallable(DllInfo* dll) {
     R_RegisterCCallable("linkfunctions7", "lf7_class_id",
                         (DL_FUNC) lf7_class_id);
     R_RegisterCCallable("linkfunctions7", "lf7_inv12p", (DL_FUNC) lf7_inv12p);
+    R_RegisterCCallable("linkfunctions7", "lf7_inv1234p",
+                        (DL_FUNC) lf7_inv1234p);
 }

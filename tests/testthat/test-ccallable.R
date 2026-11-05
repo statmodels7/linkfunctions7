@@ -59,6 +59,43 @@ test_that("the class entries mirror the R methods of every link", {
   }
 })
 
+# The entry to the fourth order, lf7_inv1234p(), against linkinv() and the
+# four derivative methods, on the grids above and at the extremes where
+# rescue_pow() and the far branch of the logistic kernels take over.
+test_that("the class entries to the fourth order mirror the R methods of every link", {
+  real_line <- c(-800, -650, -30, -5, -1, -0.2, 0.4, 2, 6, 30, 650, 800)
+  positive <- c(1e-200, 0.01, 0.3, 1, 2.5, 40, 1e200)
+  gens <- list(linkinv, dlinkinv, d2linkinv, d3linkinv, d4linkinv)
+  for (nm in names(all_links())) {
+    l <- all_links()[[nm]]
+    rt <- link_scalar_route(l)
+    eta <- if (nm %in% c("inverse", "inverse_sq", "power_half", "power_2")) {
+      positive
+    } else real_line
+    pr <- lf7_class_probe4(rt$name, rt$par, eta)
+    expect_gte(pr$id, 0L)
+    cls <- S7::S7_class(l)
+    for (k in seq_along(gens)) {
+      ref <- as.numeric(suppressWarnings(S7::method(gens[[k]], cls)(l, eta)))
+      got <- pr$h[, k]
+      lab <- paste(nm, "order", k - 1)
+      # the extremes reach infinities: those must be the same values, and
+      # the finite entries are compared on their own scale
+      fin <- is.finite(ref)
+      expect_identical(is.finite(got), fin, label = paste(lab, "finite"))
+      expect_identical(got[!fin], ref[!fin], label = paste(lab, "non-finite"))
+      if (all(ref[fin] == 0)) {
+        expect_identical(got[fin], ref[fin], label = lab)
+      } else {
+        expect_agrees_on_scale(got[fin], ref[fin], label = lab)
+      }
+    }
+    # a missing eta is missing at every order
+    expect_true(all(is.na(lf7_class_probe4(rt$name, rt$par, NA_real_)$h)),
+                label = paste(nm, "NA"))
+  }
+})
+
 test_that("a link outside the package has no scalar route", {
   Mine <- S7::new_class("MyLogitLink", parent = LogitLink)
   expect_null(link_scalar_route(Mine(link_name = "logit",
