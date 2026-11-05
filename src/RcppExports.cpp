@@ -23,6 +23,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// lf7_fun_probe
+Rcpp::NumericVector lf7_fun_probe(std::string cls, Rcpp::NumericVector par, Rcpp::NumericVector theta);
+RcppExport SEXP _linkfunctions7_lf7_fun_probe(SEXP clsSEXP, SEXP parSEXP, SEXP thetaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type cls(clsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type par(parSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type theta(thetaSEXP);
+    rcpp_result_gen = Rcpp::wrap(lf7_fun_probe(cls, par, theta));
+    return rcpp_result_gen;
+END_RCPP
+}
 // lf7_class_probe4
 Rcpp::List lf7_class_probe4(std::string cls, Rcpp::NumericVector par, Rcpp::NumericVector eta);
 RcppExport SEXP _linkfunctions7_lf7_class_probe4(SEXP clsSEXP, SEXP parSEXP, SEXP etaSEXP) {
@@ -234,6 +247,7 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_linkfunctions7_lf7_class_probe", (DL_FUNC) &_linkfunctions7_lf7_class_probe, 3},
+    {"_linkfunctions7_lf7_fun_probe", (DL_FUNC) &_linkfunctions7_lf7_fun_probe, 3},
     {"_linkfunctions7_lf7_class_probe4", (DL_FUNC) &_linkfunctions7_lf7_class_probe4, 3},
     {"_linkfunctions7_lf7_scalar_probe", (DL_FUNC) &_linkfunctions7_lf7_scalar_probe, 3},
     {"_linkfunctions7_lk_logit_inv_cpp", (DL_FUNC) &_linkfunctions7_lk_logit_inv_cpp, 2},

@@ -5,6 +5,10 @@ lf7_class_probe <- function(cls, par, eta) {
     .Call(`_linkfunctions7_lf7_class_probe`, cls, par, eta)
 }
 
+lf7_fun_probe <- function(cls, par, theta) {
+    .Call(`_linkfunctions7_lf7_fun_probe`, cls, par, theta)
+}
+
 lf7_class_probe4 <- function(cls, par, eta) {
     .Call(`_linkfunctions7_lf7_class_probe4`, cls, par, eta)
 }

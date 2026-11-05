@@ -96,6 +96,25 @@ test_that("the class entries to the fourth order mirror the R methods of every l
   }
 })
 
+# The link itself, lf7_fun1p(), against linkfun() of every class, at the
+# values that linkinv() returns on the grids above: the compiled inner fit of
+# statmodels7 composes the two as inverse_link_derivs() does.
+test_that("the class entry of the link itself mirrors linkfun() of every link", {
+  real_line <- c(-800, -650, -30, -5, -1, -0.2, 0.4, 2, 6, 30, 650, 800)
+  positive <- c(1e-200, 0.01, 0.3, 1, 2.5, 40, 1e200)
+  for (nm in names(all_links())) {
+    l <- all_links()[[nm]]
+    rt <- link_scalar_route(l)
+    eta <- if (nm %in% c("inverse", "inverse_sq", "power_half", "power_2")) {
+      positive
+    } else real_line
+    th <- linkinv(l, eta)
+    ref <- suppressWarnings(linkfun(l, th))
+    got <- lf7_fun_probe(rt$name, rt$par, th)
+    expect_identical(got, as.numeric(ref), label = nm)
+  }
+})
+
 test_that("a link outside the package has no scalar route", {
   Mine <- S7::new_class("MyLogitLink", parent = LogitLink)
   expect_null(link_scalar_route(Mine(link_name = "logit",

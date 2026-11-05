@@ -280,6 +280,35 @@ void lf7_inv1234p(int id, const double* par, double eta, double* h) {
     }
 }
 
+// linkfun(): the link itself, g(theta), as the class's R method computes it
+// (the generic adds nothing); par as for lf7_inv12p(). The compiled inner
+// fit of statmodels7 takes the derivatives of the inverse at
+// linkfun(linkinv(eta)), as distributions7's inverse_link_derivs() does.
+double lf7_fun1p(int id, const double* par, double th) {
+    switch (id) {
+    case 0: return th;
+    case 1: return std::log(th);
+    case 2: return R::qlogis(th, 0.0, 1.0, 1, 0);
+    case 3: return R::qnorm(th, 0.0, 1.0, 1, 0);
+    case 4: return std::log(-std::log1p(-th));
+    case 5: return -std::log(-std::log(th));
+    case 6: return R::qcauchy(th, 0.0, 1.0, 1, 0);
+    case 7: return std::atanh(th);
+    case 8: return std::sqrt(th);
+    case 9: return 1 / th;
+    case 10: return 1 / (th * th);
+    case 11: return par[0] == 2.0 ? th * th : R_pow(th, par[0]);
+    case 12: {
+        const double z = par[0] * th;
+        return (z + std::log(-std::expm1(-z))) / par[0];
+    }
+    case 13: return R::qlogis((th - par[0]) / par[1], 0.0, 1.0, 1, 0);
+    case 14: return std::log(th - par[0]);
+    case 15: return std::log(par[0] - th);
+    default: return NA_REAL;
+    }
+}
+
 } // extern "C"
 
 // the class entries, for the same tests
@@ -296,6 +325,16 @@ Rcpp::List lf7_class_probe(std::string cls, Rcpp::NumericVector par,
     }
     return Rcpp::List::create(Rcpp::_["id"] = id, Rcpp::_["h"] = h,
                               Rcpp::_["h1"] = h1, Rcpp::_["h2"] = h2);
+}
+
+// the class entry of the link itself, for the same tests
+// [[Rcpp::export]]
+Rcpp::NumericVector lf7_fun_probe(std::string cls, Rcpp::NumericVector par,
+                                  Rcpp::NumericVector theta) {
+    int id = lf7_class_id(cls.c_str());
+    Rcpp::NumericVector out(theta.size());
+    for (int i = 0; i < theta.size(); ++i) out[i] = lf7_fun1p(id, par.begin(), theta[i]);
+    return out;
 }
 
 // the class entry to the fourth order, for the same tests
@@ -341,6 +380,7 @@ void lf7_register_ccallable(DllInfo* dll) {
     R_RegisterCCallable("linkfunctions7", "lf7_class_id",
                         (DL_FUNC) lf7_class_id);
     R_RegisterCCallable("linkfunctions7", "lf7_inv12p", (DL_FUNC) lf7_inv12p);
+    R_RegisterCCallable("linkfunctions7", "lf7_fun1p", (DL_FUNC) lf7_fun1p);
     R_RegisterCCallable("linkfunctions7", "lf7_inv1234p",
                         (DL_FUNC) lf7_inv1234p);
 }
