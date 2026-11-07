@@ -1,5 +1,12 @@
 # Changelog
 
+## linkfunctions7 0.9.0
+
+- Two C entry points registered for compiled callers: `lf7_inv1234p()`,
+  the inverse link and its first four derivatives, and `lf7_fun1p()`,
+  the link itself, both computed as the R methods of the 16 link classes
+  compute them.
+
 ## linkfunctions7 0.8.2
 
 - Tests only: the parameters of the links in the range tests (the bounds
